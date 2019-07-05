@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Library">
+      <UniqueIdentifier>{c65e691a-8ede-42bc-a8d2-85af3471f90f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\Header FIles">
+      <UniqueIdentifier>{23172a10-4454-46e5-9fe5-68af4fbab7be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\Source Files">
+      <UniqueIdentifier>{85664b29-339a-41ad-ad02-610ac68f9f27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Models">
+      <UniqueIdentifier>{e0e916a7-adff-4d41-aa0d-2bce0ec5f3df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Models\Header FIles">
+      <UniqueIdentifier>{c546afbf-b7cd-4a9b-b2fb-5df7c6bca9c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Models\Source Files">
+      <UniqueIdentifier>{4fba64b6-8ce8-4adc-990a-9e96c6c181cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Models\Resource Files">
+      <UniqueIdentifier>{a6466ac9-2590-40e8-8623-0603dcfd1e21}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CheckChar.h">
+      <Filter>Library\Header FIles</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums.h">
+      <Filter>Library\Header FIles</Filter>
+    </ClInclude>
+    <ClInclude Include="DateTime.h">
+      <Filter>Library\Header FIles</Filter>
+    </ClInclude>
+    <ClInclude Include="FormInput.h">
+      <Filter>Library\Header FIles</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics.h">
+      <Filter>Library\Header FIles</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Library\Header FIles</Filter>
+    </ClInclude>
+    <ClInclude Include="SlideMenu.h">
+      <Filter>Library\Header FIles</Filter>
+    </ClInclude>
+    <ClInclude Include="Structs.h">
+      <Filter>Library\Header FIles</Filter>
+    </ClInclude>
+    <ClInclude Include="TextHandler.h">
+      <Filter>Library\Header FIles</Filter>
+    </ClInclude>
+    <ClInclude Include="DauSach.h">
+      <Filter>Models\Header FIles</Filter>
+    </ClInclude>
+    <ClInclude Include="Constants.h">
+      <Filter>Models\Header FIles</Filter>
+    </ClInclude>
+    <ClInclude Include="MuonTra.h">
+      <Filter>Models\Header FIles</Filter>
+    </ClInclude>
+    <ClInclude Include="Sach.h">
+      <Filter>Models\Header FIles</Filter>
+    </ClInclude>
+    <ClInclude Include="FileHandler.h">
+      <Filter>Library\Header FIles</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="TextHandler.cpp">
+      <Filter>Library\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics.cpp">
+      <Filter>Library\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DauSach.cpp">
+      <Filter>Models\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CheckChar.cpp">
+      <Filter>Library\Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="DauSachData.txt">
+      <Filter>Models\Resource Files</Filter>
+    </Text>
+  </ItemGroup>
+</Project>
