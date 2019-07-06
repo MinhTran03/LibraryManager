@@ -25,7 +25,7 @@ struct MENU
 
 	int MaxLengthTextLabels()
 	{
-		int max = 0;
+		size_t max = 0;
 		for (auto label : labels)
 		{
 			if (label.length() > max) max = label.length();
@@ -35,7 +35,7 @@ struct MENU
 	void SetupButtonVertical(std::vector<BUTTON>& btns)
 	{
 		if (rows.size() != 0) rows.clear();
-		for (int i = 0; i < labels.size(); i++)
+		for (size_t i = 0; i < labels.size(); i++)
 		{
 			rows.push_back(location.y + size.height * i);
 			btns.push_back(BUTTON({ {location.x, rows[i]}, size }, labels[i]));
@@ -45,7 +45,6 @@ struct MENU
 	{
 		for (auto item : btns)
 		{
-			//Sleep(15);
 			item.Draw(bgColor, textColor, borderColor, Align::Center, Border::TwoLine);
 		}
 		btns[currentLine].Draw(selectColor, textHLColor, selectColor, Align::Center, Border::TwoLine, 0);
@@ -99,12 +98,12 @@ struct MENU
 					}
 					else if (inputKey == Key::LEFT)
 					{
-						return -1;
+						return Key::LEFT;
 					}
-					else if (inputKey == Key::RIGHT)
+					/*else if (inputKey == Key::RIGHT)
 					{
-						return -2;
-					}
+						return Key::RIGHT;
+					}*/
 				}
 				if (inputKey == Key::ENTER)
 				{
@@ -117,7 +116,7 @@ struct MENU
 	void SetupButtonHorizontal(std::vector<BUTTON>& btns)
 	{
 		if (cols.size() != 0) cols.clear();
-		for (int i = 0; i < labels.size(); i++)
+		for (size_t i = 0; i < labels.size(); i++)
 		{
 			cols.push_back(location.x + size.width * i);
 			btns.push_back(BUTTON({ {cols[i], location.y}, size }, labels[i]));

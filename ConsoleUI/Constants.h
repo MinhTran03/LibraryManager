@@ -28,8 +28,8 @@ const unsigned int SODAUSACH_MAX = 50;
 
 const unsigned int ISBN_WIDTH = ISBN_MAXSIZE + 1;
 const unsigned int TENSACH_WIDTH = 30;
-const unsigned int TENTACGIA_WIDTH = 30;
-const unsigned int TENTHELOAI_WIDTH = 20;
+const unsigned int TENTACGIA_WIDTH = 25;
+const unsigned int TENTHELOAI_WIDTH = 15;
 const unsigned int SOTRANG_WIDTH = 9;
 const unsigned int NAMXUATBAN_WIDTH = 13;
 const unsigned int DAUSACH_TOTAL_WIDTH = ISBN_WIDTH + TENSACH_WIDTH + TENTACGIA_WIDTH + TENTHELOAI_WIDTH + SOTRANG_WIDTH + NAMXUATBAN_WIDTH + 7;

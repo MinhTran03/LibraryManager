@@ -9,28 +9,36 @@ struct SLIDEMENUS
 	SLIDEMENUS(std::vector<std::vector<std::string>> childLabels, MENU rootMenu)
 		: childLabels(childLabels), rootMenu(rootMenu)
 	{
-
+		this->rootMenu.selectColor = Color::Light_Magenta;
 	}
 	void SetupChildMenu(std::vector<MENU>& childMenus)
 	{
-		for (int i = 0; i < childLabels.size(); i++)
+		for (size_t i = 0; i < childLabels.size(); i++)
 		{
 			childMenus.push_back({ childLabels[i],
 				{rootMenu.location.x + rootMenu.size.width, rootMenu.location.y} });
+			
 		}
 	}
-	std::vector<int> Show()
+	std::vector<int> Show(int rootLine = -1, int childLine = -1)
 	{
 		std::vector<MENU> childMenus;
 		SetupChildMenu(childMenus);
-		int rootLine, childLine = 0;
+		// Hien thi line dong
+		if (rootLine != -1)
+			rootMenu.currentLine = rootLine;
 		rootMenu.ShowInVertical(Show_Only);
 		while (true)
 		{
-			rootMenu.ShowInVertical(GetKey_Only);
+			// Chua co thong tin line duoc chon
+			if(rootLine == -1)
+				rootLine = rootMenu.ShowInVertical(GetKey_Only);
+			if (rootLine == Key::LEFT) continue;
 			rootLine = rootMenu.currentLine;
+			if (childLine != -1)
+				childMenus[rootLine].currentLine = childLine;
 			childLine = childMenus[rootLine].ShowInVertical(Menu_Mode::Both);
-			if (childLine == -1)
+			if (childLine == Key::LEFT)
 			{
 				childMenus[rootLine].ClearInVertical();
 				//if (row == -1) //left
@@ -56,10 +64,12 @@ struct SLIDEMENUS
 				//	}
 				//}
 			}
-			else if(childLine > 0)
+			else
 			{
 				return { rootLine, childLine };
 			}
+			rootLine = -1;
+			childLine = -1;
 		}
 	}
 };

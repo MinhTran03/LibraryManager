@@ -98,7 +98,7 @@ void PrintLabel(MYPOINT location, int row)
 	std::vector<std::string> labels = { "ISBN", "TEN SACH", "SO TRANG", "TEN TAC GIA", "NAM XUAT BAN", "TEN THE LOAI" };
 	auto lstBorder = LISTBORDERTEXT(labels);
 	lstBorder.Draw(location, { ISBN_WIDTH, TENSACH_WIDTH, SOTRANG_WIDTH, TENTACGIA_WIDTH, NAMXUATBAN_WIDTH, TENTHELOAI_WIDTH },
-		row, Color::White);
+		row, BORDER_COLOR);
 
 }
 // Lay dau sach dua vao ten the loai
@@ -207,7 +207,7 @@ std::string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, std::string theLoai)
 	// print data
 	for (int i = 0; i < totalLine; i++)
 	{
-		listISBN[i].Print(location, Color::Black, Color::White);
+		listISBN[i].Print(location, BG_COLOR, TEXT_INPUT_COLOR);
 		// neu la dong dau tien thi hight light len
 		if (location.y == backUpLocation.y)
 			listISBN[i].Print(location, hlBGColor, hlTextColor);
@@ -232,14 +232,14 @@ std::string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, std::string theLoai)
 				if (currentLine > 0)
 				{
 					GoToXY(location.x, rows[currentLine]);
-					HightLight(datas[currentLine], Color::Black, Color::White);
+					HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
 					GoToXY(location.x, rows[--currentLine]);
 					HightLight(datas[currentLine], hlBGColor, hlTextColor);
 				}
 				else
 				{
 					GoToXY(location.x, rows[currentLine]);
-					HightLight(datas[currentLine], Color::Black, Color::White);
+					HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
 					currentLine = totalLine - 1;
 					GoToXY(location.x, rows[currentLine]);
 					HightLight(datas[currentLine], hlBGColor, hlTextColor);
@@ -250,14 +250,14 @@ std::string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, std::string theLoai)
 				if (currentLine < totalLine - 1)
 				{
 					GoToXY(location.x, rows[currentLine]);
-					HightLight(datas[currentLine], Color::Black, Color::White);
+					HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
 					GoToXY(location.x, rows[++currentLine]);
 					HightLight(datas[currentLine], hlBGColor, hlTextColor);
 				}
 				else
 				{
 					GoToXY(location.x, rows[currentLine]);
-					HightLight(datas[currentLine], Color::Black, Color::White);
+					HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
 					currentLine = 0;
 					GoToXY(location.x, rows[currentLine]);
 					HightLight(datas[currentLine], hlBGColor, hlTextColor);
@@ -276,6 +276,10 @@ std::string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, std::string theLoai)
 		{
 			return listISBN[currentLine].isbn;
 		}
+		else if (inputKey == Key::ESC)
+		{
+			return "ESC";
+		}
 	} while (!_kbhit());
 	return listISBN[currentLine].isbn;
 }
@@ -286,29 +290,35 @@ std::string LIST_DAUSACH::PrintAllTheLoai(MYPOINT location)
 	int totalPages = this->dsTheLoai.size();
 	while (true)
 	{
-		std::string temp = PrintByTheLoai(location, this->dsTheLoai[currentPage]);
+		std::string outPut = PrintByTheLoai(location, this->dsTheLoai[currentPage]);
 		// go to next page
-		if (temp == "RIGHT")
+		if (outPut == "RIGHT")
 		{
 			if (currentPage < totalPages - 1)
 			{
-				ClearScreen(Color::Black);
+				ClearScreen(BG_COLOR);
 				currentPage++;
 			}
 		}
 		// go to previous page
-		else if (temp == "LEFT")
+		else if (outPut == "LEFT")
 		{
 			if (currentPage > 0)
 			{
-				ClearScreen(Color::Black);
+				ClearScreen(BG_COLOR);
 				currentPage--;
 			}
+		}
+		// ESC hitted
+		else if (outPut == "ESC")
+		{
+			ClearScreen(BG_COLOR);
+			return outPut;
 		}
 		// enter hitted
 		else
 		{
-			return temp;
+			return outPut;
 		}
 	}
 }
