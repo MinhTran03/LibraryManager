@@ -56,7 +56,7 @@ struct FORMINPUT
 	}
 	void ResetOutput()
 	{
-		for (int i = 0; i < OutputResults.size(); i++)
+		for (size_t i = 0; i < OutputResults.size(); i++)
 		{
 			OutputResults[i] = "";
 			cols[i] = xInputCol;
@@ -81,7 +81,7 @@ struct FORMINPUT
 	}
 	int MaxLengthLabel()
 	{
-		int max = 0;
+		size_t max = 0;
 		for (auto label : labels)
 		{
 			if (label.length() > max) max = label.length();
@@ -133,7 +133,7 @@ struct FORMINPUT
 				break;
 			}
 			break;
-		default: case All:
+		default: case WordType::All:
 			return true;
 			break;
 		}
@@ -164,7 +164,7 @@ struct FORMINPUT
 			{
 				auto dateNow = DATETIME();
 				dateNow.SetDateTimeNow();
-				if(std::stoi(OutputResults[i]) > dateNow.year)
+				if((size_t)std::stoi(OutputResults[i]) > dateNow.year)
 					error.push_back(i);
 			}
 		}
@@ -284,7 +284,7 @@ struct FORMINPUT
 							ReDraw();
 							SetBGColor(BG_COLOR);
 							SetTextColor(WARNING_TEXT_COLOR);
-							for (int i = 0; i < errorsLength.size(); i++)
+							for (size_t i = 0; i < errorsLength.size(); i++)
 							{
 								GoToXY(xInputCol, rows[errorsLength[i]] + 1);
 								std::string tempLabel = labels[errorsLength[i]];
@@ -434,6 +434,7 @@ struct FORMINPUT
 			}
 
 		} while (!_kbhit());
+		return true;
 	}
 	void ReDraw()
 	{

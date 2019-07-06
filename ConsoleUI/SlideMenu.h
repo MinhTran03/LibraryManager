@@ -16,48 +16,49 @@ struct SLIDEMENUS
 		for (int i = 0; i < childLabels.size(); i++)
 		{
 			childMenus.push_back({ childLabels[i],
-				{rootMenu.location.x + rootMenu.size.width * i, rootMenu.location.y + rootMenu.size.height } });
+				{rootMenu.location.x + rootMenu.size.width, rootMenu.location.y} });
 		}
 	}
 	std::vector<int> Show()
 	{
 		std::vector<MENU> childMenus;
 		SetupChildMenu(childMenus);
-		int row, col = 0;
+		int rootLine, childLine = 0;
+		rootMenu.ShowInVertical(Show_Only);
 		while (true)
 		{
-			rootMenu.ShowInHorizontal(-1);
-			col = rootMenu.currentLine;
-			row = childMenus[col].ShowInVertical();
-			if (row < 0)
+			rootMenu.ShowInVertical(GetKey_Only);
+			rootLine = rootMenu.currentLine;
+			childLine = childMenus[rootLine].ShowInVertical(Menu_Mode::Both);
+			if (childLine == -1)
 			{
-				childMenus[col].ClearInVertical();
-				if (row == -1) //left
-				{
-					if (rootMenu.currentLine > 0)
-					{
-						rootMenu.currentLine -= 1;
-					}
-					else
-					{
-						rootMenu.currentLine = rootMenu.totalLine - 1;
-					}
-				}
-				else if (row == -2) //right
-				{
-					if (rootMenu.currentLine < rootMenu.totalLine - 1)
-					{
-						rootMenu.currentLine += 1;
-					}
-					else
-					{
-						rootMenu.currentLine = 0;
-					}
-				}
+				childMenus[rootLine].ClearInVertical();
+				//if (row == -1) //left
+				//{
+				//	if (rootMenu.currentLine > 0)
+				//	{
+				//		rootMenu.currentLine -= 1;
+				//	}
+				//	else
+				//	{
+				//		rootMenu.currentLine = rootMenu.totalLine - 1;
+				//	}
+				//}
+				//else if (row == -2) //right
+				//{
+				//	if (rootMenu.currentLine < rootMenu.totalLine - 1)
+				//	{
+				//		rootMenu.currentLine += 1;
+				//	}
+				//	else
+				//	{
+				//		rootMenu.currentLine = 0;
+				//	}
+				//}
 			}
-			else
+			else if(childLine > 0)
 			{
-				return { row, col };
+				return { rootLine, childLine };
 			}
 		}
 	}

@@ -10,7 +10,7 @@
 #define BUTTON_BG_COLOR Color::Green
 #define BUTTON_TEXT_COLOR Color::Black
 #define BUTTON_HIGHLIGHT_BG_COLOR Color::Blue
-#define BUTTON_HIGHLIGHT_TEXT_COLOR Color::Black
+#define BUTTON_HIGHLIGHT_TEXT_COLOR Color::Bright_White
 
 #define BORDER_COLOR Color::Black
 #define WARNING_TEXT_COLOR Color::Red

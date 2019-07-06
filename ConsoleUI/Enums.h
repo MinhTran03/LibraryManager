@@ -1,5 +1,12 @@
 #pragma once
 
+enum Menu_Mode
+{
+	Show_Only,
+	GetKey_Only,
+	Both
+};
+
 enum Color
 {
 	Black = 0,

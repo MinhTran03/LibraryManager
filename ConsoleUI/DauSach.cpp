@@ -169,11 +169,11 @@ void SortByTenSach(std::vector<DAUSACH>& listDauSach)
 {
 	DAUSACH min;
 	int posMin;
-	for (int i = 0; i < listDauSach.size() - 1; i++)
+	for (size_t i = 0; i < listDauSach.size() - 1; i++)
 	{
 		min = listDauSach[i];
 		posMin = i;
-		for (int j = i + 1; j < listDauSach.size(); j++)
+		for (size_t j = i + 1; j < listDauSach.size(); j++)
 		{
 			if (listDauSach[j].tenSach.compare(min.tenSach) < 0)
 			{

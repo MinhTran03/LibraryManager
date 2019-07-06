@@ -1,5 +1,4 @@
 #pragma once
-#define _CRT_SECURE_NO_WARNINGS
 #include <ctime>
 #include "TextHandler.h"
 
@@ -146,6 +145,7 @@ struct DATETIME
 			if (IsNamNhuan(year)) return 29;
 			return 28;
 		default:
+			return 0;
 			break;
 		}
 	}
@@ -157,11 +157,11 @@ struct DATETIME
 	int SubToDefaultDate()
 	{
 		int days = 0;
-		for (int i = defaultYear; i < this->year; i++)
+		for (size_t i = defaultYear; i < this->year; i++)
 		{
 			days += GetDaysOfYear(i);
 		}
-		for (int i = defaultMonth; i < this->month; i++)
+		for (size_t i = defaultMonth; i < this->month; i++)
 		{
 			days += GetDaysOfMonth(i, this->year);
 		}
