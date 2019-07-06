@@ -131,12 +131,28 @@ void MergeWordWithNumber(char*& word, unsigned int number, unsigned int maxLengt
 	// nối số vào cuối
 	strcat(word, numberAsString);
 }
+void MergeWordWithNumber(std::string& word, unsigned int number, unsigned int maxLengthWord)
+{
+	// số chữ số của number
+	int numberSize = NumberLength(number);
+	// số chữ số 0 chèn giữa word và number
+	int countZero = maxLengthWord - word.size() - numberSize;
+	// chèn 0 vô giữa word và number
+	for (int i = 0; i < countZero; i++)
+		word += "0";
+
+	// tạo chuỗi chứa số
+	char* numberAsString = new char[numberSize];
+	_itoa(number, numberAsString, 10);
+	// nối số vào cuối
+	word += numberAsString;
+}
 std::vector<std::string> Split(std::string text, std::string delimiter)
 {
 	std::vector<std::string> result;
 	size_t pos = 0;
 	std::string token;
-	text += "/";
+	text += delimiter;
 	while ((pos = text.find(delimiter)) != std::string::npos)
 	{
 		token = text.substr(0, pos);

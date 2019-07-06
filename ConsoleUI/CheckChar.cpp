@@ -25,3 +25,7 @@ bool IsMixLetter(char c)
 {
 	return IsLetterOnly(c) || isdigit(c);
 }
+bool IsAllLetter(char c)
+{
+	return IsLetterOnly(c) || isdigit(c) || c == '-' || c == '_';
+}

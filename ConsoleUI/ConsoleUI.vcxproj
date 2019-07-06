@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="CheckChar.h" />
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="Database.h" />
     <ClInclude Include="DateTime.h" />
     <ClInclude Include="DauSach.h" />
     <ClInclude Include="Enums.h" />
@@ -36,9 +37,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CheckChar.cpp" />
+    <ClCompile Include="Database.cpp" />
     <ClCompile Include="DauSach.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Sach.cpp" />
     <ClCompile Include="TextHandler.cpp" />
   </ItemGroup>
   <ItemGroup>

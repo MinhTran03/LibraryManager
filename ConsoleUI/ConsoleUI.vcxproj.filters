@@ -78,6 +78,9 @@
     <ClInclude Include="FileHandler.h">
       <Filter>Library\Header FIles</Filter>
     </ClInclude>
+    <ClInclude Include="Database.h">
+      <Filter>Models\Resource Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TextHandler.cpp">
@@ -94,6 +97,12 @@
     </ClCompile>
     <ClCompile Include="CheckChar.cpp">
       <Filter>Library\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sach.cpp">
+      <Filter>Models\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Database.cpp">
+      <Filter>Models\Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

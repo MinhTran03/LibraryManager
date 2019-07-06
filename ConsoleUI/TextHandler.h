@@ -20,6 +20,7 @@ void FormatWord(char*& fullName, WordType type);
 int NumberLength(unsigned int num);
 // merge number vào sau word
 void MergeWordWithNumber(char*& word, unsigned int number, unsigned int maxLengthWord);
+void MergeWordWithNumber(std::string& word, unsigned int number, unsigned int maxLengthWord);
 std::vector<std::string> Split(std::string, std::string delimiter = " ");
 void StringToCharArray(std::string source, char dest[]);
 

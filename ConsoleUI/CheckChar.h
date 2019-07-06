@@ -11,3 +11,4 @@ bool IsLower(char c);
 bool IsLetterOnly(char c);
 // text, number and whitespace
 bool IsMixLetter(char c);
+bool IsAllLetter(char c);

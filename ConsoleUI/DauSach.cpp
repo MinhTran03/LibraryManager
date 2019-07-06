@@ -18,8 +18,8 @@ DAUSACH DAUSACH::Input(RECTANGLE rect)
 {
 	std::vector<std::string> labels = { "ISBN:","Ten sach:","So trang:","Tac gia:", "Nam xuat ban:","The loai:" };
 	std::string inputTitle = "Nhap thong tin DAU SACH";
-	std::vector<CONDITION> conditions = { {Number_Only, 6, 6}, {All, 1, 50},{Number_Only, 1, 5},
-													{Name, 1, 50},{Year, 4, 4},{Mix, 1, 50} };
+	std::vector<CONDITION> conditions = { {Number_Only, ISBN_MAXSIZE, ISBN_MAXSIZE}, {All, 1, TENSACH_MAXSIZE},{Number_Only, 1, SOTRANG_MAXKYTU},
+													{Name, 1, TENTACGIA_MAXSIZE},{Year, 4, 4},{Mix, 1, TENTHELOAI_MAXSIZE} };
 	auto form = FORMINPUT(labels, conditions, rect, inputTitle);
 	if (form.Show())
 	{
@@ -79,6 +79,10 @@ std::string DAUSACH::ToString()
 #pragma endregion
 
 #pragma region LIST_DAUSACH
+void LIST_DAUSACH::Deconstructor()
+{
+	delete[] this->nodes[0];
+}
 // kiem tra theLoai sach da ton tai hay chua
 bool LIST_DAUSACH::IsContainTheLoai(std::string theLoai)
 {
@@ -119,7 +123,7 @@ bool LIST_DAUSACH::ReadFromFile(std::string path)
 		auto lstDauSachVector = fileHandler.GetTokens();
 		int size = lstDauSachVector.size();
 		DAUSACH* dauSach = new DAUSACH[size];
-		for (int i = 0; i < lstDauSachVector.size(); i++)
+		for (int i = 0; i < size; i++)
 		{
 			dauSach[i] = ParseVectorString(lstDauSachVector[i]);
 			Insert(dauSach[i], this->size);
@@ -323,11 +327,10 @@ std::vector<std::string> LIST_DAUSACH::FindBooks(std::string tenSach)
 	return result;
 }
 // CMT
-std::string LIST_DAUSACH::PrintFindBooks(MYPOINT location, std::string tenSach)
+void LIST_DAUSACH::PrintFindBooks(MYPOINT location, std::string tenSach)
 {
 	Color hlBGColor = Color::Cyan;
 	Color hlTextColor = Color::White;
-	int currentLine = 0;
 	// tim ISBN theo the loai
 	auto listISBN = FindBooks(tenSach);
 	int totalLine = listISBN.size();
@@ -355,6 +358,5 @@ std::string LIST_DAUSACH::PrintFindBooks(MYPOINT location, std::string tenSach)
 			}
 		}
 	}
-	return listISBN[currentLine];
 }
 #pragma endregion

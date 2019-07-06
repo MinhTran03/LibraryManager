@@ -6,12 +6,6 @@
 #include "Structs.h"
 #include "DateTime.h"
 
-#define borderColor Color::White
-#define bgBtnColor Color::Green
-#define bgBtnSelectColor Color::Blue
-#define textLabelColor Color::White
-#define textInputColor Color::Light_Cyan
-#define bgColor Color::Black
 #define widthBtn 8
 #define heightBtn 1
 
@@ -75,10 +69,12 @@ struct FORMINPUT
 		// In label va text ra man hinh
 		for (int i = 0; i < totalLine; i++)
 		{
-			SetTextColor(textLabelColor);
+			SetTextColor(LABEL_TEXT_COLOR);
 			GoToXY(colsLabel[i], rows[i]);
 			std::cout << labels[i];
-			SetTextColor(textInputColor);
+			SetTextColor(TEXT_INPUT_COLOR);
+			if(conditions[i].mode == Default)
+				SetTextColor(TEXT_INPUT_DEFAULT_COLOR);
 			GoToXY(xInputCol, rows[i]);
 			std::cout << OutputResults[i];
 		}
@@ -177,7 +173,7 @@ struct FORMINPUT
 
 	bool Show()
 	{
-		border.Draw2Line(borderColor);
+		border.Draw2Line(BORDER_COLOR);
 		currentLine = 0;
 		PrintLabelsTitle();
 
@@ -186,12 +182,12 @@ struct FORMINPUT
 		int x = rect.location.x + rect.size.width / 4 - widthBtn / 2 - widthBtn % 2;
 		int y = rows[totalLine - 1] + 2;
 		auto btnOK = BUTTON({ {x, y}, {widthBtn, heightBtn} }, textBtn1);
-		btnOK.Draw(bgBtnColor, textLabelColor);
+		btnOK.Draw(BUTTON_BG_COLOR, BUTTON_TEXT_COLOR);
 		rows.push_back(y);
 		cols.push_back(x);
 		x += rect.size.width / 2;
 		auto btnCancel = BUTTON({ {x, y}, {widthBtn, heightBtn} }, textBtn2);
-		btnCancel.Draw(bgBtnColor, textLabelColor);
+		btnCancel.Draw(BUTTON_BG_COLOR, BUTTON_TEXT_COLOR);
 
 		// Dua con tro ve vi tri Input chuan bi nhap
 		ShowPointer();
@@ -213,8 +209,8 @@ struct FORMINPUT
 					if (currentLine == totalLine)
 					{
 						// Set lai mau mac dinh
-						btnOK.Draw(bgBtnColor, textLabelColor);
-						btnCancel.Draw(bgBtnColor, textLabelColor);
+						btnOK.Draw(BUTTON_BG_COLOR, BUTTON_TEXT_COLOR);
+						btnCancel.Draw(BUTTON_BG_COLOR, BUTTON_TEXT_COLOR);
 						// Gan lai col cho button ben trai
 						cols[currentLine] = btnOK.rect.location.x;
 						ShowPointer();
@@ -230,21 +226,21 @@ struct FORMINPUT
 					if (currentLine == totalLine)
 					{
 						HidePointer();
-						btnOK.Draw(bgBtnSelectColor, textLabelColor);
+						btnOK.Draw(BUTTON_HIGHLIGHT_BG_COLOR, BUTTON_HIGHLIGHT_TEXT_COLOR);
 					}
 				}
 				else if (inputKey == Key::RIGHT && cols[currentLine] < halfWidthForm && currentLine == totalLine)
 				{
 					GoToXY(btnCancel.rect.location.x, btnCancel.rect.location.y);
-					btnOK.Draw(bgBtnColor, textLabelColor);
-					btnCancel.Draw(bgBtnSelectColor, textLabelColor);
+					btnOK.Draw(BUTTON_BG_COLOR, BUTTON_TEXT_COLOR);
+					btnCancel.Draw(BUTTON_HIGHLIGHT_BG_COLOR, BUTTON_HIGHLIGHT_TEXT_COLOR);
 					cols[currentLine] = btnCancel.rect.location.x;
 				}
 				else if (inputKey == Key::LEFT && cols[currentLine] > halfWidthForm && currentLine == totalLine)
 				{
 					GoToXY(btnOK.rect.location.x, btnOK.rect.location.y);
-					btnCancel.Draw(bgBtnColor, textLabelColor);
-					btnOK.Draw(bgBtnSelectColor, textLabelColor);
+					btnCancel.Draw(BUTTON_BG_COLOR, BUTTON_TEXT_COLOR);
+					btnOK.Draw(BUTTON_HIGHLIGHT_BG_COLOR, BUTTON_HIGHLIGHT_TEXT_COLOR);
 					cols[currentLine] = btnOK.rect.location.x;
 				}
 				continue;
@@ -284,10 +280,10 @@ struct FORMINPUT
 						// error
 						else
 						{
-							ClearScreen(Black);
+							ClearScreen(BG_COLOR);
 							ReDraw();
-							SetBGColor(Black);
-							SetTextColor(Red);
+							SetBGColor(BG_COLOR);
+							SetTextColor(WARNING_TEXT_COLOR);
 							for (int i = 0; i < errorsLength.size(); i++)
 							{
 								GoToXY(xInputCol, rows[errorsLength[i]] + 1);
@@ -308,11 +304,11 @@ struct FORMINPUT
 						auto confirm = CONFIRMDIALOG({ rect.location.x + rect.size.width / 2 - (int)text.length() / 2 - 4,
 														rect.location.y + rect.size.height / 2 - 2 });
 						confirm.Show(text, Yes_No);
-						ClearScreen(Black);
+						ClearScreen(BG_COLOR);
 						if (confirm.result == No)
 						{
 							ReDraw();
-							btnCancel.Draw(bgBtnSelectColor, textLabelColor);
+							btnCancel.Draw(BUTTON_HIGHLIGHT_BG_COLOR, BUTTON_HIGHLIGHT_TEXT_COLOR);
 						}
 						else
 						{
@@ -328,7 +324,7 @@ struct FORMINPUT
 				if (currentLine == totalLine)
 				{
 					HidePointer();
-					btnOK.Draw(bgBtnSelectColor, textLabelColor);
+					btnOK.Draw(BUTTON_HIGHLIGHT_BG_COLOR, BUTTON_HIGHLIGHT_TEXT_COLOR);
 				}
 			}
 			else if (inputKey == Key::TAB)
@@ -382,16 +378,21 @@ struct FORMINPUT
 				}
 			}
 			// Xu ly chuoi nhap vo
-			else if (IsMixLetter(inputKey))
+			else if (IsAllLetter(inputKey) && conditions[currentLine].mode == CanChange)
 			{
-				SetBGColor(bgColor);
-				SetTextColor(textInputColor);
+				SetBGColor(BG_COLOR);
+				SetTextColor(TEXT_INPUT_COLOR);
 				if (IsValidCondition(inputKey, currentLine, OutputResults[currentLine]))
 				{
 					// In hoa chu cai dau tien
 					if (OutputResults[currentLine].size() == 0)
 					{
 						inputKey = toupper(inputKey);
+					}
+					// viet thuong het neu ko phai ten rieng
+					else if(conditions[currentLine].type != Name)
+					{
+						inputKey = tolower(inputKey);
 					}
 					// Tu them '/'
 					if (conditions[currentLine].type == DateTime)
@@ -418,10 +419,10 @@ struct FORMINPUT
 				}
 			}
 			// Xu ly xoa ky tu cuoi cung
-			else if (inputKey == Key::BACKSPACE && cols[currentLine] > xInputCol)
+			else if (inputKey == Key::BACKSPACE && cols[currentLine] > xInputCol && conditions[currentLine].mode == CanChange)
 			{
-				SetBGColor(bgColor);
-				SetTextColor(textInputColor);
+				SetBGColor(BG_COLOR);
+				SetTextColor(TEXT_INPUT_COLOR);
 				int lengthCurrentValue = OutputResults[currentLine].length();
 				auto end = OutputResults[currentLine].end();
 				OutputResults[currentLine].erase(std::remove(end - 1, end, OutputResults[currentLine][lengthCurrentValue - 1]));
@@ -436,7 +437,7 @@ struct FORMINPUT
 	}
 	void ReDraw()
 	{
-		border.Draw2Line(borderColor);
+		border.Draw2Line(BORDER_COLOR);
 
 		PrintLabelsTitle();
 
@@ -447,8 +448,8 @@ struct FORMINPUT
 		auto btnOK = BUTTON({ {x, y}, {widthBtn, heightBtn} }, textBtn1);
 		auto btnCancel = BUTTON({ {x + halfWidthForm, y}, {widthBtn, heightBtn} }, textBtn2);
 
-		btnOK.Draw(bgBtnColor, textLabelColor);
-		btnCancel.Draw(bgBtnColor, textLabelColor);
+		btnOK.Draw(BUTTON_BG_COLOR, BUTTON_TEXT_COLOR);
+		btnCancel.Draw(BUTTON_BG_COLOR, BUTTON_TEXT_COLOR);
 		rows.push_back(y);
 		cols.push_back(x);
 

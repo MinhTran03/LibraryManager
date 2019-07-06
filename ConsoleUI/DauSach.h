@@ -1,6 +1,5 @@
 #pragma once
 #include "Sach.h"
-#include "FileHandler.h"
 
 struct DAUSACH
 {
@@ -31,6 +30,7 @@ struct LIST_DAUSACH
 	int size = 0;
 	DAUSACH* nodes[SODAUSACH_MAX];
 	std::vector<std::string> dsTheLoai;
+	void Deconstructor();
 
 	// kiem tra theLoai sach da ton tai hay chua
 	bool IsContainTheLoai(std::string theLoai);
@@ -49,6 +49,8 @@ struct LIST_DAUSACH
 	std::string PrintAllTheLoai(MYPOINT location);
 	// Lay dau sach dua vao ten the loai
 	std::vector<DAUSACH> GetTheLoai(std::string tenTheLoai);
-	std::string PrintFindBooks(MYPOINT location, std::string tenSach);
+	// tim sach theo ten (chua xong)
+	void PrintFindBooks(MYPOINT location, std::string tenSach);
+	// in sach theo ten sach (chua xong)
 	std::vector<std::string> FindBooks(std::string tenSach);
 };

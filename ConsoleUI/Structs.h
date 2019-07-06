@@ -5,15 +5,23 @@
 #include <conio.h>
 #include <string>
 #include <vector>
+#include "Constants.h"
+
+enum Mode_Input
+{
+	CanChange,
+	Default
+};
 
 struct CONDITION
 {
 	int maxLength;
 	int minLength;
 	WordType type;
+	Mode_Input mode;
 
-	CONDITION(WordType type, int minLength, int maxlength)
-		: maxLength(maxlength), type(type), minLength(minLength)
+	CONDITION(WordType type, int minLength, int maxlength, Mode_Input mode = CanChange)
+		: maxLength(maxlength), type(type), minLength(minLength), mode(mode)
 	{
 
 	}
@@ -51,7 +59,7 @@ struct BORDER
 	void Draw1Line(Color borderColor)
 	{
 		SetTextColor(borderColor);
-		SetBGColor(Color::Black);
+		SetBGColor(BG_COLOR);
 		// to 4 goc
 		GoToXY(location.x, location.y);
 		std::cout << char(218);
@@ -77,7 +85,7 @@ struct BORDER
 	void Draw2Line(Color borderColor)
 	{
 		SetTextColor(borderColor);
-		SetBGColor(Color::Black);
+		SetBGColor(BG_COLOR);
 		// to 4 goc
 		GoToXY(location.x, location.y);
 		std::cout << char(201);
