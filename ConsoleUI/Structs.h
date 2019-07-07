@@ -270,7 +270,10 @@ struct BUTTON
 		int y = rect.location.y + rect.size.height / 2;
 		if (align == Center)
 		{
-			x = rect.location.x + rect.size.width / 2 - lengthText / 2;
+			if((rect.size.width - lengthText) % 2 == 0)
+				x = rect.location.x + rect.size.width / 2 - lengthText / 2;
+			else
+				x = rect.location.x + rect.size.width / 2 - lengthText / 2 - 1;
 		}
 		SetTextColor(textColor);
 		SetBGColor(bgColor);

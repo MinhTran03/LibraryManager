@@ -17,7 +17,7 @@ DAUSACH ParseVectorString(std::vector<std::string> data)
 DAUSACH DAUSACH::Input(RECTANGLE rect)
 {
 	std::vector<std::string> labels = { "ISBN:","Ten sach:","So trang:","Tac gia:", "Nam xuat ban:","The loai:" };
-	std::string inputTitle = "Nhap thong tin DAU SACH";
+	std::string inputTitle = "NHAP THONG TIN DAU SACH";
 	std::vector<CONDITION> conditions = { {Number_Only, ISBN_MAXSIZE, ISBN_MAXSIZE}, {All, 1, TENSACH_MAXSIZE},{Number_Only, 1, SOTRANG_MAXKYTU},
 													{Name, 1, TENTACGIA_MAXSIZE},{Year, 4, 4},{Mix, 1, TENTHELOAI_MAXSIZE} };
 	auto form = FORMINPUT(labels, conditions, rect, inputTitle);
@@ -47,7 +47,7 @@ std::string DAUSACH::ToString()
 	std::string result = "";
 	result += char(179);
 	result += this->isbn;
-	result += " ";
+	//result += " ";
 	// TENSACH
 	result += char(179);
 	result += this->tenSach;
@@ -86,16 +86,17 @@ void LIST_DAUSACH::Deconstructor()
 // kiem tra theLoai sach da ton tai hay chua
 bool LIST_DAUSACH::IsContainTheLoai(std::string theLoai)
 {
+	std::string theLoaiAsLower = ToLowerString(theLoai);
 	for (int i = 0; i < this->size; i++)
 	{
-		if (this->nodes[i]->tenTheLoai == theLoai) return true;
+		if (ToLowerString(this->nodes[i]->tenTheLoai) == theLoaiAsLower) return true;
 	}
 	return false;
 }
 // row la so dong data
 void PrintLabel(MYPOINT location, int row)
 {
-	std::vector<std::string> labels = { "ISBN", "TEN SACH", "SO TRANG", "TEN TAC GIA", "NAM XUAT BAN", "TEN THE LOAI" };
+	std::vector<std::string> labels = { "ISBN", "TEN SACH", "SO TRANG", "TEN TAC GIA", "NXB", "TEN THE LOAI" };
 	auto lstBorder = LISTBORDERTEXT(labels);
 	lstBorder.Draw(location, { ISBN_WIDTH, TENSACH_WIDTH, SOTRANG_WIDTH, TENTACGIA_WIDTH, NAMXUATBAN_WIDTH, TENTHELOAI_WIDTH },
 		row, BORDER_COLOR);
@@ -312,7 +313,6 @@ std::string LIST_DAUSACH::PrintAllTheLoai(MYPOINT location)
 		// ESC hitted
 		else if (outPut == "ESC")
 		{
-			ClearScreen(BG_COLOR);
 			return outPut;
 		}
 		// enter hitted
@@ -321,6 +321,107 @@ std::string LIST_DAUSACH::PrintAllTheLoai(MYPOINT location)
 			return outPut;
 		}
 	}
+}
+// In tat ca dau sach
+std::string LIST_DAUSACH::PrintAll(MYPOINT location, Menu_Mode mode)
+{
+	Color hlBGColor = Color::Cyan;
+	Color hlTextColor = Color::White;
+	int currentLine = 0;
+	// dua vao vector de sort
+	std::vector<DAUSACH> listISBN;
+	for (int i = 0; i < this->size; i++)
+	{
+		listISBN.push_back(*this->nodes[i]);
+	}
+	// sap xep theo ten sach
+	//SortByTenSach(listISBN);
+	int totalLine = this->size;
+	std::vector<std::string> datas;
+	std::vector<int> rows;
+	MYPOINT backUpLocation = MYPOINT(0, 0);
+
+	// print label
+	if (mode == Menu_Mode::Show_Only || mode == Menu_Mode::Both)
+	{
+		PrintLabel(location, totalLine);
+		location.y += 3;
+		backUpLocation = location;
+		// print data
+		for (int i = 0; i < totalLine; i++)
+		{
+			listISBN[i].Print(location, BG_COLOR, TEXT_INPUT_COLOR);
+			// neu la dong dau tien thi hight light len
+			if (location.y == backUpLocation.y && mode == Menu_Mode::Both)
+			{
+				listISBN[i].Print(location, hlBGColor, hlTextColor);
+			}
+			// luu lai vi tri dong
+			rows.push_back(location.y++);
+			datas.push_back(this->nodes[i]->ToString());
+		}
+	}
+	// bat phim
+	if (mode == Menu_Mode::Both)
+	{
+		currentLine = 0;
+		char inputKey = NULL;
+		HidePointer();
+		do
+		{
+			inputKey = _getch();
+			if (inputKey == Key::_NULL) inputKey = _getch();
+			if (inputKey == -32)
+			{
+				inputKey = _getch();
+				if (inputKey == Key::UP)
+				{
+					if (currentLine > 0)
+					{
+						GoToXY(location.x, rows[currentLine]);
+						HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
+						GoToXY(location.x, rows[--currentLine]);
+						HightLight(datas[currentLine], hlBGColor, hlTextColor);
+					}
+					else
+					{
+						GoToXY(location.x, rows[currentLine]);
+						HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
+						currentLine = totalLine - 1;
+						GoToXY(location.x, rows[currentLine]);
+						HightLight(datas[currentLine], hlBGColor, hlTextColor);
+					}
+				}
+				else if (inputKey == Key::DOWN)
+				{
+					if (currentLine < totalLine - 1)
+					{
+						GoToXY(location.x, rows[currentLine]);
+						HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
+						GoToXY(location.x, rows[++currentLine]);
+						HightLight(datas[currentLine], hlBGColor, hlTextColor);
+					}
+					else
+					{
+						GoToXY(location.x, rows[currentLine]);
+						HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
+						currentLine = 0;
+						GoToXY(location.x, rows[currentLine]);
+						HightLight(datas[currentLine], hlBGColor, hlTextColor);
+					}
+				}
+			}
+			if (inputKey == Key::ENTER)
+			{
+				return listISBN[currentLine].isbn;
+			}
+			else if (inputKey == Key::ESC)
+			{
+				return "ESC";
+			}
+		} while (!_kbhit());
+	}
+	return listISBN[currentLine].isbn;
 }
 // CMT
 std::vector<std::string> LIST_DAUSACH::FindBooks(std::string tenSach)

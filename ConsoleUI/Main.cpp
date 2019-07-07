@@ -1,34 +1,9 @@
-#include "SlideMenu.h"
-#include "DauSach.h"
-#include "Database.h"
-
-using namespace std;
-
-vector<int> SelectionFuntion(int rootLine = -1, int childLine = -1)
-{
-	MENU menu = MENU({ "QUAN LY DOC GIA", "QUAN LY DAU SACH", "QUAN LY SACH" }, { 0, 3 });
-	vector<vector<string>> temp;
-	SLIDEMENUS slide = SLIDEMENUS({ {"chua lam", "chua lam", "chua lam"},
-		{"HIEN THI DAU SACH", "CAP NHAT DAU SACH", "CAP NHAT DANH MUC SACH"},
-		{"CHUA LAM", "CHUA LAM", "CHUA LAM"} }, menu);
-	auto selection = slide.Show(rootLine, childLine);
-	/*GoToXY(0, 0);
-	cout << menu.labels[selection[0]] << " ==> " << slide.childLabels[selection[0]][selection[1]];*/
-	return selection;
-}
-
-void SetupDisplay()
-{
-	//MaximizeWindow();
-	SetTextColor(TEXT_INPUT_COLOR);
-	SetBGColor(BG_COLOR);
-	ClearScreen(BG_COLOR);
-}
+#include "FunctionMethods.h"
 
 int main()
 {
-	SetupDisplay();
-	MYPOINT locationDS = { 0, 3 };
+	SetupConsole();
+	MYPOINT locationDS = { 1, 3 };
 
 	auto listDS = LIST_DAUSACH();
 	LoadDauSach(listDS);
@@ -57,16 +32,13 @@ int main()
 			// HIEN THI DAU SACH
 			if (func[1] == 0)
 			{
-				string result = listDS.PrintAllTheLoai(locationDS);
-				if (result == "ESC")
-				{
-					continue;
-				}
+				HienThiDauSach(listDS, locationDS);
 			}
 			// CAP NHAT DAU SACH
 			else if (func[1] == 1)
 			{
-
+				CapNhatDauSach(listDS, locationDS);
+				//_getch();
 			}
 			// CAP NHAT DANH MUC SACH
 			else

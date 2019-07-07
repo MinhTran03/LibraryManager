@@ -100,13 +100,10 @@ struct FORMINPUT
 		case WordType::Mix:
 			return IsMixLetter(c);
 			break;
-		case WordType::Number_Only:
-			return IsNumber(c);
-			break;
 		case WordType::Word_Only:
 			return IsLetterOnly(c);
 			break;
-		case WordType::DateTime:
+		case WordType::DateTime: case Year: case WordType::Number_Only:
 			return IsNumber(c);
 			break;
 		case WordType::Name:
@@ -259,6 +256,7 @@ struct FORMINPUT
 						// no error
 						if (errorsLength.size() == 0)
 						{
+							ClearArea();
 							return true;
 							/*std::string text = "Ban chac chan muon luu thong tin?";
 							auto confirm = CONFIRMDIALOG({ rect.location.x + rect.size.width / 2 - (int)text.length() / 2 - 4,
@@ -280,7 +278,7 @@ struct FORMINPUT
 						// error
 						else
 						{
-							ClearScreen(BG_COLOR);
+							ClearArea();
 							ReDraw();
 							SetBGColor(BG_COLOR);
 							SetTextColor(WARNING_TEXT_COLOR);
@@ -304,7 +302,7 @@ struct FORMINPUT
 						auto confirm = CONFIRMDIALOG({ rect.location.x + rect.size.width / 2 - (int)text.length() / 2 - 4,
 														rect.location.y + rect.size.height / 2 - 2 });
 						confirm.Show(text, Yes_No);
-						ClearScreen(BG_COLOR);
+						ClearArea();
 						if (confirm.result == No)
 						{
 							ReDraw();
@@ -363,7 +361,7 @@ struct FORMINPUT
 				auto confirm = CONFIRMDIALOG({ rect.location.x + rect.size.width / 2 - (int)text.length() / 2 - 4,
 												rect.location.y + rect.size.height / 2 - 2 });
 				confirm.Show(text, Yes_No);
-				ClearScreen(Black);
+				ClearArea();
 				if (confirm.result == No)
 				{
 					ReDraw();
@@ -389,10 +387,12 @@ struct FORMINPUT
 					{
 						inputKey = toupper(inputKey);
 					}
-					// viet thuong het neu ko phai ten rieng
+					// viet thuong het neu ko phai ten rieng va sau khoang trang
 					else if(conditions[currentLine].type != Name)
 					{
-						inputKey = tolower(inputKey);
+						auto temp = OutputResults[currentLine][OutputResults[currentLine].size() - 1];
+						if(temp != ' ')
+							inputKey = tolower(inputKey);
 					}
 					// Tu them '/'
 					if (conditions[currentLine].type == DateTime)
@@ -456,5 +456,19 @@ struct FORMINPUT
 
 		// Dua con tro ve vi tri Input chuan bi nhap
 		GoToXY(cols[currentLine], rows[currentLine]);
+	}
+	void ClearArea()
+	{
+		SetTextColor(BG_COLOR);
+		SetBGColor(BG_COLOR);
+		int x = rect.location.x;
+		int y = rect.location.y;
+		int width = rect.size.width;
+		for (int i = 0; i < rect.size.height; i++)
+		{
+			GoToXY(x, y + i);
+			std::cout << std::string(width, char(219));
+		}
+		SetTextColor(TEXT_INPUT_COLOR);
 	}
 };

@@ -13,14 +13,14 @@ struct MENU
 	int totalLine;
 	std::vector<int> rows;
 	std::vector<int> cols;
-	MYSIZE size = MYSIZE(20, 5);
+	MYSIZE btnSize = MYSIZE(20, 5);
 	int padding = 10;
 	MYPOINT location;
 	MENU(std::vector<std::string> labels, MYPOINT location) : location(location)
 	{
 		this->labels = labels;
 		totalLine = labels.size();
-		size.width = MaxLengthTextLabels() + padding;
+		btnSize.width = MaxLengthTextLabels() + padding;
 	}
 
 	int MaxLengthTextLabels()
@@ -37,17 +37,20 @@ struct MENU
 		if (rows.size() != 0) rows.clear();
 		for (size_t i = 0; i < labels.size(); i++)
 		{
-			rows.push_back(location.y + size.height * i);
-			btns.push_back(BUTTON({ {location.x, rows[i]}, size }, labels[i]));
+			rows.push_back(location.y + btnSize.height * i);
+			btns.push_back(BUTTON({ {location.x, rows[i]}, btnSize }, labels[i]));
 		}
 	}
-	void ShowBtns(std::vector<BUTTON>& btns)
+	void ShowBtns(std::vector<BUTTON>& btns, int mode)
 	{
 		for (auto item : btns)
 		{
 			item.Draw(bgColor, textColor, borderColor, Align::Center, Border::TwoLine);
 		}
-		btns[currentLine].Draw(selectColor, textHLColor, selectColor, Align::Center, Border::TwoLine, 0);
+		if(mode == 1)//mode 1 cho vertical => co arrow ">"
+			btns[currentLine].Draw(selectColor, textHLColor, selectColor, Align::Center, Border::TwoLine, 0);
+		else
+			btns[currentLine].Draw(selectColor, textHLColor, selectColor, Align::Center, Border::TwoLine);
 	}
 	int ShowInVertical(Menu_Mode mode)
 	{
@@ -55,7 +58,7 @@ struct MENU
 		SetupButtonVertical(btns);
 		if (mode == Show_Only || mode == Both)
 		{
-			ShowBtns(btns);
+			ShowBtns(btns, 1);
 		}
 		if (mode == GetKey_Only || mode == Both)
 		{
@@ -96,18 +99,14 @@ struct MENU
 							btns[currentLine].Draw(selectColor, textHLColor, selectColor, Align::Center, Border::TwoLine, 0);
 						}
 					}
-					else if (inputKey == Key::LEFT)
-					{
-						return Key::LEFT;
-					}
-					/*else if (inputKey == Key::RIGHT)
-					{
-						return Key::RIGHT;
-					}*/
 				}
 				if (inputKey == Key::ENTER)
 				{
 					return currentLine;
+				}
+				else if (inputKey == Key::ESC)
+				{
+					return Key::ESC;
 				}
 			} while (!_kbhit());
 		}
@@ -118,58 +117,68 @@ struct MENU
 		if (cols.size() != 0) cols.clear();
 		for (size_t i = 0; i < labels.size(); i++)
 		{
-			cols.push_back(location.x + size.width * i);
-			btns.push_back(BUTTON({ {cols[i], location.y}, size }, labels[i]));
+			cols.push_back(location.x + btnSize.width * i);
+			btns.push_back(BUTTON({ {cols[i], location.y}, btnSize }, labels[i]));
 		}
 	}
-	int ShowInHorizontal()
+	int ShowInHorizontal(Menu_Mode mode)
 	{
 		std::vector<BUTTON> btns;
 		SetupButtonHorizontal(btns);
-		ShowBtns(btns);
-		char inputKey = NULL;
-		HidePointer();
-		do
+		if (mode == Show_Only || mode == Both)
 		{
-			inputKey = _getch();
-			if (inputKey == Key::_NULL) inputKey = _getch();
-			if (inputKey == -32)
+			ShowBtns(btns, 0);
+		}
+		if (mode == GetKey_Only || mode == Both)
+		{
+			char inputKey = NULL;
+			HidePointer();
+			do
 			{
 				inputKey = _getch();
-				if (inputKey == Key::LEFT)
+				if (inputKey == Key::_NULL) inputKey = _getch();
+				if (inputKey == -32)
 				{
-					if (currentLine > 0)
+					inputKey = _getch();
+					if (inputKey == Key::LEFT)
 					{
-						btns[currentLine--].Draw(bgColor, textColor, borderColor, Align::Left, Border::TwoLine);
-						btns[currentLine].Draw(selectColor, textColor, selectColor, Align::Center, Border::TwoLine);
+						if (currentLine > 0)
+						{
+							btns[currentLine--].Draw(bgColor, textColor, borderColor, Align::Center, Border::TwoLine);
+							btns[currentLine].Draw(selectColor, textHLColor, selectColor, Align::Center, Border::TwoLine);
+						}
+						else
+						{
+							btns[currentLine].Draw(bgColor, textColor, borderColor, Align::Center, Border::TwoLine);
+							currentLine = totalLine - 1;
+							btns[currentLine].Draw(selectColor, textHLColor, selectColor, Align::Center, Border::TwoLine);
+						}
 					}
-					else
+					else if (inputKey == Key::RIGHT)
 					{
-						btns[currentLine].Draw(bgColor, textColor, borderColor, Align::Left, Border::TwoLine);
-						currentLine = totalLine - 1;
-						btns[currentLine].Draw(selectColor, textColor, selectColor, Align::Center, Border::TwoLine);
+						if (currentLine < totalLine - 1)
+						{
+							btns[currentLine++].Draw(bgColor, textColor, borderColor, Align::Center, Border::TwoLine);
+							btns[currentLine].Draw(selectColor, textHLColor, selectColor, Align::Center, Border::TwoLine);
+						}
+						else
+						{
+							btns[currentLine].Draw(bgColor, textColor, borderColor, Align::Center, Border::TwoLine);
+							currentLine = 0;
+							btns[currentLine].Draw(selectColor, textHLColor, selectColor, Align::Center, Border::TwoLine);
+						}
 					}
 				}
-				else if (inputKey == Key::RIGHT)
+				if (inputKey == Key::ENTER)
 				{
-					if (currentLine < totalLine - 1)
-					{
-						btns[currentLine++].Draw(bgColor, textColor, borderColor, Align::Left, Border::TwoLine);
-						btns[currentLine].Draw(selectColor, textColor, selectColor, Align::Center, Border::TwoLine);
-					}
-					else
-					{
-						btns[currentLine].Draw(bgColor, textColor, borderColor, Align::Left, Border::TwoLine);
-						currentLine = 0;
-						btns[currentLine].Draw(selectColor, textColor, selectColor, Align::Center, Border::TwoLine);
-					}
+					return currentLine;
 				}
-			}
-			if (inputKey == Key::ENTER)
-			{
-				return currentLine;
-			}
-		} while (!_kbhit());
+				else if (inputKey == Key::ESC)
+				{
+					return Key::ESC;
+				}
+			} while (!_kbhit());
+		}
 		return -1;
 	}
 	void ClearInVertical()

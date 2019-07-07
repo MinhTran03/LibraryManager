@@ -16,7 +16,7 @@ struct SLIDEMENUS
 		for (size_t i = 0; i < childLabels.size(); i++)
 		{
 			childMenus.push_back({ childLabels[i],
-				{rootMenu.location.x + rootMenu.size.width, rootMenu.location.y} });
+				{rootMenu.location.x + rootMenu.btnSize.width, rootMenu.location.y} });
 			
 		}
 	}
@@ -33,12 +33,13 @@ struct SLIDEMENUS
 			// Chua co thong tin line duoc chon
 			if(rootLine == -1)
 				rootLine = rootMenu.ShowInVertical(GetKey_Only);
-			if (rootLine == Key::LEFT) continue;
+			// bo qua esc o root menu
+			if (rootLine == Key::ESC) continue;
 			rootLine = rootMenu.currentLine;
 			if (childLine != -1)
 				childMenus[rootLine].currentLine = childLine;
 			childLine = childMenus[rootLine].ShowInVertical(Menu_Mode::Both);
-			if (childLine == Key::LEFT)
+			if (childLine == Key::ESC)
 			{
 				childMenus[rootLine].ClearInVertical();
 				//if (row == -1) //left

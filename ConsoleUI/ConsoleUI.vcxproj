@@ -27,6 +27,7 @@
     <ClInclude Include="Enums.h" />
     <ClInclude Include="FileHandler.h" />
     <ClInclude Include="FormInput.h" />
+    <ClInclude Include="FunctionMethods.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="MuonTra.h" />
@@ -39,6 +40,7 @@
     <ClCompile Include="CheckChar.cpp" />
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="DauSach.cpp" />
+    <ClCompile Include="FunctionMethods.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Sach.cpp" />

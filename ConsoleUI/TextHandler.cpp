@@ -165,3 +165,12 @@ void StringToCharArray(std::string source, char dest[])
 {
 	strcpy(dest, source.c_str());
 }
+std::string ToLowerString(std::string text)
+{
+	std::string result = text;
+	for (char& c : result)
+	{
+		c = tolower(c);
+	}
+	return result;
+}

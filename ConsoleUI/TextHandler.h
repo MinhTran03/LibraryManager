@@ -22,6 +22,7 @@ void MergeWordWithNumber(char*& word, unsigned int number, unsigned int maxLengt
 void MergeWordWithNumber(std::string& word, unsigned int number, unsigned int maxLengthWord);
 std::vector<std::string> Split(std::string, std::string delimiter = " ");
 void StringToCharArray(std::string source, char dest[]);
+std::string ToLowerString(std::string text);
 
 template <class T>
 void Swap(T& a, T& b)
