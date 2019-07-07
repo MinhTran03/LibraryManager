@@ -437,7 +437,7 @@ std::vector<std::string> LIST_DAUSACH::FindBooks(std::string tenSach)
 			result.push_back(this->nodes[i]->isbn);
 		}
 	}
-	for (int j; j < listKey.size; j++)
+	for (size_t j = 0; j < listKey.size(); j++)
 	{
 		for (int i = 0; i < this->size; i++)
 		{
