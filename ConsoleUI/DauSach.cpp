@@ -316,6 +316,8 @@ std::string LIST_DAUSACH::PrintAllTheLoai(MYPOINT location)
 std::vector<std::string> LIST_DAUSACH::FindBooks(std::string tenSach)
 {
 	std::vector<std::string> result;
+	std::vector<std::string> listKey = Split(tenSach, " ");
+
 	for (int i = 0; i < this->size; i++)
 	{
 		size_t found = this->nodes[i]->tenSach.find(tenSach);
@@ -324,8 +326,20 @@ std::vector<std::string> LIST_DAUSACH::FindBooks(std::string tenSach)
 			result.push_back(this->nodes[i]->isbn);
 		}
 	}
+	for (int j; j < listKey.size; j++)
+	{
+		for (int i = 0; i < this->size; i++)
+		{
+			size_t found = this->nodes[i]->tenSach.find(listKey[j]);
+			if (found != std::string::npos)
+			{
+				result.push_back(this->nodes[i]->isbn);
+			}
+		}
+	}
 	return result;
 }
+
 // CMT
 void LIST_DAUSACH::PrintFindBooks(MYPOINT location, std::string tenSach)
 {
