@@ -81,6 +81,9 @@
     <ClInclude Include="Database.h">
       <Filter>Models\Resource Files</Filter>
     </ClInclude>
+    <ClInclude Include="FunctionMethods.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TextHandler.cpp">
@@ -103,6 +106,9 @@
     </ClCompile>
     <ClCompile Include="Database.cpp">
       <Filter>Models\Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FunctionMethods.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

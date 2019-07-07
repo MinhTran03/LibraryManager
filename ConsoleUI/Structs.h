@@ -15,8 +15,8 @@ enum Mode_Input
 
 struct CONDITION
 {
-	int maxLength;
-	int minLength;
+	size_t maxLength;
+	size_t minLength;
 	WordType type;
 	Mode_Input mode;
 
@@ -142,7 +142,7 @@ struct LISTBORDERTEXT
 	void Draw(MYPOINT location, std::vector<int> widths, int row, Color borderColor = Color::White)
 	{
 		auto temp = location;
-		for (int i = 0; i < labels.size(); i++)
+		for (size_t i = 0; i < labels.size(); i++)
 		{
 			auto b = BORDER(location, { widths[i] + 2, 3 + row + 1 });
 			b.Draw1Line(borderColor);
@@ -235,7 +235,7 @@ struct BUTTON
 		}
 	}
 	void Draw(Color bgColor, Color textColor, Color borderColor = Color::White,
-		Align align = Center, Border borderStyle = Border::None)
+		Align align = Center, Border borderStyle = Border::None, int modeSelect = -1)
 	{
 		switch (borderStyle)
 		{
@@ -261,21 +261,32 @@ struct BUTTON
 		default:
 			break;
 		}
-		ShowText(bgColor, textColor, align);
+		ShowText(bgColor, textColor, align, modeSelect);
 	}
-	void ShowText(Color bgColor, Color textColor, Align align = Center)
+	void ShowText(Color bgColor, Color textColor, Align align = Center, int modeSelect = -1)
 	{
 		int lengthText = text.length();
 		int x = rect.location.x;
 		int y = rect.location.y + rect.size.height / 2;
 		if (align == Center)
 		{
-			x = rect.location.x + rect.size.width / 2 - lengthText / 2;
+			if((rect.size.width - lengthText) % 2 == 0)
+				x = rect.location.x + rect.size.width / 2 - lengthText / 2;
+			else
+				x = rect.location.x + rect.size.width / 2 - lengthText / 2 - 1;
 		}
 		SetTextColor(textColor);
 		SetBGColor(bgColor);
 		GoToXY(x, y);
 		std::cout << text;
+		if (modeSelect != -1)
+		{
+			x = rect.location.x + rect.size.width - 1;
+			GoToXY(x, y);
+			SetTextColor(Color::Bright_White);
+			std::cout << ">";
+			SetTextColor(TEXT_INPUT_COLOR);
+		}
 		GoToXY(rect.location.x, rect.location.y);
 	}
 };

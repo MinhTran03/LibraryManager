@@ -30,8 +30,8 @@ struct LIST_DAUSACH
 	int size = 0;
 	DAUSACH* nodes[SODAUSACH_MAX];
 	std::vector<std::string> dsTheLoai;
-	void Deconstructor();
 
+	void Deconstructor();
 	// kiem tra theLoai sach da ton tai hay chua
 	bool IsContainTheLoai(std::string theLoai);
 	// Doc obj DAUSACH tu file
@@ -47,6 +47,8 @@ struct LIST_DAUSACH
 	std::string PrintByTheLoai(MYPOINT location, std::string tenTheLoai);
 	// In tat ca the loai thanh nhieu page
 	std::string PrintAllTheLoai(MYPOINT location);
+	// In tat ca dau sach
+	std::string PrintAll(MYPOINT location, Menu_Mode mode = Menu_Mode::Show_Only);
 	// Lay dau sach dua vao ten the loai
 	std::vector<DAUSACH> GetTheLoai(std::string tenTheLoai);
 	// tim sach theo ten (chua xong)

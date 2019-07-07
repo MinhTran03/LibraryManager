@@ -17,3 +17,4 @@ void ShowPointer();
 void ClearScreen(WORD color);
 void fullscreen();
 void HightLight(std::string text, Color bgColor, Color textColor);
+void MaximizeWindow();

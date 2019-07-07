@@ -1,47 +1,73 @@
-#include "Database.h"
-
-using namespace std;
-
-void demo(LIST_DAUSACH& listDS)
-{
-	auto rect = RECTANGLE({ 30, 5 }, { 50, 20 });
-	DAUSACH* ds1 = new DAUSACH;
-	*ds1 = ds1->Input(rect);
-	listDS.Insert(*ds1, 0);
-	string temp = ds1->ToString();
-	GoToXY(0, 0);
-	cout << temp << endl;
-	//_getch();
-}
+#include "FunctionMethods.h"
 
 int main()
 {
-	ClearScreen(BG_COLOR);
-	//fullscreen();
-	
-	LIST_DAUSACH listDS;
+	SetupConsole();
+	MYPOINT locationDS = { 1, 3 };
+
+	auto listDS = LIST_DAUSACH();
 	LoadDauSach(listDS);
-	char tl[] = "Ky nang song";
-	//listDS.PrintFindBooks({10, 3}, "Dac nhan tam");
+	vector<int> func = { -1,-1 };
+	while (true)
+	{
+		func = SelectionFuntion(func[0], func[1]);
+		ClearScreen(BG_COLOR);
+		if (func[0] == 0)
+		{
+			if (func[1] == 0)
+			{
 
-	LIST_SACH dsSach = LIST_SACH();
-	auto isbn = listDS.nodes[0]->isbn;
-	LoadSach(dsSach, isbn);
-	std::string ma = dsSach.AutoGenerateMaSach(isbn);
+			}
+			else if (func[1] == 1)
+			{
 
-	SACH* s = new SACH;
-	*s = s->Input({ {10, 3}, {40, 12} }, ma);
-	auto nodeSach = NODE_SACH(*s);
-	dsSach.AddTail(nodeSach);
+			}
+			else
+			{
 
-	listDS.nodes[0]->dsSach = dsSach;
-	
-	delete s;
-	dsSach.Deconstructor();
+			}
+		}
+		else if (func[0] == 1)
+		{
+			// HIEN THI DAU SACH
+			if (func[1] == 0)
+			{
+				HienThiDauSach(listDS, locationDS);
+			}
+			// CAP NHAT DAU SACH
+			else if (func[1] == 1)
+			{
+				CapNhatDauSach(listDS, locationDS);
+				//_getch();
+			}
+			// CAP NHAT DANH MUC SACH
+			else
+			{
+
+			}
+		}
+		else
+		{
+			if (func[1] == 0)
+			{
+
+			}
+			else if (func[1] == 1)
+			{
+
+			}
+			else
+			{
+
+			}
+		}
+
+	}
 	listDS.Deconstructor();
-	SetTextColor(Color::White);
-	SetBGColor(Color::Black);
-	GoToXY(0, 50);
+
+	SetTextColor(TEXT_INPUT_COLOR);
+	SetBGColor(BG_COLOR);
+	GoToXY(0, 35);
 	system("pause");
 	return 0;
 }
