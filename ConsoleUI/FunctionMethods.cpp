@@ -13,7 +13,7 @@ vector<int> SelectionFuntion(int rootLine, int childLine)
 	MENU menu = MENU({ "QUAN LY DOC GIA", "QUAN LY DAU SACH", "QUAN LY SACH" }, { 0, 3 });
 	vector<vector<string>> temp;
 	SLIDEMENUS slide = SLIDEMENUS({ {"chua lam", "chua lam", "chua lam"},
-		{"HIEN THI DAU SACH", "CAP NHAT DAU SACH", "CAP NHAT DANH MUC SACH"},
+		{"HIEN THI DAU SACH", "CAP NHAT DAU SACH", "CAP NHAT DANH MUC SACH", "TIM SACH"},
 		{"CHUA LAM", "CHUA LAM", "CHUA LAM"} }, menu);
 	auto selection = slide.Show(rootLine, childLine);
 	/*GoToXY(0, 0);
@@ -33,7 +33,6 @@ void HienThiDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 {
 	string selectedDauSach = listDS.PrintAll(location, Show_Only);
-
 	auto locationBtn = location;
 	locationBtn.x += 30;
 	locationBtn.y += listDS.size + 4;
@@ -46,7 +45,7 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 		if (selected == 0)
 		{
 			auto newDauSach = new DAUSACH();
-			*newDauSach = newDauSach->Input({ {DAUSACH_TOTAL_WIDTH + 2, 3}, {50, 18} });
+			*newDauSach = InputDauSach(listDS, { {DAUSACH_TOTAL_WIDTH + 2, 3}, {50, 18} });
 			// nguoi dung an CANCEL
 			if (newDauSach->isbn[0] == '\0')
 			{
@@ -55,9 +54,23 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 			// ng dung Luu dau sach
 			else
 			{
-				listDS.Insert(*newDauSach, listDS.size);
-				listDS.PrintAll(location);
-				menu.location.y++;
+				if (listDS.Insert(*newDauSach, listDS.size))
+				{
+					selectedDauSach = listDS.PrintAll(location);
+					menu.location.y++;
+				}
+				//else
+				//{
+				//	GoToXY(0, 0);
+				//	SetTextColor(WARNING_TEXT_COLOR);
+				//	cout << "ISBN da ton tai";
+				//	/*auto tempLoc = location;
+				//	tempLoc.x += 10;
+				//	tempLoc.y += 5;
+				//	auto messageBox = CONFIRMDIALOG(tempLoc);
+				//	messageBox.Show("ISBN da ton tai", DialogResult::OK_Cancel);*/
+				//	// load lai form
+				//}
 			}
 		}
 		// Xoa

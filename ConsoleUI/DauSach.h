@@ -12,7 +12,7 @@ struct DAUSACH
 	LIST_SACH dsSach;
 
 	// hien form nhap DAUSACH
-	DAUSACH Input(RECTANGLE rect);
+	//DAUSACH Input(RECTANGLE rect);
 	// in ra node
 	void Print(MYPOINT location, Color bgSelectColor, Color textColor);
 	// chen | giua cac field
@@ -40,6 +40,8 @@ struct LIST_DAUSACH
 	bool IsFull();
 	// Return true if list empty
 	bool IsEmpty();
+	// kiem tra dau sach da ton tai isbn hay chua
+	bool IsContainISBN(char isbn[ISBN_MAXSIZE + 1]);
 	// DAUSACH phai dung tham bien (&) vi neu dung tham tri thi node se mat sau khi ra khoi ham
 	// Do dac tinh cua tham tri la copy vo node
 	bool Insert(DAUSACH& node, int index);
@@ -56,3 +58,5 @@ struct LIST_DAUSACH
 	// in sach theo ten sach (chua xong)
 	std::vector<std::string> FindBooks(std::string tenSach);
 };
+
+DAUSACH InputDauSach(LIST_DAUSACH listDS, RECTANGLE rect);

@@ -11,25 +11,45 @@ DAUSACH ParseVectorString(std::vector<std::string> data)
 	dauSach.tenTacGia = data[3];
 	dauSach.namXuatBan = std::stoi(data[4]);
 	dauSach.tenTheLoai = data[5];
+	FormatWord(dauSach.tenTheLoai);
 	return dauSach;
 }
-// hien form nhap DAUSACH
-DAUSACH DAUSACH::Input(RECTANGLE rect)
+// hien form nhap DAUSACH / truyen listDS de kiem tra du lieu co trung khong
+DAUSACH InputDauSach(LIST_DAUSACH listDS, RECTANGLE rect)
 {
 	std::vector<std::string> labels = { "ISBN:","Ten sach:","So trang:","Tac gia:", "Nam xuat ban:","The loai:" };
 	std::string inputTitle = "NHAP THONG TIN DAU SACH";
 	std::vector<CONDITION> conditions = { {Number_Only, ISBN_MAXSIZE, ISBN_MAXSIZE}, {All, 1, TENSACH_MAXSIZE},{Number_Only, 1, SOTRANG_MAXKYTU},
-													{Name, 1, TENTACGIA_MAXSIZE},{Year, 4, 4},{Mix, 1, TENTHELOAI_MAXSIZE} };
+													{Name, 1, TENTACGIA_MAXSIZE},{Year, 4, 4},{Word_Only, 1, TENTHELOAI_MAXSIZE} };
 	auto form = FORMINPUT(labels, conditions, rect, inputTitle);
-	if (form.Show())
+	DAUSACH dauSach = DAUSACH();
+	std::vector<std::string> tempData = form.OutputResults;
+
+	while (true)
 	{
-		return ParseVectorString(form.OutputResults);
+		form.OutputResults = tempData;
+		if (form.Show())
+		{
+			dauSach = ParseVectorString(form.OutputResults);
+			if (listDS.IsContainISBN(dauSach.isbn))
+			{
+				GoToXY(form.cols[0] - 6, form.rows[0] + 1);
+				SetTextColor(WARNING_TEXT_COLOR);
+				std::cout << "ISBN da bi trung";
+				tempData = form.OutputResults;
+			}
+			else
+			{
+				return dauSach;
+			}
+		}
+		else
+		{
+			form.ResetOutput();
+			break;
+		}
 	}
-	else
-	{
-		form.ResetOutput();
-	}
-	return *this;
+	return dauSach;
 }
 // in ra node
 void DAUSACH::Print(MYPOINT location, Color backColor, Color textColor)
@@ -148,11 +168,21 @@ bool LIST_DAUSACH::IsEmpty()
 {
 	return this->size == 0;
 }
+// kiem tra dau sach da ton tai isbn hay chua
+bool LIST_DAUSACH::IsContainISBN(char isbn[ISBN_MAXSIZE + 1])
+{
+	for (int i = 0; i < this->size; i++)
+	{
+		if (strcmp(this->nodes[i]->isbn, isbn) == 0)
+			return true;
+	}
+	return false;
+}
 // DAUSACH phai dung tham bien (&) vi neu dung tham tri thi node se mat sau khi ra khoi ham
 // Do dac tinh cua tham tri la copy vo node
 bool LIST_DAUSACH::Insert(DAUSACH& node, int index)
 {
-	if (index < 0 || index > SODAUSACH_MAX || IsFull())
+	if (index < 0 || index > SODAUSACH_MAX || IsFull() || IsContainISBN(node.isbn))
 	{
 		return false;
 	}
@@ -450,7 +480,6 @@ std::vector<std::string> LIST_DAUSACH::FindBooks(std::string tenSach)
 	}
 	return result;
 }
-
 // CMT
 void LIST_DAUSACH::PrintFindBooks(MYPOINT location, std::string tenSach)
 {

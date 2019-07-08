@@ -228,7 +228,7 @@ struct BUTTON
 	std::string text;
 	BUTTON(RECTANGLE rect, std::string text) : rect(rect), text(text), border(rect.location, rect.size)
 	{
-		if (rect.size.height > 1)
+		if (rect.size.height > 3)
 		{
 			this->rect.location = { rect.location.x + 1, rect.location.y + 1 };
 			this->rect.size = { rect.size.width - 2, rect.size.height - 2 };

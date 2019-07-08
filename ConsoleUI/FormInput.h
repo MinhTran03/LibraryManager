@@ -110,7 +110,7 @@ struct FORMINPUT
 			// tu in hoa sau khoang trang (' ')
 			if (value.size() != 0 && value.at(value.size() - 1) == ' ')
 				c = toupper(c);
-			if (!IsLetterOnly(c)) return false;
+			if (!IsName(c)) return false;
 			break;
 		case WordType::Gender:
 			switch (value.size())
@@ -376,7 +376,7 @@ struct FORMINPUT
 				}
 			}
 			// Xu ly chuoi nhap vo
-			else if (IsAllLetter(inputKey) && conditions[currentLine].mode == CanChange)
+			else if (IsAllLetter(inputKey) && currentLine < totalLine && conditions[currentLine].mode == CanChange)
 			{
 				SetBGColor(BG_COLOR);
 				SetTextColor(TEXT_INPUT_COLOR);
@@ -388,7 +388,7 @@ struct FORMINPUT
 						inputKey = toupper(inputKey);
 					}
 					// viet thuong het neu ko phai ten rieng va sau khoang trang
-					else if(conditions[currentLine].type != Name)
+					else/* if(conditions[currentLine].type != Name)*/
 					{
 						auto temp = OutputResults[currentLine][OutputResults[currentLine].size() - 1];
 						if(temp != ' ')

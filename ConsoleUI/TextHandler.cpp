@@ -105,6 +105,14 @@ void FormatWord(char*& fullName, WordType type)
 	MergeTokens(fullName, tokens, nTokens);
 	delete tokens;
 }
+void FormatWord(std::string& fullName)
+{
+	for (char& c : fullName)
+	{
+		c = tolower(c);
+	}
+	fullName[0] = toupper(fullName[0]);
+}
 int NumberLength(unsigned int num)
 {
 	int count = 0;
