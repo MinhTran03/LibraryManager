@@ -457,24 +457,43 @@ std::string LIST_DAUSACH::PrintAll(MYPOINT location, Menu_Mode mode)
 std::vector<std::string> LIST_DAUSACH::FindBooks(std::string tenSach)
 {
 	std::vector<std::string> result;
-	std::vector<std::string> listKey = Split(tenSach, " ");
+	std::string toLowerName = ToLowerString(tenSach);
+	std::vector<std::string> listKey = Split(toLowerName, " ");
 
 	for (int i = 0; i < this->size; i++)
 	{
-		size_t found = this->nodes[i]->tenSach.find(tenSach);
+		std::string toLowerTenSach = ToLowerString(this->nodes[i]->tenSach);
+		size_t found = toLowerTenSach.find(toLowerName);
 		if (found != std::string::npos)
 		{
 			result.push_back(this->nodes[i]->isbn);
 		}
 	}
-	for (size_t j = 0; j < listKey.size(); j++)
+	for (int j = 0; j < listKey.size(); j++)
 	{
 		for (int i = 0; i < this->size; i++)
 		{
-			size_t found = this->nodes[i]->tenSach.find(listKey[j]);
-			if (found != std::string::npos)
+			std::string toLowerTenSach = ToLowerString(this->nodes[i]->tenSach);
+			size_t found = toLowerTenSach.find(listKey[j]);
+			if (found != std::string::npos || toLowerTenSach == listKey[j])
 			{
-				result.push_back(this->nodes[i]->isbn);
+				int dem = 0;
+				for (int k = 0; k < result.size(); k++)
+				{
+					std::string temp = this->nodes[i]->isbn;
+					if (result[k] == temp)
+					{
+						dem++;
+					}
+					else
+					{
+						if (dem == 0)
+						{
+							result.push_back(this->nodes[i]->isbn);
+							dem++;
+						}
+					}
+				}
 			}
 		}
 	}
@@ -512,5 +531,7 @@ void LIST_DAUSACH::PrintFindBooks(MYPOINT location, std::string tenSach)
 			}
 		}
 	}
+
+
 }
 #pragma endregion
