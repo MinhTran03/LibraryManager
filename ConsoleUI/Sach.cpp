@@ -6,9 +6,9 @@ SACH ParseVectorString(std::vector<std::string> data)
 {
 	SACH sach;
 	sach.maSach = data[0];
-	if (data[1] == "Cho muon duoc")
+	if (data[1] == "0")
 		sach.trangThai = ChoMuonDuoc;
-	else if (data[1] == "Da muon")
+	else if (data[1] == "1")
 		sach.trangThai = DaMuon;
 	else
 		sach.trangThai = DaThanhLy;
@@ -20,10 +20,11 @@ SACH SACH::Input(RECTANGLE rect, std::string maSach)
 {
 	std::string title = "Nhap Sach";
 	std::vector<std::string> labels = { "Ma sach", "Trang thai:", "Vi tri:" };
-	std::vector<CONDITION> conditions = { {All, 6, 6, Default}, {Number_Only, 1, 1, Default}, {All, 1, VITRI_MAXSIZE} };
+	std::vector<CONDITION> conditions = { {All, 6, 6, Default}, {Enum, 1, 3, Default}, {Mix, 1, VITRI_MAXSIZE} };
 	auto form = FORMINPUT(labels, conditions, rect, title);
-	form.ParseData({ maSach, "Cho muon duoc", "" });
-	if (form.Show())
+	form.ParseData({ maSach, "0", "" });
+	form.currentLine = 2;
+	if (form.Show(2))
 	{
 		return ParseVectorString(form.OutputResults);
 	}

@@ -67,7 +67,8 @@ enum WordType
 	DateTime,
 	BirthDay,
 	Year,
-	All
+	All,
+	Enum
 };
 
 enum DialogResult

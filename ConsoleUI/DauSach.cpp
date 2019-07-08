@@ -469,7 +469,7 @@ std::vector<std::string> LIST_DAUSACH::FindBooks(std::string tenSach)
 			result.push_back(this->nodes[i]->isbn);
 		}
 	}
-	for (int j = 0; j < listKey.size(); j++)
+	for (size_t j = 0; j < listKey.size(); j++)
 	{
 		for (int i = 0; i < this->size; i++)
 		{
@@ -478,7 +478,7 @@ std::vector<std::string> LIST_DAUSACH::FindBooks(std::string tenSach)
 			if (found != std::string::npos || toLowerTenSach == listKey[j])
 			{
 				int dem = 0;
-				for (int k = 0; k < result.size(); k++)
+				for (size_t k = 0; k < result.size(); k++)
 				{
 					std::string temp = this->nodes[i]->isbn;
 					if (result[k] == temp)
@@ -525,7 +525,7 @@ void LIST_DAUSACH::PrintFindBooks(MYPOINT location, std::string tenSach)
 			StringToCharArray(listISBN[found], temp);
 			if (strcmp(this->nodes[i]->isbn, temp) == 0)
 			{
-				this->nodes[i]->Print(location, Color::Black, Color::White);
+				this->nodes[i]->Print(location, BG_COLOR, TEXT_INPUT_COLOR);
 				location.y++;
 				found++;
 			}

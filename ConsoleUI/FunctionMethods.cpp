@@ -29,7 +29,7 @@ void HienThiDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 		ClearScreen(BG_COLOR);
 	}
 }
-// Fun 1 1
+// Func 1 1
 void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 {
 	string selectedDauSach = listDS.PrintAll(location, Show_Only);
@@ -111,4 +111,23 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 			break;
 		}
 	}
+}
+// Func 1 2
+void CapNhatDanhMucSach(LIST_DAUSACH& listDS, LIST_SACH& listSach)
+{
+	MYPOINT location = { 36,3 };
+	string isbn = listDS.PrintAll(location, Both);
+	ClearScreen(BG_COLOR);
+	if (isbn == "ESC")
+	{
+		return;
+	}
+
+	SACH* sach = new SACH();
+	char isbnAsChar[ISBN_MAXSIZE + 1];
+	StringToCharArray(isbn, isbnAsChar);
+	string maSachAuto = listSach.AutoGenerateMaSach(isbnAsChar);
+	*sach = sach->Input({ {70, 3},{40,13} }, maSachAuto);
+	auto node = new NODE_SACH(*sach);
+	listSach.AddTail(*node);
 }

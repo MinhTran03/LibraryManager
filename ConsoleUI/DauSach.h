@@ -9,28 +9,21 @@ struct DAUSACH
 	std::string tenTacGia;
 	int namXuatBan = NULL;
 	std::string tenTheLoai;
+
 	LIST_SACH dsSach;
 
-	// hien form nhap DAUSACH
-	//DAUSACH Input(RECTANGLE rect);
 	// in ra node
 	void Print(MYPOINT location, Color bgSelectColor, Color textColor);
 	// chen | giua cac field
 	std::string ToString();
 };
 
-struct ISBN_TENSACH
-{
-	char isbn[ISBN_MAXSIZE + 1] = "";
-	std::string tenSach;
-};
-
 struct LIST_DAUSACH
 {
 	int size = 0;
 	DAUSACH* nodes[SODAUSACH_MAX];
-	std::vector<std::string> dsTheLoai;
 
+	std::vector<std::string> dsTheLoai;
 	void Deconstructor();
 	// kiem tra theLoai sach da ton tai hay chua
 	bool IsContainTheLoai(std::string theLoai);

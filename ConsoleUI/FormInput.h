@@ -19,7 +19,7 @@ struct FORMINPUT
 	// CHua index x tuong ung voi vi tri text nguoi dung dang nhap vo
 	std::vector<int> cols;
 	std::vector<int> colsLabel;
-	int currentLine;
+	int currentLine=0;
 	int totalLine;
 	int xInputCol;
 	std::string title;
@@ -62,7 +62,7 @@ struct FORMINPUT
 			cols[i] = xInputCol;
 		}
 	}
-	void PrintLabelsTitle()
+	void PrintLabelsTitle(int mode = 0)
 	{
 		GoToXY(rect.location.x + rect.size.width / 2 - title.length() / 2 - title.length() % 2, rows[0] - 2);
 		std::cout << title;
@@ -77,6 +77,57 @@ struct FORMINPUT
 				SetTextColor(TEXT_INPUT_DEFAULT_COLOR);
 			GoToXY(xInputCol, rows[i]);
 			std::cout << OutputResults[i];
+			if (conditions[i].type == Enum && mode != 0)
+			{
+				int num = OutputResults[i][0] - '0';
+				int x = WhereX();
+				GoToXY(x + 4, WhereY());
+				// gender
+				if (mode == 1)
+				{
+					if (num == 0)
+					{
+						std::cout << "Nam";
+					}
+					else if (num == 1)
+					{
+						std::cout << "Nu";
+					}
+				}
+				// trang thai sach
+				else if (mode == 2)
+				{
+					if (num == 0)
+					{
+						std::cout << "Cho muon duoc";
+					}
+					else if (num == 1)
+					{
+						std::cout << "Da muon";
+					}
+					else if (num == 2)
+					{
+						std::cout << "Da thanh ly";
+					}
+				}
+				// trang thai muon tra
+				else if (mode == 3)
+				{
+					if (num == 0)
+					{
+						std::cout << "Sach chua tra";
+					}
+					else if (num == 1)
+					{
+						std::cout << "Sach da tra";
+					}
+					else if (num == 2)
+					{
+						std::cout << "Lam mat sach";
+					}
+				}
+				GoToXY(x, WhereY());
+			}
 		}
 	}
 	int MaxLengthLabel()
@@ -91,12 +142,19 @@ struct FORMINPUT
 	bool IsValidCondition(char& c, int currentLine, std::string value)
 	{
 		auto condition = conditions[currentLine];
+		if (condition.type == Enum && value.size() >= 1)
+			return false;
 		// check maxLength
-		if (value.size() >= condition.maxLength)
+		else if (value.size() >= condition.maxLength)
 			return false;
 		// check type
 		switch (condition.type)
 		{
+		case WordType::Enum:
+		{
+			std::string max = std::to_string(condition.maxLength);
+			return IsNumber(c) && c >= 48 && c < max[0];
+		}
 		case WordType::Mix:
 			return IsMixLetter(c);
 			break;
@@ -168,11 +226,12 @@ struct FORMINPUT
 		return error;
 	}
 
-	bool Show()
+	// mode = 0: default / mode = 1: enum la gender / mode = 2: enum la trang thai sach
+	bool Show(int mode = 0)
 	{
 		border.Draw2Line(BORDER_COLOR);
-		currentLine = 0;
-		PrintLabelsTitle();
+		//currentLine = 0;
+		PrintLabelsTitle(mode);
 
 		// Ve button OK CANCEL
 		int halfWidthForm = rect.size.width / 2 + rect.location.x;
@@ -279,7 +338,7 @@ struct FORMINPUT
 						else
 						{
 							ClearArea();
-							ReDraw();
+							ReDraw(mode);
 							SetBGColor(BG_COLOR);
 							SetTextColor(WARNING_TEXT_COLOR);
 							for (size_t i = 0; i < errorsLength.size(); i++)
@@ -305,7 +364,7 @@ struct FORMINPUT
 						ClearArea();
 						if (confirm.result == No)
 						{
-							ReDraw();
+							ReDraw(mode);
 							btnCancel.Draw(BUTTON_HIGHLIGHT_BG_COLOR, BUTTON_HIGHLIGHT_TEXT_COLOR);
 						}
 						else
@@ -364,7 +423,7 @@ struct FORMINPUT
 				ClearArea();
 				if (confirm.result == No)
 				{
-					ReDraw();
+					ReDraw(mode);
 					GoToXY(cols[currentLine], rows[currentLine]);
 					ShowPointer();
 				}
@@ -382,6 +441,57 @@ struct FORMINPUT
 				SetTextColor(TEXT_INPUT_COLOR);
 				if (IsValidCondition(inputKey, currentLine, OutputResults[currentLine]))
 				{
+					if (conditions[currentLine].type == Enum && mode != 0)
+					{
+						int num = inputKey - '0';
+						int x = WhereX();
+						GoToXY(x + 5, WhereY());
+						// gender
+						if (mode == 1)
+						{
+							if (num == 0)
+							{
+								std::cout << "Nam";
+							}
+							else if (num == 1)
+							{
+								std::cout << "Nu";
+							}
+						}
+						// trang thai sach
+						else if (mode == 2)
+						{
+							if (num == 0)
+							{
+								std::cout << "Cho muon duoc";
+							}
+							else if (num == 1)
+							{
+								std::cout << "Da muon";
+							}
+							else if (num == 2)
+							{
+								std::cout << "Da thanh ly";
+							}
+						}
+						// trang thai muon tra
+						else if (mode == 3)
+						{
+							if (num == 0)
+							{
+								std::cout << "Sach chua tra";
+							}
+							else if (num == 1)
+							{
+								std::cout << "Sach da tra";
+							}
+							else if (num == 2)
+							{
+								std::cout << "Lam mat sach";
+							}
+						}
+						GoToXY(x, WhereY());
+					}
 					// In hoa chu cai dau tien
 					if (OutputResults[currentLine].size() == 0)
 					{
@@ -423,6 +533,15 @@ struct FORMINPUT
 			{
 				SetBGColor(BG_COLOR);
 				SetTextColor(TEXT_INPUT_COLOR);
+
+				if (conditions[currentLine].type == Enum && mode != 0)
+				{
+					int x = WhereX();
+					GoToXY(x + 4, WhereY());
+					std::cout << std::string(13, ' ');
+					GoToXY(x, WhereY());
+				}
+
 				int lengthCurrentValue = OutputResults[currentLine].length();
 				auto end = OutputResults[currentLine].end();
 				OutputResults[currentLine].erase(std::remove(end - 1, end, OutputResults[currentLine][lengthCurrentValue - 1]));
@@ -436,11 +555,11 @@ struct FORMINPUT
 		} while (!_kbhit());
 		return true;
 	}
-	void ReDraw()
+	void ReDraw(int mode = 0)
 	{
 		border.Draw2Line(BORDER_COLOR);
 
-		PrintLabelsTitle();
+		PrintLabelsTitle(mode);
 
 		// Ve button OK CANCEL
 		int halfWidthForm = rect.size.width / 2;
