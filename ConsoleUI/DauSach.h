@@ -22,13 +22,27 @@ struct LIST_DAUSACH
 {
 	int size = 0;
 	DAUSACH* nodes[SODAUSACH_MAX];
-
 	std::vector<std::string> dsTheLoai;
+
+	#pragma region Display
+	// Print list DAUSACH theo the loai (Sap xep theo ten)
+	std::string PrintByTheLoai(MYPOINT location, std::string tenTheLoai);
+	// In tat ca the loai thanh nhieu page
+	std::string PrintAllTheLoai(MYPOINT location);
+	// In tat ca dau sach
+	std::string PrintAll(MYPOINT location, Menu_Mode mode = Menu_Mode::Show_Only);
+	// tim sach theo ten (chua xong)
+	void PrintFindBooks(MYPOINT location, std::string tenSach);
+	#pragma endregion
+
+	void INotifyDSTheLoai();
 	void Deconstructor();
 	// kiem tra theLoai sach da ton tai hay chua
 	bool IsContainTheLoai(std::string theLoai);
 	// Doc obj DAUSACH tu file
 	bool ReadFromFile(std::string path);
+	// lay dau sach theo ISBN
+	DAUSACH* GetDauSach(char isbn[ISBN_MAXSIZE + 1]);
 	// Return true if list full (1000)
 	bool IsFull();
 	// Return true if list empty
@@ -38,18 +52,15 @@ struct LIST_DAUSACH
 	// DAUSACH phai dung tham bien (&) vi neu dung tham tri thi node se mat sau khi ra khoi ham
 	// Do dac tinh cua tham tri la copy vo node
 	bool Insert(DAUSACH& node, int index);
-	// Print list DAUSACH theo the loai (Sap xep theo ten)
-	std::string PrintByTheLoai(MYPOINT location, std::string tenTheLoai);
-	// In tat ca the loai thanh nhieu page
-	std::string PrintAllTheLoai(MYPOINT location);
-	// In tat ca dau sach
-	std::string PrintAll(MYPOINT location, Menu_Mode mode = Menu_Mode::Show_Only);
 	// Lay dau sach dua vao ten the loai
 	std::vector<DAUSACH> GetTheLoai(std::string tenTheLoai);
-	// tim sach theo ten (chua xong)
-	void PrintFindBooks(MYPOINT location, std::string tenSach);
 	// in sach theo ten sach (chua xong)
 	std::vector<std::string> FindBooks(std::string tenSach);
+	// tim vi tri cua dau sach theo isbn
+	int GetLocateDauSach(char isbn[ISBN_MAXSIZE + 1]);
+	// Xoa 1 dau sach dua vao ISBN
+	bool DeleteDauSach(char isbn[ISBN_MAXSIZE + 1]);
 };
 
 DAUSACH InputDauSach(LIST_DAUSACH listDS, RECTANGLE rect);
+DAUSACH InputFixDauSach(LIST_DAUSACH listDS, RECTANGLE rect, DAUSACH dauSach);

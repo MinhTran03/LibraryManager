@@ -51,6 +51,35 @@ DAUSACH InputDauSach(LIST_DAUSACH listDS, RECTANGLE rect)
 	}
 	return dauSach;
 }
+DAUSACH InputFixDauSach(LIST_DAUSACH listDS, RECTANGLE rect, DAUSACH dauSach)
+{
+	auto tempDSSach = dauSach.dsSach;
+
+	std::vector<std::string> labels = { "ISBN:","Ten sach:","So trang:","Tac gia:", "Nam xuat ban:","The loai:" };
+	std::string inputTitle = "NHAP THONG TIN DAU SACH";
+	std::vector<CONDITION> conditions = { {Number_Only, ISBN_MAXSIZE, ISBN_MAXSIZE, Default}, {All, 1, TENSACH_MAXSIZE},{Number_Only, 1, SOTRANG_MAXKYTU},
+													{Name, 1, TENTACGIA_MAXSIZE},{Year, 4, 4},{Word_Only, 1, TENTHELOAI_MAXSIZE} };
+	auto form = FORMINPUT(labels, conditions, rect, inputTitle);
+	//DAUSACH dauSach = DAUSACH();
+	form.ParseData({std::string(dauSach.isbn), dauSach.tenSach, std::to_string(dauSach.soTrang), 
+				dauSach.tenTacGia, std::to_string(dauSach.namXuatBan), dauSach.tenTheLoai});
+
+	while (true)
+	{
+		if (form.Show())
+		{
+			auto newSach = ParseVectorString(form.OutputResults);
+			newSach.dsSach = tempDSSach;
+			return newSach;
+		}
+		else
+		{
+			form.ResetOutput();
+			break;
+		}
+	}
+	return dauSach;
+}
 // in ra node
 void DAUSACH::Print(MYPOINT location, Color backColor, Color textColor)
 {
@@ -99,101 +128,7 @@ std::string DAUSACH::ToString()
 #pragma endregion
 
 #pragma region LIST_DAUSACH
-void LIST_DAUSACH::Deconstructor()
-{
-	delete[] this->nodes[0];
-}
-// kiem tra theLoai sach da ton tai hay chua
-bool LIST_DAUSACH::IsContainTheLoai(std::string theLoai)
-{
-	std::string theLoaiAsLower = ToLowerString(theLoai);
-	for (int i = 0; i < this->size; i++)
-	{
-		if (ToLowerString(this->nodes[i]->tenTheLoai) == theLoaiAsLower) return true;
-	}
-	return false;
-}
-// row la so dong data
-void PrintLabelDauSach(MYPOINT location, int row)
-{
-	std::vector<std::string> labels = { "ISBN", "TEN SACH", "SO TRANG", "TEN TAC GIA", "NXB", "TEN THE LOAI" };
-	auto lstBorder = LISTBORDERTEXT(labels);
-	lstBorder.Draw(location, { ISBN_WIDTH, TENSACH_WIDTH, SOTRANG_WIDTH, TENTACGIA_WIDTH, NAMXUATBAN_WIDTH, TENTHELOAI_WIDTH },
-		row, BORDER_COLOR);
-}
-// Lay dau sach dua vao ten the loai
-std::vector<DAUSACH> LIST_DAUSACH::GetTheLoai(std::string tenTheLoai)
-{
-	std::vector<DAUSACH> result;
-	for (int i = 0; i < this->size; i++)
-	{
-		if (this->nodes[i]->tenTheLoai == tenTheLoai)
-		{
-			result.push_back(*this->nodes[i]);
-		}
-	}
-	return result;
-}
-// Doc obj DAUSACH tu file
-bool LIST_DAUSACH::ReadFromFile(std::string path)
-{
-	auto fileHandler = FILEHANDLER(path);
-	try
-	{
-		auto lstDauSachVector = fileHandler.GetTokens();
-		int size = lstDauSachVector.size();
-		DAUSACH* dauSach = new DAUSACH[size];
-		for (int i = 0; i < size; i++)
-		{
-			dauSach[i] = ParseVectorString(lstDauSachVector[i]);
-			Insert(dauSach[i], this->size);
-		}
-	}
-	catch (const std::exception& ex)
-	{
-		GoToXY(0, 0);
-		std::cout << ex.what();
-		return false;
-	}
-	return true;
-}
-// Return true if list full (1000)
-bool LIST_DAUSACH::IsFull()
-{
-	return this->size == SODAUSACH_MAX;
-}
-// Return true if list empty
-bool LIST_DAUSACH::IsEmpty()
-{
-	return this->size == 0;
-}
-// kiem tra dau sach da ton tai isbn hay chua
-bool LIST_DAUSACH::IsContainISBN(char isbn[ISBN_MAXSIZE + 1])
-{
-	for (int i = 0; i < this->size; i++)
-	{
-		if (strcmp(this->nodes[i]->isbn, isbn) == 0)
-			return true;
-	}
-	return false;
-}
-// DAUSACH phai dung tham bien (&) vi neu dung tham tri thi node se mat sau khi ra khoi ham
-// Do dac tinh cua tham tri la copy vo node
-bool LIST_DAUSACH::Insert(DAUSACH& node, int index)
-{
-	if (index < 0 || index > SODAUSACH_MAX || IsFull() || IsContainISBN(node.isbn))
-	{
-		return false;
-	}
-	for (int pos = size - 1; pos >= index; pos--)
-	{
-		nodes[pos + 1] = nodes[pos];
-	}
-	if (!IsContainTheLoai(node.tenTheLoai)) dsTheLoai.push_back(node.tenTheLoai);
-	nodes[index] = &node;
-	size++;
-	return true;
-}
+#pragma region Graphics
 // selection sort dua vao ten sach
 void SortByTenSach(std::vector<DAUSACH>& listDauSach)
 {
@@ -214,6 +149,14 @@ void SortByTenSach(std::vector<DAUSACH>& listDauSach)
 		listDauSach[posMin] = listDauSach[i];
 		listDauSach[i] = min;
 	}
+}
+// row la so dong data
+void PrintLabelDauSach(MYPOINT location, int row)
+{
+	std::vector<std::string> labels = { "ISBN", "TEN SACH", "SO TRANG", "TEN TAC GIA", "NXB", "TEN THE LOAI" };
+	auto lstBorder = LISTBORDERTEXT(labels);
+	lstBorder.Draw(location, { ISBN_WIDTH, TENSACH_WIDTH, SOTRANG_WIDTH, TENTACGIA_WIDTH, NAMXUATBAN_WIDTH, TENTHELOAI_WIDTH },
+		row, BORDER_COLOR);
 }
 // Print list DAUSACH theo the loai (Sap xep theo ten)
 std::string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, std::string theLoai)
@@ -373,7 +316,7 @@ std::string LIST_DAUSACH::PrintAll(MYPOINT location, Menu_Mode mode)
 	// print label
 	if (mode == Menu_Mode::Show_Only || mode == Menu_Mode::Both)
 	{
-		PrintLabelDauSach(location, totalLine);
+		PrintLabelDauSach(location, 33);
 		location.y += 3;
 		backUpLocation = location;
 		// print data
@@ -453,6 +396,144 @@ std::string LIST_DAUSACH::PrintAll(MYPOINT location, Menu_Mode mode)
 	return listISBN[currentLine].isbn;
 }
 // CMT
+void LIST_DAUSACH::PrintFindBooks(MYPOINT location, std::string tenSach)
+{
+	Color hlBGColor = Color::Cyan;
+	Color hlTextColor = Color::White;
+	// tim ISBN theo the loai
+	auto listISBN = FindBooks(tenSach);
+	int totalLine = listISBN.size();
+	std::vector<std::string> datas;
+	std::vector<int> rows;
+	MYPOINT backUpLocation = MYPOINT(0, 0);
+
+	// print label
+	PrintLabelDauSach(location, totalLine);
+	location.y += 3;
+	backUpLocation = location;
+	int found = 0;
+	// print data
+	for (int i = 0; i < this->size; i++)
+	{
+		if (found < totalLine)
+		{
+			char temp[ISBN_MAXSIZE + 1];
+			StringToCharArray(listISBN[found], temp);
+			if (strcmp(this->nodes[i]->isbn, temp) == 0)
+			{
+				this->nodes[i]->Print(location, BG_COLOR, TEXT_INPUT_COLOR);
+				location.y++;
+				found++;
+			}
+		}
+	}
+
+
+}
+#pragma endregion
+
+void LIST_DAUSACH::Deconstructor()
+{
+	for (int i = 0; i < this->size; i++)
+	{
+		delete this->nodes[i];
+		this->nodes[i] = NULL;
+	}
+}
+// kiem tra theLoai sach da ton tai hay chua
+bool LIST_DAUSACH::IsContainTheLoai(std::string theLoai)
+{
+	std::string theLoaiAsLower = ToLowerString(theLoai);
+	for (int i = 0; i < this->size; i++)
+	{
+		if (ToLowerString(this->nodes[i]->tenTheLoai) == theLoaiAsLower) return true;
+	}
+	return false;
+}
+// Lay dau sach dua vao ten the loai
+std::vector<DAUSACH> LIST_DAUSACH::GetTheLoai(std::string tenTheLoai)
+{
+	std::vector<DAUSACH> result;
+	for (int i = 0; i < this->size; i++)
+	{
+		if (this->nodes[i]->tenTheLoai == tenTheLoai)
+		{
+			result.push_back(*this->nodes[i]);
+		}
+	}
+	return result;
+}
+// get dau sach theo isbn
+DAUSACH* LIST_DAUSACH::GetDauSach(char isbn[ISBN_MAXSIZE + 1])
+{
+	for (auto dauSach : this->nodes)
+	{
+		if (strcmp(dauSach->isbn, isbn) == 0)
+			return dauSach;
+	}
+}
+// Doc obj DAUSACH tu file
+bool LIST_DAUSACH::ReadFromFile(std::string path)
+{
+	auto fileHandler = FILEHANDLER(path);
+	try
+	{
+		auto lstDauSachVector = fileHandler.GetTokens();
+		int size = lstDauSachVector.size();
+		//DAUSACH* dauSach = new DAUSACH[size];
+		for (int i = 0; i < size; i++)
+		{
+			DAUSACH* dauSach = new DAUSACH;
+			*dauSach = ParseVectorString(lstDauSachVector[i]);
+			Insert(*dauSach, this->size);
+		}
+	}
+	catch (const std::exception& ex)
+	{
+		GoToXY(0, 0);
+		std::cout << ex.what();
+		return false;
+	}
+	return true;
+}
+// Return true if list full (1000)
+bool LIST_DAUSACH::IsFull()
+{
+	return this->size == SODAUSACH_MAX;
+}
+// Return true if list empty
+bool LIST_DAUSACH::IsEmpty()
+{
+	return this->size == 0;
+}
+// kiem tra dau sach da ton tai isbn hay chua
+bool LIST_DAUSACH::IsContainISBN(char isbn[ISBN_MAXSIZE + 1])
+{
+	for (int i = 0; i < this->size; i++)
+	{
+		if (strcmp(this->nodes[i]->isbn, isbn) == 0)
+			return true;
+	}
+	return false;
+}
+// DAUSACH phai dung tham bien (&) vi neu dung tham tri thi node se mat sau khi ra khoi ham
+// Do dac tinh cua tham tri la copy vo node
+bool LIST_DAUSACH::Insert(DAUSACH& node, int index)
+{
+	if (index < 0 || index > SODAUSACH_MAX || IsFull() || IsContainISBN(node.isbn))
+	{
+		return false;
+	}
+	for (int pos = size - 1; pos >= index; pos--)
+	{
+		nodes[pos + 1] = nodes[pos];
+	}
+	if (!IsContainTheLoai(node.tenTheLoai)) dsTheLoai.push_back(node.tenTheLoai);
+	nodes[index] = &node;
+	size++;
+	return true;
+}
+// tim theo ten sach
 std::vector<std::string> LIST_DAUSACH::FindBooks(std::string tenSach)
 {
 	std::vector<std::string> result;
@@ -498,39 +579,58 @@ std::vector<std::string> LIST_DAUSACH::FindBooks(std::string tenSach)
 	}
 	return result;
 }
-// CMT
-void LIST_DAUSACH::PrintFindBooks(MYPOINT location, std::string tenSach)
+// tim vi tri cua dau sach theo ISBN
+int LIST_DAUSACH::GetLocateDauSach(char isbn[ISBN_MAXSIZE + 1])
 {
-	Color hlBGColor = Color::Cyan;
-	Color hlTextColor = Color::White;
-	// tim ISBN theo the loai
-	auto listISBN = FindBooks(tenSach);
-	int totalLine = listISBN.size();
-	std::vector<std::string> datas;
-	std::vector<int> rows;
-	MYPOINT backUpLocation = MYPOINT(0, 0);
-
-	// print label
-	PrintLabelDauSach(location, totalLine);
-	location.y += 3;
-	backUpLocation = location;
-	int found = 0;
-	// print data
 	for (int i = 0; i < this->size; i++)
 	{
-		if (found < totalLine)
+		if (strcmp(this->nodes[i]->isbn, isbn) == 0)
 		{
-			char temp[ISBN_MAXSIZE + 1];
-			StringToCharArray(listISBN[found], temp);
-			if (strcmp(this->nodes[i]->isbn, temp) == 0)
-			{
-				this->nodes[i]->Print(location, BG_COLOR, TEXT_INPUT_COLOR);
-				location.y++;
-				found++;
-			}
+			return i;
 		}
 	}
-
-
+	return -1;
+}
+// cap nhat dsTheLoai moi khi xoa 1 dau sach
+void LIST_DAUSACH::INotifyDSTheLoai()
+{
+	for (size_t i = 0; i < this->dsTheLoai.size(); i++)
+	{
+		if (this->IsContainTheLoai(this->dsTheLoai[i]) == false)
+		{
+			this->dsTheLoai.erase(this->dsTheLoai.begin() + i);
+			return;
+		}
+	}
+}
+// xoa dau sach theo isbn
+bool LIST_DAUSACH::DeleteDauSach(char isbn[ISBN_MAXSIZE + 1])
+{
+	int position = this->GetLocateDauSach(isbn);
+	if (position == -1) return false;
+	else
+	{
+		// xoa phan tu cuoi cung => ko can duyet lai vi tri
+		if (position == this->size - 1)
+		{
+			delete this->nodes[position];
+			this->size--;
+			this->nodes[this->size] = NULL;
+		}
+		else
+		{
+			delete this->nodes[position];
+			for (int i = position + 1; i <= this->size; i++)
+			{
+				this->nodes[i - 1] = this->nodes[i];
+			}
+			this->size--;
+			delete this->nodes[this->size];
+			this->nodes[this->size] = NULL;
+		}
+	}
+	// cap nhat dsTheLoai
+	this->INotifyDSTheLoai();
+	return true;
 }
 #pragma endregion

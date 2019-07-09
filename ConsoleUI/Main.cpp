@@ -3,13 +3,17 @@
 int main()
 {
 	SetupConsole();
-	MYPOINT locationDS = { 1, 3 };
+	MYPOINT locationDS = { 1, 2 };
 
+	// load dau sach
 	auto listDS = LIST_DAUSACH();
 	LoadDauSach(listDS);
 
-	auto listSach1 = &listDS.nodes[0]->dsSach;
-	LoadSach(*listSach1, listDS.nodes[0]->isbn);
+	// load sach
+	for (size_t i = 0; i < 5; i++)
+	{
+		LoadSach(listDS.nodes[i]->dsSach, listDS.nodes[i]->isbn);
+	}
 
 	vector<int> func = { -1,-1 };
 	while (true)
@@ -47,7 +51,7 @@ int main()
 			// CAP NHAT DANH MUC SACH
 			else if(func[1] == 2)
 			{
-				CapNhatDanhMucSach(listDS, *listSach1);
+				CapNhatDanhMucSach(listDS);
 				break;
 			}
 		}
@@ -68,8 +72,10 @@ int main()
 		}
 	}
 
-
-	listSach1->Deconstructor();
+	for (int i = 0; i < listDS.size; i++)
+	{
+		listDS.nodes[i]->dsSach.Deconstructor();
+	}
 	listDS.Deconstructor();
 
 	SetTextColor(TEXT_INPUT_COLOR);

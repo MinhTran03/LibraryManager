@@ -388,4 +388,9 @@ struct CONFIRMDIALOG
 			}
 		} while (!_kbhit());
 	}
+	void Clear()
+	{
+		auto rect = RECTANGLE(location, size);
+		rect.Fill(BG_COLOR, BG_COLOR);
+	}
 };

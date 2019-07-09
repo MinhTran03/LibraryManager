@@ -173,6 +173,12 @@ void StringToCharArray(std::string source, char dest[])
 {
 	strcpy(dest, source.c_str());
 }
+char* StringToCharArray(std::string source)
+{
+	char* result = new char[source.size() + 1];
+	strcpy(result, source.c_str());
+	return result;
+}
 std::string ToLowerString(std::string text)
 {
 	std::string result = text;

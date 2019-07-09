@@ -61,6 +61,19 @@ SACH ParseVectorString(std::vector<std::string> data)
 	sach.viTri = data[2];
 	return sach;
 }
+SACH ParseVectorStringFile(std::vector<std::string> data)
+{
+	SACH sach;
+	sach.maSach = data[0];
+	if (ToLowerString(data[1]) == "cho muon duoc")
+		sach.trangThai = ChoMuonDuoc;
+	else if (ToLowerString(data[1]) == "da muon")
+		sach.trangThai = DaMuon;
+	else
+		sach.trangThai = DaThanhLy;
+	sach.viTri = data[2];
+	return sach;
+}
 // hien form nhap SACH
 SACH SACH::Input(RECTANGLE rect, std::string maSach)
 {
@@ -84,10 +97,6 @@ SACH SACH::Input(RECTANGLE rect, std::string maSach)
 #pragma endregion
 
 #pragma region -------------------------------------------NODE_SACH
-NODE_SACH::NODE_SACH()
-{
-	
-}
 // Khoi tao 1 node sach moi
 NODE_SACH::NODE_SACH(SACH& data)
 {
@@ -98,6 +107,10 @@ NODE_SACH::NODE_SACH(SACH& data)
 #pragma endregion
 
 #pragma region -------------------------------------------LIST_SACH
+bool LIST_SACH::IsEmpty()
+{
+	return this->pHead == NULL;
+}
 // row la so dong data
 void PrintLabelSach(MYPOINT location, int row)
 {
@@ -115,6 +128,7 @@ int LIST_SACH::Size()
 	}
 	return count;
 }
+// In ra mh
 std::string LIST_SACH::PrintAll(MYPOINT location, Menu_Mode mode)
 {
 	Color hlBGColor = Color::Cyan;
@@ -214,11 +228,11 @@ std::string LIST_SACH::PrintAll(MYPOINT location, Menu_Mode mode)
 			}
 		} while (!_kbhit());
 	}
-	return listSach[currentLine].maSach;
+	return "NULL";
 }
 void LIST_SACH::Deconstructor()
 {
-	while (this->pHead->pNext != NULL && this->pHead != NULL)
+	while (this->pHead != NULL && this->pHead->pNext != NULL)
 	{
 		NODE_SACH* old = this->pHead;
 		this->pHead = this->pHead->pNext;
@@ -243,7 +257,7 @@ bool LIST_SACH::ReadFromFile(std::string path)
 		SACH* dauSach = new SACH[size];
 		for (int i = 0; i < size; i++)
 		{
-			dauSach[i] = ParseVectorString(lstSachVector[i]);
+			dauSach[i] = ParseVectorStringFile(lstSachVector[i]);
 			auto nodeSach = new NODE_SACH(dauSach[i]);
 			AddTail(*nodeSach);
 		}

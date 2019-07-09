@@ -47,7 +47,7 @@ struct MENU
 		{
 			item.Draw(bgColor, textColor, borderColor, Align::Center, Border::TwoLine);
 		}
-		if(mode == 1)//mode 1 cho vertical => co arrow ">"
+		if (mode == 1)//mode 1 cho vertical => co arrow ">"
 			btns[currentLine].Draw(selectColor, textHLColor, selectColor, Align::Center, Border::TwoLine, 0);
 		else
 			btns[currentLine].Draw(selectColor, textHLColor, selectColor, Align::Center, Border::TwoLine);
@@ -200,5 +200,23 @@ struct MENU
 		{
 			item.Draw(bgColor, bgColor);
 		}
+	}
+
+	void ShowDisableModeInHorizontal()
+	{
+		std::vector<BUTTON> btns;
+
+		if (cols.size() != 0) cols.clear();
+		for (size_t i = 0; i < labels.size(); i++)
+		{
+			cols.push_back(location.x + btnSize.width * i);
+			btns.push_back(BUTTON({ {cols[i], location.y}, btnSize }, labels[i]));
+		}
+
+		for (auto item : btns)
+		{
+			item.Draw(bgColor, textColor, borderColor, Align::Center, Border::TwoLine);
+		}
+		btns[currentLine].Draw(DISABLE_COLOR, textHLColor, DISABLE_COLOR, Align::Center, Border::TwoLine);
 	}
 };

@@ -29,7 +29,6 @@ struct NODE_SACH
 	SACH data;
 	NODE_SACH* pNext;
 
-	NODE_SACH();
 	// Khoi tao 1 node sach moi
 	NODE_SACH(SACH& data);
 };
@@ -39,7 +38,9 @@ struct LIST_SACH
 	NODE_SACH* pHead;
 	NODE_SACH* pTail;
 
+	bool IsEmpty();
 	int Size();
+	// in ra mh
 	std::string PrintAll(MYPOINT location, Menu_Mode mode);
 	void Deconstructor();
 	// constructor Init ds moi

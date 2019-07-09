@@ -33,20 +33,32 @@ void HienThiDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 // Func 1 1
 void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 {
-	string selectedDauSach = listDS.PrintAll(location, Show_Only);
+	string emptyTemplate = "";
+	emptyTemplate = emptyTemplate + char(179) + string(ISBN_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(TENSACH_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(SOTRANG_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(TENTACGIA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(NAMXUATBAN_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(TENTHELOAI_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179);
+
+	string selectedISBN = listDS.PrintAll(location, Show_Only);
+	char* isbnAsArr = StringToCharArray(selectedISBN);
 	auto locationBtn = location;
+	// xem = mat
 	locationBtn.x += 30;
-	locationBtn.y += listDS.size + 4;
+	locationBtn.y += 37;
 	MENU menu = MENU({ "THEM", "XOA", "SUA" }, locationBtn);
 	menu.btnSize = { 10,3 };
 	while (true)
 	{
 		int selected = menu.ShowInHorizontal(Menu_Mode::Both);
+		menu.ShowDisableModeInHorizontal();
 		// Them
 		if (selected == 0)
 		{
 			auto newDauSach = new DAUSACH();
-			*newDauSach = InputDauSach(listDS, { {DAUSACH_TOTAL_WIDTH + 2, 3}, {50, 18} });
+			*newDauSach = InputDauSach(listDS, { {DAUSACH_TOTAL_WIDTH + 2, location.y}, {50, 18} });
 			// nguoi dung an CANCEL
 			if (newDauSach->isbn[0] == '\0')
 			{
@@ -57,8 +69,7 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 			{
 				if (listDS.Insert(*newDauSach, listDS.size))
 				{
-					selectedDauSach = listDS.PrintAll(location);
-					menu.location.y++;
+					selectedISBN = listDS.PrintAll(location);
 				}
 				//else
 				//{
@@ -77,32 +88,66 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 		// Xoa
 		else if (selected == 1)
 		{
-			selectedDauSach = listDS.PrintAll(location, Menu_Mode::Both);
-			if (selectedDauSach == "ESC")
+			while (true)
 			{
-				// load lai data
-				auto tempLoc = location;
-				tempLoc.y += 3;
-				for (int i = 0; i < listDS.size; i++)
+				selectedISBN = listDS.PrintAll(location, Menu_Mode::Both);
+				isbnAsArr = StringToCharArray(selectedISBN);
+				if (selectedISBN == "ESC")
 				{
-					listDS.nodes[i]->Print(tempLoc, BG_COLOR, TEXT_INPUT_COLOR);
-					tempLoc.y++;
+					// load lai data
+					auto tempLoc = location;
+					tempLoc.y += 3;
+					for (int i = 0; i < listDS.size; i++)
+					{
+						listDS.nodes[i]->Print(tempLoc, BG_COLOR, TEXT_INPUT_COLOR);
+						tempLoc.y++;
+					}
+					break;
+				}
+				// ng dung an enter de xoa
+				else
+				{
+					auto confirm = CONFIRMDIALOG({ 30, 7 });
+					confirm.Show("Ban chac chan muon xoa?", Yes_No);
+					confirm.Clear();
+					// dong y xoa
+					if (confirm.result == Yes)
+					{
+						listDS.DeleteDauSach(isbnAsArr);
+						SetBGColor(BG_COLOR);
+						GoToXY(location.x, listDS.size + location.y + 3);
+						cout << emptyTemplate;
+					}
 				}
 			}
 		}
 		// Sua
 		else if (selected == 2)
 		{
-			selectedDauSach = listDS.PrintAll(location, Menu_Mode::Both);
-			if (selectedDauSach == "ESC")
+			while (true)
 			{
-				// load lai data
-				auto tempLoc = location;
-				tempLoc.y += 3;
-				for (int i = 0; i < listDS.size; i++)
+				selectedISBN = listDS.PrintAll(location, Menu_Mode::Both);
+				isbnAsArr = StringToCharArray(selectedISBN);
+				if (selectedISBN == "ESC")
 				{
-					listDS.nodes[i]->Print(tempLoc, BG_COLOR, TEXT_INPUT_COLOR);
-					tempLoc.y++;
+					// load lai data
+					auto tempLoc = location;
+					tempLoc.y += 3;
+					for (int i = 0; i < listDS.size; i++)
+					{
+						listDS.nodes[i]->Print(tempLoc, BG_COLOR, TEXT_INPUT_COLOR);
+						tempLoc.y++;
+					}
+					break;
+				}
+				else
+				{
+					auto fixDauSach = listDS.GetDauSach(isbnAsArr);
+
+					*fixDauSach = InputFixDauSach(listDS, { {DAUSACH_TOTAL_WIDTH + 2, location.y}, {50, 18} }, *fixDauSach);
+
+					// cap nhat dsDauSach
+					listDS.INotifyDSTheLoai();
 				}
 			}
 		}
@@ -114,37 +159,80 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 	}
 }
 // Func 1 2
-void CapNhatDanhMucSach(LIST_DAUSACH& listDS, LIST_SACH& listSach)
+void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 {
-	MYPOINT location = { 50,3 };
-	auto locationBtn = location;
-	locationBtn.x += 30;
-	locationBtn.y += listSach.Size() + 4;
+	MYPOINT locationDS = { 41,3 };
+	auto locationBtn = locationDS;
+	locationBtn.x = 46;
+
+	auto locationListSach = locationDS;
+	locationListSach.x = 40;
 	MENU menu = MENU({ "THEM", "XOA", "SUA" }, locationBtn);
 	menu.btnSize = { 10,3 };
+
 	while (true)
 	{
 		// List Dau sach can cap nhat
-		string isbn = listDS.PrintAll(location, Both);
+		string isbn = listDS.PrintAll(locationDS, Both);
 		ClearScreen(BG_COLOR);
 		if (isbn == "ESC")
 		{
 			return;
 		}
-		// List danh muc sach
-		string maSach = listSach.PrintAll({ 1,3 }, Show_Only);
-		menu.ShowInHorizontal(Both);
-		if (maSach == "ESC")
+
+		auto isbnAsChar = StringToCharArray(isbn);
+		auto listSach = &listDS.GetDauSach(isbnAsChar)->dsSach;
+
+		menu.location.y = locationBtn.y + listSach->Size() + 4;
+		while (true)
 		{
-			continue;
+			// List danh muc sach
+			string maSach = listSach->PrintAll(locationListSach, Show_Only);
+			if (maSach == "ESC")
+			{
+				continue;
+			}
+
+			// hien button
+			int selectionMenu = menu.ShowInHorizontal(Both);
+			// them
+			if (selectionMenu == 0)
+			{
+				// Form nhap sach moi
+				SACH* newSach = new SACH();
+				StringToCharArray(isbn, isbnAsChar);
+				string maSachAuto = listSach->AutoGenerateMaSach(isbnAsChar);
+				*newSach = newSach->Input({ {90, 3},{44,13} }, maSachAuto);
+				// nguoi dung an CANCEL
+				if (newSach->viTri[0] == '\0')
+				{
+					delete newSach;
+				}
+				// ng dung Luu dau sach
+				else
+				{
+					auto node = new NODE_SACH(*newSach);
+					listSach->AddTail(*node);
+					maSach = listSach->PrintAll(locationListSach, Show_Only);
+					menu.location.y++;
+				}
+			}
+			// Xoa
+			else if (selectionMenu == 1)
+			{
+
+			}
+			// SUa
+			else if (selectionMenu == 2)
+			{
+
+			}
+			// thoat
+			else if (selectionMenu == Key::ESC)
+			{
+				ClearScreen(BG_COLOR);
+				break;
+			}
 		}
-		// Form nhap sach moi
-		SACH* sach = new SACH();
-		char isbnAsChar[ISBN_MAXSIZE + 1];
-		StringToCharArray(isbn, isbnAsChar);
-		string maSachAuto = listSach.AutoGenerateMaSach(isbnAsChar);
-		*sach = sach->Input({ {90, 3},{44,13} }, maSachAuto);
-		auto node = new NODE_SACH(*sach);
-		listSach.AddTail(*node);
 	}
 }
