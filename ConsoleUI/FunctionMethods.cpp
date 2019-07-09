@@ -16,6 +16,7 @@ vector<int> SelectionFuntion(int rootLine, int childLine)
 		{"HIEN THI DAU SACH", "CAP NHAT DAU SACH", "CAP NHAT DANH MUC SACH", "TIM SACH"},
 		{"CHUA LAM", "CHUA LAM", "CHUA LAM"} }, menu);
 	auto selection = slide.Show(rootLine, childLine);
+	//slide.Clear();
 	/*GoToXY(0, 0);
 	cout << menu.labels[selection[0]] << " ==> " << slide.childLabels[selection[0]][selection[1]];*/
 	return selection;
@@ -115,19 +116,35 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 // Func 1 2
 void CapNhatDanhMucSach(LIST_DAUSACH& listDS, LIST_SACH& listSach)
 {
-	MYPOINT location = { 36,3 };
-	string isbn = listDS.PrintAll(location, Both);
-	ClearScreen(BG_COLOR);
-	if (isbn == "ESC")
+	MYPOINT location = { 50,3 };
+	auto locationBtn = location;
+	locationBtn.x += 30;
+	locationBtn.y += listSach.Size() + 4;
+	MENU menu = MENU({ "THEM", "XOA", "SUA" }, locationBtn);
+	menu.btnSize = { 10,3 };
+	while (true)
 	{
-		return;
+		// List Dau sach can cap nhat
+		string isbn = listDS.PrintAll(location, Both);
+		ClearScreen(BG_COLOR);
+		if (isbn == "ESC")
+		{
+			return;
+		}
+		// List danh muc sach
+		string maSach = listSach.PrintAll({ 1,3 }, Show_Only);
+		menu.ShowInHorizontal(Both);
+		if (maSach == "ESC")
+		{
+			continue;
+		}
+		// Form nhap sach moi
+		SACH* sach = new SACH();
+		char isbnAsChar[ISBN_MAXSIZE + 1];
+		StringToCharArray(isbn, isbnAsChar);
+		string maSachAuto = listSach.AutoGenerateMaSach(isbnAsChar);
+		*sach = sach->Input({ {90, 3},{44,13} }, maSachAuto);
+		auto node = new NODE_SACH(*sach);
+		listSach.AddTail(*node);
 	}
-
-	SACH* sach = new SACH();
-	char isbnAsChar[ISBN_MAXSIZE + 1];
-	StringToCharArray(isbn, isbnAsChar);
-	string maSachAuto = listSach.AutoGenerateMaSach(isbnAsChar);
-	*sach = sach->Input({ {70, 3},{40,13} }, maSachAuto);
-	auto node = new NODE_SACH(*sach);
-	listSach.AddTail(*node);
 }

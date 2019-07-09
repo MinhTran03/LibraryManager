@@ -219,14 +219,23 @@ struct FORMINPUT
 			{
 				auto dateNow = DATETIME();
 				dateNow.SetDateTimeNow();
-				if((size_t)std::stoi(OutputResults[i]) > dateNow.year)
+				if((size_t)std::stoi(OutputResults[i]) > dateNow.year || (size_t)std::stoi(OutputResults[i]) < 1000)
 					error.push_back(i);
+			}
+			else if (conditions[i].type == Number_Only)
+			{
+				char *temp = new char[OutputResults[i].size()];
+				StringToCharArray(OutputResults[i], temp);
+				int num = atoi(temp);
+				if(num == 0)
+					error.push_back(i);
+				//delete temp;
 			}
 		}
 		return error;
 	}
 
-	// mode = 0: default / mode = 1: enum la gender / mode = 2: enum la trang thai sach
+	// mode = 0: default / mode = 1: enum la gender / mode = 2: enum la trang thai sach / mode = 3: enum la tt muon tra
 	bool Show(int mode = 0)
 	{
 		border.Draw2Line(BORDER_COLOR);

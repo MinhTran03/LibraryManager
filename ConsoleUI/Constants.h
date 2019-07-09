@@ -38,4 +38,12 @@ const unsigned int DAUSACH_TOTAL_WIDTH = ISBN_WIDTH + TENSACH_WIDTH + TENTACGIA_
 #pragma region Danh muc sach
 const unsigned int MASACH_MAXSIZE = 11;
 const unsigned int VITRI_MAXSIZE = 5;
+
+const unsigned int MASACH_WIDTH = MASACH_MAXSIZE + 3;
+const unsigned int VITRI_WIDTH = VITRI_MAXSIZE + 3;
+const unsigned int TRANGTHAISACH_WIDTH = 16;
+#pragma endregion
+
+#pragma region Doc gia
+const unsigned int MADOCGIA_MAXKYTU = 4;
 #pragma endregion

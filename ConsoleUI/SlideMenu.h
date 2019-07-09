@@ -5,6 +5,7 @@ struct SLIDEMENUS
 {
 	std::vector<std::vector<std::string>> childLabels;
 	MENU rootMenu;
+	//std::vector<MENU> childMenus;
 
 	SLIDEMENUS(std::vector<std::vector<std::string>> childLabels, MENU rootMenu)
 		: childLabels(childLabels), rootMenu(rootMenu)
@@ -72,5 +73,13 @@ struct SLIDEMENUS
 			rootLine = -1;
 			childLine = -1;
 		}
+	}
+	void Clear()
+	{
+		rootMenu.ClearInVertical();
+		/*for (auto item : childMenus)
+		{
+			item.ClearInVertical();
+		}*/
 	}
 };

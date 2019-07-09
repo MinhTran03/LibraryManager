@@ -114,13 +114,12 @@ bool LIST_DAUSACH::IsContainTheLoai(std::string theLoai)
 	return false;
 }
 // row la so dong data
-void PrintLabel(MYPOINT location, int row)
+void PrintLabelDauSach(MYPOINT location, int row)
 {
 	std::vector<std::string> labels = { "ISBN", "TEN SACH", "SO TRANG", "TEN TAC GIA", "NXB", "TEN THE LOAI" };
 	auto lstBorder = LISTBORDERTEXT(labels);
 	lstBorder.Draw(location, { ISBN_WIDTH, TENSACH_WIDTH, SOTRANG_WIDTH, TENTACGIA_WIDTH, NAMXUATBAN_WIDTH, TENTHELOAI_WIDTH },
 		row, BORDER_COLOR);
-
 }
 // Lay dau sach dua vao ten the loai
 std::vector<DAUSACH> LIST_DAUSACH::GetTheLoai(std::string tenTheLoai)
@@ -232,7 +231,7 @@ std::string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, std::string theLoai)
 	MYPOINT backUpLocation = MYPOINT(0, 0);
 
 	// print label
-	PrintLabel(location, totalLine);
+	PrintLabelDauSach(location, totalLine);
 	location.y += 3;
 	backUpLocation = location;
 	// print data
@@ -374,7 +373,7 @@ std::string LIST_DAUSACH::PrintAll(MYPOINT location, Menu_Mode mode)
 	// print label
 	if (mode == Menu_Mode::Show_Only || mode == Menu_Mode::Both)
 	{
-		PrintLabel(location, totalLine);
+		PrintLabelDauSach(location, totalLine);
 		location.y += 3;
 		backUpLocation = location;
 		// print data
@@ -512,7 +511,7 @@ void LIST_DAUSACH::PrintFindBooks(MYPOINT location, std::string tenSach)
 	MYPOINT backUpLocation = MYPOINT(0, 0);
 
 	// print label
-	PrintLabel(location, totalLine);
+	PrintLabelDauSach(location, totalLine);
 	location.y += 3;
 	backUpLocation = location;
 	int found = 0;

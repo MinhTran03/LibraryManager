@@ -84,6 +84,9 @@
     <ClInclude Include="FunctionMethods.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="DocGia.h">
+      <Filter>Models\Header FIles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TextHandler.cpp">
@@ -109,6 +112,9 @@
     </ClCompile>
     <ClCompile Include="FunctionMethods.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DocGia.cpp">
+      <Filter>Models\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

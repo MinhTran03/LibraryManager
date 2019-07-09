@@ -18,6 +18,10 @@ struct SACH
 
 	// hien form nhap SACH
 	SACH Input(RECTANGLE rect, std::string maSach);
+	// in ra node
+	void Print(MYPOINT location, Color bgSelectColor, Color textColor);
+	// chen | giua cac field
+	std::string ToString();
 };
 
 struct NODE_SACH
@@ -35,6 +39,8 @@ struct LIST_SACH
 	NODE_SACH* pHead;
 	NODE_SACH* pTail;
 
+	int Size();
+	std::string PrintAll(MYPOINT location, Menu_Mode mode);
 	void Deconstructor();
 	// constructor Init ds moi
 	LIST_SACH();

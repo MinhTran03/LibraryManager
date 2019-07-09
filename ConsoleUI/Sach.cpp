@@ -1,6 +1,52 @@
 #include "Sach.h"
 
 #pragma region -------------------------------------------SACH
+// in ra node
+void SACH::Print(MYPOINT location, Color bgSelectColor, Color textColor)
+{
+	GoToXY(location.x, location.y);
+	SetTextColor(textColor);
+	SetBGColor(bgSelectColor);
+	std::cout << SACH::ToString();
+}
+// chen | giua cac field
+std::string SACH::ToString()
+{
+	int temp;
+	// Ma sach
+	std::string result = "";
+	result += char(179);
+	result += this->maSach;
+	temp = MASACH_WIDTH - this->maSach.size();
+	result += std::string(temp, ' ');
+	// Trang thai
+	result += char(179);
+	std::string str = "";
+	switch (this->trangThai)
+	{
+	case 0:
+		str = "Cho muon duoc";
+		break;
+	case 1:
+		str = "Da muon";
+		break;
+	case 2:
+		str = "Da thanh ly";
+		break;
+	default:
+		break;
+	}
+	result += str;
+	temp = TRANGTHAISACH_WIDTH - str.size();
+	result += std::string(temp, ' ');
+	// Vi tri
+	result += char(179);
+	result += this->viTri;
+	temp = VITRI_WIDTH - this->viTri.size();
+	result += std::string(temp, ' ');
+	result += char(179);
+	return result;
+}
 // chuyen vector<string> vo obj Sach
 SACH ParseVectorString(std::vector<std::string> data)
 {
@@ -52,6 +98,124 @@ NODE_SACH::NODE_SACH(SACH& data)
 #pragma endregion
 
 #pragma region -------------------------------------------LIST_SACH
+// row la so dong data
+void PrintLabelSach(MYPOINT location, int row)
+{
+	std::vector<std::string> labels = { "MA SACH", "TRANG THAI", "VI TRI" };
+	auto lstBorder = LISTBORDERTEXT(labels);
+	lstBorder.Draw(location, { MASACH_WIDTH, TRANGTHAISACH_WIDTH, VITRI_WIDTH }, row, BORDER_COLOR);
+}
+// tinh kich co cua dslk
+int LIST_SACH::Size()
+{
+	int count = 0;
+	for (auto p = this->pHead; p != NULL; p = p->pNext)
+	{
+		count++;
+	}
+	return count;
+}
+std::string LIST_SACH::PrintAll(MYPOINT location, Menu_Mode mode)
+{
+	Color hlBGColor = Color::Cyan;
+	Color hlTextColor = Color::White;
+	int currentLine = 0;
+	int totalLine = 0;
+	// dua vao vector de sort
+	std::vector<SACH> listSach;
+	for (auto p = this->pHead; p != NULL; p = p->pNext)
+	{
+		listSach.push_back(p->data);
+		totalLine++;
+	}
+	// sap xep theo ten sach
+	//SortByTenSach(listISBN);
+	std::vector<std::string> datas;
+	std::vector<int> rows;
+	MYPOINT backUpLocation = MYPOINT(0, 0);
+
+	// print label
+	if (mode == Menu_Mode::Show_Only || mode == Menu_Mode::Both)
+	{
+		PrintLabelSach(location, totalLine);
+		location.y += 3;
+		backUpLocation = location;
+		// print data
+		for (int i = 0; i < totalLine; i++)
+		{
+			listSach[i].Print(location, BG_COLOR, TEXT_INPUT_COLOR);
+			// neu la dong dau tien thi hight light len
+			if (location.y == backUpLocation.y && mode == Menu_Mode::Both)
+			{
+				listSach[i].Print(location, hlBGColor, hlTextColor);
+			}
+			// luu lai vi tri dong
+			rows.push_back(location.y++);
+			datas.push_back(listSach[i].ToString());
+		}
+	}
+	// bat phim
+	if (mode == Menu_Mode::Both)
+	{
+		currentLine = 0;
+		char inputKey = NULL;
+		HidePointer();
+		do
+		{
+			inputKey = _getch();
+			if (inputKey == Key::_NULL) inputKey = _getch();
+			if (inputKey == -32)
+			{
+				inputKey = _getch();
+				if (inputKey == Key::UP)
+				{
+					if (currentLine > 0)
+					{
+						GoToXY(location.x, rows[currentLine]);
+						HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
+						GoToXY(location.x, rows[--currentLine]);
+						HightLight(datas[currentLine], hlBGColor, hlTextColor);
+					}
+					else
+					{
+						GoToXY(location.x, rows[currentLine]);
+						HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
+						currentLine = totalLine - 1;
+						GoToXY(location.x, rows[currentLine]);
+						HightLight(datas[currentLine], hlBGColor, hlTextColor);
+					}
+				}
+				else if (inputKey == Key::DOWN)
+				{
+					if (currentLine < totalLine - 1)
+					{
+						GoToXY(location.x, rows[currentLine]);
+						HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
+						GoToXY(location.x, rows[++currentLine]);
+						HightLight(datas[currentLine], hlBGColor, hlTextColor);
+					}
+					else
+					{
+						GoToXY(location.x, rows[currentLine]);
+						HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
+						currentLine = 0;
+						GoToXY(location.x, rows[currentLine]);
+						HightLight(datas[currentLine], hlBGColor, hlTextColor);
+					}
+				}
+			}
+			if (inputKey == Key::ENTER)
+			{
+				return listSach[currentLine].maSach;
+			}
+			else if (inputKey == Key::ESC)
+			{
+				return "ESC";
+			}
+		} while (!_kbhit());
+	}
+	return listSach[currentLine].maSach;
+}
 void LIST_SACH::Deconstructor()
 {
 	while (this->pHead->pNext != NULL && this->pHead != NULL)

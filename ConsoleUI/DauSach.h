@@ -3,7 +3,7 @@
 
 struct DAUSACH
 {
-	char isbn[ISBN_MAXSIZE + 1] = "";
+	char isbn[ISBN_MAXSIZE + 1];
 	std::string tenSach;
 	int soTrang = NULL;
 	std::string tenTacGia;
