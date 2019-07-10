@@ -59,12 +59,10 @@ int main()
 			else if(func[1] == 2)
 			{
 				CapNhatDanhMucSach(listDS);
-				break;
 			}
 			else if (func[1] == 3)
 			{
 				TimSach(listDS, locationDS);
-				break;
 			}
 		}
 		else if (func[0] == 2)

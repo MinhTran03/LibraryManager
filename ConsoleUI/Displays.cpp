@@ -94,26 +94,23 @@ void DrawButton(RECTANGLE rectangle, string text, char getChar, Color textColor,
 		cout << text;
 	}
 }
-void DrawMessageBox(MYPOINT point, string text, string& inputText, bool& isEnter, bool& isCancel, char getChar, Color textColor, Color bgColor, Color bgButtonColor)
+void DrawMessageBox(MYPOINT point, string text, string& inputText, bool& isEnter, bool& isCancel, char getChar, Menu_Mode mode)
 {
 	RECTANGLE rect = RECTANGLE(point, { 40, 8 });;
 	for (int i = 0; i < rect.size.height; i++)
 	{
-
 		if (i == 0)
 		{
-			SetTextColor(Color::Yellow);
+			SetTextColor(Color::Blue);
 			GoToXY(rect.location.x, rect.location.y);
 			cout << std::string(rect.size.width, getChar);
 		}
 		else
 		{
-			SetTextColor(bgColor);
+			SetTextColor(Color::Cyan);
 			GoToXY(rect.location.x, rect.location.y);
 			cout << std::string(rect.size.width, getChar);
 		}
-
-		rect.location.x++;
 		rect.location.x = point.x;
 		rect.location.y++;
 	}
@@ -124,22 +121,32 @@ void DrawMessageBox(MYPOINT point, string text, string& inputText, bool& isEnter
 		SetBGColor(BG_COLOR);
 		cout << " ";
 	}
+	SetTextColor(TEXT_INPUT_COLOR);
+	SetBGColor(Color::Cyan);
+	GoToXY(point.x + 10, point.y + 2);
+	cout << text;
+	SetBGColor(BG_COLOR);
+	GoToXY(point.x + 4, point.y + rect.size.height / 2);
+	cout << inputText;
 
 	RECTANGLE noBox = RECTANGLE({ point.x + 16, point.y + 6 }, { 8, 1 });
 
-	DrawButton(noBox, "CANCEL", 219, textColor, bgButtonColor);
+	DrawButton(noBox, "CANCEL", char(219), BUTTON_TEXT_COLOR, BUTTON_BG_COLOR);
 
-	GoToXY(point.x + 4, point.y + rect.size.height / 2);
 	int flag = 1;
 	char inputKey = NULL;
 	char inputKey1 = NULL;
 
+	if (mode != Both) return;
+	
 	while (1)
 	{
 		if (flag == 1)
 		{
-			DrawButton(noBox, "CANCEL", 219, textColor, bgButtonColor);
+			DrawButton(noBox, "CANCEL", char(219), BUTTON_TEXT_COLOR, BUTTON_BG_COLOR);
 			GoToXY(point.x + 4, point.y + rect.size.height / 2);
+			SetTextColor(TEXT_INPUT_COLOR);
+			SetBGColor(BG_COLOR);
 			ShowPointer();
 			//getline(cin, inputText);
 			if (1)
@@ -160,9 +167,14 @@ void DrawMessageBox(MYPOINT point, string text, string& inputText, bool& isEnter
 						return;
 						//cout << inputText;
 					}
+					else if (inputKey == Key::ESC)
+					{
+						isCancel = true;
+						return;
+					}
 					else if ((inputKey == Key::UP && flag == 1) || (inputKey == Key::DOWN && flag == 1))
 					{
-						DrawButton(noBox, "CANCEL", 219, textColor, bgButtonColor);
+						DrawButton(noBox, "CANCEL", char(219), BUTTON_TEXT_COLOR, BUTTON_BG_COLOR);
 
 						flag = 2;
 						HidePointer();
@@ -173,7 +185,7 @@ void DrawMessageBox(MYPOINT point, string text, string& inputText, bool& isEnter
 						inputText += inputKey;
 						cout << inputKey;
 					}
-					else if (inputKey == Key::BACKSPACE)
+					else if (inputKey == Key::BACKSPACE && inputText != "")
 					{
 						auto end = inputText.end();
 						inputText.erase(std::remove(end - 1, end, inputText[inputText.length() - 1]));
@@ -186,8 +198,7 @@ void DrawMessageBox(MYPOINT point, string text, string& inputText, bool& isEnter
 		}
 		else if (flag == 2)
 		{
-
-			DrawButton(noBox, "CANCEL", 219, textColor, Color::Blue);
+			DrawButton(noBox, "CANCEL", char(219), BUTTON_TEXT_COLOR, BUTTON_HIGHLIGHT_BG_COLOR);
 			HidePointer();
 			do
 			{

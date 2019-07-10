@@ -151,7 +151,7 @@ std::string LIST_SACH::PrintAll(MYPOINT location, Menu_Mode mode)
 	// print label
 	if (mode == Menu_Mode::Show_Only || mode == Menu_Mode::Both)
 	{
-		PrintLabelSach(location, 33);
+		PrintLabelSach(location, totalLine);
 		location.y += 3;
 		backUpLocation = location;
 		// print data

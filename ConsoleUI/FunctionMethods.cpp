@@ -162,10 +162,13 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 // Func 1 2
 void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 {
+	string emptyTemplate = "";
+	emptyTemplate += string(MASACH_WIDTH + TRANGTHAISACH_WIDTH + VITRI_WIDTH + 4, ' ');
+
 	MYPOINT locationDS = { 41,2 };
 	auto locationBtn = locationDS;
 	locationBtn.x = 46;
-	locationBtn.y += 37;
+	//locationBtn.y += 37;
 
 	auto locationListSach = locationDS;
 	locationListSach.x = 40;
@@ -185,7 +188,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 		auto isbnAsChar = StringToCharArray(isbn);
 		auto listSach = &listDS.GetDauSach(isbnAsChar)->dsSach;
 
-		//menu.location.y = locationBtn.y + listSach->Size() + 4;
+		menu.location.y = locationBtn.y + listSach->Size() + 4;
 		while (true)
 		{
 			// List danh muc sach
@@ -213,7 +216,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 					auto node = new NODE_SACH(*newSach);
 					listSach->AddTail(*node);
 					maSach = listSach->PrintAll(locationListSach, Show_Only);
-					//menu.location.y++;
+					menu.location.y++;
 				}
 			}
 			// Xoa
@@ -251,23 +254,22 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 		}
 	}
 }
-//func 1 3
+// Func 1 3
 void TimSach(LIST_DAUSACH& listDS, MYPOINT location)
 {
-
-	MYPOINT point = { 86, 2 };
+	MYPOINT point = { 66, 2 };
 
 	while (true)
 	{
-		
 		bool isEnter = false;
 		bool isCancel = false;
 		std::string searchKey = "";
 		bool isTrue = false;
-		DrawMessageBox(point, "Nhap ten sach can tim:", searchKey, isEnter, isCancel, 219, Color::White, Color::Light_Blue, Color::Gray);
+		DrawMessageBox(point, "NHAP TEN SACH CAN TIM", searchKey, isEnter, isCancel, char(219), Both);
 		if (isEnter)
 		{
 			ClearScreen(BG_COLOR);
+			DrawMessageBox(point, "NHAP TEN SACH CAN TIM", searchKey, isEnter, isCancel, char(219), Show_Only);
 			listDS.PrintFindBooks({ location.x + 10, location.y + 10 }, searchKey);
 			string selectedDauSach = listDS.PrintAllSearch({ location.x + 10, location.y + 10 }, searchKey, Menu_Mode::Both);
 		}
@@ -276,6 +278,5 @@ void TimSach(LIST_DAUSACH& listDS, MYPOINT location)
 			ClearScreen(BG_COLOR);
 			return;
 		}
-		
 	}
 }

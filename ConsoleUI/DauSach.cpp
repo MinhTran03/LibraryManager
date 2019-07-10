@@ -460,6 +460,7 @@ DAUSACH* LIST_DAUSACH::GetDauSach(char isbn[ISBN_MAXSIZE + 1])
 		if (strcmp(dauSach->isbn, isbn) == 0)
 			return dauSach;
 	}
+	return NULL;
 }
 // Doc obj DAUSACH tu file
 bool LIST_DAUSACH::ReadFromFile(std::string path)
@@ -567,7 +568,7 @@ std::vector<DAUSACH> LIST_DAUSACH::FindBooks(std::string tenSach)
 	}
 	return result;
 }
-
+// In tat ca Dau sach tim dc ra mh
 std::string LIST_DAUSACH::PrintAllSearch(MYPOINT location, std::string tenSach, Menu_Mode mode)
 {
 	int y = location.y;
@@ -664,7 +665,10 @@ std::string LIST_DAUSACH::PrintAllSearch(MYPOINT location, std::string tenSach, 
 				}
 				if (inputKey == Key::ENTER)
 				{
-					listISBN[currentLine].dsSach.PrintAll({ location.x + (int)DAUSACH_TOTAL_WIDTH + 1, y }, Menu_Mode::Show_Only);
+					RECTANGLE rect = { { location.x + (int)DAUSACH_TOTAL_WIDTH + 1, y } , {DMS_TOTAL_WIDTH, 20} };
+					SetTextColor(BG_COLOR);
+					rect.Fill(BG_COLOR, BG_COLOR);
+					std::string temp = listISBN[currentLine].dsSach.PrintAll({ location.x + (int)DAUSACH_TOTAL_WIDTH + 1, y }, Menu_Mode::Show_Only);
 					//return listISBN[currentLine].isbn;
 
 				}
@@ -677,7 +681,6 @@ std::string LIST_DAUSACH::PrintAllSearch(MYPOINT location, std::string tenSach, 
 	}
 	return "";
 }
-
 // tim vi tri cua dau sach theo ISBN
 int LIST_DAUSACH::GetLocateDauSach(char isbn[ISBN_MAXSIZE + 1])
 {

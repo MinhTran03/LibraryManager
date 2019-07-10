@@ -43,6 +43,7 @@ const unsigned int VITRI_MAXSIZE = 5;
 const unsigned int MASACH_WIDTH = MASACH_MAXSIZE + 3;
 const unsigned int VITRI_WIDTH = VITRI_MAXSIZE + 3;
 const unsigned int TRANGTHAISACH_WIDTH = 16;
+const unsigned int DMS_TOTAL_WIDTH = MASACH_WIDTH + VITRI_WIDTH + TRANGTHAISACH_WIDTH + 4;
 #pragma endregion
 
 #pragma region Doc gia
