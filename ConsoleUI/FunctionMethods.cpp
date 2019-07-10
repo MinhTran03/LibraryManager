@@ -253,8 +253,9 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 							// xoa dong cuoi
 							SetTextColor(BG_COLOR);
 							SetBGColor(BG_COLOR);
-							GoToXY(locationListSach.x, menu.location.y - 1);
-							cout << emptyTemplate;
+							//GoToXY(locationListSach.x, menu.location.y - 1);
+							//cout << emptyTemplate;
+							ClearArea(locationListSach.x, menu.location.y - 1, DMS_TOTAL_WIDTH, 1);
 							// xoa menu
 							menu.ClearInHorizontal();
 							// show menu

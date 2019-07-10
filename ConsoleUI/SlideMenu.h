@@ -37,7 +37,12 @@ struct SLIDEMENUS
 				rootLine = rootMenu.ShowInVertical(GetKey_Only);
 			//rootMenu.ShowDisableModeInVertical();
 			// bo qua esc o root menu
-			if (rootLine == Key::ESC) continue;
+			if (rootLine == Key::ESC) 
+			{
+				rootLine = -1;
+				childLine = -1;
+				continue; 
+			}
 			// Thoat
 			if(rootLine == rootMenu.totalLine - 1) return { rootLine, -1 };
 			rootLine = rootMenu.currentLine;
