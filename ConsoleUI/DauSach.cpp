@@ -567,6 +567,117 @@ std::vector<DAUSACH> LIST_DAUSACH::FindBooks(std::string tenSach)
 	}
 	return result;
 }
+
+std::string LIST_DAUSACH::PrintAllSearch(MYPOINT location, std::string tenSach, Menu_Mode mode)
+{
+	int y = location.y;
+
+	Color hlBGColor = Color::Cyan;
+	Color hlTextColor = Color::White;
+	int currentLine = 0;
+	// dua vao vector de sort
+	std::vector<DAUSACH> listISBN = FindBooks(tenSach);
+	int totalLine = listISBN.size();
+	std::vector<std::string> datas;
+	std::vector<int> rows;
+	MYPOINT backUpLocation = MYPOINT(0, 0);
+
+	// print label
+
+	if (tenSach == "")
+	{
+		PrintLabelDauSach(location, totalLine);
+		location.y += 3;
+		backUpLocation = location;
+	}
+	else
+	{
+		if (mode == Menu_Mode::Show_Only || mode == Menu_Mode::Both)
+		{
+			PrintLabelDauSach(location, totalLine);
+			location.y += 3;
+			backUpLocation = location;
+			// print data
+
+			for (int i = 0; i < totalLine; i++)
+			{
+				listISBN[i].Print(location, BG_COLOR, TEXT_INPUT_COLOR);
+				// neu la dong dau tien thi hight light len
+				if (location.y == backUpLocation.y && mode == Menu_Mode::Both)
+				{
+					listISBN[i].Print(location, hlBGColor, hlTextColor);
+				}
+				// luu lai vi tri dong
+				rows.push_back(location.y++);
+				datas.push_back(listISBN[i].ToString());
+			}
+		}
+		// bat phim
+		if (mode == Menu_Mode::Both)
+		{
+			currentLine = 0;
+			char inputKey = NULL;
+			HidePointer();
+			do
+			{
+				inputKey = _getch();
+				if (inputKey == Key::_NULL) inputKey = _getch();
+				if (inputKey == -32)
+				{
+					inputKey = _getch();
+					if (inputKey == Key::UP)
+					{
+						if (currentLine > 0)
+						{
+							GoToXY(location.x, rows[currentLine]);
+							HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
+							GoToXY(location.x, rows[--currentLine]);
+							HightLight(datas[currentLine], hlBGColor, hlTextColor);
+						}
+						else
+						{
+							GoToXY(location.x, rows[currentLine]);
+							HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
+							currentLine = totalLine - 1;
+							GoToXY(location.x, rows[currentLine]);
+							HightLight(datas[currentLine], hlBGColor, hlTextColor);
+						}
+					}
+					else if (inputKey == Key::DOWN)
+					{
+						if (currentLine < totalLine - 1)
+						{
+							GoToXY(location.x, rows[currentLine]);
+							HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
+							GoToXY(location.x, rows[++currentLine]);
+							HightLight(datas[currentLine], hlBGColor, hlTextColor);
+						}
+						else
+						{
+							GoToXY(location.x, rows[currentLine]);
+							HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
+							currentLine = 0;
+							GoToXY(location.x, rows[currentLine]);
+							HightLight(datas[currentLine], hlBGColor, hlTextColor);
+						}
+					}
+				}
+				if (inputKey == Key::ENTER)
+				{
+					listISBN[currentLine].dsSach.PrintAll({ location.x + (int)DAUSACH_TOTAL_WIDTH + 1, y }, Menu_Mode::Show_Only);
+					//return listISBN[currentLine].isbn;
+
+				}
+				else if (inputKey == Key::ESC)
+				{
+					return "ESC";
+				}
+			} while (!_kbhit());
+		}
+	}
+	return "";
+}
+
 // tim vi tri cua dau sach theo ISBN
 int LIST_DAUSACH::GetLocateDauSach(char isbn[ISBN_MAXSIZE + 1])
 {

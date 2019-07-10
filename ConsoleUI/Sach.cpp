@@ -47,7 +47,7 @@ std::string SACH::ToString()
 	result += char(179);
 	return result;
 }
-// chuyen vector<string> vo obj Sach
+//c chuyen vector<string> vo obj Sach
 SACH ParseVectorString(std::vector<std::string> data)
 {
 	SACH sach;
