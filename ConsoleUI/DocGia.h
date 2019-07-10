@@ -31,3 +31,21 @@ struct NODE_DOCGIA
 	NODE_DOCGIA* pLeft;
 	NODE_DOCGIA* pRight;
 };
+typedef NODE_DOCGIA* LIST_DOCGIA;
+
+void FreeMemory(NODE_DOCGIA* root);
+
+// khoi toa cay
+void init(LIST_DOCGIA& cay);
+// them node
+void insert(LIST_DOCGIA& cay, DOCGIA input);
+// duyet cay
+void NLR(LIST_DOCGIA cay);
+// tim node
+NODE_DOCGIA* search(LIST_DOCGIA cay, DOCGIA input);
+void TimPhanTuTheMangTraiNhatCayConPhai(LIST_DOCGIA& p, LIST_DOCGIA& q);
+void TimpPhanTuTheMangPhaiNhatCayConTrai(LIST_DOCGIA& p, LIST_DOCGIA& q);
+// xoa 1 node la 
+void DeleteNode(LIST_DOCGIA& t, DOCGIA input);
+// them phan tu 
+void Add(LIST_DOCGIA& cay, DOCGIA input);

@@ -575,12 +575,13 @@ std::vector<DAUSACH> LIST_DAUSACH::FindBooks(std::string tenSach)
 // In tat ca Dau sach tim dc ra mh
 std::string LIST_DAUSACH::PrintAllSearch(MYPOINT location, std::string tenSach, Menu_Mode mode)
 {
+	int x = location.x + (int)DAUSACH_TOTAL_WIDTH + 1;
 	int y = location.y;
 
 	Color hlBGColor = Color::Cyan;
 	Color hlTextColor = Color::White;
 	int currentLine = 0;
-	// dua vao vector de sort
+	// dua vao vector
 	std::vector<DAUSACH> listISBN = FindBooks(tenSach);
 	int totalLine = listISBN.size();
 	std::vector<std::string> datas;
