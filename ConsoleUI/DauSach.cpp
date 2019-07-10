@@ -571,6 +571,7 @@ std::vector<DAUSACH> LIST_DAUSACH::FindBooks(std::string tenSach)
 // In tat ca Dau sach tim dc ra mh
 std::string LIST_DAUSACH::PrintAllSearch(MYPOINT location, std::string tenSach, Menu_Mode mode)
 {
+	int x = location.x + (int)DAUSACH_TOTAL_WIDTH + 1;
 	int y = location.y;
 
 	Color hlBGColor = Color::Cyan;
@@ -668,7 +669,7 @@ std::string LIST_DAUSACH::PrintAllSearch(MYPOINT location, std::string tenSach, 
 					RECTANGLE rect = { { location.x + (int)DAUSACH_TOTAL_WIDTH + 1, y } , {DMS_TOTAL_WIDTH, 20} };
 					SetTextColor(BG_COLOR);
 					rect.Fill(BG_COLOR, BG_COLOR);
-					std::string temp = listISBN[currentLine].dsSach.PrintAll({ location.x + (int)DAUSACH_TOTAL_WIDTH + 1, y }, Menu_Mode::Show_Only);
+					std::string temp = listISBN[currentLine].dsSach.PrintAll({ x, y }, Menu_Mode::Show_Only);
 					//return listISBN[currentLine].isbn;
 
 				}
