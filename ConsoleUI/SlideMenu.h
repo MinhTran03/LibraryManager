@@ -10,6 +10,7 @@ struct SLIDEMENUS
 	SLIDEMENUS(std::vector<std::vector<std::string>> childLabels, MENU rootMenu)
 		: childLabels(childLabels), rootMenu(rootMenu)
 	{
+		this->rootMenu.AddButton("THOAT");
 		this->rootMenu.selectColor = Color::Light_Magenta;
 	}
 	void SetupChildMenu(std::vector<MENU>& childMenus)
@@ -36,6 +37,8 @@ struct SLIDEMENUS
 				rootLine = rootMenu.ShowInVertical(GetKey_Only);
 			// bo qua esc o root menu
 			if (rootLine == Key::ESC) continue;
+			// Thoat
+			if(rootLine == rootMenu.totalLine - 1) return { rootLine, -1 };
 			rootLine = rootMenu.currentLine;
 			if (childLine != -1)
 				childMenus[rootLine].currentLine = childLine;

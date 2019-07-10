@@ -161,9 +161,10 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 // Func 1 2
 void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 {
-	MYPOINT locationDS = { 41,3 };
+	MYPOINT locationDS = { 41,2 };
 	auto locationBtn = locationDS;
 	locationBtn.x = 46;
+	locationBtn.y += 37;
 
 	auto locationListSach = locationDS;
 	locationListSach.x = 40;
@@ -183,15 +184,11 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 		auto isbnAsChar = StringToCharArray(isbn);
 		auto listSach = &listDS.GetDauSach(isbnAsChar)->dsSach;
 
-		menu.location.y = locationBtn.y + listSach->Size() + 4;
+		//menu.location.y = locationBtn.y + listSach->Size() + 4;
 		while (true)
 		{
 			// List danh muc sach
 			string maSach = listSach->PrintAll(locationListSach, Show_Only);
-			if (maSach == "ESC")
-			{
-				continue;
-			}
 
 			// hien button
 			int selectionMenu = menu.ShowInHorizontal(Both);
@@ -203,7 +200,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 				SACH* newSach = new SACH();
 				StringToCharArray(isbn, isbnAsChar);
 				string maSachAuto = listSach->AutoGenerateMaSach(isbnAsChar);
-				*newSach = newSach->Input({ {90, 3},{44,13} }, maSachAuto);
+				*newSach = newSach->Input({ {90, locationDS.y},{44,13} }, maSachAuto);
 				// nguoi dung an CANCEL
 				if (newSach->viTri[0] == '\0')
 				{
@@ -215,18 +212,34 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 					auto node = new NODE_SACH(*newSach);
 					listSach->AddTail(*node);
 					maSach = listSach->PrintAll(locationListSach, Show_Only);
-					menu.location.y++;
+					//menu.location.y++;
 				}
 			}
 			// Xoa
 			else if (selectionMenu == 1)
 			{
+				while (true)
+				{
+					maSach = listSach->PrintAll(locationListSach, Both);
+					if (maSach == "ESC")
+					{
+						break;
+					}
 
+				}
 			}
-			// SUa
+			// Sua
 			else if (selectionMenu == 2)
 			{
+				while (true)
+				{
+					maSach = listSach->PrintAll(locationListSach, Both);
+					if (maSach == "ESC")
+					{
+						break;
+					}
 
+				}
 			}
 			// thoat
 			else if (selectionMenu == Key::ESC)

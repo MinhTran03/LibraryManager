@@ -38,7 +38,9 @@ struct LIST_SACH
 	NODE_SACH* pHead;
 	NODE_SACH* pTail;
 
+	// kiem tra rong
 	bool IsEmpty();
+	// Duyet lay kich co cua ds Sach
 	int Size();
 	// in ra mh
 	std::string PrintAll(MYPOINT location, Menu_Mode mode);
@@ -51,4 +53,10 @@ struct LIST_SACH
 	std::string AutoGenerateMaSach(char isbn[ISBN_MAXSIZE + 1]);
 	// Them vao cuoi ds sach
 	void AddTail(NODE_SACH& node);
+	// Xoa node dau tien trong dslk
+	bool DeleteFirst();
+	// Xoa node sau 1 node p
+	bool DeleteAfter(NODE_SACH* beforeNode);
+	// Xoa 1 sach dua vao ma sach
+	bool Delete(std::string maSach);
 };

@@ -1,5 +1,12 @@
 #include "FunctionMethods.h"
 
+struct demo
+{
+	int size = 0;
+	DAUSACH* nodes[SODAUSACH_MAX];
+	std::vector<std::string> dsTheLoai;
+};
+
 int main()
 {
 	SetupConsole();
@@ -55,7 +62,7 @@ int main()
 				break;
 			}
 		}
-		else
+		else if (func[0] == 2)
 		{
 			if (func[1] == 0)
 			{
@@ -65,10 +72,14 @@ int main()
 			{
 
 			}
-			else
+			else if (func[1] == 2)
 			{
 
 			}
+		}
+		else
+		{
+			break;
 		}
 	}
 

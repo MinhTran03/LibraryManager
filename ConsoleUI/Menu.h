@@ -23,6 +23,12 @@ struct MENU
 		btnSize.width = MaxLengthTextLabels() + padding;
 	}
 
+	void AddButton(std::string btnText)
+	{
+		labels.push_back(btnText);
+		totalLine++;
+	}
+
 	int MaxLengthTextLabels()
 	{
 		size_t max = 0;

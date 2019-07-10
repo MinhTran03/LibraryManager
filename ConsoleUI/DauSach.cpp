@@ -63,7 +63,7 @@ DAUSACH InputFixDauSach(LIST_DAUSACH listDS, RECTANGLE rect, DAUSACH dauSach)
 	//DAUSACH dauSach = DAUSACH();
 	form.ParseData({ std::string(dauSach.isbn), dauSach.tenSach, std::to_string(dauSach.soTrang),
 				dauSach.tenTacGia, std::to_string(dauSach.namXuatBan), dauSach.tenTheLoai });
-
+	form.currentLine = 1;
 	while (true)
 	{
 		if (form.Show())

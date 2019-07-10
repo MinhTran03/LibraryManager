@@ -151,7 +151,7 @@ std::string LIST_SACH::PrintAll(MYPOINT location, Menu_Mode mode)
 	// print label
 	if (mode == Menu_Mode::Show_Only || mode == Menu_Mode::Both)
 	{
-		PrintLabelSach(location, totalLine);
+		PrintLabelSach(location, 33);
 		location.y += 3;
 		backUpLocation = location;
 		// print data
@@ -230,6 +230,7 @@ std::string LIST_SACH::PrintAll(MYPOINT location, Menu_Mode mode)
 	}
 	return "NULL";
 }
+// Delete sach
 void LIST_SACH::Deconstructor()
 {
 	while (this->pHead != NULL && this->pHead->pNext != NULL)
@@ -299,6 +300,33 @@ void LIST_SACH::AddTail(NODE_SACH& node)
 	{
 		this->pTail->pNext = &node;
 		this->pTail = &node;
+	}
+}
+// Xoa ptu dau tien trong dslk
+bool LIST_SACH::DeleteFirst()
+{
+	if (this->IsEmpty()) return false;
+	NODE_SACH* pNode;
+	pNode = this->pHead;
+	this->pHead = pNode->pNext;
+	delete pNode;
+	return true;
+}
+// Xoa node sau 1 node p
+bool LIST_SACH::DeleteAfter(NODE_SACH* beforeNode)
+{
+	return true;
+}
+// Delete sach dua vao ma sach
+bool LIST_SACH::Delete(std::string maSach)
+{
+	if (this->IsEmpty())
+	{
+		return false;
+	}
+	else
+	{
+		return true;
 	}
 }
 #pragma endregion
