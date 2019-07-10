@@ -1,4 +1,5 @@
 #include "FunctionMethods.h"
+#include "Displays.h"
 
 void SetupConsole()
 {
@@ -248,5 +249,33 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 				break;
 			}
 		}
+	}
+}
+//func 1 3
+void TimSach(LIST_DAUSACH& listDS, MYPOINT location)
+{
+
+	MYPOINT point = { 86, 2 };
+
+	while (true)
+	{
+		
+		bool isEnter = false;
+		bool isCancel = false;
+		std::string searchKey = "";
+		bool isTrue = false;
+		DrawMessageBox(point, "Nhap ten sach can tim:", searchKey, isEnter, isCancel, 219, Color::White, Color::Light_Blue, Color::Gray);
+		if (isEnter)
+		{
+			ClearScreen(BG_COLOR);
+			listDS.PrintFindBooks({ location.x + 10, location.y + 10 }, searchKey);
+			string selectedDauSach = listDS.PrintAllSearch({ location.x + 10, location.y + 10 }, searchKey, Menu_Mode::Both);
+		}
+		if (isCancel)
+		{
+			ClearScreen(BG_COLOR);
+			return;
+		}
+		
 	}
 }
