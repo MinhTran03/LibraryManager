@@ -96,35 +96,40 @@ void DrawButton(RECTANGLE rectangle, string text, char getChar, Color textColor,
 }
 void DrawMessageBox(MYPOINT point, string text, string& inputText, bool& isEnter, bool& isCancel, char getChar, Menu_Mode mode)
 {
-	RECTANGLE rect = RECTANGLE(point, { 40, 8 });;
-	for (int i = 0; i < rect.size.height; i++)
-	{
-		if (i == 0)
-		{
-			SetTextColor(Color::Blue);
-			GoToXY(rect.location.x, rect.location.y);
-			cout << std::string(rect.size.width, getChar);
-		}
-		else
-		{
-			SetTextColor(Color::Cyan);
-			GoToXY(rect.location.x, rect.location.y);
-			cout << std::string(rect.size.width, getChar);
-		}
-		rect.location.x = point.x;
-		rect.location.y++;
-	}
-	for (int i = 3; i < (rect.size.width - 3); i++)
-	{
-		GoToXY(point.x + i, point.y + rect.size.height / 2);
-		SetTextColor(TEXT_INPUT_COLOR);
-		SetBGColor(BG_COLOR);
-		cout << " ";
-	}
+	RECTANGLE rect = RECTANGLE(point, { 40, 8 });
 	SetTextColor(TEXT_INPUT_COLOR);
-	SetBGColor(Color::Cyan);
-	GoToXY(point.x + 10, point.y + 2);
-	cout << text;
+	if (mode != Menu_Mode::GetKey_Only)
+	{
+		for (int i = 0; i < rect.size.height; i++)
+		{
+			if (i == 0)
+			{
+				SetTextColor(Color::Blue);
+				GoToXY(rect.location.x, rect.location.y);
+				cout << std::string(rect.size.width, getChar);
+			}
+			else
+			{
+				SetTextColor(Color::Cyan);
+				GoToXY(rect.location.x, rect.location.y);
+				cout << std::string(rect.size.width, getChar);
+			}
+			rect.location.x = point.x;
+			rect.location.y++;
+		}
+		for (int i = 3; i < (rect.size.width - 3); i++)
+		{
+			GoToXY(point.x + i, point.y + rect.size.height / 2);
+			SetTextColor(TEXT_INPUT_COLOR);
+			SetBGColor(BG_COLOR);
+			cout << " ";
+		}
+		
+		SetBGColor(Color::Cyan);
+		GoToXY(point.x + 10, point.y + 2);
+		cout << text;
+	}
+
 	SetBGColor(BG_COLOR);
 	GoToXY(point.x + 4, point.y + rect.size.height / 2);
 	cout << inputText;
@@ -137,14 +142,14 @@ void DrawMessageBox(MYPOINT point, string text, string& inputText, bool& isEnter
 	char inputKey = NULL;
 	char inputKey1 = NULL;
 
-	if (mode != Both) return;
+	if (mode != Both && mode != GetKey_Only) return;
 	
 	while (1)
 	{
 		if (flag == 1)
 		{
 			DrawButton(noBox, "CANCEL", char(219), BUTTON_TEXT_COLOR, BUTTON_BG_COLOR);
-			GoToXY(point.x + 4, point.y + rect.size.height / 2);
+			GoToXY(point.x + 4 + inputText.size(), point.y + rect.size.height / 2);
 			SetTextColor(TEXT_INPUT_COLOR);
 			SetBGColor(BG_COLOR);
 			ShowPointer();
@@ -153,7 +158,7 @@ void DrawMessageBox(MYPOINT point, string text, string& inputText, bool& isEnter
 			{
 				do
 				{
-					Sleep(100);
+					//Sleep(100);
 					inputKey = _getch();
 					//GoToXY(point.x + 4, point.y + rect.size.height / 2);
 					if (inputKey == 0 || inputKey == -32)

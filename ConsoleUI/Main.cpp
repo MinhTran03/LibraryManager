@@ -1,14 +1,10 @@
 #include "FunctionMethods.h"
 
-struct demo
-{
-	int size = 0;
-	DAUSACH* nodes[SODAUSACH_MAX];
-	std::vector<std::string> dsTheLoai;
-};
-
 int main()
 {
+	ClearArea(1, 1, 10, 5);
+	_getch();
+
 	SetupConsole();
 	MYPOINT locationDS = { 1, 2 };
 
@@ -26,7 +22,7 @@ int main()
 	while (true)
 	{
 		func = SelectionFuntion(func[0], func[1]);
-		ClearScreen(BG_COLOR);
+		//ClearScreen(BG_COLOR);
 		if (func[0] == 0)
 		{
 			if (func[1] == 0)
@@ -63,6 +59,7 @@ int main()
 			else if (func[1] == 3)
 			{
 				TimSach(listDS, locationDS);
+				HidePointer();
 			}
 		}
 		else if (func[0] == 2)

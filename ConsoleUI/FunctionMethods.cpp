@@ -8,7 +8,11 @@ void SetupConsole()
 	SetBGColor(BG_COLOR);
 	ClearScreen(BG_COLOR);
 }
-
+void NormalColor()
+{
+	SetTextColor(BG_COLOR);
+	SetBGColor(BG_COLOR);
+}
 vector<int> SelectionFuntion(int rootLine, int childLine)
 {
 	MENU menu = MENU({ "QUAN LY DOC GIA", "QUAN LY DAU SACH", "QUAN LY SACH" }, { 0, 3 });
@@ -17,6 +21,7 @@ vector<int> SelectionFuntion(int rootLine, int childLine)
 		{"HIEN THI DAU SACH", "CAP NHAT DAU SACH", "CAP NHAT DANH MUC SACH", "TIM SACH"},
 		{"CHUA LAM", "CHUA LAM", "CHUA LAM"} }, menu);
 	auto selection = slide.Show(rootLine, childLine);
+	slide.Clear();
 	//slide.Clear();
 	/*GoToXY(0, 0);
 	cout << menu.labels[selection[0]] << " ==> " << slide.childLabels[selection[0]][selection[1]];*/
@@ -28,7 +33,7 @@ void HienThiDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 	string result = listDS.PrintAllTheLoai(location);
 	if (result == "ESC")
 	{
-		ClearScreen(BG_COLOR);
+		//ClearScreen(BG_COLOR);
 	}
 }
 // Func 1 1
@@ -72,18 +77,6 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 				{
 					selectedISBN = listDS.PrintAll(location);
 				}
-				//else
-				//{
-				//	GoToXY(0, 0);
-				//	SetTextColor(WARNING_TEXT_COLOR);
-				//	cout << "ISBN da ton tai";
-				//	/*auto tempLoc = location;
-				//	tempLoc.x += 10;
-				//	tempLoc.y += 5;
-				//	auto messageBox = CONFIRMDIALOG(tempLoc);
-				//	messageBox.Show("ISBN da ton tai", DialogResult::OK_Cancel);*/
-				//	// load lai form
-				//}
 			}
 		}
 		// Xoa
@@ -91,6 +84,13 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 		{
 			while (true)
 			{
+				// Het dau sach
+				if (listDS.size == 0)
+				{
+					selectedISBN = listDS.PrintAll(location, Show_Only);
+					break;
+				}
+				
 				selectedISBN = listDS.PrintAll(location, Menu_Mode::Both);
 				isbnAsArr = StringToCharArray(selectedISBN);
 				if (selectedISBN == "ESC")
@@ -114,6 +114,8 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 					// dong y xoa
 					if (confirm.result == Yes)
 					{
+						// chua kiem tra co duoc xoa hay khong???
+						// ...
 						listDS.DeleteDauSach(isbnAsArr);
 						SetBGColor(BG_COLOR);
 						GoToXY(location.x, listDS.size + location.y + 3);
@@ -127,6 +129,10 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 		{
 			while (true)
 			{
+				if (listDS.size == 0)
+				{
+					break;
+				}
 				selectedISBN = listDS.PrintAll(location, Menu_Mode::Both);
 				isbnAsArr = StringToCharArray(selectedISBN);
 				if (selectedISBN == "ESC")
@@ -196,10 +202,11 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 
 			// hien button
 			int selectionMenu = menu.ShowInHorizontal(Both);
-			menu.ShowDisableModeInHorizontal();
+
 			// them
 			if (selectionMenu == 0)
 			{
+				menu.ShowDisableModeInHorizontal();
 				// Form nhap sach moi
 				SACH* newSach = new SACH();
 				StringToCharArray(isbn, isbnAsChar);
@@ -224,12 +231,37 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 			{
 				while (true)
 				{
+					// Het sach
+					if (listSach->Size() == 0)
+						break;
+					menu.ShowDisableModeInHorizontal();
 					maSach = listSach->PrintAll(locationListSach, Both);
 					if (maSach == "ESC")
 					{
 						break;
 					}
-
+					auto confirm = CONFIRMDIALOG({ locationListSach.x + 3, locationListSach.y + 2 });
+					confirm.Show("Ban chac chan muon xoa?", Yes_No);
+					confirm.Clear();
+					// dong y xoa
+					if (confirm.result == Yes)
+					{
+						// chua kiem tra dieu kien xoa sach
+						// ...
+						if (listSach->Delete(maSach))
+						{
+							// xoa dong cuoi
+							SetTextColor(BG_COLOR);
+							SetBGColor(BG_COLOR);
+							GoToXY(locationListSach.x, menu.location.y - 1);
+							cout << emptyTemplate;
+							// xoa menu
+							menu.ClearInHorizontal();
+							// show menu
+							menu.location.y--;
+							
+						}
+					}
 				}
 			}
 			// Sua
@@ -237,12 +269,20 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 			{
 				while (true)
 				{
+					// Het sach
+					if (listSach->Size() == 0)
+						break;
+					menu.ShowDisableModeInHorizontal();
 					maSach = listSach->PrintAll(locationListSach, Both);
 					if (maSach == "ESC")
 					{
 						break;
 					}
-
+					else
+					{
+						auto nodeFix = listSach->Search(maSach);
+						nodeFix->data = nodeFix->data.InputFix({ {90, locationDS.y},{44,13} });
+					}
 				}
 			}
 			// thoat
@@ -258,14 +298,17 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 void TimSach(LIST_DAUSACH& listDS, MYPOINT location)
 {
 	MYPOINT point = { 66, 2 };
-
+	bool isEnter = false;
+	bool isCancel = false;
+	bool isTrue = false;
+	std::string searchKey = "";
+	DrawMessageBox(point, "NHAP TEN SACH CAN TIM", searchKey, isEnter, isCancel, char(219), Show_Only);
 	while (true)
 	{
-		bool isEnter = false;
-		bool isCancel = false;
-		std::string searchKey = "";
-		bool isTrue = false;
-		DrawMessageBox(point, "NHAP TEN SACH CAN TIM", searchKey, isEnter, isCancel, char(219), Both);
+		isEnter = false;
+		isCancel = false;
+		isTrue = false;
+		DrawMessageBox(point, "NHAP TEN SACH CAN TIM", searchKey, isEnter, isCancel, char(219), GetKey_Only);
 		if (isEnter)
 		{
 			ClearScreen(BG_COLOR);

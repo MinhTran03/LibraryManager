@@ -18,6 +18,7 @@ struct SACH
 
 	// hien form nhap SACH
 	SACH Input(RECTANGLE rect, std::string maSach);
+	SACH InputFix(RECTANGLE rect);
 	// in ra node
 	void Print(MYPOINT location, Color bgSelectColor, Color textColor);
 	// chen | giua cac field
@@ -54,6 +55,8 @@ struct LIST_SACH
 	std::string AutoGenerateMaSach(char isbn[ISBN_MAXSIZE + 1]);
 	// Them vao cuoi ds sach
 	void AddTail(NODE_SACH& node);
+	// Tim sach theo ma
+	NODE_SACH* Search(std::string maSach);
 	// Xoa node dau tien trong dslk
 	bool DeleteFirst();
 	// Xoa node sau 1 node p

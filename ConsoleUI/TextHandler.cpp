@@ -188,3 +188,12 @@ std::string ToLowerString(std::string text)
 	}
 	return result;
 }
+std::string ToUpperString(std::string text)
+{
+	std::string result = text;
+	for (char& c : result)
+	{
+		c = toupper(c);
+	}
+	return result;
+}
