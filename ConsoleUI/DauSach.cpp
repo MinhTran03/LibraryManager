@@ -61,8 +61,8 @@ DAUSACH InputFixDauSach(LIST_DAUSACH listDS, RECTANGLE rect, DAUSACH dauSach)
 													{Name, 1, TENTACGIA_MAXSIZE},{Year, 4, 4},{Word_Only, 1, TENTHELOAI_MAXSIZE} };
 	auto form = FORMINPUT(labels, conditions, rect, inputTitle);
 	//DAUSACH dauSach = DAUSACH();
-	form.ParseData({std::string(dauSach.isbn), dauSach.tenSach, std::to_string(dauSach.soTrang), 
-				dauSach.tenTacGia, std::to_string(dauSach.namXuatBan), dauSach.tenTheLoai});
+	form.ParseData({ std::string(dauSach.isbn), dauSach.tenSach, std::to_string(dauSach.soTrang),
+				dauSach.tenTacGia, std::to_string(dauSach.namXuatBan), dauSach.tenTheLoai });
 
 	while (true)
 	{
@@ -413,22 +413,11 @@ void LIST_DAUSACH::PrintFindBooks(MYPOINT location, std::string tenSach)
 	backUpLocation = location;
 	int found = 0;
 	// print data
-	for (int i = 0; i < this->size; i++)
+	for (int i = 0; i < totalLine; i++)
 	{
-		if (found < totalLine)
-		{
-			char temp[ISBN_MAXSIZE + 1];
-			StringToCharArray(listISBN[found], temp);
-			if (strcmp(this->nodes[i]->isbn, temp) == 0)
-			{
-				this->nodes[i]->Print(location, BG_COLOR, TEXT_INPUT_COLOR);
-				location.y++;
-				found++;
-			}
-		}
+		listISBN[i].Print(location, BG_COLOR, TEXT_INPUT_COLOR);
+		location.y++;
 	}
-
-
 }
 #pragma endregion
 
@@ -534,44 +523,43 @@ bool LIST_DAUSACH::Insert(DAUSACH& node, int index)
 	return true;
 }
 // tim theo ten sach
-std::vector<std::string> LIST_DAUSACH::FindBooks(std::string tenSach)
+std::vector<DAUSACH> LIST_DAUSACH::FindBooks(std::string tenSach)
 {
-	std::vector<std::string> result;
-	std::string toLowerName = ToLowerString(tenSach);
-	std::vector<std::string> listKey = Split(toLowerName, " ");
+	std::vector<DAUSACH> result;
+	if (tenSach != "")
+	{
+		std::string toLowerName = ToLowerString(tenSach);
+		std::vector<std::string> listKey = Split(toLowerName, " ");
 
-	for (int i = 0; i < this->size; i++)
-	{
-		std::string toLowerTenSach = ToLowerString(this->nodes[i]->tenSach);
-		size_t found = toLowerTenSach.find(toLowerName);
-		if (found != std::string::npos)
-		{
-			result.push_back(this->nodes[i]->isbn);
-		}
-	}
-	for (size_t j = 0; j < listKey.size(); j++)
-	{
 		for (int i = 0; i < this->size; i++)
 		{
 			std::string toLowerTenSach = ToLowerString(this->nodes[i]->tenSach);
-			size_t found = toLowerTenSach.find(listKey[j]);
-			if (found != std::string::npos || toLowerTenSach == listKey[j])
+			size_t found = toLowerTenSach.find(toLowerName);
+			if (found != std::string::npos)
 			{
-				int dem = 0;
-				for (size_t k = 0; k < result.size(); k++)
+				result.push_back(*this->nodes[i]);
+			}
+		}
+		for (size_t j = 0; j < listKey.size(); j++)
+		{
+			for (int i = 0; i < this->size; i++)
+			{
+				std::string toLowerTenSach = ToLowerString(this->nodes[i]->tenSach);
+				size_t found = toLowerTenSach.find(listKey[j]);
+				if (found != std::string::npos || toLowerTenSach == listKey[j])
 				{
-					std::string temp = this->nodes[i]->isbn;
-					if (result[k] == temp)
+					int dem = 0;
+					for (size_t k = 0; k < result.size(); k++)
 					{
-						dem++;
-					}
-					else
-					{
-						if (dem == 0)
+						std::string temp = this->nodes[i]->isbn;
+						if (result[k].isbn == temp)
 						{
-							result.push_back(this->nodes[i]->isbn);
 							dem++;
 						}
+					}
+					if (dem == 0)
+					{
+						result.push_back(*this->nodes[i]);
 					}
 				}
 			}

@@ -24,6 +24,7 @@
     <ClInclude Include="Database.h" />
     <ClInclude Include="DateTime.h" />
     <ClInclude Include="DauSach.h" />
+    <ClInclude Include="Displays.h" />
     <ClInclude Include="DocGia.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="FileHandler.h" />
@@ -41,6 +42,7 @@
     <ClCompile Include="CheckChar.cpp" />
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="DauSach.cpp" />
+    <ClCompile Include="Displays.cpp" />
     <ClCompile Include="DocGia.cpp" />
     <ClCompile Include="FunctionMethods.cpp" />
     <ClCompile Include="Graphics.cpp" />

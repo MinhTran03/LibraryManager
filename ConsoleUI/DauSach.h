@@ -55,7 +55,7 @@ struct LIST_DAUSACH
 	// Lay dau sach dua vao ten the loai
 	std::vector<DAUSACH> GetTheLoai(std::string tenTheLoai);
 	// in sach theo ten sach (chua xong)
-	std::vector<std::string> FindBooks(std::string tenSach);
+	std::vector<DAUSACH> FindBooks(std::string tenSach);
 	// tim vi tri cua dau sach theo isbn
 	int GetLocateDauSach(char isbn[ISBN_MAXSIZE + 1]);
 	// Xoa 1 dau sach dua vao ISBN

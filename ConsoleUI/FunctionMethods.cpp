@@ -195,6 +195,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 
 			// hien button
 			int selectionMenu = menu.ShowInHorizontal(Both);
+			menu.ShowDisableModeInHorizontal();
 			// them
 			if (selectionMenu == 0)
 			{

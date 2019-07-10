@@ -87,6 +87,9 @@
     <ClInclude Include="DocGia.h">
       <Filter>Models\Header FIles</Filter>
     </ClInclude>
+    <ClInclude Include="Displays.h">
+      <Filter>Library\Header FIles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TextHandler.cpp">
@@ -115,6 +118,9 @@
     </ClCompile>
     <ClCompile Include="DocGia.cpp">
       <Filter>Models\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Displays.cpp">
+      <Filter>Library\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
