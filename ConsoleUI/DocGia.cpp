@@ -83,61 +83,61 @@ void FreeMemory(NODE_DOCGIA* root)
 	FreeMemory(root);
 }
 // khoi toa cay
-void Init(LIST_DOCGIA& cay)
+void Init(LIST_DOCGIA& lstDG)
 {
-	cay = NULL;
+	lstDG = NULL;
 }
 // them node
-void Insert(LIST_DOCGIA& cay, DOCGIA input)
+void Insert(LIST_DOCGIA& lstDG, DOCGIA input)
 {
-	if (cay == NULL)
+	if (lstDG == NULL)
 	{
 		NODE_DOCGIA* p = new NODE_DOCGIA;
 		p->data = input;
 		p->pLeft = p->pRight = NULL;
-		cay = p;
+		lstDG = p;
 	}
 	else
 	{
-		if (cay->data.maDocGia > input.maDocGia)
+		if (lstDG->data.maDocGia > input.maDocGia)
 		{
-			Insert(cay->pLeft, input);
+			Insert(lstDG->pLeft, input);
 		}
-		else if (cay->data.maDocGia < input.maDocGia)
+		else if (lstDG->data.maDocGia < input.maDocGia)
 		{
-			Insert(cay->pRight, input);
+			Insert(lstDG->pRight, input);
 		}
 	}
 }
 
-void NLR(LIST_DOCGIA cay)
+void NLR(LIST_DOCGIA lstDG)
 {
-	if (cay != NULL)
+	if (lstDG != NULL)
 	{
-		NLR(cay->pLeft);
-		NLR(cay->pRight);
+		NLR(lstDG->pLeft);
+		NLR(lstDG->pRight);
 	}
 }
 
-NODE_DOCGIA* Search(LIST_DOCGIA cay, DOCGIA input)
+NODE_DOCGIA* Search(LIST_DOCGIA lstDG, DOCGIA input)
 {
-	if (cay == NULL)
+	if (lstDG == NULL)
 	{
 		return NULL;
 	}
 	else
 	{
-		if (cay->data.maDocGia > input.maDocGia)
+		if (lstDG->data.maDocGia > input.maDocGia)
 		{
-			Search(cay->pLeft, input);
+			Search(lstDG->pLeft, input);
 		}
-		else if (cay->data.maDocGia < input.maDocGia)
+		else if (lstDG->data.maDocGia < input.maDocGia)
 		{
-			Search(cay->pRight, input);
+			Search(lstDG->pRight, input);
 		}
 		else
 		{
-			return cay;
+			return lstDG;
 		}
 	}
 	return NULL;
@@ -171,39 +171,39 @@ void TimpPhanTuTheMangPhaiNhatCayConTrai(LIST_DOCGIA& p, LIST_DOCGIA& q)
 	}
 }
 // xoa 1 node la 
-void DeleteNode(LIST_DOCGIA& t, DOCGIA input)
+void DeleteNode(LIST_DOCGIA& lstDG, DOCGIA input)
 {
-	if (t == NULL)
+	if (lstDG == NULL)
 	{
 		return;
 	}
 	else
 	{
-		if (t->data.maDocGia > input.maDocGia)
+		if (lstDG->data.maDocGia > input.maDocGia)
 		{
-			DeleteNode(t->pLeft, input);
+			DeleteNode(lstDG->pLeft, input);
 		}
-		else if (t->data.maDocGia < input.maDocGia)
+		else if (lstDG->data.maDocGia < input.maDocGia)
 		{
-			DeleteNode(t->pRight, input);
+			DeleteNode(lstDG->pRight, input);
 		}
 		else
 		{
-			NODE_DOCGIA* p = t;
-			if (t->pLeft == NULL)
+			NODE_DOCGIA* p = lstDG;
+			if (lstDG->pLeft == NULL)
 			{
-				t = t->pRight;
+				lstDG = lstDG->pRight;
 			}
-			else if (t->pRight == NULL)
+			else if (lstDG->pRight == NULL)
 			{
-				t = t->pLeft;
+				lstDG = lstDG->pLeft;
 			}
 			else
 			{
 				// cach 1 tim phan tu trai nhat cay con phai 
 				//timphantuthemangtrainhatcayconphai(p, t->pright);
 				//cach 2 tìm phan tu tha mang phai nhat cay con trai
-				TimpPhanTuTheMangPhaiNhatCayConTrai(p, t->pLeft);
+				TimpPhanTuTheMangPhaiNhatCayConTrai(p, lstDG->pLeft);
 			}
 			delete p;
 		}
@@ -211,44 +211,7 @@ void DeleteNode(LIST_DOCGIA& t, DOCGIA input)
 
 }
 
-void Add(LIST_DOCGIA& cay, DOCGIA input)
-{
-	if (cay == NULL)
-	{
-		NODE_DOCGIA* p = new NODE_DOCGIA;
-		p->data = input;
-		p->pLeft = p->pRight = NULL;
-		cay = p;
-	}
-	else
-	{
-		if (cay->data.maDocGia > input.maDocGia)
-		{
-			Add(cay->pLeft, input);
-		}
-		else if (cay->data.maDocGia < input.maDocGia)
-		{
-			Add(cay->pRight, input);
-		}
-		else
-		{
-			NODE_DOCGIA* l = new NODE_DOCGIA;
-			if (cay->pLeft == NULL)
-			{
-				cay->data = input;
-				cay = cay->pRight;
-
-			}
-			else if (cay->pRight == NULL)
-			{
-				cay->data = input;
-				cay = cay->pLeft;
-			}
-		}
-	}
-}
-
-DOCGIA InputDocGia(LIST_DOCGIA listDS, int maThe, RECTANGLE rect)
+DOCGIA InputDocGia(int maThe, RECTANGLE rect)
 {
 	std::vector<std::string> labels = { "Ma doc gia:","Ho:","Ten:","Gioi tinh:", "Trang thai the:" };
 	std::string inputTitle = "NHAP THONG TIN DOC GIA";

@@ -11,11 +11,7 @@ int main()
 
 	LIST_DOCGIA listDG = LIST_DOCGIA();
 	LoadDocGia(listDG);
-	DOCGIA dg;
-	dg = InputDocGia(listDG, 1, { {0,2},{50, 17} });
-
-	_getch();
-
+	
 	// load dau sach
 	auto listDS = LIST_DAUSACH();
 	LoadDauSach(listDS);
@@ -96,6 +92,7 @@ int main()
 		listDS.nodes[i]->dsSach.Deconstructor();
 	}
 	listDS.Deconstructor();
+	FreeMemory(listDG);
 
 	SetTextColor(TEXT_INPUT_COLOR);
 	SetBGColor(BG_COLOR);

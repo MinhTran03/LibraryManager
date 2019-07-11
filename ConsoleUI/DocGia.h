@@ -40,7 +40,7 @@ bool ReadFromFile(LIST_DOCGIA& listDG,std::string path);
 DOCGIA ParseVectorString(std::vector<std::string> data);
 
 void FreeMemory(NODE_DOCGIA* root);
-DOCGIA InputDocGia(LIST_DOCGIA listDS, int maThe, RECTANGLE rect);
+DOCGIA InputDocGia(int maThe, RECTANGLE rect);
 // khoi toa cay
 void Init(LIST_DOCGIA& cay);
 // them node
@@ -53,7 +53,3 @@ void TimPhanTuTheMangTraiNhatCayConPhai(LIST_DOCGIA& p, LIST_DOCGIA& q);
 void TimpPhanTuTheMangPhaiNhatCayConTrai(LIST_DOCGIA& p, LIST_DOCGIA& q);
 // xoa 1 node la 
 void DeleteNode(LIST_DOCGIA& t, DOCGIA input);
-// them phan tu 
-void Add(LIST_DOCGIA& cay, DOCGIA input);
-// Kiem tra ma doc gia co bi trung hay chua
-//bool IsContainMADOCGIA(LIST_DOCGIA listDG, int maDocGia);
