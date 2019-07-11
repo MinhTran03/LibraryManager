@@ -1,16 +1,16 @@
 #include "FunctionMethods.h"
-
-struct demo
-{
-	int size = 0;
-	DAUSACH* nodes[SODAUSACH_MAX];
-	std::vector<std::string> dsTheLoai;
-};
+#include "DocGia.h"
 
 int main()
 {
 	SetupConsole();
 	MYPOINT locationDS = { 1, 2 };
+
+	LIST_DOCGIA listDG = LIST_DOCGIA();
+	DOCGIA dg;
+	dg = InputDocGia(listDG, 1, { {0,2},{50, 17} });
+
+	_getch();
 
 	// load dau sach
 	auto listDS = LIST_DAUSACH();

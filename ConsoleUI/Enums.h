@@ -68,7 +68,8 @@ enum WordType
 	BirthDay,
 	Year,
 	All,
-	Enum
+	Enum,
+	Enum2
 };
 
 enum DialogResult

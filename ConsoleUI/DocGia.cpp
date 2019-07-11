@@ -1,5 +1,30 @@
 #include "DocGia.h"
 
+DOCGIA ParseVectorString(std::vector<std::string> data)
+{
+	DOCGIA docGia;// = new DOCGIA;
+	docGia.maDocGia = atoi(StringToCharArray(data[0]));
+	docGia.ho = data[1];
+	docGia.ten = data[2];
+	if (data[3] == "0")
+	{
+		docGia.gioiTinh = Nam;
+	}
+	else
+	{
+		docGia.gioiTinh = Nu;
+	}
+	if (data[4] == "1")
+	{
+		docGia.trangThai = DangHoatDong;
+	}
+	else
+	{
+		docGia.trangThai = TheBiKhoa;
+	}
+	return docGia;
+}
+
 void FreeMemory(NODE_DOCGIA* root)
 {
 	if (root == NULL)
@@ -9,12 +34,12 @@ void FreeMemory(NODE_DOCGIA* root)
 	FreeMemory(root);
 }
 // khoi toa cay
-void init(LIST_DOCGIA& cay)
+void Init(LIST_DOCGIA& cay)
 {
 	cay = NULL;
 }
-
-void insert(LIST_DOCGIA& cay, DOCGIA input)
+// them node
+void Insert(LIST_DOCGIA& cay, DOCGIA input)
 {
 	if (cay == NULL)
 	{
@@ -27,11 +52,11 @@ void insert(LIST_DOCGIA& cay, DOCGIA input)
 	{
 		if (cay->data.maDocGia > input.maDocGia)
 		{
-			insert(cay->pLeft, input);
+			Insert(cay->pLeft, input);
 		}
 		else if (cay->data.maDocGia < input.maDocGia)
 		{
-			insert(cay->pRight, input);
+			Insert(cay->pRight, input);
 		}
 	}
 }
@@ -66,6 +91,7 @@ NODE_DOCGIA* search(LIST_DOCGIA cay, DOCGIA input)
 			return cay;
 		}
 	}
+	return NULL;
 }
 
 void TimPhanTuTheMangTraiNhatCayConPhai(LIST_DOCGIA& p, LIST_DOCGIA& q)
@@ -171,4 +197,24 @@ void Add(LIST_DOCGIA& cay, DOCGIA input)
 			}
 		}
 	}
+}
+
+DOCGIA InputDocGia(LIST_DOCGIA listDS, int maThe, RECTANGLE rect)
+{
+	std::vector<std::string> labels = { "Ma doc gia:","Ho:","Ten:","Gioi tinh:", "Trang thai the:" };
+	std::string inputTitle = "NHAP THONG TIN DOC GIA";
+	std::vector<CONDITION> conditions = { {Number_Only, 1, 4, Default}, {Name, 1, HO_MAXSIZE},{Name, 1, TENDOCGIA_MAXSIZE},
+													{Enum, 1, 2 },{Enum2, 1, 2, Default} };
+	auto form = FORMINPUT(labels, conditions, rect, inputTitle);
+	DOCGIA docGia = DOCGIA();
+	form.ParseData({ std::to_string(maThe), "","","0","1" });
+	if (form.Show(1, 4))
+	{
+		return ParseVectorString(form.OutputResults);
+	}
+	else
+	{
+		form.ResetOutput();
+	}
+	return docGia;
 }

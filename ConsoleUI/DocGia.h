@@ -1,5 +1,7 @@
 #pragma once
 #include "MuonTra.h"
+#include "TextHandler.h"
+#include "Displays.h"
 
 enum GioiTinh
 {
@@ -15,7 +17,7 @@ enum TrangThaiTheDG
 struct DOCGIA
 {
 	// 0001 ... 9999
-	char maDocGia[MADOCGIA_MAXKYTU + 1];
+	int maDocGia;
 	std::string ho;
 	std::string ten;
 	GioiTinh gioiTinh;
@@ -33,12 +35,14 @@ struct NODE_DOCGIA
 };
 typedef NODE_DOCGIA* LIST_DOCGIA;
 
-void FreeMemory(NODE_DOCGIA* root);
+DOCGIA ParseVectorString(std::vector<std::string> data);
 
+void FreeMemory(NODE_DOCGIA* root);
+DOCGIA InputDocGia(LIST_DOCGIA listDS, int maThe, RECTANGLE rect);
 // khoi toa cay
-void init(LIST_DOCGIA& cay);
+void Init(LIST_DOCGIA& cay);
 // them node
-void insert(LIST_DOCGIA& cay, DOCGIA input);
+void Insert(LIST_DOCGIA& cay, DOCGIA input);
 // duyet cay
 void NLR(LIST_DOCGIA cay);
 // tim node
@@ -49,3 +53,5 @@ void TimpPhanTuTheMangPhaiNhatCayConTrai(LIST_DOCGIA& p, LIST_DOCGIA& q);
 void DeleteNode(LIST_DOCGIA& t, DOCGIA input);
 // them phan tu 
 void Add(LIST_DOCGIA& cay, DOCGIA input);
+// Kiem tra ma doc gia co bi trung hay chua
+//bool IsContainMADOCGIA(LIST_DOCGIA listDG, int maDocGia);
