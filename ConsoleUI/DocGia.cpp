@@ -9,12 +9,12 @@ void FreeMemory(NODE_DOCGIA* root)
 	FreeMemory(root);
 }
 // khoi toa cay
-void init(LIST_DOCGIA& cay)
+void Init(LIST_DOCGIA& cay)
 {
 	cay = NULL;
 }
 
-void insert(LIST_DOCGIA& cay, DOCGIA input)
+void Insert(LIST_DOCGIA& cay, DOCGIA input)
 {
 	if (cay == NULL)
 	{
@@ -27,11 +27,11 @@ void insert(LIST_DOCGIA& cay, DOCGIA input)
 	{
 		if (cay->data.maDocGia > input.maDocGia)
 		{
-			insert(cay->pLeft, input);
+			Insert(cay->pLeft, input);
 		}
 		else if (cay->data.maDocGia < input.maDocGia)
 		{
-			insert(cay->pRight, input);
+			Insert(cay->pRight, input);
 		}
 	}
 }
@@ -45,7 +45,7 @@ void NLR(LIST_DOCGIA cay)
 	}
 }
 
-NODE_DOCGIA* search(LIST_DOCGIA cay, DOCGIA input)
+NODE_DOCGIA* Search(LIST_DOCGIA cay, DOCGIA input)
 {
 	if (cay == NULL)
 	{
@@ -55,11 +55,11 @@ NODE_DOCGIA* search(LIST_DOCGIA cay, DOCGIA input)
 	{
 		if (cay->data.maDocGia > input.maDocGia)
 		{
-			search(cay->pLeft, input);
+			Search(cay->pLeft, input);
 		}
 		else if (cay->data.maDocGia < input.maDocGia)
 		{
-			search(cay->pRight, input);
+			Search(cay->pRight, input);
 		}
 		else
 		{

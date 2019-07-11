@@ -36,13 +36,13 @@ typedef NODE_DOCGIA* LIST_DOCGIA;
 void FreeMemory(NODE_DOCGIA* root);
 
 // khoi toa cay
-void init(LIST_DOCGIA& cay);
+void Init(LIST_DOCGIA& cay);
 // them node
-void insert(LIST_DOCGIA& cay, DOCGIA input);
+void Insert(LIST_DOCGIA& cay, DOCGIA input);
 // duyet cay
 void NLR(LIST_DOCGIA cay);
 // tim node
-NODE_DOCGIA* search(LIST_DOCGIA cay, DOCGIA input);
+NODE_DOCGIA* Search(LIST_DOCGIA cay, DOCGIA input);
 void TimPhanTuTheMangTraiNhatCayConPhai(LIST_DOCGIA& p, LIST_DOCGIA& q);
 void TimpPhanTuTheMangPhaiNhatCayConTrai(LIST_DOCGIA& p, LIST_DOCGIA& q);
 // xoa 1 node la 
