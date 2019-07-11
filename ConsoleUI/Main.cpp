@@ -9,9 +9,9 @@ int main()
 	SetupConsole();
 	MYPOINT locationDS = { 1, 2 };
 
-	LIST_DOCGIA listDG = LIST_DOCGIA();
+	/*LIST_DOCGIA listDG = LIST_DOCGIA();
 	DOCGIA dg;
-	dg = InputDocGia(listDG, 1, { {0,2},{50, 17} });
+	dg = InputDocGia(listDG, 1, { {0,2},{50, 17} });*/
 
 	_getch();
 
