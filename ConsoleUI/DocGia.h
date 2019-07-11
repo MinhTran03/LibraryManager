@@ -35,6 +35,8 @@ struct NODE_DOCGIA
 };
 typedef NODE_DOCGIA* LIST_DOCGIA;
 
+bool ReadFromFile(LIST_DOCGIA& listDG,std::string path);
+
 DOCGIA ParseVectorString(std::vector<std::string> data);
 
 void FreeMemory(NODE_DOCGIA* root);

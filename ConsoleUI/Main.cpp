@@ -9,6 +9,13 @@ int main()
 	SetupConsole();
 	MYPOINT locationDS = { 1, 2 };
 
+	LIST_DOCGIA listDG = LIST_DOCGIA();
+	LoadDocGia(listDG);
+	DOCGIA dg;
+	dg = InputDocGia(listDG, 1, { {0,2},{50, 17} });
+
+	_getch();
+
 	// load dau sach
 	auto listDS = LIST_DAUSACH();
 	LoadDauSach(listDS);
