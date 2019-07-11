@@ -17,7 +17,10 @@ void NormalColor()
 
 void MakeFlickWarning(MYPOINT location, std::string text)
 {
-	GoToXY(location.x, location.y);
+	int x = location.x - 50;
+	int y = location.y + 10;
+
+	GoToXY(x, y);
 	SetBGColor(BG_COLOR);
 	SetTextColor(WARNING_TEXT_COLOR);
 	cout << text;
@@ -38,6 +41,12 @@ vector<int> SelectionFuntion(int rootLine, int childLine)
 	cout << menu.labels[selection[0]] << " ==> " << slide.childLabels[selection[0]][selection[1]];*/
 	return selection;
 }
+// Func 0 0
+void QuanLiDocGia(LIST_DAUSACH& listDS, MYPOINT location)
+{
+
+}
+
 // Func 1 0
 void HienThiDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 {

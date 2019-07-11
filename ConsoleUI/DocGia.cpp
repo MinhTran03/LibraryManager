@@ -213,7 +213,7 @@ void DeleteNode(LIST_DOCGIA& lstDG, DOCGIA input)
 
 DOCGIA InputDocGia(int maThe, RECTANGLE rect)
 {
-	std::vector<std::string> labels = { "Ma doc gia:","Ho:","Ten:","Gioi tinh:", "Trang thai the:" };
+	std::vector<std::string> labels = { "Ma doc gia:", "Ho:", "Ten:", "Gioi tinh:", "Trang thai the:" };
 	std::string inputTitle = "NHAP THONG TIN DOC GIA";
 	std::vector<CONDITION> conditions = { {Number_Only, 1, 4, Default}, {Name, 1, HO_MAXSIZE},{Name, 1, TENDOCGIA_MAXSIZE},
 													{Enum, 1, 2 },{Enum2, 1, 2, Default} };
