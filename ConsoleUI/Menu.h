@@ -51,6 +51,7 @@ struct MENU
 	{
 		for (auto item : btns)
 		{
+			//Sleep(15);
 			item.Draw(bgColor, textColor, borderColor, Align::Center, Border::TwoLine);
 		}
 		if (mode == 1)//mode 1 cho vertical => co arrow ">"
@@ -187,15 +188,17 @@ struct MENU
 		}
 		return -1;
 	}
+
 	void ClearInVertical()
 	{
-		std::vector<BUTTON> btns;
+		/*std::vector<BUTTON> btns;
 		SetupButtonVertical(btns);
 		SetTextColor(Color::Black);
 		for (auto item : btns)
 		{
 			item.Draw(bgColor, bgColor);
-		}
+		}*/
+		ClearArea(location.x, location.y, btnSize.width, btnSize.height * totalLine);
 	}
 	void ClearInHorizontal()
 	{
@@ -217,6 +220,23 @@ struct MENU
 		{
 			cols.push_back(location.x + btnSize.width * i);
 			btns.push_back(BUTTON({ {cols[i], location.y}, btnSize }, labels[i]));
+		}
+
+		for (auto item : btns)
+		{
+			item.Draw(bgColor, textColor, borderColor, Align::Center, Border::TwoLine);
+		}
+		btns[currentLine].Draw(DISABLE_COLOR, textHLColor, DISABLE_COLOR, Align::Center, Border::TwoLine);
+	}
+	void ShowDisableModeInVertical()
+	{
+		std::vector<BUTTON> btns;
+
+		if (rows.size() != 0) rows.clear();
+		for (size_t i = 0; i < labels.size(); i++)
+		{
+			rows.push_back(location.y + btnSize.height * i);
+			btns.push_back(BUTTON({ {location.x, rows[i]}, btnSize }, labels[i]));
 		}
 
 		for (auto item : btns)

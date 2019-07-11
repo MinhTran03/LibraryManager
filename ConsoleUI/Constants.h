@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Enums.h"
 
 #pragma region DISPLAY
@@ -18,6 +18,9 @@
 #pragma endregion
 
 const int magicNumber = -1;
+#define WARNING_CANT_DELETE_DS "DAU SACH DA CO DOC GIA MUON. KHONG DUOC XOA"
+#define WARNING_CANT_DELETE_SACH "SACH DA CO DOC GIA MUON. KHONG DUOC XOA"
+#define WARNING_CANT_FIX_SACH "SACH DA CO DOC GIA MUON. KHONG DUOC CHINH SUA"
 
 #pragma region Dau sach
 const unsigned int ISBN_MAXSIZE = 6;

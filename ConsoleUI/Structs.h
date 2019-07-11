@@ -178,21 +178,11 @@ struct RECTANGLE
 	}
 	void DrawCustom(Color color, char getChar)
 	{
-		SetTextColor(color);
+		/*SetTextColor(color);
 		GoToXY(location.x, location.y);
 		std::cout << std::string(size.width, getChar);
 		GoToXY(location.x, location.y + size.height - 1);
 		std::cout << std::string(size.width, getChar);
-		/*for (int x = location.x; x < location.x + size.width; x++)
-		{
-			GoToXY(x, location.y);
-			std::cout << getChar;
-		}*/
-		/*for (int x = location.x; x < location.x + size.width; x++)
-		{
-			GoToXY(x, location.y + size.height - 1);
-			std::cout << getChar;
-		}*/
 		for (int y = location.y; y < location.y + size.height; y++)
 		{
 			GoToXY(location.x, y);
@@ -202,22 +192,19 @@ struct RECTANGLE
 		{
 			GoToXY(location.x + size.width - 1, y);
 			std::cout << getChar;
-		}
+		}*/
+		ClearArea(location.x, location.y, size.width, size.height);
 	}
 	void Fill(Color borderColor, Color bgColor)
 	{
-		DrawCustom(borderColor, char(219));
+		/*DrawCustom(borderColor, char(219));
 		SetTextColor(bgColor);
 		for (int i = location.y + 1; i < location.y + size.height - 1; i++)
 		{
-			/*for (int j = location.x + 1; j < location.x + size.width - 1; j++)
-			{
-				GoToXY(j, i);
-				std::cout << char(219);
-			}*/
 			GoToXY(location.x + 1, i);
 			std::cout << std::string(size.width - 2, char(219));
-		}
+		}*/
+		ClearArea(location.x, location.y, size.width, size.height, bgColor);
 	}
 };
 

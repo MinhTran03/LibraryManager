@@ -58,7 +58,7 @@ SACH ParseVectorString(std::vector<std::string> data)
 		sach.trangThai = DaMuon;
 	else
 		sach.trangThai = DaThanhLy;
-	sach.viTri = data[2];
+	 sach.viTri = ToUpperString(data[2]);
 	return sach;
 }
 SACH ParseVectorStringFile(std::vector<std::string> data)
@@ -77,7 +77,7 @@ SACH ParseVectorStringFile(std::vector<std::string> data)
 // hien form nhap SACH
 SACH SACH::Input(RECTANGLE rect, std::string maSach)
 {
-	std::string title = "Nhap Sach";
+	std::string title = "NHAP THONG TIN SACH";
 	std::vector<std::string> labels = { "Ma sach", "Trang thai:", "Vi tri:" };
 	std::vector<CONDITION> conditions = { {All, 6, 6, Default}, {Enum, 1, 3, Default}, {Mix, 1, VITRI_MAXSIZE} };
 	auto form = FORMINPUT(labels, conditions, rect, title);
@@ -93,7 +93,31 @@ SACH SACH::Input(RECTANGLE rect, std::string maSach)
 	}
 	return *this;
 }
+SACH SACH::InputFix(RECTANGLE rect)
+{
+	std::string title = "CAP NHAT THONG TIN SACH";
+	std::vector<std::string> labels = { "Ma sach", "Trang thai:", "Vi tri:" };
+	std::vector<CONDITION> conditions = { {All, 6, 6, Default}, {Enum, 1, 3}, {Mix, 1, VITRI_MAXSIZE} };
 
+	auto form = FORMINPUT(labels, conditions, rect, title);
+	form.ParseData({ this->maSach, std::to_string(this->trangThai), this->viTri });
+	form.currentLine = 1;
+
+	if (form.Show(2))
+	{
+		return ParseVectorString(form.OutputResults);
+	}
+	else
+	{
+		//form.ResetOutput();
+	}
+	return *this;
+}
+// kiem tra sach co xoa duoc khong
+bool SACH::CanDelete()
+{
+	return this->trangThai != DaMuon;
+}
 #pragma endregion
 
 #pragma region -------------------------------------------NODE_SACH
@@ -302,6 +326,18 @@ void LIST_SACH::AddTail(NODE_SACH& node)
 		this->pTail = &node;
 	}
 }
+// Tim sach theo ma
+NODE_SACH* LIST_SACH::Search(std::string maSach)
+{
+	for (auto node = this->pHead; node != NULL; node = node->pNext)
+	{
+		if (node->data.maSach == maSach)
+		{
+			return node;
+		}
+	}
+	return NULL;
+}
 // Xoa ptu dau tien trong dslk
 bool LIST_SACH::DeleteFirst()
 {
@@ -315,6 +351,16 @@ bool LIST_SACH::DeleteFirst()
 // Xoa node sau 1 node p
 bool LIST_SACH::DeleteAfter(NODE_SACH* beforeNode)
 {
+	NODE_SACH* deleteNode;
+	if (beforeNode == NULL || beforeNode->pNext == NULL)
+	{
+		return false;
+	}
+
+	deleteNode = beforeNode->pNext;
+	beforeNode->pNext = deleteNode->pNext;
+	delete deleteNode;
+
 	return true;
 }
 // Delete sach dua vao ma sach
@@ -326,7 +372,42 @@ bool LIST_SACH::Delete(std::string maSach)
 	}
 	else
 	{
-		return true;
+		NODE_SACH* p;
+		NODE_SACH* q;
+		p = this->Search(maSach);
+		if (p == NULL)
+		{
+			return false;
+		}
+		else
+		{
+			if (p == this->pHead)
+			{
+				this->DeleteFirst();
+			}
+			else
+			{
+				q = this->pHead;
+				while (q->pNext != p)
+				{
+					q = q->pNext;
+				}
+				this->DeleteAfter(q);
+			}
+		}
 	}
+	return true;
+}
+// Kiem tra LIST_SACH co xoa duoc hay khong
+bool LIST_SACH::CanDelete()
+{
+	for (auto node = this->pHead; node != NULL; node = node->pNext)
+	{
+		if (node->data.CanDelete() == false)
+		{
+			return false;
+		}
+	}
+	return true;
 }
 #pragma endregion

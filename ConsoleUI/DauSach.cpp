@@ -1,6 +1,6 @@
 #include "DauSach.h"
 
-#pragma region DAUSACH
+#pragma region ----------------------------------------------------DAUSACH
 // chuyen vector<string> vo obj DAUSACH
 DAUSACH ParseVectorString(std::vector<std::string> data)
 {
@@ -127,7 +127,7 @@ std::string DAUSACH::ToString()
 }
 #pragma endregion
 
-#pragma region LIST_DAUSACH
+#pragma region ----------------------------------------------------LIST_DAUSACH
 #pragma region Graphics
 // selection sort dua vao ten sach
 void SortByTenSach(std::vector<DAUSACH>& listDauSach)
@@ -238,10 +238,12 @@ std::string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, std::string theLoai)
 			}
 			else if (inputKey == Key::RIGHT)
 			{
+				ClearArea(location.x, backUpLocation.y - 3, DAUSACH_TOTAL_WIDTH, totalLine + 4);
 				return "RIGHT";
 			}
 			else if (inputKey == Key::LEFT)
 			{
+				ClearArea(location.x, backUpLocation.y - 3, DAUSACH_TOTAL_WIDTH, totalLine + 4);
 				return "LEFT";
 			}
 		}
@@ -251,6 +253,7 @@ std::string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, std::string theLoai)
 		}
 		else if (inputKey == Key::ESC)
 		{
+			ClearArea(location.x, backUpLocation.y - 3, DAUSACH_TOTAL_WIDTH, totalLine + 4);
 			return "ESC";
 		}
 	} while (!_kbhit());
@@ -269,7 +272,7 @@ std::string LIST_DAUSACH::PrintAllTheLoai(MYPOINT location)
 		{
 			if (currentPage < totalPages - 1)
 			{
-				ClearScreen(BG_COLOR);
+
 				currentPage++;
 			}
 		}
@@ -278,7 +281,7 @@ std::string LIST_DAUSACH::PrintAllTheLoai(MYPOINT location)
 		{
 			if (currentPage > 0)
 			{
-				ClearScreen(BG_COLOR);
+				//ClearScreen(BG_COLOR);
 				currentPage--;
 			}
 		}
@@ -322,10 +325,12 @@ std::string LIST_DAUSACH::PrintAll(MYPOINT location, Menu_Mode mode)
 		// print data
 		for (int i = 0; i < totalLine; i++)
 		{
+			//Sleep(15);
 			listISBN[i].Print(location, BG_COLOR, TEXT_INPUT_COLOR);
 			// neu la dong dau tien thi hight light len
 			if (location.y == backUpLocation.y && mode == Menu_Mode::Both)
 			{
+
 				listISBN[i].Print(location, hlBGColor, hlTextColor);
 			}
 			// luu lai vi tri dong
@@ -393,7 +398,7 @@ std::string LIST_DAUSACH::PrintAll(MYPOINT location, Menu_Mode mode)
 			}
 		} while (!_kbhit());
 	}
-	return listISBN[currentLine].isbn;
+	return "Empty";
 }
 // CMT
 void LIST_DAUSACH::PrintFindBooks(MYPOINT location, std::string tenSach)
@@ -666,10 +671,10 @@ std::string LIST_DAUSACH::PrintAllSearch(MYPOINT location, std::string tenSach, 
 				}
 				if (inputKey == Key::ENTER)
 				{
-					RECTANGLE rect = { { x, y } , {DMS_TOTAL_WIDTH, 20} };
-					SetTextColor(BG_COLOR);
-					rect.Fill(BG_COLOR, BG_COLOR);
-					std::string temp = listISBN[currentLine].dsSach.PrintAll({ x, y }, Menu_Mode::Show_Only);
+					RECTANGLE rect = { { location.x + (int)DAUSACH_TOTAL_WIDTH + 1, y } , {DMS_TOTAL_WIDTH, 20} };
+					ClearArea(rect.location.x, rect.location.y, rect.size.width, rect.size.height);
+
+					std::string temp = listISBN[currentLine].dsSach.PrintAll({ location.x + (int)DAUSACH_TOTAL_WIDTH + 1, y }, Menu_Mode::Show_Only);
 					//return listISBN[currentLine].isbn;
 
 				}

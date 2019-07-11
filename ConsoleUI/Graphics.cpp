@@ -93,6 +93,47 @@ void ShowPointer()
 	SetConsoleCursorInfo(hOut, &ConCurInf);
 }
 
+void ClearArea(int x, int y, int width, int height, WORD color)
+{
+	SetBGColor(color);
+	DWORD n;
+	DWORD size;
+	COORD coord = { 0 };
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+	GetConsoleScreenBufferInfo(h, &csbi);
+	size = width;
+
+	for (short i = 0; i < height; i++)
+	{
+		coord = { (short)x,(short)y + i };
+		FillConsoleOutputCharacter(h, ' ', size, coord, &n);
+		GetConsoleScreenBufferInfo(h, &csbi);
+		FillConsoleOutputAttribute(h, csbi.wAttributes, size, coord, &n);
+	}
+	SetConsoleCursorPosition(h, coord);
+}
+//void ClearArea(MYPOINT location, MYSIZE size)
+//{
+//
+//}
+void ClearLine(int lineNumber, int begin, int end, WORD color)
+{
+	SetBGColor(color);
+	DWORD n;
+	DWORD size;
+	COORD coord = { 0 };
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+	GetConsoleScreenBufferInfo(h, &csbi);
+	size = end - begin;
+
+	coord = { (short)begin,(short)lineNumber };
+	FillConsoleOutputCharacter(h, ' ', size, coord, &n);
+	GetConsoleScreenBufferInfo(h, &csbi);
+	FillConsoleOutputAttribute(h, csbi.wAttributes, size, coord, &n);
+	SetConsoleCursorPosition(h, coord);
+}
 void ClearScreen(WORD color)
 {
 	SetBGColor(color);
@@ -102,8 +143,8 @@ void ClearScreen(WORD color)
 	CONSOLE_SCREEN_BUFFER_INFO csbi;
 	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 	GetConsoleScreenBufferInfo(h, &csbi);
-	size = csbi.dwSize.X * csbi.dwSize.Y;
-	FillConsoleOutputCharacter(h, TEXT(' '), size, coord, &n);
+	size = csbi.dwSize.X * 44;
+	FillConsoleOutputCharacter(h, ' ', size, coord, &n);
 	GetConsoleScreenBufferInfo(h, &csbi);
 	FillConsoleOutputAttribute(h, csbi.wAttributes, size, coord, &n);
 	SetConsoleCursorPosition(h, coord);

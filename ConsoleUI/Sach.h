@@ -18,10 +18,13 @@ struct SACH
 
 	// hien form nhap SACH
 	SACH Input(RECTANGLE rect, std::string maSach);
+	SACH InputFix(RECTANGLE rect);
 	// in ra node
 	void Print(MYPOINT location, Color bgSelectColor, Color textColor);
 	// chen | giua cac field
 	std::string ToString();
+	// kiem tra sach co xoa duoc khong
+	bool CanDelete();
 };
 
 struct NODE_SACH
@@ -54,10 +57,14 @@ struct LIST_SACH
 	std::string AutoGenerateMaSach(char isbn[ISBN_MAXSIZE + 1]);
 	// Them vao cuoi ds sach
 	void AddTail(NODE_SACH& node);
+	// Tim sach theo ma
+	NODE_SACH* Search(std::string maSach);
 	// Xoa node dau tien trong dslk
 	bool DeleteFirst();
 	// Xoa node sau 1 node p
 	bool DeleteAfter(NODE_SACH* beforeNode);
 	// Xoa 1 sach dua vao ma sach
 	bool Delete(std::string maSach);
+	// Kiem tra LIST_SACH co xoa duoc hay khong
+	bool CanDelete();
 };
