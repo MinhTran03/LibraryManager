@@ -70,7 +70,7 @@ void NLR(LIST_DOCGIA cay)
 	}
 }
 
-NODE_DOCGIA* search(LIST_DOCGIA cay, DOCGIA input)
+NODE_DOCGIA* Search(LIST_DOCGIA cay, DOCGIA input)
 {
 	if (cay == NULL)
 	{
@@ -80,11 +80,11 @@ NODE_DOCGIA* search(LIST_DOCGIA cay, DOCGIA input)
 	{
 		if (cay->data.maDocGia > input.maDocGia)
 		{
-			search(cay->pLeft, input);
+			Search(cay->pLeft, input);
 		}
 		else if (cay->data.maDocGia < input.maDocGia)
 		{
-			search(cay->pRight, input);
+			Search(cay->pRight, input);
 		}
 		else
 		{
@@ -201,7 +201,7 @@ void Add(LIST_DOCGIA& cay, DOCGIA input)
 
 DOCGIA InputDocGia(LIST_DOCGIA listDS, int maThe, RECTANGLE rect)
 {
-	std::vector<std::string> labels = { "Ma doc gia:","Ho:","Ten:","Gioi tinh:", "Trang thai the:" };
+	std::vector<std::string> labels = { "Ma doc gia:", "Ho:", "Ten:", "Gioi tinh:", "Trang thai the:" };
 	std::string inputTitle = "NHAP THONG TIN DOC GIA";
 	std::vector<CONDITION> conditions = { {Number_Only, 1, 4, Default}, {Name, 1, HO_MAXSIZE},{Name, 1, TENDOCGIA_MAXSIZE},
 													{Enum, 1, 2 },{Enum2, 1, 2, Default} };
