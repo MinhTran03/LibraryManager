@@ -30,6 +30,7 @@ const unsigned int TENTHELOAI_MAXSIZE = 30;
 const unsigned int SOTRANG_MAXKYTU = 6; // 6 SO
 const unsigned int SODAUSACH_MAX = 50;
 
+
 const unsigned int ISBN_WIDTH = ISBN_MAXSIZE;
 const unsigned int TENSACH_WIDTH = 30;
 const unsigned int TENTACGIA_WIDTH = 21;
@@ -38,6 +39,8 @@ const unsigned int SOTRANG_WIDTH = 8;
 const unsigned int NAMXUATBAN_WIDTH = 4;
 const unsigned int DAUSACH_TOTAL_WIDTH = ISBN_WIDTH + TENSACH_WIDTH + TENTACGIA_WIDTH + TENTHELOAI_WIDTH + SOTRANG_WIDTH + NAMXUATBAN_WIDTH + 7;
 #pragma endregion
+
+
 
 #pragma region Danh muc sach
 const unsigned int MASACH_MAXSIZE = 11;
@@ -49,6 +52,7 @@ const unsigned int TRANGTHAISACH_WIDTH = 16;
 const unsigned int DMS_TOTAL_WIDTH = MASACH_WIDTH + VITRI_WIDTH + TRANGTHAISACH_WIDTH + 4;
 #pragma endregion
 
-#pragma region Doc gia
-const unsigned int MADOCGIA_MAXKYTU = 4;
+#pragma region Doc Gia
+const unsigned int HO_MAXSIZE = 10;
+const unsigned int TENDOCGIA_MAXSIZE = 10;
 #pragma endregion

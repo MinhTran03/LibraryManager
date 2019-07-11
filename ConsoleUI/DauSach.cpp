@@ -601,6 +601,8 @@ std::string LIST_DAUSACH::PrintAllSearch(MYPOINT location, std::string tenSach, 
 	{
 		if (mode == Menu_Mode::Show_Only || mode == Menu_Mode::Both)
 		{
+			if (totalLine == 0) return "Empty";
+
 			PrintLabelDauSach(location, totalLine);
 			location.y += 3;
 			backUpLocation = location;
@@ -618,6 +620,7 @@ std::string LIST_DAUSACH::PrintAllSearch(MYPOINT location, std::string tenSach, 
 				rows.push_back(location.y++);
 				datas.push_back(listISBN[i].ToString());
 			}
+
 		}
 		// bat phim
 		if (mode == Menu_Mode::Both)

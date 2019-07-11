@@ -143,7 +143,7 @@ void ClearScreen(WORD color)
 	CONSOLE_SCREEN_BUFFER_INFO csbi;
 	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 	GetConsoleScreenBufferInfo(h, &csbi);
-	size = csbi.dwSize.X * 44;
+	size = csbi.dwSize.X * 52;
 	FillConsoleOutputCharacter(h, ' ', size, coord, &n);
 	GetConsoleScreenBufferInfo(h, &csbi);
 	FillConsoleOutputAttribute(h, csbi.wAttributes, size, coord, &n);

@@ -354,6 +354,10 @@ void TimSach(LIST_DAUSACH& listDS, MYPOINT location)
 			DrawMessageBox(point, "NHAP TEN SACH CAN TIM", searchKey, isEnter, isCancel, char(219), Show_Only);
 			listDS.PrintFindBooks({ location.x + 10, location.y + 10 }, searchKey);
 			string selectedDauSach = listDS.PrintAllSearch({ location.x + 10, location.y + 10 }, searchKey, Menu_Mode::Both);
+			if (selectedDauSach == "Empty")
+			{
+				MakeFlickWarning({ 70,1 }, "KHONG TIM THAY DAU SACH: " + searchKey);
+			}
 		}
 		if (isCancel)
 		{

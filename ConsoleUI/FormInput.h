@@ -62,7 +62,7 @@ struct FORMINPUT
 			cols[i] = xInputCol;
 		}
 	}
-	void PrintLabelsTitle(int mode = 0)
+	void PrintLabelsTitle(int mode = 0, int mode2 = 0)
 	{
 		GoToXY(rect.location.x + rect.size.width / 2 - title.length() / 2 - title.length() % 2, rows[0] - 2);
 		std::cout << title;
@@ -124,6 +124,79 @@ struct FORMINPUT
 					else if (num == 2)
 					{
 						std::cout << "Lam mat sach";
+					}
+				}
+				else if (mode == 4)
+				{
+					if (num == 0)
+					{
+						std::cout << "The bi khoa";
+					}
+					else if (num == 1)
+					{
+						std::cout << "Dang hoat dong";
+					}
+				}
+				GoToXY(x, WhereY());
+			}
+			else if (conditions[i].type == Enum2 && mode2 != 0)
+			{
+				int num = OutputResults[i][0] - '0';
+				int x = WhereX();
+				GoToXY(x + 4, WhereY());
+				// gender
+				if (mode2 == 1)
+				{
+					if (num == 0)
+					{
+						std::cout << "Nam";
+					}
+					else if (num == 1)
+					{
+						std::cout << "Nu";
+					}
+				}
+				// trang thai sach
+				else if (mode2 == 2)
+				{
+					if (num == 0)
+					{
+						std::cout << "Cho muon duoc";
+					}
+					else if (num == 1)
+					{
+						std::cout << "Da muon";
+					}
+					else if (num == 2)
+					{
+						std::cout << "Da thanh ly";
+					}
+				}
+				// trang thai muon tra
+				else if (mode2 == 3)
+				{
+					if (num == 0)
+					{
+						std::cout << "Sach chua tra";
+					}
+					else if (num == 1)
+					{
+						std::cout << "Sach da tra";
+					}
+					else if (num == 2)
+					{
+						std::cout << "Lam mat sach";
+					}
+				}
+				else if (mode2 == 4)
+				{
+					if (num == 0)
+					{
+						std::cout << "The bi khoa";
+					}
+					else if (num == 1)
+					{
+						std::cout << "Dang hoat dong";
 					}
 				}
 				GoToXY(x, WhereY());
@@ -235,12 +308,13 @@ struct FORMINPUT
 		return error;
 	}
 
-	// mode = 0: default / mode = 1: enum la gender / mode = 2: enum la trang thai sach / mode = 3: enum la tt muon tra
-	bool Show(int mode = 0)
+	// mode = 0: default / mode = 1: enum la gender / mode = 2: enum la trang thai sach 
+	// mode = 3: enum la tt muon tra / mode = 4: tt doc gia
+	bool Show(int mode = 0, int mode2 = 0)
 	{
 		border.Draw2Line(BORDER_COLOR);
 		//currentLine = 0;
-		PrintLabelsTitle(mode);
+		PrintLabelsTitle(mode, mode2);
 
 		// Ve button OK CANCEL
 		int halfWidthForm = rect.size.width / 2 + rect.location.x;
@@ -499,6 +573,79 @@ struct FORMINPUT
 								std::cout << "Lam mat sach";
 							}
 						}
+						else if (mode == 4)
+						{
+							if (num == 0)
+							{
+								std::cout << "Dang hoat dong";
+							}
+							else if (num == 1)
+							{
+								std::cout << "The bi khoa";
+							}
+						}
+						GoToXY(x, WhereY());
+					}
+					else if (conditions[currentLine].type == Enum2 && mode2 != 0)
+					{
+						int num = inputKey - '0';
+						int x = WhereX();
+						GoToXY(x + 5, WhereY());
+						// gender
+						if (mode2 == 1)
+						{
+							if (num == 0)
+							{
+								std::cout << "Nam";
+							}
+							else if (num == 1)
+							{
+								std::cout << "Nu";
+							}
+						}
+						// trang thai sach
+						else if (mode2 == 2)
+						{
+							if (num == 0)
+							{
+								std::cout << "Cho muon duoc";
+							}
+							else if (num == 1)
+							{
+								std::cout << "Da muon";
+							}
+							else if (num == 2)
+							{
+								std::cout << "Da thanh ly";
+							}
+						}
+						// trang thai muon tra
+						else if (mode2 == 3)
+						{
+							if (num == 0)
+							{
+								std::cout << "Sach chua tra";
+							}
+							else if (num == 1)
+							{
+								std::cout << "Sach da tra";
+							}
+							else if (num == 2)
+							{
+								std::cout << "Lam mat sach";
+							}
+						}
+						else if (mode2 == 4)
+						{
+							if (num == 0)
+							{
+								std::cout << "Dang hoat dong";
+							}
+							else if (num == 1)
+							{
+								std::cout << "The bi khoa";
+							}
+						}
 						GoToXY(x, WhereY());
 					}
 					// In hoa chu cai dau tien
@@ -544,6 +691,13 @@ struct FORMINPUT
 				SetTextColor(TEXT_INPUT_COLOR);
 
 				if (conditions[currentLine].type == Enum && mode != 0)
+				{
+					int x = WhereX();
+					GoToXY(x + 4, WhereY());
+					std::cout << std::string(13, ' ');
+					GoToXY(x, WhereY());
+				}
+				else if (conditions[currentLine].type == Enum2 && mode2 != 0)
 				{
 					int x = WhereX();
 					GoToXY(x + 4, WhereY());
