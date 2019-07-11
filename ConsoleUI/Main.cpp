@@ -2,8 +2,8 @@
 
 int main()
 {
-	ClearArea(1, 1, 10, 5);
-	_getch();
+	/*ClearArea(1, 1, 10, 5);
+	_getch();*/
 
 	SetupConsole();
 	MYPOINT locationDS = { 1, 2 };

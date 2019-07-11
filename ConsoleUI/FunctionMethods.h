@@ -2,6 +2,7 @@
 #include "SlideMenu.h"
 #include "DauSach.h"
 #include "Database.h"
+#include <io.h>
 
 using namespace std;
 

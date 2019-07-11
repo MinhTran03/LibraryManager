@@ -66,6 +66,7 @@ NODE_DOCGIA* search(LIST_DOCGIA cay, DOCGIA input)
 			return cay;
 		}
 	}
+	return NULL;
 }
 
 void TimPhanTuTheMangTraiNhatCayConPhai(LIST_DOCGIA& p, LIST_DOCGIA& q)

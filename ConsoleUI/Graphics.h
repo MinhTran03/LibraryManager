@@ -15,6 +15,7 @@ void HidePointer();
 void ShowPointer();
 
 void ClearScreen(WORD color);
+void ClearLine(int lineNumber, int begin = 0, int end = 168, WORD color = 7);
 void ClearArea(int x, int y, int width, int height, WORD color = 7);
 void fullscreen();
 void HightLight(std::string text, Color bgColor, Color textColor);

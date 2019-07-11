@@ -65,8 +65,9 @@ void DrawRectangle(RECTANGLE rectangle, char getChar, Color textColor, Color bgC
 void DrawButton(RECTANGLE rectangle, string text, char getChar, Color textColor, Color bgColor)
 {
 	RECTANGLE rect = rectangle;
-
-	for (int i = 0; i < rect.size.height; i++)
+	ClearArea(rect.location.x, rect.location.y, rect.size.width, rect.size.height, bgColor);
+	rect.location.y += rect.size.height;
+	/*for (int i = 0; i < rect.size.height; i++)
 	{
 		for (int j = 0; j < rect.size.width; j++)
 		{
@@ -77,7 +78,7 @@ void DrawButton(RECTANGLE rectangle, string text, char getChar, Color textColor,
 		}
 		rect.location.x = rectangle.location.x;
 		rect.location.y++;
-	}
+	}*/
 	if (rect.size.height == 1)
 	{
 		GoToXY(rect.location.x + rect.size.width / 2 - text.size() / 2, rect.location.y - 1);
@@ -100,7 +101,9 @@ void DrawMessageBox(MYPOINT point, string text, string& inputText, bool& isEnter
 	SetTextColor(TEXT_INPUT_COLOR);
 	if (mode != Menu_Mode::GetKey_Only)
 	{
-		for (int i = 0; i < rect.size.height; i++)
+		ClearArea(rect.location.x, rect.location.y, rect.size.width, rect.size.height, Cyan);
+		ClearArea(rect.location.x, rect.location.y, rect.size.width, 1, Blue);
+		/*for (int i = 0; i < rect.size.height; i++)
 		{
 			if (i == 0)
 			{
@@ -116,14 +119,15 @@ void DrawMessageBox(MYPOINT point, string text, string& inputText, bool& isEnter
 			}
 			rect.location.x = point.x;
 			rect.location.y++;
-		}
-		for (int i = 3; i < (rect.size.width - 3); i++)
+		}*/
+		ClearArea(point.x + 3, point.y + rect.size.height / 2, rect.size.width - 6, 1, BG_COLOR);
+		/*for (int i = 3; i < (rect.size.width - 3); i++)
 		{
 			GoToXY(point.x + i, point.y + rect.size.height / 2);
 			SetTextColor(TEXT_INPUT_COLOR);
 			SetBGColor(BG_COLOR);
 			cout << " ";
-		}
+		}*/
 		
 		SetBGColor(Color::Cyan);
 		GoToXY(point.x + 10, point.y + 2);

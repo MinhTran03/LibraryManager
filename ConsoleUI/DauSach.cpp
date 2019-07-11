@@ -272,7 +272,7 @@ std::string LIST_DAUSACH::PrintAllTheLoai(MYPOINT location)
 		{
 			if (currentPage < totalPages - 1)
 			{
-				
+
 				currentPage++;
 			}
 		}
@@ -330,6 +330,7 @@ std::string LIST_DAUSACH::PrintAll(MYPOINT location, Menu_Mode mode)
 			// neu la dong dau tien thi hight light len
 			if (location.y == backUpLocation.y && mode == Menu_Mode::Both)
 			{
+
 				listISBN[i].Print(location, hlBGColor, hlTextColor);
 			}
 			// luu lai vi tri dong

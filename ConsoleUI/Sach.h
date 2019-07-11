@@ -23,6 +23,8 @@ struct SACH
 	void Print(MYPOINT location, Color bgSelectColor, Color textColor);
 	// chen | giua cac field
 	std::string ToString();
+	// kiem tra sach co xoa duoc khong
+	bool CanDelete();
 };
 
 struct NODE_SACH
@@ -63,4 +65,6 @@ struct LIST_SACH
 	bool DeleteAfter(NODE_SACH* beforeNode);
 	// Xoa 1 sach dua vao ma sach
 	bool Delete(std::string maSach);
+	// Kiem tra LIST_SACH co xoa duoc hay khong
+	bool CanDelete();
 };

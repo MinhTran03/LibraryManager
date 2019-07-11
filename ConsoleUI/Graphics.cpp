@@ -117,10 +117,23 @@ void ClearArea(int x, int y, int width, int height, WORD color)
 //{
 //
 //}
-//void ClearLine(int lineNumber, int begin, int end = 168)
-//{
-//
-//}
+void ClearLine(int lineNumber, int begin, int end, WORD color)
+{
+	SetBGColor(color);
+	DWORD n;
+	DWORD size;
+	COORD coord = { 0 };
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+	GetConsoleScreenBufferInfo(h, &csbi);
+	size = end - begin;
+
+	coord = { (short)begin,(short)lineNumber };
+	FillConsoleOutputCharacter(h, ' ', size, coord, &n);
+	GetConsoleScreenBufferInfo(h, &csbi);
+	FillConsoleOutputAttribute(h, csbi.wAttributes, size, coord, &n);
+	SetConsoleCursorPosition(h, coord);
+}
 void ClearScreen(WORD color)
 {
 	SetBGColor(color);

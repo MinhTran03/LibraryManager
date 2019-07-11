@@ -113,6 +113,11 @@ SACH SACH::InputFix(RECTANGLE rect)
 	}
 	return *this;
 }
+// kiem tra sach co xoa duoc khong
+bool SACH::CanDelete()
+{
+	return this->trangThai != DaMuon;
+}
 #pragma endregion
 
 #pragma region -------------------------------------------NODE_SACH
@@ -389,6 +394,18 @@ bool LIST_SACH::Delete(std::string maSach)
 				}
 				this->DeleteAfter(q);
 			}
+		}
+	}
+	return true;
+}
+// Kiem tra LIST_SACH co xoa duoc hay khong
+bool LIST_SACH::CanDelete()
+{
+	for (auto node = this->pHead; node != NULL; node = node->pNext)
+	{
+		if (node->data.CanDelete() == false)
+		{
+			return false;
 		}
 	}
 	return true;

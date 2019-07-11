@@ -1,4 +1,4 @@
-#include "FunctionMethods.h"
+﻿#include "FunctionMethods.h"
 #include "Displays.h"
 
 void SetupConsole()
@@ -8,11 +8,22 @@ void SetupConsole()
 	SetBGColor(BG_COLOR);
 	ClearScreen(BG_COLOR);
 }
+
 void NormalColor()
 {
 	SetTextColor(BG_COLOR);
 	SetBGColor(BG_COLOR);
 }
+
+void MakeFlickWarning(MYPOINT location, std::string text)
+{
+	GoToXY(location.x, location.y);
+	SetBGColor(BG_COLOR);
+	SetTextColor(WARNING_TEXT_COLOR);
+	cout << text;
+	//ClearArea(location.x, location.y, text.size(), 1);
+}
+
 vector<int> SelectionFuntion(int rootLine, int childLine)
 {
 	MENU menu = MENU({ "QUAN LY DOC GIA", "QUAN LY DAU SACH", "QUAN LY SACH" }, { 0, 3 });
@@ -90,8 +101,9 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 					selectedISBN = listDS.PrintAll(location, Show_Only);
 					break;
 				}
-				
+
 				selectedISBN = listDS.PrintAll(location, Menu_Mode::Both);
+				ClearLine(1);
 				isbnAsArr = StringToCharArray(selectedISBN);
 				if (selectedISBN == "ESC")
 				{
@@ -116,10 +128,19 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 					{
 						// chua kiem tra co duoc xoa hay khong???
 						// ...
-						listDS.DeleteDauSach(isbnAsArr);
-						SetBGColor(BG_COLOR);
-						GoToXY(location.x, listDS.size + location.y + 3);
-						cout << emptyTemplate;
+						// Dau sach khong duoc phep xoa
+						if (listDS.GetDauSach(isbnAsArr)->dsSach.CanDelete() == false)
+						{
+							MakeFlickWarning({ locationBtn.x, 1 }, WARNING_CANT_DELETE_DS);
+						}
+						else
+						{
+							// da cap nhat ds the loai trong DeleteDauSach
+							listDS.DeleteDauSach(isbnAsArr);
+							SetBGColor(BG_COLOR);
+							GoToXY(location.x, listDS.size + location.y + 3);
+							cout << emptyTemplate;
+						}
 					}
 				}
 			}
@@ -236,6 +257,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 						break;
 					menu.ShowDisableModeInHorizontal();
 					maSach = listSach->PrintAll(locationListSach, Both);
+					ClearLine(1);
 					if (maSach == "ESC")
 					{
 						break;
@@ -248,19 +270,27 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 					{
 						// chua kiem tra dieu kien xoa sach
 						// ...
-						if (listSach->Delete(maSach))
+						// khong duoc xoa
+						if (listSach->Search(maSach)->data.CanDelete() == false)
 						{
-							// xoa dong cuoi
-							SetTextColor(BG_COLOR);
-							SetBGColor(BG_COLOR);
-							//GoToXY(locationListSach.x, menu.location.y - 1);
-							//cout << emptyTemplate;
-							ClearArea(locationListSach.x, menu.location.y - 1, DMS_TOTAL_WIDTH, 1);
-							// xoa menu
-							menu.ClearInHorizontal();
-							// show menu
-							menu.location.y--;
-							
+							MakeFlickWarning({ locationBtn.x, 1 }, WARNING_CANT_DELETE_SACH);
+						}
+						else
+						{
+							if (listSach->Delete(maSach))
+							{
+								// xoa dong cuoi
+								SetTextColor(BG_COLOR);
+								SetBGColor(BG_COLOR);
+								//GoToXY(locationListSach.x, menu.location.y - 1);
+								//cout << emptyTemplate;
+								ClearArea(locationListSach.x, menu.location.y - 1, DMS_TOTAL_WIDTH, 1);
+								// xoa menu
+								menu.ClearInHorizontal();
+								// show menu
+								menu.location.y--;
+
+							}
 						}
 					}
 				}
@@ -282,7 +312,15 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 					else
 					{
 						auto nodeFix = listSach->Search(maSach);
-						nodeFix->data = nodeFix->data.InputFix({ {90, locationDS.y},{44,13} });
+						// khong duoc xoa
+						if (nodeFix->data.CanDelete() == false)
+						{
+							MakeFlickWarning({ locationBtn.x, 1 }, WARNING_CANT_FIX_SACH);
+						}
+						else
+						{
+							nodeFix->data = nodeFix->data.InputFix({ {90, locationDS.y},{44,13} });
+						}
 					}
 				}
 			}
