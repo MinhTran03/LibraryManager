@@ -18,6 +18,7 @@
 #pragma endregion
 
 const int magicNumber = -1;
+const unsigned MAX_ROW_PER_PAGE = 33;
 #define WARNING_CANT_DELETE_DS "DAU SACH DA CO DOC GIA MUON. KHONG DUOC XOA"
 #define WARNING_CANT_DELETE_SACH "SACH DA CO DOC GIA MUON. KHONG DUOC XOA"
 #define WARNING_CANT_FIX_SACH "SACH DA CO DOC GIA MUON. KHONG DUOC CHINH SUA"
@@ -40,8 +41,6 @@ const unsigned int NAMXUATBAN_WIDTH = 4;
 const unsigned int DAUSACH_TOTAL_WIDTH = ISBN_WIDTH + TENSACH_WIDTH + TENTACGIA_WIDTH + TENTHELOAI_WIDTH + SOTRANG_WIDTH + NAMXUATBAN_WIDTH + 7;
 #pragma endregion
 
-
-
 #pragma region Danh muc sach
 const unsigned int MASACH_MAXSIZE = 11;
 const unsigned int VITRI_MAXSIZE = 5;
@@ -53,6 +52,9 @@ const unsigned int DMS_TOTAL_WIDTH = MASACH_WIDTH + VITRI_WIDTH + TRANGTHAISACH_
 #pragma endregion
 
 #pragma region Doc Gia
-const unsigned int HO_MAXSIZE = 10;
-const unsigned int TENDOCGIA_MAXSIZE = 10;
+const unsigned int MADOCGIA_WIDTH = 10;
+const unsigned int HODOCGIA_WIDTH = 20;
+const unsigned int TENDOCGIA_WIDTH = 10;
+const unsigned int GIOITINH_WIDTH = 10;
+const unsigned int TRANGTHAIDG_WIDTH = 16;
 #pragma endregion

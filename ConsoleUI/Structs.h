@@ -164,8 +164,6 @@ struct LISTBORDERTEXT
 		std::cout << char(195);
 		GoToXY(location.x, location.y + 2);
 		std::cout << char(180);
-
-
 	}
 };
 

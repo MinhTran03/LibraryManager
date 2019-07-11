@@ -319,18 +319,17 @@ std::string LIST_DAUSACH::PrintAll(MYPOINT location, Menu_Mode mode)
 	// print label
 	if (mode == Menu_Mode::Show_Only || mode == Menu_Mode::Both)
 	{
-		PrintLabelDauSach(location, 33);
+		PrintLabelDauSach(location, MAX_ROW_PER_PAGE);
 		location.y += 3;
 		backUpLocation = location;
 		// print data
 		for (int i = 0; i < totalLine; i++)
 		{
-			//Sleep(15);
+			//Sleep(1000);
 			listISBN[i].Print(location, BG_COLOR, TEXT_INPUT_COLOR);
 			// neu la dong dau tien thi hight light len
 			if (location.y == backUpLocation.y && mode == Menu_Mode::Both)
 			{
-
 				listISBN[i].Print(location, hlBGColor, hlTextColor);
 			}
 			// luu lai vi tri dong
@@ -426,6 +425,7 @@ void LIST_DAUSACH::PrintFindBooks(MYPOINT location, std::string tenSach)
 }
 #pragma endregion
 
+// Huy
 void LIST_DAUSACH::Deconstructor()
 {
 	for (int i = 0; i < this->size; i++)

@@ -92,7 +92,44 @@ void ShowPointer()
 	ConCurInf.bVisible = TRUE;
 	SetConsoleCursorInfo(hOut, &ConCurInf);
 }
+void PutPixel(int x, int y, char c, WORD color)
+{
+	SetBGColor(Color::White);
+	SetTextColor(color);
+	DWORD n;
+	DWORD size;
+	COORD coord = { 0 };
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+	GetConsoleScreenBufferInfo(h, &csbi);
+	size = 1;
 
+	coord = { (short)x,(short)y };
+	FillConsoleOutputCharacterA(h, c, size, coord, &n);
+	GetConsoleScreenBufferInfo(h, &csbi);
+	FillConsoleOutputAttribute(h, csbi.wAttributes, size, coord, &n);
+
+	SetConsoleCursorPosition(h, coord);
+}
+void DrawLine(int x, int y, int width, char c, WORD color)
+{
+	SetBGColor(Color::White);
+	SetTextColor(color);
+	DWORD n;
+	DWORD size;
+	COORD coord = { 0 };
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+	GetConsoleScreenBufferInfo(h, &csbi);
+	size = width;
+
+	coord = { (short)x,(short)y };
+	FillConsoleOutputCharacterA(h, c, size, coord, &n);
+	GetConsoleScreenBufferInfo(h, &csbi);
+	FillConsoleOutputAttribute(h, csbi.wAttributes, size, coord, &n);
+
+	SetConsoleCursorPosition(h, coord);
+}
 void ClearArea(int x, int y, int width, int height, WORD color)
 {
 	SetBGColor(color);

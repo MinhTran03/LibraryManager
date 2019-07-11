@@ -17,8 +17,8 @@ void NormalColor()
 
 void MakeFlickWarning(MYPOINT location, std::string text)
 {
-	int x = location.x - 50;
-	int y = location.y + 10;
+	int x = location.x;
+	int y = location.y;
 
 	GoToXY(x, y);
 	SetBGColor(BG_COLOR);
@@ -31,7 +31,7 @@ vector<int> SelectionFuntion(int rootLine, int childLine)
 {
 	MENU menu = MENU({ "QUAN LY DOC GIA", "QUAN LY DAU SACH", "QUAN LY SACH" }, { 0, 3 });
 	vector<vector<string>> temp;
-	SLIDEMENUS slide = SLIDEMENUS({ {"chua lam", "chua lam", "chua lam"},
+	SLIDEMENUS slide = SLIDEMENUS({ {"chua lam", "IN DANH SACH DOC GIA", "chua lam"},
 		{"HIEN THI DAU SACH", "CAP NHAT DAU SACH", "CAP NHAT DANH MUC SACH", "TIM SACH"},
 		{"CHUA LAM", "CHUA LAM", "CHUA LAM"} }, menu);
 	auto selection = slide.Show(rootLine, childLine);
@@ -46,7 +46,12 @@ void QuanLiDocGia(LIST_DAUSACH& listDS, MYPOINT location)
 {
 
 }
-
+// Func 0 1
+void InDanhSachDG(LIST_DOCGIA listDG, MYPOINT location)
+{
+	PrintSortMaDG(listDG, location, 2);
+	_getch();
+}
 // Func 1 0
 void HienThiDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 {
@@ -140,7 +145,7 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 						// Dau sach khong duoc phep xoa
 						if (listDS.GetDauSach(isbnAsArr)->dsSach.CanDelete() == false)
 						{
-							MakeFlickWarning({ locationBtn.x, 1 }, WARNING_CANT_DELETE_DS);
+							MakeFlickWarning({ locationBtn.x - 5, 1 }, WARNING_CANT_DELETE_DS);
 						}
 						else
 						{
@@ -361,7 +366,7 @@ void TimSach(LIST_DAUSACH& listDS, MYPOINT location)
 		{
 			ClearScreen(BG_COLOR);
 			DrawMessageBox(point, "NHAP TEN SACH CAN TIM", searchKey, isEnter, isCancel, char(219), Show_Only);
-			listDS.PrintFindBooks({ location.x + 10, location.y + 10 }, searchKey);
+			//listDS.PrintFindBooks({ location.x + 10, location.y + 10 }, searchKey);
 			string selectedDauSach = listDS.PrintAllSearch({ location.x + 10, location.y + 10 }, searchKey, Menu_Mode::Both);
 			if (selectedDauSach == "Empty")
 			{

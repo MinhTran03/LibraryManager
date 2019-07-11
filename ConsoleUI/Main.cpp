@@ -1,14 +1,12 @@
 #include "FunctionMethods.h"
-#include "DocGia.h"
+
 
 int main()
 {
-	/*ClearArea(1, 1, 10, 5);
-	_getch();*/
-
 	SetupConsole();
 	MYPOINT locationDS = { 1, 2 };
 
+	// Load Doc gia
 	LIST_DOCGIA listDG = LIST_DOCGIA();
 	LoadDocGia(listDG);
 	
@@ -35,7 +33,7 @@ int main()
 			}
 			else if (func[1] == 1)
 			{
-
+				InDanhSachDG(listDG, locationDS);
 			}
 			else
 			{

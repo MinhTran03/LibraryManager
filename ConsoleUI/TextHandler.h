@@ -25,7 +25,9 @@ std::vector<std::string> Split(std::string, std::string delimiter = " ");
 void StringToCharArray(std::string source, char dest[]);
 std::string ToLowerString(std::string text);
 std::string ToUpperString(std::string text);
+std::string Trim(std::string text);
 char* StringToCharArray(std::string source);
+
 template <class T>
 void Swap(T& a, T& b)
 {

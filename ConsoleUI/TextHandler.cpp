@@ -173,6 +173,12 @@ void StringToCharArray(std::string source, char dest[])
 {
 	strcpy(dest, source.c_str());
 }
+std::string Trim(std::string text)
+{
+	auto at = text.find_first_of(' ');
+	text.erase(text.begin() + at, text.end());
+	return text;
+}
 char* StringToCharArray(std::string source)
 {
 	char* result = new char[source.size() + 1];
