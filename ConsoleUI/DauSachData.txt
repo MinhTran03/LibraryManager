@@ -1,9 +1,9 @@
 000001-Tren duong bang-265-Tony Buoi Sang-2017-Ky nang song
 000002-Dac nhan tam-320-Dale Carnegie-2016-Ky nang song
-000003-Dac lo-999-Minh Lone-2019-Ky nang sua
+000003-Dac nhan tam-352-Dale Carnegie-2019-Ky nang song
 000004-Cafe cung Tony-576-Tony Buoi Sang-2017-Ky nang song
 000005-Bo Gia-2150-Mario Puzzo-2012-Tieu thuyet
-000006-nhan-888-XXX-2019-Ky nang song
+000006-Toi la ai-120-Khoa Ngao-2019-Nhat ky
 000007-Hanh trinh ve phuong dong-256-Baird T. Spalding-2015-Ky nang song
 000008-Nha gia kim-228-Paulo Coelho-2013-Van hoc
 000009-Thep da toi the day-580-Nhicalai Axtoropxki-2016-Van hoc

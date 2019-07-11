@@ -1,5 +1,54 @@
 #include "DocGia.h"
 
+DOCGIA ParseVectorStringFile(std::vector<std::string> data)
+{
+	DOCGIA docGia;// = new DOCGIA;
+	docGia.maDocGia = atoi(StringToCharArray(data[0]));
+	docGia.ho = data[1];
+	docGia.ten = data[2];
+	if (ToLowerString(data[3]) == "nam")
+	{
+		docGia.gioiTinh = Nam;
+	}
+	else
+	{
+		docGia.gioiTinh = Nu;
+	}
+	if (ToLowerString(data[4]) == "dang hoat dong")
+	{
+		docGia.trangThai = DangHoatDong;
+	}
+	else
+	{
+		docGia.trangThai = TheBiKhoa;
+	}
+	return docGia;
+}
+
+bool ReadFromFile(LIST_DOCGIA& listDG, std::string path)
+{
+	auto fileHandler = FILEHANDLER(path);
+	try
+	{
+		auto lstDocGia = fileHandler.GetTokens();
+		int size = lstDocGia.size();
+		//DAUSACH* dauSach = new DAUSACH[size];
+		for (int i = 0; i < size; i++)
+		{
+			DOCGIA* docGia = new DOCGIA;
+			*docGia = ParseVectorStringFile(lstDocGia[i]);
+			Insert(listDG, *docGia);
+		}
+	}
+	catch (const std::exception& ex)
+	{
+		GoToXY(0, 0);
+		std::cout << ex.what();
+		return false;
+	}
+	return true;
+}
+
 DOCGIA ParseVectorString(std::vector<std::string> data)
 {
 	DOCGIA docGia;// = new DOCGIA;

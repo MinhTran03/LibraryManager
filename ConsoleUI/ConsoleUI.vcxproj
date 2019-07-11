@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="DauSachData.txt" />
+    <Text Include="DocGiaData.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

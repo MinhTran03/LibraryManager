@@ -127,5 +127,8 @@
     <Text Include="DauSachData.txt">
       <Filter>Models\Resource Files</Filter>
     </Text>
+    <Text Include="DocGiaData.txt">
+      <Filter>Models\Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
