@@ -8,6 +8,7 @@ int main()
 	// Load Doc gia
 	LIST_DOCGIA listDG = LIST_DOCGIA();
 	LoadDocGia(listDG);
+	MakeRandomArrayMaDG(listDG);
 	
 	// load dau sach
 	auto listDS = LIST_DAUSACH();

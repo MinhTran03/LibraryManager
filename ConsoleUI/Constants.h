@@ -52,9 +52,12 @@ const unsigned int DMS_TOTAL_WIDTH = MASACH_WIDTH + VITRI_WIDTH + TRANGTHAISACH_
 #pragma endregion
 
 #pragma region Doc Gia
+const unsigned int MAX_DOCGIA = 100;
+
 const unsigned int MADOCGIA_WIDTH = 10;
 const unsigned int HODOCGIA_WIDTH = 20;
 const unsigned int TENDOCGIA_WIDTH = 10;
 const unsigned int GIOITINH_WIDTH = 10;
 const unsigned int TRANGTHAIDG_WIDTH = 16;
+
 #pragma endregion
