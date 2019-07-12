@@ -11,7 +11,9 @@
 
 struct FORMINPUT
 {
+	MYPOINT guildLocation = { 0,0 };
 	std::vector<std::string> OutputResults;
+	std::vector<std::string> Guilds;
 	std::vector<std::string> labels;
 	std::vector<CONDITION> conditions;
 	// Chua index y tuong ung voi vi tri label
@@ -19,7 +21,7 @@ struct FORMINPUT
 	// CHua index x tuong ung voi vi tri text nguoi dung dang nhap vo
 	std::vector<int> cols;
 	std::vector<int> colsLabel;
-	int currentLine=0;
+	int currentLine = 0;
 	int totalLine;
 	int xInputCol;
 	std::string title;
@@ -36,7 +38,13 @@ struct FORMINPUT
 		this->totalLine = labels.size();
 		this->xInputCol = MaxLengthLabel() + rect.location.x + 3;
 		this->conditions = conditions;
-
+		guildLocation = { rect.location.x + 1, rect.location.y + rect.size.height };
+		Guilds.push_back("dong1");
+		Guilds.push_back("dong2");
+		Guilds.push_back("dong3");
+		Guilds.push_back("dong4");
+		Guilds.push_back("dong5");
+		Guilds.push_back("dong6");
 		for (int i = 1; i <= totalLine; i++)
 		{
 			rows.push_back(rect.location.y + 2 * i + 2);
@@ -73,7 +81,7 @@ struct FORMINPUT
 			GoToXY(colsLabel[i], rows[i]);
 			std::cout << labels[i];
 			SetTextColor(TEXT_INPUT_COLOR);
-			if(conditions[i].mode == Default)
+			if (conditions[i].mode == Default)
 				SetTextColor(TEXT_INPUT_DEFAULT_COLOR);
 			GoToXY(xInputCol, rows[i]);
 			std::cout << OutputResults[i];
@@ -292,22 +300,32 @@ struct FORMINPUT
 			{
 				auto dateNow = DATETIME();
 				dateNow.SetDateTimeNow();
-				if((size_t)std::stoi(OutputResults[i]) > dateNow.year || (size_t)std::stoi(OutputResults[i]) < 1000)
+				if ((size_t)std::stoi(OutputResults[i]) > dateNow.year || (size_t)std::stoi(OutputResults[i]) < 1000)
 					error.push_back(i);
 			}
 			else if (conditions[i].type == Number_Only)
 			{
-				char *temp = new char[OutputResults[i].size()];
+				char* temp = new char[OutputResults[i].size()];
 				StringToCharArray(OutputResults[i], temp);
 				int num = atoi(temp);
-				if(num == 0)
+				if (num == 0)
 					error.push_back(i);
 				//delete temp;
 			}
 		}
 		return error;
 	}
-
+	void ShowGuildLine(int currentLine)
+	{
+		int x = WhereX();
+		int y = WhereY();
+		ClearLine(guildLocation.y, guildLocation.x, guildLocation.x + rect.size.width);
+		GoToXY(guildLocation.x, guildLocation.y);
+		SetTextColor(Color::Light_Green);
+		std::cout << Guilds[currentLine];
+		SetTextColor(TEXT_INPUT_COLOR);
+		GoToXY(x, y);
+	}
 	// mode = 0: default / mode = 1: enum la gender / mode = 2: enum la trang thai sach 
 	// mode = 3: enum la tt muon tra / mode = 4: tt doc gia
 	bool Show(int mode = 0, int mode2 = 0)
@@ -354,18 +372,27 @@ struct FORMINPUT
 						cols[currentLine] = btnOK.rect.location.x;
 						ShowPointer();
 					}
+					else
+					{
+						ShowGuildLine(currentLine - 1);
+					}
 					currentLine--;
 					GoToXY(cols[currentLine], rows[currentLine]);
 				}
 				else if (inputKey == Key::DOWN && currentLine < totalLine)
 				{
 					currentLine++;
+					
 					GoToXY(cols[currentLine], rows[currentLine]);
 					// Con tro o line cua button
 					if (currentLine == totalLine)
 					{
 						HidePointer();
 						btnOK.Draw(BUTTON_HIGHLIGHT_BG_COLOR, BUTTON_HIGHLIGHT_TEXT_COLOR);
+					}
+					else
+					{
+						ShowGuildLine(currentLine);
 					}
 				}
 				else if (inputKey == Key::RIGHT && cols[currentLine] < halfWidthForm && currentLine == totalLine)
@@ -460,6 +487,7 @@ struct FORMINPUT
 					continue;
 				}
 				currentLine++;
+				ShowGuildLine(currentLine);
 				GoToXY(cols[currentLine], rows[currentLine]);
 				if (currentLine == totalLine)
 				{
@@ -657,7 +685,7 @@ struct FORMINPUT
 					else/* if(conditions[currentLine].type != Name)*/
 					{
 						auto temp = OutputResults[currentLine][OutputResults[currentLine].size() - 1];
-						if(temp != ' ')
+						if (temp != ' ')
 							inputKey = tolower(inputKey);
 					}
 					// Tu them '/'

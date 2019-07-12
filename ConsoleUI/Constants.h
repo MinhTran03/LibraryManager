@@ -57,4 +57,6 @@ const unsigned int HODOCGIA_WIDTH = 20;
 const unsigned int TENDOCGIA_WIDTH = 10;
 const unsigned int GIOITINH_WIDTH = 10;
 const unsigned int TRANGTHAIDG_WIDTH = 16;
+
+const unsigned int DOCGIA_TOTAL_WIDTH = MADOCGIA_WIDTH + HODOCGIA_WIDTH + TENDOCGIA_WIDTH + GIOITINH_WIDTH + TRANGTHAIDG_WIDTH + 6;
 #pragma endregion

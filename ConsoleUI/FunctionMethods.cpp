@@ -128,22 +128,37 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 			break;
 		}
 	}
-	_getch();
 }
 // Func 0 1
 void InDanhSachDG(LIST_DOCGIA listDG, MYPOINT location)
 {
-	PrintSortMaDG(listDG, location, 2);
-	_getch();
+	auto locationMenu = location;
+	locationMenu.x = 62;
+	location.y += 3;
+	MENU menu = MENU({ "SAP XEP THEO HO TEN", "SAP XEP THEO MA" }, locationMenu);
+	menu.btnSize = { 25, 3 };
+	while (true)
+	{
+		auto result = menu.ShowInHorizontal(Menu_Mode::Both);
+		if (result == 0)
+		{
+			PrintSortMaDG(listDG, location, 2);
+		}
+		else if (result == 1)
+		{
+			PrintSortMaDG(listDG, location, 1);
+		}
+		else
+		{
+			ClearScreen(BG_COLOR);
+			break;
+		}
+	}
 }
 // Func 1 0
 void HienThiDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 {
 	string result = listDS.PrintAllTheLoai(location);
-	if (result == "ESC")
-	{
-		//ClearScreen(BG_COLOR);
-	}
 }
 // Func 1 1
 void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)

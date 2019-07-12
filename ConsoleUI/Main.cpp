@@ -32,7 +32,7 @@ int main()
 			}
 			else if (func[1] == 1)
 			{
-				InDanhSachDG(listDG, locationDS);
+				InDanhSachDG(listDG, { locationDS.x + 50, locationDS.y });
 			}
 			else
 			{

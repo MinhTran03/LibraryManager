@@ -512,7 +512,7 @@ bool LIST_DAUSACH::WriteToFile(std::string path)
 	try
 	{
 		std::vector<std::string> data;
-		for (size_t i = 0; i < this->size; i++)
+		for (auto i = 0; i < this->size; i++)
 		{
 			auto temp = this->nodes[i]->ToStringFile();
 			if (i < this->size - 1)

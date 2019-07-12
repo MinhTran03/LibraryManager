@@ -402,7 +402,7 @@ void PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location)
 	size_t size = listData.size();
 	std::string deli = "";
 	deli += char(179);
-
+	// sort
 	std::string minHT;
 	std::string min;
 	int posMin;
