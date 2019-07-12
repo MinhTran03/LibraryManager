@@ -8,3 +8,6 @@
 000008-Nha gia kim-228-Paulo Coelho-2013-Van hoc
 000009-Thep da toi the day-580-Nhicalai Axtoropxki-2016-Van hoc
 000010-Suoi nguon-1210-Ayn Rand-2014-Van hoc
+000011-Toi va em-201-Minh Tran-2015-Van hoc
+000012-Thang ngu-122-Khoa-2019-Nhat ky
+000013-Tuoi tre-352-Tony Sang-2011-Nhat ky

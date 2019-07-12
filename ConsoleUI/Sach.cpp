@@ -47,6 +47,31 @@ std::string SACH::ToString()
 	result += char(179);
 	return result;
 }
+// chuyen object sach sach thanh string luu file
+std::string SACH::ToStringFile()
+{
+	std::string result = "";
+	result = std::string(this->maSach);
+	result += '-';
+	std::string str = "";
+	switch (this->trangThai)
+	{
+	case 0:
+		str = "Cho muon duoc";
+		break;
+	case 1:
+		str = "Da muon";
+		break;
+	case 2:
+		str = "Da thanh ly";
+		break;
+	default:
+		break;
+	}
+	result += str + '-';
+	result += this->viTri;
+	return result;
+}
 //c chuyen vector<string> vo obj Sach
 SACH ParseVectorString(std::vector<std::string> data)
 {
@@ -286,6 +311,30 @@ bool LIST_SACH::ReadFromFile(std::string path)
 			auto nodeSach = new NODE_SACH(dauSach[i]);
 			AddTail(*nodeSach);
 		}
+	}
+	catch (const std::exception& ex)
+	{
+		GoToXY(0, 0);
+		std::cout << ex.what();
+		return false;
+	}
+	return true;
+}
+// Doc obj SACH tu file
+bool LIST_SACH::WriteToFile(std::string path)
+{
+	auto fileHandler = FILEHANDLER(path);
+	try
+	{
+		std::vector<std::string> data;
+		for (auto p = this->pHead; p != NULL; p = p->pNext)
+		{
+			auto temp = p->data.ToStringFile();
+			if (p != this->pTail)
+				temp += '\n';
+			data.push_back(temp);
+		}
+		fileHandler.WriteToFile(data, Replace);
 	}
 	catch (const std::exception& ex)
 	{

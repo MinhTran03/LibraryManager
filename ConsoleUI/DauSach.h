@@ -16,6 +16,8 @@ struct DAUSACH
 	void Print(MYPOINT location, Color bgSelectColor, Color textColor);
 	// chen | giua cac field
 	std::string ToString();
+	// chuyen object dau sach thanh string luu file
+	std::string ToStringFile();
 };
 
 struct LIST_DAUSACH
@@ -35,12 +37,16 @@ struct LIST_DAUSACH
 	void PrintFindBooks(MYPOINT location, std::string tenSach);
 	#pragma endregion
 
+	// Cap nhat dsTheLoai
 	void INotifyDSTheLoai();
+	// Giai phong
 	void Deconstructor();
 	// kiem tra theLoai sach da ton tai hay chua
 	bool IsContainTheLoai(std::string theLoai);
 	// Doc obj DAUSACH tu file
 	bool ReadFromFile(std::string path);
+	// Ghi du lieu dau sach ra file text
+	bool WriteToFile(std::string path);
 	// lay dau sach theo ISBN
 	DAUSACH* GetDauSach(char isbn[ISBN_MAXSIZE + 1]);
 	// Return true if list full (1000)

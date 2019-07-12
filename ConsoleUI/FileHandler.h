@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -9,6 +9,11 @@ enum FileHandlerResult
 	Exist,
 	Not_Exist,
 	Empty,
+};
+enum IosMode
+{
+	Replace,
+	WriteNext,
 };
 
 struct FILEHANDLER
@@ -75,5 +80,31 @@ struct FILEHANDLER
 			fileInput.close();
 			return result;
 		}
+	}
+
+	// mode = ios::
+	bool WriteToFile(std::vector<std::string> data, IosMode mode)
+	{
+		if (IsValidFile(this->filePath) == Not_Exist)
+		{
+			std::ofstream outfile(filePath);
+		}
+
+		// 2. Mở file
+		std::ofstream f;
+		if(mode == Replace)
+			f.open(filePath, std::ios::trunc);
+		else
+			f.open(filePath, std::ios::app);
+
+		// 3. Ghi dữ liệu vào file, trường hợp này ta có data là dữ liệu
+		for (auto item : data)
+		{
+			f << item;
+		}
+
+		// 4. Đóng file
+		f.close();
+		return true;
 	}
 };

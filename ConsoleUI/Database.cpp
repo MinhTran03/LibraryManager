@@ -16,3 +16,16 @@ bool LoadDocGia(LIST_DOCGIA& listDocGia)
 	std::string path = "D:\\C++\\LibraryManager\\ConsoleUI\\DocGiaData.txt";
 	return ReadFromFile(listDocGia, path);
 }
+
+bool WriteDauSach(LIST_DAUSACH& listDS)
+{
+	std::string path = "D:\\C++\\LibraryManager\\ConsoleUI\\DauSachData.txt";
+	return listDS.WriteToFile(path);
+}
+bool WriteSach(LIST_SACH& listSach, char isbn[ISBN_MAXSIZE + 1])
+{
+	std::string path = "D:\\C++\\LibraryManager\\ConsoleUI\\DanhMucSach\\";
+	path += isbn;
+	path += ".txt";
+	return listSach.WriteToFile(path);
+}

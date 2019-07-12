@@ -125,6 +125,20 @@ std::string DAUSACH::ToString()
 	result += char(179);
 	return result;
 }
+// chuyen object dau sach thanh string luu file
+std::string DAUSACH::ToStringFile()
+{
+	std::string result = "";
+	result = std::string(this->isbn);
+	result += '-';
+	result += this->tenSach + '-';
+	result += std::to_string(this->soTrang) + '-';
+	result += this->tenTacGia + '-';
+	result += std::to_string(this->namXuatBan) + '-';
+	result += this->tenTheLoai;
+	//result += '\n';
+	return result;
+}
 #pragma endregion
 
 #pragma region ----------------------------------------------------LIST_DAUSACH
@@ -482,6 +496,30 @@ bool LIST_DAUSACH::ReadFromFile(std::string path)
 			*dauSach = ParseVectorString(lstDauSachVector[i]);
 			Insert(*dauSach, this->size);
 		}
+	}
+	catch (const std::exception& ex)
+	{
+		GoToXY(0, 0);
+		std::cout << ex.what();
+		return false;
+	}
+	return true;
+}
+// Ghi du lieu dau sach ra file text
+bool LIST_DAUSACH::WriteToFile(std::string path)
+{
+	auto fileHandler = FILEHANDLER(path);
+	try
+	{
+		std::vector<std::string> data;
+		for (size_t i = 0; i < this->size; i++)
+		{
+			auto temp = this->nodes[i]->ToStringFile();
+			if (i < this->size - 1)
+				temp += '\n';
+			data.push_back(temp);
+		}
+		fileHandler.WriteToFile(data, Replace);
 	}
 	catch (const std::exception& ex)
 	{

@@ -23,6 +23,8 @@ struct SACH
 	void Print(MYPOINT location, Color bgSelectColor, Color textColor);
 	// chen | giua cac field
 	std::string ToString();
+	// chuyen object sach sach thanh string luu file
+	std::string ToStringFile();
 	// kiem tra sach co xoa duoc khong
 	bool CanDelete();
 };
@@ -53,6 +55,8 @@ struct LIST_SACH
 	LIST_SACH();
 	// Doc ds danh muc sach tu file. Moi file chua 1 dms cua 1 dau sach
 	bool ReadFromFile(std::string path);
+	// Doc obj SACH tu file
+	bool WriteToFile(std::string path);
 	// Thuat toan tu sinh ma sach
 	std::string AutoGenerateMaSach(char isbn[ISBN_MAXSIZE + 1]);
 	// Them vao cuoi ds sach

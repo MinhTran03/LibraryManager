@@ -5,3 +5,6 @@
 bool LoadDauSach(LIST_DAUSACH& listDS);
 bool LoadSach(LIST_SACH& listSach, char isbn[ISBN_MAXSIZE + 1]);
 bool LoadDocGia(LIST_DOCGIA& listDocGia);
+
+bool WriteDauSach(LIST_DAUSACH& listDS);
+bool WriteSach(LIST_SACH& listDS, char isbn[ISBN_MAXSIZE + 1]);

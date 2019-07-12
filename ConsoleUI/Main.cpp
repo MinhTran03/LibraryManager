@@ -1,6 +1,5 @@
 #include "FunctionMethods.h"
 
-
 int main()
 {
 	SetupConsole();
@@ -15,7 +14,7 @@ int main()
 	LoadDauSach(listDS);
 
 	// load sach
-	for (size_t i = 0; i < 5; i++)
+	for (int i = 0; i < listDS.size; i++)
 	{
 		LoadSach(listDS.nodes[i]->dsSach, listDS.nodes[i]->isbn);
 	}
@@ -85,6 +84,17 @@ int main()
 		}
 	}
 
+	// luu dau sach
+	WriteDauSach(listDS);
+	// luu sach
+	for (int i = 0; i < listDS.size; i++)
+	{
+		if (listDS.nodes[i]->dsSach.IsEmpty())
+			continue;
+		WriteSach(listDS.nodes[i]->dsSach, listDS.nodes[i]->isbn);
+	}
+
+	// Huy
 	for (int i = 0; i < listDS.size; i++)
 	{
 		listDS.nodes[i]->dsSach.Deconstructor();
