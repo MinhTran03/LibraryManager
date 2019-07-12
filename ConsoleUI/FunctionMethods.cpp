@@ -42,9 +42,10 @@ vector<int> SelectionFuntion(int rootLine, int childLine)
 	return selection;
 }
 // Func 0 0
-void QuanLiDocGia(LIST_DAUSACH& listDS, MYPOINT location)
+void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 {
-
+	PrintControlsDocGia(listDG, location);
+	_getch();
 }
 // Func 0 1
 void InDanhSachDG(LIST_DOCGIA listDG, MYPOINT location)

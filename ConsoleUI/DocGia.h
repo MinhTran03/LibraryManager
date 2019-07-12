@@ -70,5 +70,7 @@ bool DeleteNode(LIST_DOCGIA& listDG, DOCGIA docGia);
 // In ds doc gia theo maDocGia tang dan
 void PrintSortMaDG(LIST_DOCGIA lstDG, MYPOINT location, int mode = 1);
 
+void PrintControlsDocGia(LIST_DOCGIA lstDG, MYPOINT location);
+
 void GetDGtoVector(LIST_DOCGIA lstDG, std::vector<std::string>& dsDocGia);
 

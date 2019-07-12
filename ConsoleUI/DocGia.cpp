@@ -160,8 +160,8 @@ vector<int> GetArrayRandom(LIST_DOCGIA listDG, int SizeArray)
 {
 	int position = 0;
 	int size = SizeArray;
-	vector<int> ArrayRandom;
-	vector<int> dsMaDocGia;
+	std::vector<int> ArrayRandom;
+	std::vector<int> dsMaDocGia;
 	if (listDG != NULL)
 	{
 		GetMaDGtoVector(listDG, dsMaDocGia);
@@ -170,7 +170,7 @@ vector<int> GetArrayRandom(LIST_DOCGIA listDG, int SizeArray)
 	{
 		ArrayRandom[i] = i;
 	}
-	for (size_t i = 0; i < dsMaDocGia.size; i++)
+	for (size_t i = 0; i < dsMaDocGia.size(); i++)
 	{
 		for (size_t j = 0; j < SizeArray; j++)
 		{
@@ -351,7 +351,7 @@ void GetDGtoVector(LIST_DOCGIA lstDG, std::vector<std::string> & dsDocGia)
 	}
 }
 // in danh sach de quan ly doc gia
-void PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT& location)
+void PrintControlMaDG(LIST_DOCGIA listDG, MYPOINT& location)
 {
 	vector<std::string> dsDocGia;
 	if (listDG != NULL)
@@ -386,6 +386,14 @@ std::vector<std::string> GetAllStringNode(LIST_DOCGIA listDG)
 	std::vector<std::string> result;
 	InorderGetString(listDG, result);
 	return result;
+}
+
+void PrintControlsDocGia(LIST_DOCGIA listDG, MYPOINT location)
+{
+	PrintLabelDocGia(location, MAX_ROW_PER_PAGE);
+	auto loc = location;
+	loc.y += 3;
+	PrintContentSortMaDG(listDG, loc);
 }
 // ...
 void PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location)
