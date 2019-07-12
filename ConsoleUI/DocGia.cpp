@@ -145,6 +145,32 @@ bool ReadFromFile(LIST_DOCGIA& listDG, std::string path)
 	}
 	return true;
 }
+
+vector<int> GetArrayRandom(LIST_DOCGIA listDG, int SizeArray)
+{
+	int position = 0;
+	int size = SizeArray;
+	vector<int> ArrayRandom;
+	for (size_t i = 0; i < SizeArray; i++)
+	{
+		ArrayRandom[i] = i;
+	}
+	for (size_t i = 0; i < Size(listDG); i++)
+	{
+		for (size_t j = 0; j < SizeArray; j++)
+		{
+			if (listDG[i].data.maDocGia == ArrayRandom[j])
+			{
+				int temp = ArrayRandom[j];
+				ArrayRandom[j] = ArrayRandom[position];
+				ArrayRandom[position] = temp;
+				position++;
+			}
+		}
+	}
+	return ArrayRandom;
+}
+
 // Giai phong vung nho
 void FreeMemory(NODE_DOCGIA* root)
 {

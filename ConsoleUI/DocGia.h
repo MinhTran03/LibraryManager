@@ -45,6 +45,8 @@ typedef NODE_DOCGIA* LIST_DOCGIA;
 int Size(LIST_DOCGIA listDG);
 // Doc tu file txt
 bool ReadFromFile(LIST_DOCGIA& listDG,std::string path);
+
+vector<int> GetArrayRandom(LIST_DOCGIA listDG, int Size);
 // Chuyen vector string thanh doc gia
 DOCGIA ParseVectorString(std::vector<std::string> data);
 // Giai phong vung nho
