@@ -146,20 +146,35 @@ bool ReadFromFile(LIST_DOCGIA& listDG, std::string path)
 	return true;
 }
 
+void GetMaDGtoVector(LIST_DOCGIA lstDG, std::vector<int>& dsMaDocGia)
+{
+	if (lstDG != NULL)
+	{
+		GetMaDGtoVector(lstDG->pLeft, dsMaDocGia);
+		dsMaDocGia.push_back(lstDG->data.maDocGia);
+		GetMaDGtoVector(lstDG->pRight, dsMaDocGia);
+	}
+}
+
 vector<int> GetArrayRandom(LIST_DOCGIA listDG, int SizeArray)
 {
 	int position = 0;
 	int size = SizeArray;
 	vector<int> ArrayRandom;
+	vector<int> dsMaDocGia;
+	if (listDG != NULL)
+	{
+		GetMaDGtoVector(listDG, dsMaDocGia);
+	}
 	for (size_t i = 0; i < SizeArray; i++)
 	{
 		ArrayRandom[i] = i;
 	}
-	for (size_t i = 0; i < Size(listDG); i++)
+	for (size_t i = 0; i < dsMaDocGia.size; i++)
 	{
 		for (size_t j = 0; j < SizeArray; j++)
 		{
-			if (listDG[i].data.maDocGia == ArrayRandom[j])
+			if (dsMaDocGia[i] == ArrayRandom[j])
 			{
 				int temp = ArrayRandom[j];
 				ArrayRandom[j] = ArrayRandom[position];
@@ -326,14 +341,33 @@ void PrintLabelDocGia(MYPOINT location, int row)
 	lstBorder.Draw(location, { MADOCGIA_WIDTH, HODOCGIA_WIDTH, TENDOCGIA_WIDTH, GIOITINH_WIDTH, TRANGTHAIDG_WIDTH },
 		row, BORDER_COLOR);
 }
-// in content theo maDG
-void PrintContentSortMaDG(LIST_DOCGIA lstDG, MYPOINT& location)
+void GetDGtoVector(LIST_DOCGIA lstDG, std::vector<std::string> & dsDocGia)
 {
 	if (lstDG != NULL)
 	{
-		PrintContentSortMaDG(lstDG->pLeft, location);
-		lstDG->data.Print({ location.x,location.y++ }, BG_COLOR, TEXT_INPUT_COLOR);
-		PrintContentSortMaDG(lstDG->pRight, location);
+		GetDGtoVector(lstDG->pLeft, dsDocGia);
+		dsDocGia.push_back(lstDG->data.ToString());
+		GetDGtoVector(lstDG->pRight, dsDocGia);
+	}
+}
+// in danh sach de quan ly doc gia
+void PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT& location)
+{
+	vector<std::string> dsDocGia;
+	if (listDG != NULL)
+	{
+		GetDGtoVector(listDG, dsDocGia);
+	}
+}
+
+// in content theo maDG
+void PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT& location)
+{
+	if (listDG != NULL)
+	{
+		PrintContentSortMaDG(listDG->pLeft, location);
+		listDG->data.Print({ location.x,location.y++ }, BG_COLOR, TEXT_INPUT_COLOR);
+		PrintContentSortMaDG(listDG->pRight, location);
 	}
 }
 // duyet cay lay data string
