@@ -31,7 +31,7 @@ vector<int> SelectionFuntion(int rootLine, int childLine)
 {
 	MENU menu = MENU({ "QUAN LY DOC GIA", "QUAN LY DAU SACH", "QUAN LY SACH" }, { 0, 3 });
 	vector<vector<string>> temp;
-	SLIDEMENUS slide = SLIDEMENUS({ {"chua lam", "IN DANH SACH DOC GIA", "chua lam"},
+	SLIDEMENUS slide = SLIDEMENUS({ {"QUAN LY DOC GIA", "IN DANH SACH DOC GIA", "chua lam"},
 		{"HIEN THI DAU SACH", "CAP NHAT DAU SACH", "CAP NHAT DANH MUC SACH", "TIM SACH"},
 		{"CHUA LAM", "CHUA LAM", "CHUA LAM"} }, menu);
 	auto selection = slide.Show(rootLine, childLine);
@@ -42,9 +42,10 @@ vector<int> SelectionFuntion(int rootLine, int childLine)
 	return selection;
 }
 // Func 0 0
-void QuanLiDocGia(LIST_DAUSACH& listDS, MYPOINT location)
+void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 {
-
+	PrintControlsDocGia(listDG, location);
+	_getch();
 }
 // Func 0 1
 void InDanhSachDG(LIST_DOCGIA listDG, MYPOINT location)

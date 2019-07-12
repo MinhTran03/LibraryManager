@@ -45,6 +45,8 @@ typedef NODE_DOCGIA* LIST_DOCGIA;
 int Size(LIST_DOCGIA listDG);
 // Doc tu file txt
 bool ReadFromFile(LIST_DOCGIA& listDG,std::string path);
+
+vector<int> GetArrayRandom(LIST_DOCGIA listDG, int Size);
 // Chuyen vector string thanh doc gia
 DOCGIA ParseVectorString(std::vector<std::string> data);
 // Giai phong vung nho
@@ -67,3 +69,8 @@ void TimpPhanTuTheMangPhaiNhatCayConTrai(LIST_DOCGIA& p, LIST_DOCGIA& q);
 bool DeleteNode(LIST_DOCGIA& listDG, DOCGIA docGia);
 // In ds doc gia theo maDocGia tang dan
 void PrintSortMaDG(LIST_DOCGIA lstDG, MYPOINT location, int mode = 1);
+
+void PrintControlsDocGia(LIST_DOCGIA lstDG, MYPOINT location);
+
+void GetDGtoVector(LIST_DOCGIA lstDG, std::vector<std::string>& dsDocGia);
+
