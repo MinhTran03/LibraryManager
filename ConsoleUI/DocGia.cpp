@@ -166,13 +166,13 @@ vector<int> GetArrayRandom(LIST_DOCGIA listDG, int SizeArray)
 	{
 		GetMaDGtoVector(listDG, dsMaDocGia);
 	}
-	for (size_t i = 0; i < SizeArray; i++)
+	for (int i = 0; i < SizeArray; i++)
 	{
 		ArrayRandom[i] = i;
 	}
 	for (size_t i = 0; i < dsMaDocGia.size(); i++)
 	{
-		for (size_t j = 0; j < SizeArray; j++)
+		for (int j = 0; j < SizeArray; j++)
 		{
 			if (dsMaDocGia[i] == ArrayRandom[j])
 			{
