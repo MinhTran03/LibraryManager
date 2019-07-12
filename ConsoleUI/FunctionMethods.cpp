@@ -45,6 +45,89 @@ vector<int> SelectionFuntion(int rootLine, int childLine)
 void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 {
 	PrintControlsDocGia(listDG, location);
+	//int maThe;
+	auto locationBtn = location;
+	locationBtn.x += 30;
+	locationBtn.y += 37;
+	MENU menu = MENU({ "THEM", "XOA", "SUA" }, locationBtn);
+	menu.btnSize = { 10,3 };
+	while (true)
+	{
+		int selected = menu.ShowInHorizontal(Menu_Mode::Both);
+		menu.ShowDisableModeInHorizontal();
+		// Them
+		if (selected == 0)
+		{
+			/*auto newDocGia = new DOCGIA();
+			*newDocGia = InputDocGia(maThe, { {DAUSACH_TOTAL_WIDTH + 2, location.y}, {50, 18} });*/
+		}
+		// Xoa
+		else if (selected == 1)
+		{
+			while (true)
+			{
+				// Het doc gia
+				if (true)
+				{
+					break;
+				}
+				ClearLine(1);
+				if (true)
+				{
+					// load lai data
+				}
+				// ng dung an enter de xoa
+				else
+				{
+					auto confirm = CONFIRMDIALOG({ 30, 7 });
+					confirm.Show("Ban chac chan muon xoa?", Yes_No);
+					confirm.Clear();
+					// dong y xoa
+					if (confirm.result == Yes)
+					{
+						// chua kiem tra co duoc xoa hay khong???
+						// ...
+						// D khong duoc phep xoa
+						if (true)
+						{
+							MakeFlickWarning({ locationBtn.x - 5, 1 }, WARNING_CANT_DELETE_DS);
+						}
+						else
+						{
+							// da cap nhat ds the loai trong DeleteDauSach
+
+						}
+					}
+				}
+			}
+		}
+		// Sua
+		else if (selected == 2)
+		{
+			while (true)
+			{
+				if (true)
+				{
+					break;
+				}
+
+				if (true)
+				{
+					// load lai data
+					break;
+				}
+				else
+				{
+					// cap nhat dsDauSach
+				}
+			}
+		}
+		else if (selected == Key::ESC)
+		{
+			ClearScreen(BG_COLOR);
+			break;
+		}
+	}
 	_getch();
 }
 // Func 0 1
