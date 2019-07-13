@@ -44,7 +44,7 @@ vector<int> SelectionFuntion(int rootLine, int childLine)
 // Func 0 0
 void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 {
-	//PrintControlsDocGia(listDG, location);
+	PrintDocGia(listDG, location);
 	//int maThe;
 	auto locationBtn = location;
 	locationBtn.x += 30;
@@ -59,7 +59,19 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 		if (selected == 0)
 		{
 			auto newDocGia = new DOCGIA();
-			*newDocGia = InputDocGia(255, { {DAUSACH_TOTAL_WIDTH + 2, location.y}, {50, 18} });
+			int backUpPos;
+			int newMaDG = GetRandomMaDG(listDG, backUpPos);
+			*newDocGia = InputDocGia(newMaDG, { {DAUSACH_TOTAL_WIDTH + 2, location.y}, {50, 18} });
+			if (newDocGia->ho == "")
+			{
+				delete newDocGia;
+			}
+			else
+			{
+				SwapMaDG(Size(listDG), backUpPos);
+				Insert(listDG, *newDocGia);
+				PrintDocGia(listDG, location);
+			}
 		}
 		// Xoa
 		else if (selected == 1)

@@ -112,6 +112,14 @@ std::string DOCGIA::ToString()
 }
 #pragma endregion
 
+
+NODE_DOCGIA::NODE_DOCGIA(DOCGIA& data)
+{
+	this->data = data;
+	this->pLeft = NULL;
+	this->pRight = NULL;
+}
+
 #pragma region -------------------------------------------LIST_DOCGIA
 // so node cua cay
 int Size(LIST_DOCGIA listDG)
@@ -119,7 +127,7 @@ int Size(LIST_DOCGIA listDG)
 	if (listDG == NULL)
 		return 0;
 	else
-		return 1 + Size(listDG->pLeft) + Size(listDG->pLeft);
+		return 1 + Size(listDG->pLeft) + Size(listDG->pRight);
 }
 // Doc tu file txt
 bool ReadFromFile(LIST_DOCGIA& listDG, std::string path)
@@ -145,7 +153,7 @@ bool ReadFromFile(LIST_DOCGIA& listDG, std::string path)
 	}
 	return true;
 }
-
+// Lay ds maDocGia
 void GetMaDGtoVector(LIST_DOCGIA lstDG, std::vector<int>& dsMaDocGia)
 {
 	if (lstDG != NULL)
@@ -155,37 +163,47 @@ void GetMaDGtoVector(LIST_DOCGIA lstDG, std::vector<int>& dsMaDocGia)
 		GetMaDGtoVector(lstDG->pRight, dsMaDocGia);
 	}
 }
-
-vector<int> GetArrayRandom(LIST_DOCGIA listDG, int SizeArray)
+// Make array ma doc gia
+void MakeRandomArrayMaDG(LIST_DOCGIA listDG)
 {
-	int position = 0;
-	int size = SizeArray;
-	std::vector<int> ArrayRandom;
+	srand(time(NULL));
+	for (unsigned int i = 0; i < MAX_DOCGIA; i++)
+	{
+		MADOCGIAARR[i] = i + 1;
+	}
+	for (unsigned int i = 0; i < MAX_DOCGIA; i++)
+	{
+		int temp = rand() % MAX_DOCGIA;
+		Swap(MADOCGIAARR[i], MADOCGIAARR[temp]);
+	}
+
 	std::vector<int> dsMaDocGia;
-	if (listDG != NULL)
-	{
-		GetMaDGtoVector(listDG, dsMaDocGia);
-	}
-	for (int i = 0; i < SizeArray; i++)
-	{
-		ArrayRandom[i] = i;
-	}
+	GetMaDGtoVector(listDG, dsMaDocGia);
+	int t = Size(listDG);
 	for (size_t i = 0; i < dsMaDocGia.size(); i++)
 	{
-		for (int j = 0; j < SizeArray; j++)
+		for (unsigned int j = 0; j < MAX_DOCGIA; j++)
 		{
-			if (dsMaDocGia[i] == ArrayRandom[j])
+			if (dsMaDocGia[i] == MADOCGIAARR[j])
 			{
-				int temp = ArrayRandom[j];
-				ArrayRandom[j] = ArrayRandom[position];
-				ArrayRandom[position] = temp;
-				position++;
+				Swap(MADOCGIAARR[i], MADOCGIAARR[j]);
+				break;
 			}
 		}
 	}
-	return ArrayRandom;
 }
-
+// ...
+int GetRandomMaDG(LIST_DOCGIA listDG, int& positon)
+{
+	srand(time(NULL));
+	int pos = rand() % (MAX_DOCGIA - Size(listDG) - 1) + Size(listDG);
+	positon = pos;
+	return MADOCGIAARR[pos];
+}
+void SwapMaDG(int pos1, int pos2)
+{
+	Swap(MADOCGIAARR[pos1], MADOCGIAARR[pos2]);
+}
 // Giai phong vung nho
 void FreeMemory(NODE_DOCGIA* root)
 {
@@ -206,9 +224,7 @@ void Insert(LIST_DOCGIA& lstDG, DOCGIA input)
 {
 	if (lstDG == NULL)
 	{
-		NODE_DOCGIA* p = new NODE_DOCGIA;
-		p->data = input;
-		p->pLeft = p->pRight = NULL;
+		NODE_DOCGIA* p = new NODE_DOCGIA(input);
 		lstDG = p;
 	}
 	else
@@ -325,6 +341,7 @@ DOCGIA InputDocGia(int maThe, RECTANGLE rect)
 	form.Guilds = guilds;
 	DOCGIA docGia = DOCGIA();
 	form.ParseData({ std::to_string(maThe), "","","0","1" });
+	form.currentLine = 1;
 	if (form.Show(1, 4))
 	{
 		return ParseVectorString(form.OutputResults);
@@ -335,25 +352,7 @@ DOCGIA InputDocGia(int maThe, RECTANGLE rect)
 	}
 	return docGia;
 }
-// row la so dong data
-void PrintLabelDocGia(MYPOINT location, int row)
-{
-	std::vector<std::string> labels = { "MA DOC GIA", "HO", "TEN", "GIOI TINH", "TRANG THAI THE" };
-	auto lstBorder = LISTBORDERTEXT(labels);
-	lstBorder.Draw(location, { MADOCGIA_WIDTH, HODOCGIA_WIDTH, TENDOCGIA_WIDTH, GIOITINH_WIDTH, TRANGTHAIDG_WIDTH },
-		row, BORDER_COLOR);
-}
-// in content sort theo maDG
-void PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT& location)
-{
-	if (listDG != NULL)
-	{
-		PrintContentSortMaDG(listDG->pLeft, location);
-		listDG->data.Print({ location.x,location.y++ }, BG_COLOR, TEXT_INPUT_COLOR);
-		PrintContentSortMaDG(listDG->pRight, location);
-	}
-}
-// duyet NLR luu ToString cua doc gia
+// duyet cay lay data string
 void InorderGetString(LIST_DOCGIA lstDG, std::vector<std::string>& result)
 {
 	if (lstDG != NULL)
@@ -370,7 +369,43 @@ std::vector<std::string> GetAllStringNode(LIST_DOCGIA listDG)
 	InorderGetString(listDG, result);
 	return result;
 }
-// In ds doc gia sort theo ten
+// in danh sach de quan ly doc gia co highLight
+void PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT& location)
+{
+	vector<std::string> dsDocGia;
+	if (listDG != NULL)
+	{
+		dsDocGia = GetAllStringNode(listDG);
+	}
+}
+
+// row la so dong data
+void PrintLabelDocGia(MYPOINT location, int row)
+{
+	std::vector<std::string> labels = { "MA DOC GIA", "HO", "TEN", "GIOI TINH", "TRANG THAI THE" };
+	auto lstBorder = LISTBORDERTEXT(labels);
+	lstBorder.Draw(location, { MADOCGIA_WIDTH, HODOCGIA_WIDTH, TENDOCGIA_WIDTH, GIOITINH_WIDTH, TRANGTHAIDG_WIDTH },
+		row, BORDER_COLOR);
+}
+// in content theo maDG
+void PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT& location)
+{
+	if (listDG != NULL)
+	{
+		PrintContentSortMaDG(listDG->pLeft, location);
+		listDG->data.Print({ location.x,location.y++ }, BG_COLOR, TEXT_INPUT_COLOR);
+		PrintContentSortMaDG(listDG->pRight, location);
+	}
+}
+// duyet NLR in ds doc gia
+void PrintContentDocGia(LIST_DOCGIA listDG, MYPOINT location)
+{
+	PrintLabelDocGia(location, MAX_ROW_PER_PAGE);
+	auto loc = location;
+	loc.y += 3;
+	PrintContentSortMaDG(listDG, loc);
+}
+// In ds doc gia theo ten
 void PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location)
 {
 	std::vector<std::string> listData = GetAllStringNode(lstDG);
@@ -416,7 +451,7 @@ void PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location)
 }
 // In ds doc gia: mode = 1 (Sort theo maDG)
 //                mode = 2 (Sort theo hoTen)
-void PrintAllDocGia(LIST_DOCGIA lstDG, MYPOINT location, int mode)
+void PrintDocGia(LIST_DOCGIA lstDG, MYPOINT location, int mode)
 {
 	PrintLabelDocGia(location, MAX_ROW_PER_PAGE);
 	auto loc = location;
