@@ -22,6 +22,9 @@ DAUSACH InputDauSach(LIST_DAUSACH listDS, RECTANGLE rect)
 	std::vector<CONDITION> conditions = { {Number_Only, ISBN_MAXSIZE, ISBN_MAXSIZE}, {All, 1, TENSACH_MAXSIZE},{Number_Only, 1, SOTRANG_MAXKYTU},
 													{Name, 1, TENTACGIA_MAXSIZE},{Year, 4, 4},{Word_Only, 1, TENTHELOAI_MAXSIZE} };
 	auto form = FORMINPUT(labels, conditions, rect, inputTitle);
+	std::vector<std::string> guilds = { "DAY SO CO 5 CHU SO", "TAT CA KY TU", "SO TRANG TU [1, 999999]", "CHI NHAP CHU CAI", 
+													"PHAI NHO HON NAM HIEN TAI", "CHI NHAP CHU CAI" };
+	form.Guilds = guilds;
 	DAUSACH dauSach = DAUSACH();
 	std::vector<std::string> tempData = form.OutputResults;
 
@@ -36,6 +39,7 @@ DAUSACH InputDauSach(LIST_DAUSACH listDS, RECTANGLE rect)
 				GoToXY(form.cols[0] - 6, form.rows[0] + 1);
 				SetTextColor(WARNING_TEXT_COLOR);
 				std::cout << "ISBN da bi trung";
+				form.currentLine = 0;
 				tempData = form.OutputResults;
 			}
 			else
@@ -61,6 +65,9 @@ DAUSACH InputFixDauSach(LIST_DAUSACH listDS, RECTANGLE rect, DAUSACH dauSach)
 													{Name, 1, TENTACGIA_MAXSIZE},{Year, 4, 4},{Word_Only, 1, TENTHELOAI_MAXSIZE} };
 	auto form = FORMINPUT(labels, conditions, rect, inputTitle);
 	//DAUSACH dauSach = DAUSACH();
+	std::vector<std::string> guilds = { "DAY SO CO 5 CHU SO", "TAT CA KY TU", "SO TRANG TU [1, 999999]", "CHI NHAP CHU CAI",
+													"PHAI NHO HON NAM HIEN TAI", "CHI NHAP CHU CAI" };
+	form.Guilds = guilds;
 	form.ParseData({ std::string(dauSach.isbn), dauSach.tenSach, std::to_string(dauSach.soTrang),
 				dauSach.tenTacGia, std::to_string(dauSach.namXuatBan), dauSach.tenTheLoai });
 	form.currentLine = 1;

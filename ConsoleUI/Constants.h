@@ -15,6 +15,7 @@
 #define BORDER_COLOR Color::Black
 #define WARNING_TEXT_COLOR Color::Red
 #define DISABLE_COLOR Color::Gray
+#define TEXT_GUILD_COLOR Color::Light_Magenta
 #pragma endregion
 
 const int magicNumber = -1;

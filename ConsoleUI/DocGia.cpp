@@ -321,6 +321,8 @@ DOCGIA InputDocGia(int maThe, RECTANGLE rect)
 	std::vector<CONDITION> conditions = { {Number_Only, 1, 4, Default}, {Name, 1, HODOCGIA_WIDTH},{Name, 1, TENDOCGIA_WIDTH},
 													{Enum, 1, 2 },{Enum2, 1, 2, Default} };
 	auto form = FORMINPUT(labels, conditions, rect, inputTitle);
+	std::vector<std::string> guilds = {"MA DOC GIA LA TU DONG", "CHI NHAP CHU CAI", "CHI NHAP CHU CAI", "0: NAM\n1: NU", "0: THE BI KHOA\n1: DANG HOAT DONG"};
+	form.Guilds = guilds;
 	DOCGIA docGia = DOCGIA();
 	form.ParseData({ std::to_string(maThe), "","","0","1" });
 	if (form.Show(1, 4))
@@ -341,26 +343,7 @@ void PrintLabelDocGia(MYPOINT location, int row)
 	lstBorder.Draw(location, { MADOCGIA_WIDTH, HODOCGIA_WIDTH, TENDOCGIA_WIDTH, GIOITINH_WIDTH, TRANGTHAIDG_WIDTH },
 		row, BORDER_COLOR);
 }
-void GetDGtoVector(LIST_DOCGIA lstDG, std::vector<std::string> & dsDocGia)
-{
-	if (lstDG != NULL)
-	{
-		GetDGtoVector(lstDG->pLeft, dsDocGia);
-		dsDocGia.push_back(lstDG->data.ToString());
-		GetDGtoVector(lstDG->pRight, dsDocGia);
-	}
-}
-// in danh sach de quan ly doc gia
-void PrintControlMaDG(LIST_DOCGIA listDG, MYPOINT& location)
-{
-	vector<std::string> dsDocGia;
-	if (listDG != NULL)
-	{
-		GetDGtoVector(listDG, dsDocGia);
-	}
-}
-
-// in content theo maDG
+// in content sort theo maDG
 void PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT& location)
 {
 	if (listDG != NULL)
@@ -370,7 +353,7 @@ void PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT& location)
 		PrintContentSortMaDG(listDG->pRight, location);
 	}
 }
-// duyet cay lay data string
+// duyet NLR luu ToString cua doc gia
 void InorderGetString(LIST_DOCGIA lstDG, std::vector<std::string>& result)
 {
 	if (lstDG != NULL)
@@ -387,15 +370,7 @@ std::vector<std::string> GetAllStringNode(LIST_DOCGIA listDG)
 	InorderGetString(listDG, result);
 	return result;
 }
-
-void PrintControlsDocGia(LIST_DOCGIA listDG, MYPOINT location)
-{
-	PrintLabelDocGia(location, MAX_ROW_PER_PAGE);
-	auto loc = location;
-	loc.y += 3;
-	PrintContentSortMaDG(listDG, loc);
-}
-// ...
+// In ds doc gia sort theo ten
 void PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location)
 {
 	std::vector<std::string> listData = GetAllStringNode(lstDG);
@@ -441,7 +416,7 @@ void PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location)
 }
 // In ds doc gia: mode = 1 (Sort theo maDG)
 //                mode = 2 (Sort theo hoTen)
-void PrintSortMaDG(LIST_DOCGIA lstDG, MYPOINT location, int mode)
+void PrintAllDocGia(LIST_DOCGIA lstDG, MYPOINT location, int mode)
 {
 	PrintLabelDocGia(location, MAX_ROW_PER_PAGE);
 	auto loc = location;

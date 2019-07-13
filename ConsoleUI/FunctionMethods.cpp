@@ -44,7 +44,7 @@ vector<int> SelectionFuntion(int rootLine, int childLine)
 // Func 0 0
 void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 {
-	PrintControlsDocGia(listDG, location);
+	//PrintControlsDocGia(listDG, location);
 	//int maThe;
 	auto locationBtn = location;
 	locationBtn.x += 30;
@@ -58,8 +58,8 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 		// Them
 		if (selected == 0)
 		{
-			/*auto newDocGia = new DOCGIA();
-			*newDocGia = InputDocGia(maThe, { {DAUSACH_TOTAL_WIDTH + 2, location.y}, {50, 18} });*/
+			auto newDocGia = new DOCGIA();
+			*newDocGia = InputDocGia(255, { {DAUSACH_TOTAL_WIDTH + 2, location.y}, {50, 18} });
 		}
 		// Xoa
 		else if (selected == 1)
@@ -142,11 +142,11 @@ void InDanhSachDG(LIST_DOCGIA listDG, MYPOINT location)
 		auto result = menu.ShowInHorizontal(Menu_Mode::Both);
 		if (result == 0)
 		{
-			PrintSortMaDG(listDG, location, 2);
+			PrintAllDocGia(listDG, location, 2);
 		}
 		else if (result == 1)
 		{
-			PrintSortMaDG(listDG, location, 1);
+			PrintAllDocGia(listDG, location, 1);
 		}
 		else
 		{

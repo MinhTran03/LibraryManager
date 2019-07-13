@@ -104,8 +104,10 @@ SACH SACH::Input(RECTANGLE rect, std::string maSach)
 {
 	std::string title = "NHAP THONG TIN SACH";
 	std::vector<std::string> labels = { "Ma sach", "Trang thai:", "Vi tri:" };
-	std::vector<CONDITION> conditions = { {All, 6, 6, Default}, {Enum, 1, 3, Default}, {Mix, 1, VITRI_MAXSIZE} };
+	std::vector<CONDITION> conditions = { {All, 6, 6, Default}, {Enum, 1, 3, Default}, {Mix, VITRI_MAXSIZE, VITRI_MAXSIZE} };
 	auto form = FORMINPUT(labels, conditions, rect, title);
+	std::vector<std::string> guilds = {"MA SACH LA TU DONG", "0: CHO MUON DUOC\n1: DA MUON\n2: DA THANH LY", "BAO GOM CHU VA SO"};
+	form.Guilds = guilds;
 	form.ParseData({ maSach, "0", "" });
 	form.currentLine = 2;
 	if (form.Show(2))
@@ -122,12 +124,13 @@ SACH SACH::InputFix(RECTANGLE rect)
 {
 	std::string title = "CAP NHAT THONG TIN SACH";
 	std::vector<std::string> labels = { "Ma sach", "Trang thai:", "Vi tri:" };
-	std::vector<CONDITION> conditions = { {All, 6, 6, Default}, {Enum, 1, 3}, {Mix, 1, VITRI_MAXSIZE} };
+	std::vector<CONDITION> conditions = { {All, 6, 6, Default}, {Enum, 1, 3}, {Mix, VITRI_MAXSIZE, VITRI_MAXSIZE} };
 
 	auto form = FORMINPUT(labels, conditions, rect, title);
 	form.ParseData({ this->maSach, std::to_string(this->trangThai), this->viTri });
 	form.currentLine = 1;
-
+	std::vector<std::string> guilds = { "MA SACH LA TU DONG", "0: CHO MUON DUOC\n1: DA MUON\n2: DA THANH LY", "BAO GOM CHU VA SO" };
+	form.Guilds = guilds;
 	if (form.Show(2))
 	{
 		return ParseVectorString(form.OutputResults);

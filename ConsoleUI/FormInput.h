@@ -39,12 +39,6 @@ struct FORMINPUT
 		this->xInputCol = MaxLengthLabel() + rect.location.x + 3;
 		this->conditions = conditions;
 		guildLocation = { rect.location.x + 1, rect.location.y + rect.size.height };
-		Guilds.push_back("dong1");
-		Guilds.push_back("dong2");
-		Guilds.push_back("dong3");
-		Guilds.push_back("dong4");
-		Guilds.push_back("dong5");
-		Guilds.push_back("dong6");
 		for (int i = 1; i <= totalLine; i++)
 		{
 			rows.push_back(rect.location.y + 2 * i + 2);
@@ -74,6 +68,7 @@ struct FORMINPUT
 	{
 		GoToXY(rect.location.x + rect.size.width / 2 - title.length() / 2 - title.length() % 2, rows[0] - 2);
 		std::cout << title;
+		
 		// In label va text ra man hinh
 		for (int i = 0; i < totalLine; i++)
 		{
@@ -210,6 +205,9 @@ struct FORMINPUT
 				GoToXY(x, WhereY());
 			}
 		}
+		// print guild
+		if (currentLine >= totalLine) return;
+		ShowGuildLine(currentLine);
 	}
 	int MaxLengthLabel()
 	{
@@ -251,7 +249,7 @@ struct FORMINPUT
 				c = toupper(c);
 			if (!IsName(c)) return false;
 			break;
-		case WordType::Gender:
+		/*case WordType::Gender:
 			switch (value.size())
 			{
 			case 0:
@@ -268,7 +266,7 @@ struct FORMINPUT
 			default:
 				break;
 			}
-			break;
+			break;*/
 		default: case WordType::All:
 			return true;
 			break;
@@ -317,12 +315,19 @@ struct FORMINPUT
 	}
 	void ShowGuildLine(int currentLine)
 	{
+		if (Guilds.size() == 0) return;
 		int x = WhereX();
 		int y = WhereY();
-		ClearLine(guildLocation.y, guildLocation.x, guildLocation.x + rect.size.width);
-		GoToXY(guildLocation.x, guildLocation.y);
-		SetTextColor(Color::Light_Green);
-		std::cout << Guilds[currentLine];
+		//ClearLine(guildLocation.y, guildLocation.x, guildLocation.x + rect.size.width);
+		ClearArea(guildLocation.x, guildLocation.y, rect.size.width, 3);
+		SetTextColor(TEXT_GUILD_COLOR);
+		auto texts = Split(Guilds[currentLine], "\n");
+		int temp = rect.size.width / 2 - texts[0].size() / 2 + guildLocation.x;
+		for (auto i = 0; i < texts.size(); i++)
+		{
+			GoToXY(temp, guildLocation.y + i);
+			std::cout << texts[i];
+		}
 		SetTextColor(TEXT_INPUT_COLOR);
 		GoToXY(x, y);
 	}
@@ -372,22 +377,20 @@ struct FORMINPUT
 						cols[currentLine] = btnOK.rect.location.x;
 						ShowPointer();
 					}
-					else
-					{
-						ShowGuildLine(currentLine - 1);
-					}
+					ShowGuildLine(currentLine - 1);
 					currentLine--;
 					GoToXY(cols[currentLine], rows[currentLine]);
 				}
 				else if (inputKey == Key::DOWN && currentLine < totalLine)
 				{
 					currentLine++;
-					
+
 					GoToXY(cols[currentLine], rows[currentLine]);
 					// Con tro o line cua button
 					if (currentLine == totalLine)
 					{
 						HidePointer();
+						ClearLine(guildLocation.y, guildLocation.x, guildLocation.x + rect.size.width);
 						btnOK.Draw(BUTTON_HIGHLIGHT_BG_COLOR, BUTTON_HIGHLIGHT_TEXT_COLOR);
 					}
 					else
@@ -425,7 +428,7 @@ struct FORMINPUT
 						// no error
 						if (errorsLength.size() == 0)
 						{
-							ClearArea();
+							ClearForm();
 							return true;
 							/*std::string text = "Ban chac chan muon luu thong tin?";
 							auto confirm = CONFIRMDIALOG({ rect.location.x + rect.size.width / 2 - (int)text.length() / 2 - 4,
@@ -447,8 +450,8 @@ struct FORMINPUT
 						// error
 						else
 						{
-							ClearArea();
-							ReDraw(mode);
+							ClearForm();
+							ReDraw(mode, mode2);
 							SetBGColor(BG_COLOR);
 							SetTextColor(WARNING_TEXT_COLOR);
 							for (size_t i = 0; i < errorsLength.size(); i++)
@@ -459,6 +462,7 @@ struct FORMINPUT
 								std::cout << tempLabel << " khong hop le";
 							}
 							currentLine = errorsLength[0];
+							ShowGuildLine(currentLine);
 							GoToXY(cols[currentLine], rows[currentLine]);
 							ShowPointer();
 							//btnOK.Draw(selectColor, textLabelColor);
@@ -471,10 +475,10 @@ struct FORMINPUT
 						auto confirm = CONFIRMDIALOG({ rect.location.x + rect.size.width / 2 - (int)text.length() / 2 - 4,
 														rect.location.y + rect.size.height / 2 - 2 });
 						confirm.Show(text, Yes_No);
-						ClearArea();
+						ClearForm();
 						if (confirm.result == No)
 						{
-							ReDraw(mode);
+							ReDraw(mode, mode2);
 							btnCancel.Draw(BUTTON_HIGHLIGHT_BG_COLOR, BUTTON_HIGHLIGHT_TEXT_COLOR);
 						}
 						else
@@ -486,13 +490,18 @@ struct FORMINPUT
 					}
 					continue;
 				}
+				
 				currentLine++;
-				ShowGuildLine(currentLine);
 				GoToXY(cols[currentLine], rows[currentLine]);
 				if (currentLine == totalLine)
 				{
 					HidePointer();
+					ClearLine(guildLocation.y, guildLocation.x, guildLocation.x + rect.size.width);
 					btnOK.Draw(BUTTON_HIGHLIGHT_BG_COLOR, BUTTON_HIGHLIGHT_TEXT_COLOR);
+				}
+				else
+				{
+					ShowGuildLine(currentLine);
 				}
 			}
 			else if (inputKey == Key::TAB)
@@ -531,10 +540,10 @@ struct FORMINPUT
 				auto confirm = CONFIRMDIALOG({ rect.location.x + rect.size.width / 2 - (int)text.length() / 2 - 4,
 												rect.location.y + rect.size.height / 2 - 2 });
 				confirm.Show(text, Yes_No);
-				ClearArea();
+				ClearForm();
 				if (confirm.result == No)
 				{
-					ReDraw(mode);
+					ReDraw(mode, mode2);
 					GoToXY(cols[currentLine], rows[currentLine]);
 					ShowPointer();
 				}
@@ -746,11 +755,11 @@ struct FORMINPUT
 		} while (!_kbhit());
 		return true;
 	}
-	void ReDraw(int mode = 0)
+	void ReDraw(int mode = 0, int mode2 = 0)
 	{
 		border.Draw2Line(BORDER_COLOR);
 
-		PrintLabelsTitle(mode);
+		PrintLabelsTitle(mode, mode2);
 
 		// Ve button OK CANCEL
 		int halfWidthForm = rect.size.width / 2;
@@ -767,14 +776,14 @@ struct FORMINPUT
 		// Dua con tro ve vi tri Input chuan bi nhap
 		GoToXY(cols[currentLine], rows[currentLine]);
 	}
-	void ClearArea()
+	void ClearForm()
 	{
 		SetTextColor(BG_COLOR);
 		SetBGColor(BG_COLOR);
 		int x = rect.location.x;
 		int y = rect.location.y;
 		int width = rect.size.width;
-		for (int i = 0; i < rect.size.height; i++)
+		for (int i = 0; i <= rect.size.height + 2; i++)
 		{
 			GoToXY(x, y + i);
 			std::cout << std::string(width, char(219));
