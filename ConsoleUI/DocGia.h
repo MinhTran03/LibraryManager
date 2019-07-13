@@ -75,10 +75,6 @@ void TimPhanTuTheMangTraiNhatCayConPhai(LIST_DOCGIA& p, LIST_DOCGIA& q);
 void TimpPhanTuTheMangPhaiNhatCayConTrai(LIST_DOCGIA& p, LIST_DOCGIA& q);
 // xoa 1 doc gia
 bool DeleteNode(LIST_DOCGIA& listDG, DOCGIA docGia);
-// In ds doc gia theo maDocGia tang dan
-void PrintSortMaDG(LIST_DOCGIA lstDG, MYPOINT location, int mode = 1);
-
-void PrintControlsDocGia(LIST_DOCGIA lstDG, MYPOINT location);
-
-void GetDGtoVector(LIST_DOCGIA lstDG, std::vector<std::string>& dsDocGia);
-
+// In ds doc gia: mode = 1 (Sort theo maDG)
+//                mode = 2 (Sort theo hoTen)
+void PrintAllDocGia(LIST_DOCGIA lstDG, MYPOINT location, int mode = 1);

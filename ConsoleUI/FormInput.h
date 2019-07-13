@@ -323,7 +323,7 @@ struct FORMINPUT
 		SetTextColor(TEXT_GUILD_COLOR);
 		auto texts = Split(Guilds[currentLine], "\n");
 		int temp = rect.size.width / 2 - texts[0].size() / 2 + guildLocation.x;
-		for (auto i = 0; i < texts.size(); i++)
+		for (size_t i = 0; i < texts.size(); i++)
 		{
 			GoToXY(temp, guildLocation.y + i);
 			std::cout << texts[i];

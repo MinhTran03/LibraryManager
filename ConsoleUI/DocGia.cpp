@@ -192,7 +192,7 @@ void MakeRandomArrayMaDG(LIST_DOCGIA listDG)
 		}
 	}
 }
-// ...
+// Sinh ma DG ngau nhien
 int GetRandomMaDG(LIST_DOCGIA listDG, int& positon)
 {
 	srand(time(NULL));
@@ -200,6 +200,7 @@ int GetRandomMaDG(LIST_DOCGIA listDG, int& positon)
 	positon = pos;
 	return MADOCGIAARR[pos];
 }
+// Doi vi tri 2 ma trong MADOCGIAARR
 void SwapMaDG(int pos1, int pos2)
 {
 	Swap(MADOCGIAARR[pos1], MADOCGIAARR[pos2]);
@@ -378,7 +379,6 @@ void PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT& location)
 		dsDocGia = GetAllStringNode(listDG);
 	}
 }
-
 // row la so dong data
 void PrintLabelDocGia(MYPOINT location, int row)
 {
@@ -396,14 +396,6 @@ void PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT& location)
 		listDG->data.Print({ location.x,location.y++ }, BG_COLOR, TEXT_INPUT_COLOR);
 		PrintContentSortMaDG(listDG->pRight, location);
 	}
-}
-// duyet NLR in ds doc gia
-void PrintContentDocGia(LIST_DOCGIA listDG, MYPOINT location)
-{
-	PrintLabelDocGia(location, MAX_ROW_PER_PAGE);
-	auto loc = location;
-	loc.y += 3;
-	PrintContentSortMaDG(listDG, loc);
 }
 // In ds doc gia theo ten
 void PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location)
@@ -451,7 +443,7 @@ void PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location)
 }
 // In ds doc gia: mode = 1 (Sort theo maDG)
 //                mode = 2 (Sort theo hoTen)
-void PrintDocGia(LIST_DOCGIA lstDG, MYPOINT location, int mode)
+void PrintAllDocGia(LIST_DOCGIA lstDG, MYPOINT location, int mode)
 {
 	PrintLabelDocGia(location, MAX_ROW_PER_PAGE);
 	auto loc = location;

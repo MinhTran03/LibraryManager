@@ -51,7 +51,6 @@ int main()
 			else if (func[1] == 1)
 			{
 				CapNhatDauSach(listDS, locationDS);
-				//_getch();
 			}
 			// CAP NHAT DANH MUC SACH
 			else if(func[1] == 2)

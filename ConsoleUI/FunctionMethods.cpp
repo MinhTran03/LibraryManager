@@ -44,10 +44,10 @@ vector<int> SelectionFuntion(int rootLine, int childLine)
 // Func 0 0
 void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 {
-	PrintDocGia(listDG, location);
+	PrintAllDocGia(listDG, location);
 	//int maThe;
 	auto locationBtn = location;
-	locationBtn.x += 30;
+	locationBtn.x += 22;
 	locationBtn.y += 37;
 	MENU menu = MENU({ "THEM", "XOA", "SUA" }, locationBtn);
 	menu.btnSize = { 10,3 };
@@ -70,7 +70,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 			{
 				SwapMaDG(Size(listDG), backUpPos);
 				Insert(listDG, *newDocGia);
-				PrintDocGia(listDG, location);
+				PrintAllDocGia(listDG, location);
 			}
 		}
 		// Xoa
