@@ -44,15 +44,27 @@ vector<int> SelectionFuntion(int rootLine, int childLine)
 // Func 0 0
 void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 {
+	string emptyTemplate = "";
+	emptyTemplate = emptyTemplate + char(179) + string(ISBN_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(TENSACH_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(SOTRANG_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(TENTACGIA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(NAMXUATBAN_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(TENTHELOAI_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179);
+	string selectedMaDocGia;
 	PrintAllDocGia(listDG, location);
+	std::string MaDocGia = StringToCharArray(selectedMaDocGia);
+
 	//int maThe;
 	auto locationBtn = location;
-	locationBtn.x += 22;
+	locationBtn.x += 30;
 	locationBtn.y += 37;
 	MENU menu = MENU({ "THEM", "XOA", "SUA" }, locationBtn);
 	menu.btnSize = { 10,3 };
 	while (true)
 	{
+		PrintAllDocGia(listDG, location);
 		int selected = menu.ShowInHorizontal(Menu_Mode::Both);
 		menu.ShowDisableModeInHorizontal();
 		// Them
@@ -79,14 +91,32 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 			while (true)
 			{
 				// Het doc gia
-				if (true)
+				if (Size(listDG) == 0)
 				{
+					PrintAllDocGia(listDG, location);
 					break;
 				}
+				selectedMaDocGia = PrintAllDGWithHL(listDG, location, Menu_Mode::Both);
 				ClearLine(1);
-				if (true)
+				MaDocGia = StringToCharArray(selectedMaDocGia);
+				if (selectedMaDocGia == "ESC")
 				{
 					// load lai data
+					std::vector<std::string> dsDocGia;
+
+					if (listDG != NULL)
+					{
+						dsDocGia = GetAllStringNode(listDG);
+					}
+					int totalLine = dsDocGia.size();
+					auto tempLoc = location;
+					tempLoc.y += 3;
+					for (int i = 0; i < Size(listDG); i++)
+					{
+						PrintStringDocGia(dsDocGia[i], location);
+						tempLoc.y++;
+					}
+					break;
 				}
 				// ng dung an enter de xoa
 				else
@@ -97,17 +127,23 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 					// dong y xoa
 					if (confirm.result == Yes)
 					{
+						int MaDG = std::stoi(MaDocGia);
+						auto temp = Search(listDG, MaDG);
 						// chua kiem tra co duoc xoa hay khong???
 						// ...
 						// D khong duoc phep xoa
-						if (true)
+						if (DeleteNode(listDG, temp->data) == false)
 						{
 							MakeFlickWarning({ locationBtn.x - 5, 1 }, WARNING_CANT_DELETE_DS);
 						}
 						else
 						{
+							//DeleteNode(listDG, temp->data);
+							SetBGColor(BG_COLOR);
+							GoToXY(location.x, Size(listDG) + location.y + 3);
+							cout << emptyTemplate;
 							// da cap nhat ds the loai trong DeleteDauSach
-
+							PrintAllDocGia(listDG, location);
 						}
 					}
 				}
@@ -118,19 +154,40 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 		{
 			while (true)
 			{
-				if (true)
+				if (Size(listDG) == 0)
 				{
 					break;
 				}
-
-				if (true)
+				selectedMaDocGia = PrintAllDGWithHL(listDG, location, Menu_Mode::Both);
+				ClearLine(1);
+				MaDocGia = StringToCharArray(selectedMaDocGia);
+				if (selectedMaDocGia == "ESC")
 				{
 					// load lai data
+					std::vector<std::string> dsDocGia;
+
+					if (listDG != NULL)
+					{
+						dsDocGia = GetAllStringNode(listDG);
+					}
+					int totalLine = dsDocGia.size();
+					auto tempLoc = location;
+					tempLoc.y += 3;
+					for (int i = 0; i < Size(listDG); i++)
+					{
+						PrintStringDocGia(dsDocGia[i], location);
+						tempLoc.y++;
+					}
 					break;
 				}
 				else
 				{
-					// cap nhat dsDauSach
+					// cap nhat dsDocGia
+					int MaDG = std::stoi(MaDocGia);
+					auto temp = Search(listDG, MaDG);
+					temp->data = InputFixDocGia({ {DAUSACH_TOTAL_WIDTH + 2, location.y}, {50, 18} }, temp->data);
+					PrintAllDocGia(listDG, location);
+					break;
 				}
 			}
 		}

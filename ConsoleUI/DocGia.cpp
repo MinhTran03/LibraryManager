@@ -110,8 +110,50 @@ std::string DOCGIA::ToString()
 	result += char(179);
 	return result;
 }
+// ...
+DOCGIA InputFixDocGia(RECTANGLE rect, DOCGIA docGia)
+{
+	std::vector<std::string> labels = { "Ma doc gia:", "Ho:", "Ten:", "Gioi tinh:", "Trang thai the:" };
+	std::string inputTitle = "NHAP THONG TIN DOC GIA";
+	std::vector<CONDITION> conditions = { {Number_Only, 1, 4, Default}, {Name, 1, HODOCGIA_WIDTH},{Name, 1, TENDOCGIA_WIDTH},
+									{Enum, 1, 2 },{Enum2, 1, 2, Default} };
+	auto form = FORMINPUT(labels, conditions, rect, inputTitle);
+	//DOCGIA docGia = DOCGIA();
+	std::string temp1, temp2;
+	if (docGia.gioiTinh == Nam)
+	{
+		temp1 = "0";
+	}
+	else
+	{
+		temp1 = "1";
+	}
+	if (docGia.trangThai)
+	{
+		temp2 = "0";
+	}
+	else
+	{
+		temp2 = "1";
+	}
+	form.ParseData({ std::to_string(docGia.maDocGia) , docGia.ho, docGia.ten, temp1, temp2 });
+	form.currentLine = 1;
+	while (true)
+	{
+		if (form.Show(1, 4))
+		{
+			auto newDocGia = ParseVectorString(form.OutputResults);
+			return newDocGia;
+		}
+		else
+		{
+			form.ResetOutput();
+			break;
+		}
+	}
+	return docGia;
+}
 #pragma endregion
-
 
 NODE_DOCGIA::NODE_DOCGIA(DOCGIA& data)
 {
@@ -370,15 +412,6 @@ std::vector<std::string> GetAllStringNode(LIST_DOCGIA listDG)
 	InorderGetString(listDG, result);
 	return result;
 }
-// in danh sach de quan ly doc gia co highLight
-void PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT& location)
-{
-	vector<std::string> dsDocGia;
-	if (listDG != NULL)
-	{
-		dsDocGia = GetAllStringNode(listDG);
-	}
-}
 // row la so dong data
 void PrintLabelDocGia(MYPOINT location, int row)
 {
@@ -456,5 +489,114 @@ void PrintAllDocGia(LIST_DOCGIA lstDG, MYPOINT location, int mode)
 	{
 		PrintContentSortTen(lstDG, loc);
 	}
+}
+
+void PrintStringDocGia(std::string data, MYPOINT location)
+{
+	GoToXY(location.x, location.y);
+	cout << data;
+}
+// in danh sach de quan ly doc gia co highLight
+std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode mode)
+{
+	MYPOINT backUpLocation = MYPOINT(0, 0);
+	MYPOINT loc = MYPOINT(0, 0);
+	std::vector<std::string> dsDocGia;
+	std::vector<std::string> datas;
+	std::vector<int> rows;
+	int currentLine = 0;
+	Color hlBGColor = Color::Cyan;
+	Color hlTextColor = Color::White;
+
+	// chuyen list doc gia ve mang string
+	if (listDG != NULL)
+	{
+		dsDocGia = GetAllStringNode(listDG);
+
+	}
+	int totalLine = dsDocGia.size();
+
+	// print label
+	PrintLabelDocGia(location, MAX_ROW_PER_PAGE);
+	location.y += 3;
+	backUpLocation = location;
+	//print datta
+	for (size_t i = 0; i < totalLine; i++)
+	{
+		SetBGColor(Color::White);
+		SetTextColor(Color::Black);
+		PrintStringDocGia(dsDocGia[i], location);
+		if (backUpLocation.y == location.y)
+		{
+			SetBGColor(hlBGColor);
+			SetTextColor(hlTextColor);
+			PrintStringDocGia(dsDocGia[i], location);
+		}
+		rows.push_back(location.y++);
+		datas.push_back(dsDocGia[i]);
+	}
+
+	// bat phim
+	currentLine = 0;
+	char inputKey = NULL;
+	HidePointer();
+	do
+	{
+		inputKey = _getch();
+		if (inputKey == Key::_NULL) inputKey = _getch();
+		if (inputKey == -32)
+		{
+			inputKey = _getch();
+			if (inputKey == Key::UP)
+			{
+				if (currentLine > 0)
+				{
+					GoToXY(location.x, rows[currentLine]);
+					HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
+					GoToXY(location.x, rows[--currentLine]);
+					HightLight(datas[currentLine], hlBGColor, hlTextColor);
+				}
+				else
+				{
+					GoToXY(location.x, rows[currentLine]);
+					HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
+					currentLine = totalLine - 1;
+					GoToXY(location.x, rows[currentLine]);
+					HightLight(datas[currentLine], hlBGColor, hlTextColor);
+				}
+			}
+			else if (inputKey == Key::DOWN)
+			{
+				if (currentLine < totalLine - 1)
+				{
+					GoToXY(location.x, rows[currentLine]);
+					HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
+					GoToXY(location.x, rows[++currentLine]);
+					HightLight(datas[currentLine], hlBGColor, hlTextColor);
+				}
+				else
+				{
+					GoToXY(location.x, rows[currentLine]);
+					HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
+					currentLine = 0;
+					GoToXY(location.x, rows[currentLine]);
+					HightLight(datas[currentLine], hlBGColor, hlTextColor);
+				}
+			}
+		}
+		if (inputKey == Key::ENTER)
+		{
+			std::string deli = ""; deli += char(179);
+			auto temp = Split(datas[currentLine], deli);
+			temp[1] = Trim(temp[1]);
+			return temp[1];
+		}
+		else if (inputKey == Key::ESC)
+		{
+			ClearArea(location.x, backUpLocation.y - 3, DAUSACH_TOTAL_WIDTH, totalLine + 4);
+			return "ESC";
+		}
+	} while (!_kbhit());
+	return "Empty";
 }
 #pragma endregion
