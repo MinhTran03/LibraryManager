@@ -93,8 +93,8 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 
 	//int maThe;
 	auto locationBtn = location;
-	locationBtn.x += 30;
-	locationBtn.y += 37;
+	locationBtn.x += 22;
+	locationBtn.y += 24;
 	MENU menu = MENU({ "THEM", "XOA", "SUA" }, locationBtn);
 	menu.btnSize = { 10,3 };
 	while (true)
@@ -116,7 +116,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 		{
 			auto newDocGia = new DOCGIA();
 			int newMaDG = GetRandomMaDG(listDG);
-			*newDocGia = InputDocGia(newMaDG, { {DAUSACH_TOTAL_WIDTH + 2, location.y}, {50, 18} });
+			*newDocGia = InputDocGia(newMaDG, { {location.x + (int)DOCGIA_TOTAL_WIDTH + 2, location.y}, {50, 18} });
 			if (newDocGia->ho == "")
 			{
 				delete newDocGia;

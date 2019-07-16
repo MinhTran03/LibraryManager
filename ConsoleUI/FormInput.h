@@ -472,8 +472,8 @@ struct FORMINPUT
 					else if (cols[currentLine] > halfWidthForm)
 					{
 						std::string text = "Ban chac chan muon huy?";
-						auto confirm = CONFIRMDIALOG({ rect.location.x + rect.size.width / 2 - (int)text.length() / 2 - 4,
-														rect.location.y + rect.size.height / 2 - 2 });
+						auto confirm = CONFIRMDIALOG({ rect.location.x + rect.size.width / 2 - (int)text.length() / 2 - 6,
+														rect.location.y + rect.size.height / 2 - 4 });
 						confirm.Show(text, Yes_No);
 						ClearForm();
 						if (confirm.result == No)
@@ -537,8 +537,8 @@ struct FORMINPUT
 			else if (inputKey == Key::ESC)
 			{
 				std::string text = "Ban chac chan muon thoat?";
-				auto confirm = CONFIRMDIALOG({ rect.location.x + rect.size.width / 2 - (int)text.length() / 2 - 4,
-												rect.location.y + rect.size.height / 2 - 2 });
+				auto confirm = CONFIRMDIALOG({ rect.location.x + rect.size.width / 2 - (int)text.length() / 2 - 6,
+												rect.location.y + rect.size.height / 2 - 4 });
 				confirm.Show(text, Yes_No);
 				ClearForm();
 				if (confirm.result == No)

@@ -29,7 +29,7 @@ int main()
 		{
 			if (func[1] == 0)
 			{
-				QuanLiDocGia(listDG, locationDS);
+				QuanLiDocGia(listDG, { locationDS.x + 23, locationDS.y });
 			}
 			else if (func[1] == 1)
 			{
