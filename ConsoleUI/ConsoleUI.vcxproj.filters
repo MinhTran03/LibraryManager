@@ -130,5 +130,8 @@
     <Text Include="DocGiaData.txt">
       <Filter>Models\Resource Files</Filter>
     </Text>
+    <Text Include="MaDocGiaArray.txt">
+      <Filter>Models\Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

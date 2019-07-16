@@ -84,23 +84,8 @@ int main()
 		}
 	}
 
-	// luu dau sach
-	WriteDauSach(listDS);
-	// luu sach
-	for (int i = 0; i < listDS.size; i++)
-	{
-		if (listDS.nodes[i]->dsSach.IsEmpty())
-			continue;
-		WriteSach(listDS.nodes[i]->dsSach, listDS.nodes[i]->isbn);
-	}
 
-	// Huy
-	for (int i = 0; i < listDS.size; i++)
-	{
-		listDS.nodes[i]->dsSach.Deconstructor();
-	}
-	listDS.Deconstructor();
-	FreeMemory(listDG);
+	FormClosing(listDG, listDS);
 
 	SetTextColor(TEXT_INPUT_COLOR);
 	SetBGColor(BG_COLOR);

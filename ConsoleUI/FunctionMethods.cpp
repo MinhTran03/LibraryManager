@@ -1,6 +1,32 @@
 ﻿#include "FunctionMethods.h"
 #include "Displays.h"
 
+void SaveAll(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
+{
+	// luu dau sach
+	WriteDauSach(listDS);
+	// luu sach
+	for (int i = 0; i < listDS.size; i++)
+	{
+		if (listDS.nodes[i]->dsSach.IsEmpty())
+			continue;
+		WriteSach(listDS.nodes[i]->dsSach, listDS.nodes[i]->isbn);
+	}
+}
+
+void FormClosing(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
+{
+	SaveAll(listDG, listDS);
+
+	// Huy
+	for (int i = 0; i < listDS.size; i++)
+	{
+		listDS.nodes[i]->dsSach.Deconstructor();
+	}
+	listDS.Deconstructor();
+	FreeMemory(listDG);
+}
+
 void SetupConsole()
 {
 	MaximizeWindow();
