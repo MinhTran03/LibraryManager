@@ -109,6 +109,7 @@ struct MENU
 				}
 				if (inputKey == Key::ENTER)
 				{
+					//btns[currentLine].Draw(DISABLE_COLOR, textHLColor, DISABLE_COLOR, Align::Center, Border::TwoLine);
 					return currentLine;
 				}
 				else if (inputKey == Key::ESC)
@@ -178,7 +179,16 @@ struct MENU
 				}
 				if (inputKey == Key::ENTER)
 				{
+					btns[currentLine].Draw(DISABLE_COLOR, textHLColor, DISABLE_COLOR, Align::Center, Border::TwoLine);
 					return currentLine;
+				}
+				else if (inputKey == Key::PAGE_DOWN)
+				{
+					return Key::PAGE_DOWN;
+				}
+				else if (inputKey == Key::PAGE_UP)
+				{
+					return Key::PAGE_UP;
 				}
 				else if (inputKey == Key::ESC)
 				{

@@ -32,7 +32,7 @@ struct LIST_DAUSACH
 	// In tat ca the loai thanh nhieu page
 	std::string PrintAllTheLoai(MYPOINT location);
 	// In tat ca dau sach
-	std::string PrintAll(MYPOINT location, Menu_Mode mode = Menu_Mode::Show_Only);
+	std::string PrintAll(MYPOINT location, int& page, Menu_Mode mode = Menu_Mode::Show_Only);
 	// tim sach theo ten (chua xong)
 	void PrintFindBooks(MYPOINT location, std::string tenSach);
 	#pragma endregion

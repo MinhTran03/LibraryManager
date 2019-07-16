@@ -421,22 +421,109 @@ void PrintLabelDocGia(MYPOINT location, int row)
 		row, BORDER_COLOR);
 }
 // in content theo maDG
-void PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT& location)
+std::string PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode m)
 {
-	if (listDG != NULL)
-	{
-		PrintContentSortMaDG(listDG->pLeft, location);
-		listDG->data.Print({ location.x,location.y++ }, BG_COLOR, TEXT_INPUT_COLOR);
-		PrintContentSortMaDG(listDG->pRight, location);
-	}
-}
-// In ds doc gia theo ten
-void PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location)
-{
-	std::vector<std::string> listData = GetAllStringNode(lstDG);
+	std::string emptyTemplate = "";
+	emptyTemplate = emptyTemplate + char(179) + std::string(MADOCGIA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + std::string(HODOCGIA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + std::string(TENDOCGIA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + std::string(GIOITINH_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + std::string(TRANGTHAIDG_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179);
+	int currentPage = 0;
+
+	std::vector<std::string> listData = GetAllStringNode(listDG);
 	size_t size = listData.size();
+
+	int totalPage = size / MAX_ROW_PER_PAGE;
+	if (size % MAX_ROW_PER_PAGE != 0) totalPage++;
 	std::string deli = "";
 	deli += char(179);
+
+	// In ra mh
+	for (size_t i = 0; i < size; i++)
+	{
+		if (i >= MAX_ROW_PER_PAGE * currentPage && i < (currentPage + 1) * MAX_ROW_PER_PAGE)
+		{
+			GoToXY(location.x, location.y + i);
+			std::cout << listData[i];
+		}
+	}
+
+	if (m == Show_Only) return "";
+	// bat phim
+	char inputKey = NULL;
+	do
+	{
+		inputKey = _getch();
+		if (inputKey == Key::_NULL || inputKey == -32) inputKey = _getch();
+		if (inputKey == Key::PAGE_DOWN && currentPage < totalPage - 1)
+		{
+			currentPage++;
+			SetBGColor(BG_COLOR);
+			SetTextColor(TEXT_INPUT_COLOR);
+			for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
+			{
+				// in trang not cuoi cung
+				if (currentPage < totalPage - 1 || (currentPage == totalPage - 1 && size % MAX_ROW_PER_PAGE == 0))
+				{
+					GoToXY(location.x, location.y + (int)i);
+					std::cout << listData[i + MAX_ROW_PER_PAGE * currentPage];
+					continue;
+				}
+				// in trang cuoi cung
+				if (currentPage == totalPage - 1 && size % MAX_ROW_PER_PAGE != 0
+					&& i < size % MAX_ROW_PER_PAGE)
+				{
+					GoToXY(location.x, location.y + (int)i);
+					std::cout << listData[i + MAX_ROW_PER_PAGE * currentPage];
+				}
+				else
+				{
+					GoToXY(location.x, location.y + i);
+					std::cout << emptyTemplate;
+				}
+			}
+		}
+		else if (inputKey == Key::PAGE_UP && currentPage > 0)
+		{
+			// in prev page
+			currentPage--;
+			SetBGColor(BG_COLOR);
+			SetTextColor(TEXT_INPUT_COLOR);
+			for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
+			{
+				GoToXY(location.x, location.y + (int)i);
+				std::cout << listData[i + MAX_ROW_PER_PAGE * currentPage];
+			}
+		}
+		else if (inputKey == Key::ESC)
+		{
+			return "ESC";
+		}
+	} while (!_kbhit());
+	return "";
+}
+// In ds doc gia theo ten
+std::string PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location, Menu_Mode m)
+{
+	std::string emptyTemplate = "";
+	emptyTemplate = emptyTemplate + char(179) + std::string(MADOCGIA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + std::string(HODOCGIA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + std::string(TENDOCGIA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + std::string(GIOITINH_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + std::string(TRANGTHAIDG_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179);
+	int currentPage = 0;
+
+	std::vector<std::string> listData = GetAllStringNode(lstDG);
+	size_t size = listData.size();
+
+	int totalPage = size / MAX_ROW_PER_PAGE;
+	if (size % MAX_ROW_PER_PAGE != 0) totalPage++;
+	std::string deli = "";
+	deli += char(179);
+
 	// sort
 	std::string minHT;
 	std::string min;
@@ -467,44 +554,112 @@ void PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location)
 		listData[posMin] = listData[i];
 		listData[i] = min;
 	}
+
 	// In ra mh
 	for (size_t i = 0; i < size; i++)
 	{
-		GoToXY(location.x, location.y + i);
-		std::cout << listData[i];
+		if (i >= MAX_ROW_PER_PAGE * currentPage && i < (currentPage + 1) * MAX_ROW_PER_PAGE)
+		{
+			GoToXY(location.x, location.y + i);
+			std::cout << listData[i];
+		}
 	}
+
+	if (m == Show_Only) return "";
+	// bat phim
+	char inputKey = NULL;
+	do
+	{
+		inputKey = _getch();
+		if (inputKey == Key::_NULL || inputKey == -32) inputKey = _getch();
+		if (inputKey == Key::PAGE_DOWN && currentPage < totalPage - 1)
+		{
+			currentPage++;
+			SetBGColor(BG_COLOR);
+			SetTextColor(TEXT_INPUT_COLOR);
+			for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
+			{
+				// in trang not cuoi cung
+				if (currentPage < totalPage - 1 || (currentPage == totalPage - 1 && size % MAX_ROW_PER_PAGE == 0))
+				{
+					GoToXY(location.x, location.y + (int)i);
+					std::cout << listData[i + MAX_ROW_PER_PAGE * currentPage];
+					continue;
+				}
+				// in trang cuoi cung
+				if (currentPage == totalPage - 1 && size % MAX_ROW_PER_PAGE != 0
+					&& i < size % MAX_ROW_PER_PAGE)
+				{
+					GoToXY(location.x, location.y + (int)i);
+					std::cout << listData[i + MAX_ROW_PER_PAGE * currentPage];
+				}
+				else
+				{
+					GoToXY(location.x, location.y + i);
+					std::cout << emptyTemplate;
+				}
+			}
+		}
+		else if (inputKey == Key::PAGE_UP && currentPage > 0)
+		{
+			// in prev page
+			currentPage--;
+			SetBGColor(BG_COLOR);
+			SetTextColor(TEXT_INPUT_COLOR);
+			for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
+			{
+				GoToXY(location.x, location.y + (int)i);
+				std::cout << listData[i + MAX_ROW_PER_PAGE * currentPage];
+			}
+		}
+		else if (inputKey == Key::ESC)
+		{
+			return "ESC";
+		}
+	} while (!_kbhit());
+	return "";
 }
 // In ds doc gia: mode = 1 (Sort theo maDG)
 //                mode = 2 (Sort theo hoTen)
-void PrintAllDocGia(LIST_DOCGIA lstDG, MYPOINT location, int mode)
+std::string PrintAllDocGia(LIST_DOCGIA lstDG, MYPOINT location, int mode, Menu_Mode m)
 {
 	PrintLabelDocGia(location, MAX_ROW_PER_PAGE);
 	auto loc = location;
 	loc.y += 3;
 	if (mode == 1)
 	{
-		PrintContentSortMaDG(lstDG, loc);
+		return PrintContentSortMaDG(lstDG, loc, m);
 	}
 	else
 	{
-		PrintContentSortTen(lstDG, loc);
+		return PrintContentSortTen(lstDG, loc, m);
 	}
 }
-
+// ...
 void PrintStringDocGia(std::string data, MYPOINT location)
 {
 	GoToXY(location.x, location.y);
 	cout << data;
 }
 // in danh sach de quan ly doc gia co highLight
-std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode mode)
+std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Menu_Mode mode)
 {
+	std::string emptyTemplate = "";
+	emptyTemplate = emptyTemplate + char(179) + std::string(ISBN_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + std::string(TENSACH_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + std::string(SOTRANG_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + std::string(TENTACGIA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + std::string(NAMXUATBAN_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + std::string(TENTHELOAI_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179);
+
 	MYPOINT backUpLocation = MYPOINT(0, 0);
 	MYPOINT loc = MYPOINT(0, 0);
 	std::vector<std::string> dsDocGia;
 	std::vector<std::string> datas;
 	std::vector<int> rows;
 	int currentLine = 0;
+	int currentPage = page;
 	Color hlBGColor = Color::Cyan;
 	Color hlTextColor = Color::White;
 
@@ -512,7 +667,6 @@ std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode mod
 	if (listDG != NULL)
 	{
 		dsDocGia = GetAllStringNode(listDG);
-
 	}
 	int totalLine = dsDocGia.size();
 
@@ -520,7 +674,7 @@ std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode mod
 	PrintLabelDocGia(location, MAX_ROW_PER_PAGE);
 	location.y += 3;
 	backUpLocation = location;
-	//print datta
+	//print data
 	for (size_t i = 0; i < totalLine; i++)
 	{
 		SetBGColor(Color::White);

@@ -79,10 +79,10 @@ void TimpPhanTuTheMangPhaiNhatCayConTrai(LIST_DOCGIA& p, LIST_DOCGIA& q);
 bool DeleteNode(LIST_DOCGIA& listDG, DOCGIA docGia);
 // In ds doc gia: mode = 1 (Sort theo maDG)
 //                mode = 2 (Sort theo hoTen)
-void PrintAllDocGia(LIST_DOCGIA lstDG, MYPOINT location, int mode = 1);
+std::string PrintAllDocGia(LIST_DOCGIA lstDG, MYPOINT location, int mode = 1, Menu_Mode m = Both);
 // ...
 DOCGIA InputFixDocGia(RECTANGLE rect, DOCGIA docGia);
 // ...
 void PrintStringDocGia(std::string data, MYPOINT location);
 // ...
-std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode mode);
+std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Menu_Mode mode);

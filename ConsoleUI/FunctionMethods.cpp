@@ -53,7 +53,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 	emptyTemplate = emptyTemplate + char(179) + string(TENTHELOAI_WIDTH, ' ');
 	emptyTemplate = emptyTemplate + char(179);
 	string selectedMaDocGia;
-	PrintAllDocGia(listDG, location);
+	PrintAllDocGia(listDG, location, 1, Show_Only);
 	std::string MaDocGia = StringToCharArray(selectedMaDocGia);
 
 	//int maThe;
@@ -64,9 +64,9 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 	menu.btnSize = { 10,3 };
 	while (true)
 	{
-		PrintAllDocGia(listDG, location);
+		PrintAllDocGia(listDG, location, 1, Show_Only);
 		int selected = menu.ShowInHorizontal(Menu_Mode::Both);
-		menu.ShowDisableModeInHorizontal();
+		//menu.ShowDisableModeInHorizontal();
 		// Them
 		if (selected == 0)
 		{
@@ -82,7 +82,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 			{
 				SwapMaDG(Size(listDG), backUpPos);
 				Insert(listDG, *newDocGia);
-				PrintAllDocGia(listDG, location);
+				PrintAllDocGia(listDG, location, 1, Show_Only);
 			}
 		}
 		// Xoa
@@ -93,7 +93,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 				// Het doc gia
 				if (Size(listDG) == 0)
 				{
-					PrintAllDocGia(listDG, location);
+					PrintAllDocGia(listDG, location, 1, Show_Only);
 					break;
 				}
 				selectedMaDocGia = PrintAllDGWithHL(listDG, location, Menu_Mode::Both);
@@ -143,7 +143,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 							GoToXY(location.x, Size(listDG) + location.y + 3);
 							cout << emptyTemplate;
 							// da cap nhat ds the loai trong DeleteDauSach
-							PrintAllDocGia(listDG, location);
+							PrintAllDocGia(listDG, location, 1, Show_Only);
 						}
 					}
 				}
@@ -186,7 +186,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 					int MaDG = std::stoi(MaDocGia);
 					auto temp = Search(listDG, MaDG);
 					temp->data = InputFixDocGia({ {DAUSACH_TOTAL_WIDTH + 2, location.y}, {50, 18} }, temp->data);
-					PrintAllDocGia(listDG, location);
+					PrintAllDocGia(listDG, location, 1, Show_Only);
 					break;
 				}
 			}
@@ -202,6 +202,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 void InDanhSachDG(LIST_DOCGIA listDG, MYPOINT location)
 {
 	auto locationMenu = location;
+	std::string temp;
 	locationMenu.x = 62;
 	location.y += 3;
 	MENU menu = MENU({ "SAP XEP THEO HO TEN", "SAP XEP THEO MA" }, locationMenu);
@@ -209,13 +210,14 @@ void InDanhSachDG(LIST_DOCGIA listDG, MYPOINT location)
 	while (true)
 	{
 		auto result = menu.ShowInHorizontal(Menu_Mode::Both);
+		//menu.ShowDisableModeInHorizontal();
 		if (result == 0)
 		{
-			PrintAllDocGia(listDG, location, 2);
+			temp = PrintAllDocGia(listDG, location, 2);
 		}
 		else if (result == 1)
 		{
-			PrintAllDocGia(listDG, location, 1);
+			temp = PrintAllDocGia(listDG, location, 1);
 		}
 		else
 		{
@@ -240,8 +242,8 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 	emptyTemplate = emptyTemplate + char(179) + string(NAMXUATBAN_WIDTH, ' ');
 	emptyTemplate = emptyTemplate + char(179) + string(TENTHELOAI_WIDTH, ' ');
 	emptyTemplate = emptyTemplate + char(179);
-
-	string selectedISBN = listDS.PrintAll(location, Show_Only);
+	int page = 0;
+	string selectedISBN = listDS.PrintAll(location, page, Show_Only);
 	char* isbnAsArr = StringToCharArray(selectedISBN);
 	auto locationBtn = location;
 	// xem = mat
@@ -252,10 +254,21 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 	while (true)
 	{
 		int selected = menu.ShowInHorizontal(Menu_Mode::Both);
-		menu.ShowDisableModeInHorizontal();
-		// Them
-		if (selected == 0)
+
+		if (selected == Key::PAGE_UP && page > 0)
 		{
+			page--;
+			selectedISBN = listDS.PrintAll(location, page, Show_Only);
+		}
+		else if (selected == Key::PAGE_DOWN)
+		{
+			page++;
+			selectedISBN = listDS.PrintAll(location, page, Show_Only);
+		}
+		// Them
+		else if (selected == 0)
+		{
+			//menu.ShowDisableModeInHorizontal();
 			auto newDauSach = new DAUSACH();
 			*newDauSach = InputDauSach(listDS, { {DAUSACH_TOTAL_WIDTH + 2, location.y}, {50, 18} });
 			// nguoi dung an CANCEL
@@ -268,23 +281,24 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 			{
 				if (listDS.Insert(*newDauSach, listDS.size))
 				{
-					selectedISBN = listDS.PrintAll(location);
+					selectedISBN = listDS.PrintAll(location, page);
 				}
 			}
 		}
 		// Xoa
 		else if (selected == 1)
 		{
+			//menu.ShowDisableModeInHorizontal();
 			while (true)
 			{
 				// Het dau sach
 				if (listDS.size == 0)
 				{
-					selectedISBN = listDS.PrintAll(location, Show_Only);
+					selectedISBN = listDS.PrintAll(location, page, Show_Only);
 					break;
 				}
 
-				selectedISBN = listDS.PrintAll(location, Menu_Mode::Both);
+				selectedISBN = listDS.PrintAll(location, page, Menu_Mode::Both);
 				ClearLine(1);
 				isbnAsArr = StringToCharArray(selectedISBN);
 				if (selectedISBN == "ESC")
@@ -294,8 +308,11 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 					tempLoc.y += 3;
 					for (int i = 0; i < listDS.size; i++)
 					{
-						listDS.nodes[i]->Print(tempLoc, BG_COLOR, TEXT_INPUT_COLOR);
-						tempLoc.y++;
+						if (i >= MAX_ROW_PER_PAGE * page && i < (page + 1) * MAX_ROW_PER_PAGE)
+						{
+							listDS.nodes[i]->Print(tempLoc, BG_COLOR, TEXT_INPUT_COLOR);
+							tempLoc.y++;
+						}
 					}
 					break;
 				}
@@ -319,9 +336,18 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 						{
 							// da cap nhat ds the loai trong DeleteDauSach
 							listDS.DeleteDauSach(isbnAsArr);
-							SetBGColor(BG_COLOR);
-							GoToXY(location.x, listDS.size + location.y + 3);
-							cout << emptyTemplate;
+							int temp = 0;
+							if (listDS.size % MAX_ROW_PER_PAGE != 0) temp = 1;
+							else if (listDS.size % MAX_ROW_PER_PAGE == 0 && page == listDS.size / MAX_ROW_PER_PAGE)
+							{
+								page--;
+							}
+							if (page == listDS.size / MAX_ROW_PER_PAGE + temp - 1)
+							{
+								SetBGColor(BG_COLOR);
+								GoToXY(location.x, listDS.size % MAX_ROW_PER_PAGE + location.y + 3);
+								cout << emptyTemplate;
+							}
 						}
 					}
 				}
@@ -330,13 +356,14 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 		// Sua
 		else if (selected == 2)
 		{
+			//menu.ShowDisableModeInHorizontal();
 			while (true)
 			{
 				if (listDS.size == 0)
 				{
 					break;
 				}
-				selectedISBN = listDS.PrintAll(location, Menu_Mode::Both);
+				selectedISBN = listDS.PrintAll(location, page, Menu_Mode::Both);
 				isbnAsArr = StringToCharArray(selectedISBN);
 				if (selectedISBN == "ESC")
 				{
@@ -345,8 +372,12 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 					tempLoc.y += 3;
 					for (int i = 0; i < listDS.size; i++)
 					{
-						listDS.nodes[i]->Print(tempLoc, BG_COLOR, TEXT_INPUT_COLOR);
-						tempLoc.y++;
+						if (i >= MAX_ROW_PER_PAGE * page && i < (page + 1) * MAX_ROW_PER_PAGE)
+						{
+							listDS.nodes[i]->Print(tempLoc, BG_COLOR, TEXT_INPUT_COLOR);
+							tempLoc.y++;
+						}
+
 					}
 					break;
 				}
@@ -384,10 +415,12 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 	MENU menu = MENU({ "THEM", "XOA", "SUA" }, locationBtn);
 	menu.btnSize = { 10,3 };
 
+	int page = 0;
+
 	while (true)
 	{
 		// List Dau sach can cap nhat
-		string isbn = listDS.PrintAll(locationDS, Both);
+		string isbn = listDS.PrintAll(locationDS, page, Both);
 		ClearScreen(BG_COLOR);
 		if (isbn == "ESC")
 		{
@@ -409,7 +442,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 			// them
 			if (selectionMenu == 0)
 			{
-				menu.ShowDisableModeInHorizontal();
+				//menu.ShowDisableModeInHorizontal();
 				// Form nhap sach moi
 				SACH* newSach = new SACH();
 				StringToCharArray(isbn, isbnAsChar);
@@ -437,7 +470,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 					// Het sach
 					if (listSach->Size() == 0)
 						break;
-					menu.ShowDisableModeInHorizontal();
+					//menu.ShowDisableModeInHorizontal();
 					maSach = listSach->PrintAll(locationListSach, Both);
 					ClearLine(1);
 					if (maSach == "ESC")
@@ -485,7 +518,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 					// Het sach
 					if (listSach->Size() == 0)
 						break;
-					menu.ShowDisableModeInHorizontal();
+					//menu.ShowDisableModeInHorizontal();
 					maSach = listSach->PrintAll(locationListSach, Both);
 					if (maSach == "ESC")
 					{
