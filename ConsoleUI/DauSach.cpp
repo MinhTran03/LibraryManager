@@ -453,12 +453,13 @@ std::string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 			}
 		}
 	}
-	//_getch();
+	
+	currentPage = page;
 	// bat phim
 	if (mode == Menu_Mode::Both)
 	{
 		currentLine = 0;
-		currentPage = page;
+		
 		char inputKey = NULL;
 		HidePointer();
 		do

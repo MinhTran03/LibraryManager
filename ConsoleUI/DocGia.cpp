@@ -645,19 +645,18 @@ void PrintStringDocGia(std::string data, MYPOINT location)
 std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Menu_Mode mode)
 {
 	std::string emptyTemplate = "";
-	emptyTemplate = emptyTemplate + char(179) + std::string(ISBN_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + std::string(TENSACH_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + std::string(SOTRANG_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + std::string(TENTACGIA_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + std::string(NAMXUATBAN_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + std::string(TENTHELOAI_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + std::string(MADOCGIA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + std::string(HODOCGIA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + std::string(TENDOCGIA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + std::string(GIOITINH_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + std::string(TRANGTHAIDG_WIDTH, ' ');
 	emptyTemplate = emptyTemplate + char(179);
 
 	MYPOINT backUpLocation = MYPOINT(0, 0);
 	MYPOINT loc = MYPOINT(0, 0);
 	std::vector<std::string> dsDocGia;
-	std::vector<std::string> datas;
-	std::vector<int> rows;
+	std::vector<std::vector<std::string>> datas;
+	std::vector<std::vector<int>> rows;
 	int currentLine = 0;
 	int currentPage = page;
 	Color hlBGColor = Color::Cyan;
@@ -669,88 +668,174 @@ std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Me
 		dsDocGia = GetAllStringNode(listDG);
 	}
 	int totalLine = dsDocGia.size();
-
-	// print label
-	PrintLabelDocGia(location, MAX_ROW_PER_PAGE);
-	location.y += 3;
-	backUpLocation = location;
-	//print data
-	for (size_t i = 0; i < totalLine; i++)
+	// them page
+	for (int i = 0; i < totalLine / MAX_ROW_PER_PAGE; i++)
 	{
-		SetBGColor(Color::White);
-		SetTextColor(Color::Black);
-		PrintStringDocGia(dsDocGia[i], location);
-		if (backUpLocation.y == location.y)
-		{
-			SetBGColor(hlBGColor);
-			SetTextColor(hlTextColor);
-			PrintStringDocGia(dsDocGia[i], location);
-		}
-		rows.push_back(location.y++);
-		datas.push_back(dsDocGia[i]);
+		datas.push_back({});
+		rows.push_back({});
 	}
-
-	// bat phim
-	currentLine = 0;
-	char inputKey = NULL;
-	HidePointer();
-	do
+	if (totalLine % MAX_ROW_PER_PAGE != 0)
 	{
-		inputKey = _getch();
-		if (inputKey == Key::_NULL) inputKey = _getch();
-		if (inputKey == -32)
+		datas.push_back({});
+		rows.push_back({});
+	}
+	// tranh vuot qua so trang MAX
+	if (currentPage >= datas.size())
+	{
+		//currentPage = datas.size() - 1;
+		page = datas.size() - 1;
+		return "";
+	}
+	// print label
+	if (mode == Menu_Mode::Show_Only || mode == Menu_Mode::Both)
+	{
+		PrintLabelDocGia(location, MAX_ROW_PER_PAGE);
+		location.y += 3;
+		backUpLocation = location;
+		//print data
+		for (size_t i = 0; i < totalLine; i++)
+		{
+			if (i >= MAX_ROW_PER_PAGE * page && i < (page + 1) * MAX_ROW_PER_PAGE)
+			{
+				PrintStringDocGia(dsDocGia[i], { location.x, location.y + (int)(i % MAX_ROW_PER_PAGE) });
+				if (backUpLocation.y == WhereY() && mode == Menu_Mode::Both)
+				{
+					SetBGColor(hlBGColor);
+					SetTextColor(hlTextColor);
+					PrintStringDocGia(dsDocGia[i], location);
+					SetBGColor(BG_COLOR);
+					SetTextColor(TEXT_INPUT_COLOR);
+				}
+			}
+			// luu lai vi tri dong
+			currentPage = i / MAX_ROW_PER_PAGE;
+			rows[currentPage].push_back(i % MAX_ROW_PER_PAGE + location.y);
+			datas[currentPage].push_back(dsDocGia[i]);
+		}
+		// xoa nhung line du cua trang truoc do
+		if (page == datas.size() - 1 && totalLine % MAX_ROW_PER_PAGE != 0 && page != 0)
+		{
+			SetBGColor(BG_COLOR);
+			SetTextColor(TEXT_INPUT_COLOR);
+			for (int i = totalLine % MAX_ROW_PER_PAGE; i < MAX_ROW_PER_PAGE; i++)
+			{
+				GoToXY(location.x, rows[page - 1][i]);
+				std::cout << emptyTemplate;
+			}
+		}
+	}
+	currentPage = page;
+	// bat phim
+	if (mode == Menu_Mode::Both)
+	{
+		currentLine = 0;
+		
+		char inputKey = NULL;
+		HidePointer();
+		do
 		{
 			inputKey = _getch();
-			if (inputKey == Key::UP)
+			if (inputKey == Key::_NULL) inputKey = _getch();
+			if (inputKey == -32)
 			{
-				if (currentLine > 0)
+				inputKey = _getch();
+				if (inputKey == Key::UP)
 				{
-					GoToXY(location.x, rows[currentLine]);
-					HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
-					GoToXY(location.x, rows[--currentLine]);
-					HightLight(datas[currentLine], hlBGColor, hlTextColor);
+					if (currentLine > 0)
+					{
+						GoToXY(location.x, rows[currentPage][currentLine]);
+						HightLight(datas[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
+						GoToXY(location.x, rows[currentPage][--currentLine]);
+						HightLight(datas[currentPage][currentLine], hlBGColor, hlTextColor);
+					}
+					else
+					{
+						GoToXY(location.x, rows[currentPage][currentLine]);
+						HightLight(datas[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
+						currentLine = rows[currentPage].size() - 1;
+						GoToXY(location.x, rows[currentPage][currentLine]);
+						HightLight(datas[currentPage][currentLine], hlBGColor, hlTextColor);
+					}
 				}
-				else
+				else if (inputKey == Key::DOWN)
 				{
-					GoToXY(location.x, rows[currentLine]);
-					HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
-					currentLine = totalLine - 1;
-					GoToXY(location.x, rows[currentLine]);
-					HightLight(datas[currentLine], hlBGColor, hlTextColor);
+					if (currentLine < rows[currentPage].size() - 1)
+					{
+						GoToXY(location.x, rows[currentPage][currentLine]);
+						HightLight(datas[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
+						GoToXY(location.x, rows[currentPage][++currentLine]);
+						HightLight(datas[currentPage][currentLine], hlBGColor, hlTextColor);
+					}
+					else
+					{
+						GoToXY(location.x, rows[currentPage][currentLine]);
+						HightLight(datas[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
+						currentLine = 0;
+						GoToXY(location.x, rows[currentPage][currentLine]);
+						HightLight(datas[currentPage][currentLine], hlBGColor, hlTextColor);
+					}
 				}
 			}
-			else if (inputKey == Key::DOWN)
+			if (inputKey == Key::ENTER)
 			{
-				if (currentLine < totalLine - 1)
-				{
-					GoToXY(location.x, rows[currentLine]);
-					HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
-					GoToXY(location.x, rows[++currentLine]);
-					HightLight(datas[currentLine], hlBGColor, hlTextColor);
-				}
-				else
-				{
-					GoToXY(location.x, rows[currentLine]);
-					HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
-					currentLine = 0;
-					GoToXY(location.x, rows[currentLine]);
-					HightLight(datas[currentLine], hlBGColor, hlTextColor);
-				}
+				std::string deli = ""; deli += char(179);
+				auto temp = Split(datas[currentPage][currentLine], deli);
+				temp[1] = Trim(temp[1]);
+				page = currentPage;
+				return temp[1];
 			}
-		}
-		if (inputKey == Key::ENTER)
-		{
-			std::string deli = ""; deli += char(179);
-			auto temp = Split(datas[currentLine], deli);
-			temp[1] = Trim(temp[1]);
-			return temp[1];
-		}
-		else if (inputKey == Key::ESC)
-		{
-			ClearArea(location.x, backUpLocation.y - 3, DAUSACH_TOTAL_WIDTH, totalLine + 4);
-			return "ESC";
-		}
-	} while (!_kbhit());
+			else if (inputKey == Key::PAGE_DOWN && currentPage < datas.size() - 1)
+			{
+				// in next page
+				currentPage++;
+				currentLine = 0;
+				SetBGColor(BG_COLOR);
+				SetTextColor(TEXT_INPUT_COLOR);
+				for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
+				{
+					if (i < rows[currentPage].size())
+					{
+						GoToXY(backUpLocation.x, backUpLocation.y + i);
+						std::cout << datas[currentPage][i];
+					}
+					else
+					{
+						GoToXY(backUpLocation.x, backUpLocation.y + i);
+						std::cout << emptyTemplate;
+					}
+				}
+				SetBGColor(hlBGColor);
+				SetTextColor(hlTextColor);
+				PrintStringDocGia(dsDocGia[MAX_ROW_PER_PAGE * currentPage], location);
+				SetBGColor(BG_COLOR);
+				SetTextColor(TEXT_INPUT_COLOR);
+			}
+			else if (inputKey == Key::PAGE_UP && currentPage > 0)
+			{
+				// in next page
+				currentPage--;
+				currentLine = 0;
+				SetBGColor(BG_COLOR);
+				SetTextColor(TEXT_INPUT_COLOR);
+				for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
+				{
+					GoToXY(backUpLocation.x, backUpLocation.y + i);
+					std::cout << datas[currentPage][i];
+				}
+				SetBGColor(hlBGColor);
+				SetTextColor(hlTextColor);
+				PrintStringDocGia(dsDocGia[MAX_ROW_PER_PAGE * currentPage], location);
+				SetBGColor(BG_COLOR);
+				SetTextColor(TEXT_INPUT_COLOR);
+			}
+			else if (inputKey == Key::ESC)
+			{
+				page = currentPage;
+				ClearArea(location.x, backUpLocation.y - 3, DAUSACH_TOTAL_WIDTH, totalLine + 4);
+				return "ESC";
+			}
+		} while (!_kbhit());
+	}
 	return "Empty";
 }
 #pragma endregion

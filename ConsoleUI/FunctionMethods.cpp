@@ -53,7 +53,8 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 	emptyTemplate = emptyTemplate + char(179) + string(TENTHELOAI_WIDTH, ' ');
 	emptyTemplate = emptyTemplate + char(179);
 	string selectedMaDocGia;
-	PrintAllDocGia(listDG, location, 1, Show_Only);
+	int page = 0;
+	string tem = PrintAllDGWithHL(listDG, location, page, Show_Only);
 	std::string MaDocGia = StringToCharArray(selectedMaDocGia);
 
 	//int maThe;
@@ -64,9 +65,18 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 	menu.btnSize = { 10,3 };
 	while (true)
 	{
-		PrintAllDocGia(listDG, location, 1, Show_Only);
+		tem = PrintAllDGWithHL(listDG, location, page, Show_Only);
 		int selected = menu.ShowInHorizontal(Menu_Mode::Both);
-		//menu.ShowDisableModeInHorizontal();
+		if (selected == Key::PAGE_UP && page > 0)
+		{
+			page--;
+			tem = PrintAllDGWithHL(listDG, location, page, Show_Only);
+		}
+		else if (selected == Key::PAGE_DOWN)
+		{
+			page++;
+			tem = PrintAllDGWithHL(listDG, location, page, Show_Only);
+		}
 		// Them
 		if (selected == 0)
 		{
@@ -93,16 +103,16 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 				// Het doc gia
 				if (Size(listDG) == 0)
 				{
-					PrintAllDocGia(listDG, location, 1, Show_Only);
+					tem = PrintAllDGWithHL(listDG, location, page, Show_Only);
 					break;
 				}
-				selectedMaDocGia = PrintAllDGWithHL(listDG, location, Menu_Mode::Both);
+				selectedMaDocGia = PrintAllDGWithHL(listDG, location, page, Menu_Mode::Both);
 				ClearLine(1);
 				MaDocGia = StringToCharArray(selectedMaDocGia);
 				if (selectedMaDocGia == "ESC")
 				{
 					// load lai data
-					std::vector<std::string> dsDocGia;
+					/*std::vector<std::string> dsDocGia;
 
 					if (listDG != NULL)
 					{
@@ -115,7 +125,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 					{
 						PrintStringDocGia(dsDocGia[i], location);
 						tempLoc.y++;
-					}
+					}*/
 					break;
 				}
 				// ng dung an enter de xoa
@@ -143,7 +153,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 							GoToXY(location.x, Size(listDG) + location.y + 3);
 							cout << emptyTemplate;
 							// da cap nhat ds the loai trong DeleteDauSach
-							PrintAllDocGia(listDG, location, 1, Show_Only);
+							tem = PrintAllDGWithHL(listDG, location, page, Show_Only);
 						}
 					}
 				}
@@ -158,13 +168,13 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 				{
 					break;
 				}
-				selectedMaDocGia = PrintAllDGWithHL(listDG, location, Menu_Mode::Both);
+				selectedMaDocGia = PrintAllDGWithHL(listDG, location, page, Menu_Mode::Both);
 				ClearLine(1);
 				MaDocGia = StringToCharArray(selectedMaDocGia);
 				if (selectedMaDocGia == "ESC")
 				{
 					// load lai data
-					std::vector<std::string> dsDocGia;
+					/*std::vector<std::string> dsDocGia;
 
 					if (listDG != NULL)
 					{
@@ -177,7 +187,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 					{
 						PrintStringDocGia(dsDocGia[i], location);
 						tempLoc.y++;
-					}
+					}*/
 					break;
 				}
 				else
@@ -186,8 +196,8 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 					int MaDG = std::stoi(MaDocGia);
 					auto temp = Search(listDG, MaDG);
 					temp->data = InputFixDocGia({ {DAUSACH_TOTAL_WIDTH + 2, location.y}, {50, 18} }, temp->data);
-					PrintAllDocGia(listDG, location, 1, Show_Only);
-					break;
+					tem = PrintAllDGWithHL(listDG, location, page, Show_Only);
+					//break;
 				}
 			}
 		}

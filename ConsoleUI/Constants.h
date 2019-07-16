@@ -19,24 +19,24 @@
 #pragma endregion
 
 const int magicNumber = -1;
-const unsigned MAX_ROW_PER_PAGE = 33;
+const unsigned MAX_ROW_PER_PAGE = 20;
 #define WARNING_CANT_DELETE_DS "DAU SACH DA CO DOC GIA MUON. KHONG DUOC XOA"
 #define WARNING_CANT_DELETE_SACH "SACH DA CO DOC GIA MUON. KHONG DUOC XOA"
 #define WARNING_CANT_FIX_SACH "SACH DA CO DOC GIA MUON. KHONG DUOC CHINH SUA"
 
 #pragma region Dau sach
 const unsigned int ISBN_MAXSIZE = 6;
-const unsigned int TENSACH_MAXSIZE = 30;
+const unsigned int TENSACH_MAXSIZE = 36;
 const unsigned int TENTACGIA_MAXSIZE = 30;
-const unsigned int TENTHELOAI_MAXSIZE = 30;
+const unsigned int TENTHELOAI_MAXSIZE = 20;
 const unsigned int SOTRANG_MAXKYTU = 6; // 6 SO
 const unsigned int SODAUSACH_MAX = 50;
 
 
 const unsigned int ISBN_WIDTH = ISBN_MAXSIZE;
-const unsigned int TENSACH_WIDTH = 30;
+const unsigned int TENSACH_WIDTH = 36;
 const unsigned int TENTACGIA_WIDTH = 21;
-const unsigned int TENTHELOAI_WIDTH = 15;
+const unsigned int TENTHELOAI_WIDTH = 20;
 const unsigned int SOTRANG_WIDTH = 8;
 const unsigned int NAMXUATBAN_WIDTH = 4;
 const unsigned int DAUSACH_TOTAL_WIDTH = ISBN_WIDTH + TENSACH_WIDTH + TENTACGIA_WIDTH + TENTHELOAI_WIDTH + SOTRANG_WIDTH + NAMXUATBAN_WIDTH + 7;
