@@ -3,12 +3,12 @@
 int main()
 {
 	SetupConsole();
-	MYPOINT locationDS = { 1, 2 };
+	MYPOINT locationDS = { 2, 2 };
 
 	// Load Doc gia
 	LIST_DOCGIA listDG = LIST_DOCGIA();
+	LoadMaDG(listDG);
 	LoadDocGia(listDG);
-	MakeRandomArrayMaDG(listDG);
 	
 	// load dau sach
 	auto listDS = LIST_DAUSACH();
@@ -45,7 +45,7 @@ int main()
 			// HIEN THI DAU SACH
 			if (func[1] == 0)
 			{
-				HienThiDauSach(listDS, locationDS);
+				HienThiDauSach(listDS, { locationDS.x + 30, locationDS.y });
 			}
 			// CAP NHAT DAU SACH
 			else if (func[1] == 1)
@@ -83,7 +83,6 @@ int main()
 			break;
 		}
 	}
-
 
 	FormClosing(listDG, listDS);
 

@@ -12,12 +12,18 @@ void SaveAll(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
 			continue;
 		WriteSach(listDS.nodes[i]->dsSach, listDS.nodes[i]->isbn);
 	}
+	// luu doc gia
+	WriteDocGia(listDG);
+	// luu ma doc gia arr
+	WriteMaDGToFile(MADOCGIA_FILE_PATH);
 }
 
 void FormClosing(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
 {
+	GoToXY(50, 0);
+	std::cout << "Saving...";
 	SaveAll(listDG, listDS);
-
+	//Sleep(1000);
 	// Huy
 	for (int i = 0; i < listDS.size; i++)
 	{
@@ -25,6 +31,8 @@ void FormClosing(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
 	}
 	listDS.Deconstructor();
 	FreeMemory(listDG);
+	GoToXY(50, 0);
+	std::cout << "Done       ";
 }
 
 void SetupConsole()
@@ -107,8 +115,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 		if (selected == 0)
 		{
 			auto newDocGia = new DOCGIA();
-			int backUpPos;
-			int newMaDG = GetRandomMaDG(listDG, backUpPos);
+			int newMaDG = GetRandomMaDG(listDG);
 			*newDocGia = InputDocGia(newMaDG, { {DAUSACH_TOTAL_WIDTH + 2, location.y}, {50, 18} });
 			if (newDocGia->ho == "")
 			{
@@ -116,9 +123,9 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 			}
 			else
 			{
-				SwapMaDG(Size(listDG), backUpPos);
+				RemoveMaDG();
 				Insert(listDG, *newDocGia);
-				PrintAllDocGia(listDG, location, 1, Show_Only);
+				tem = PrintAllDocGia(listDG, location, 1, Show_Only);
 			}
 		}
 		// Xoa
@@ -284,7 +291,7 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 	auto locationBtn = location;
 	// xem = mat
 	locationBtn.x += 30;
-	locationBtn.y += 37;
+	locationBtn.y += 24;
 	MENU menu = MENU({ "THEM", "XOA", "SUA" }, locationBtn);
 	menu.btnSize = { 10,3 };
 	while (true)
@@ -306,7 +313,7 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 		{
 			//menu.ShowDisableModeInHorizontal();
 			auto newDauSach = new DAUSACH();
-			*newDauSach = InputDauSach(listDS, { {DAUSACH_TOTAL_WIDTH + 2, location.y}, {50, 18} });
+			*newDauSach = InputDauSach(listDS, { {(int)DAUSACH_TOTAL_WIDTH + 2 + location.x, location.y}, {60, 18} });
 			// nguoi dung an CANCEL
 			if (newDauSach->isbn[0] == '\0')
 			{
@@ -344,7 +351,7 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 					tempLoc.y += 3;
 					for (int i = 0; i < listDS.size; i++)
 					{
-						if (i >= MAX_ROW_PER_PAGE * page && i < (page + 1) * MAX_ROW_PER_PAGE)
+						if (i >= (int)MAX_ROW_PER_PAGE * page && i < (page + 1) * (int)MAX_ROW_PER_PAGE)
 						{
 							listDS.nodes[i]->Print(tempLoc, BG_COLOR, TEXT_INPUT_COLOR);
 							tempLoc.y++;
@@ -408,7 +415,7 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 					tempLoc.y += 3;
 					for (int i = 0; i < listDS.size; i++)
 					{
-						if (i >= MAX_ROW_PER_PAGE * page && i < (page + 1) * MAX_ROW_PER_PAGE)
+						if (i >= (int)MAX_ROW_PER_PAGE * page && i < (page + 1) * (int)MAX_ROW_PER_PAGE)
 						{
 							listDS.nodes[i]->Print(tempLoc, BG_COLOR, TEXT_INPUT_COLOR);
 							tempLoc.y++;
@@ -441,7 +448,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 	string emptyTemplate = "";
 	emptyTemplate += string(MASACH_WIDTH + TRANGTHAISACH_WIDTH + VITRI_WIDTH + 4, ' ');
 
-	MYPOINT locationDS = { 41,2 };
+	MYPOINT locationDS = { 38,2 };
 	auto locationBtn = locationDS;
 	locationBtn.x = 46;
 	//locationBtn.y += 37;

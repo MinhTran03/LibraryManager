@@ -1,5 +1,8 @@
 #include "DocGia.h"
 
+std::vector<int> maDocGiaArr;
+int newPos;
+
 #pragma region -------------------------------------------DOCGIA
 // Chuyen vector string trong file thanh doc gia
 DOCGIA ParseVectorStringFile(std::vector<std::string> data)
@@ -110,6 +113,32 @@ std::string DOCGIA::ToString()
 	result += char(179);
 	return result;
 }
+// chuyen object dau sach thanh string luu file
+std::string DOCGIA::ToStringFile()
+{
+	std::string result = "";
+	result = std::to_string(this->maDocGia);
+	result += '-';
+	result += this->ho + '-';
+	result += this->ten + '-';
+	if (this->gioiTinh == Nam)
+	{
+		result += "Nam-";
+	}
+	else
+	{
+		result += "Nu-";
+	}
+	if (this->trangThai == TheBiKhoa)
+	{
+		result += "The bi khoa";
+	}
+	else
+	{
+		result += "Dang hoat dong";
+	}
+	return result;
+}
 // ...
 DOCGIA InputFixDocGia(RECTANGLE rect, DOCGIA docGia)
 {
@@ -205,47 +234,105 @@ void GetMaDGtoVector(LIST_DOCGIA lstDG, std::vector<int>& dsMaDocGia)
 		GetMaDGtoVector(lstDG->pRight, dsMaDocGia);
 	}
 }
-// Make array ma doc gia
-void MakeRandomArrayMaDG(LIST_DOCGIA listDG)
+// Doc mang MADOCGIA tu file
+bool ReadMaDGFromFile(std::string path)
 {
-	srand(time(NULL));
-	for (unsigned int i = 0; i < MAX_DOCGIA; i++)
+	auto fileHandler = FILEHANDLER(path);
+	try
 	{
-		MADOCGIAARR[i] = i + 1;
+		maDocGiaArr = fileHandler.GetLinesInt();
 	}
-	for (unsigned int i = 0; i < MAX_DOCGIA; i++)
+	catch (const std::exception& ex)
 	{
-		int temp = rand() % MAX_DOCGIA;
-		Swap(MADOCGIAARR[i], MADOCGIAARR[temp]);
+		GoToXY(0, 0);
+		std::cout << ex.what();
+		return false;
 	}
-
-	std::vector<int> dsMaDocGia;
-	GetMaDGtoVector(listDG, dsMaDocGia);
-	int t = Size(listDG);
-	for (size_t i = 0; i < dsMaDocGia.size(); i++)
+	return true;
+}
+// duyet cay lay data string file
+void InorderGetStringFile(LIST_DOCGIA lstDG, std::vector<std::string>& result)
+{
+	if (lstDG != NULL)
 	{
-		for (unsigned int j = 0; j < MAX_DOCGIA; j++)
-		{
-			if (dsMaDocGia[i] == MADOCGIAARR[j])
-			{
-				Swap(MADOCGIAARR[i], MADOCGIAARR[j]);
-				break;
-			}
-		}
+		InorderGetStringFile(lstDG->pLeft, result);
+		result.push_back(lstDG->data.ToStringFile());
+		InorderGetStringFile(lstDG->pRight, result);
 	}
 }
-// Sinh ma DG ngau nhien
-int GetRandomMaDG(LIST_DOCGIA listDG, int& positon)
+// duyet cay lay ToStringFile cua node doc gia
+std::vector<std::string> GetAllStringFileNode(LIST_DOCGIA listDG)
 {
-	srand(time(NULL));
-	int pos = rand() % (MAX_DOCGIA - Size(listDG) - 1) + Size(listDG);
-	positon = pos;
-	return MADOCGIAARR[pos];
+	std::vector<std::string> result;
+	InorderGetStringFile(listDG, result);
+	return result;
+}
+// Ghi du lieu doc gia ra file text
+bool WriteToFile(LIST_DOCGIA lstDG, std::string path)
+{
+	auto fileHandler = FILEHANDLER(path);
+	try
+	{
+		int size = Size(lstDG);
+		std::vector<std::string> data = GetAllStringFileNode(lstDG);
+		for (auto i = 0; i < size; i++)
+		{
+			if (i < size - 1)
+				data[i] += '\n';
+		}
+		fileHandler.WriteToFile(data, Replace);
+	}
+	catch (const std::exception& ex)
+	{
+		GoToXY(0, 0);
+		std::cout << ex.what();
+		return false;
+	}
+	return true;
+}
+// Ghi du lieu ma doc gia ra file text
+bool WriteMaDGToFile(std::string path)
+{
+	auto fileHandler = FILEHANDLER(path);
+	try
+	{
+		int size = maDocGiaArr.size();
+		std::vector<std::string> data;
+		for (auto i = 0; i < size; i++)
+		{
+			std::string temp = "";
+			temp += std::to_string(maDocGiaArr[i]);
+			if (i < size - 1)
+				temp += '\n';
+			data.push_back(temp);
+		}
+		fileHandler.WriteToFile(data, Replace);
+	}
+	catch (const std::exception& ex)
+	{
+		GoToXY(0, 0);
+		std::cout << ex.what();
+		return false;
+	}
+	return true;
+}
+// Sinh ma DG ngau nhien
+int GetRandomMaDG(LIST_DOCGIA listDG)
+{
+	srand((unsigned int)time((time_t)NULL));
+	int t = Size(listDG);
+	newPos = rand() % (MAX_DOCGIA - Size(listDG));
+	return maDocGiaArr[newPos];
 }
 // Doi vi tri 2 ma trong MADOCGIAARR
 void SwapMaDG(int pos1, int pos2)
 {
-	Swap(MADOCGIAARR[pos1], MADOCGIAARR[pos2]);
+	Swap(maDocGiaArr[pos1], maDocGiaArr[pos2]);
+}
+// Remove ma doc gia from array khi them moi doc gia
+void RemoveMaDG()
+{
+	maDocGiaArr.erase(maDocGiaArr.begin() + newPos);
 }
 // Giai phong vung nho
 void FreeMemory(NODE_DOCGIA* root)
@@ -669,7 +756,7 @@ std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Me
 	}
 	int totalLine = dsDocGia.size();
 	// them page
-	for (int i = 0; i < totalLine / MAX_ROW_PER_PAGE; i++)
+	for (int i = 0; i < totalLine / (int)MAX_ROW_PER_PAGE; i++)
 	{
 		datas.push_back({});
 		rows.push_back({});
@@ -680,7 +767,7 @@ std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Me
 		rows.push_back({});
 	}
 	// tranh vuot qua so trang MAX
-	if (currentPage >= datas.size())
+	if (currentPage >= (int)datas.size())
 	{
 		//currentPage = datas.size() - 1;
 		page = datas.size() - 1;
@@ -693,9 +780,9 @@ std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Me
 		location.y += 3;
 		backUpLocation = location;
 		//print data
-		for (size_t i = 0; i < totalLine; i++)
+		for (int i = 0; i < totalLine; i++)
 		{
-			if (i >= MAX_ROW_PER_PAGE * page && i < (page + 1) * MAX_ROW_PER_PAGE)
+			if (i >= (int)MAX_ROW_PER_PAGE * page && i < (page + 1) * (int)MAX_ROW_PER_PAGE)
 			{
 				PrintStringDocGia(dsDocGia[i], { location.x, location.y + (int)(i % MAX_ROW_PER_PAGE) });
 				if (backUpLocation.y == WhereY() && mode == Menu_Mode::Both)
@@ -759,7 +846,7 @@ std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Me
 				}
 				else if (inputKey == Key::DOWN)
 				{
-					if (currentLine < rows[currentPage].size() - 1)
+					if (currentLine < (int)rows[currentPage].size() - 1)
 					{
 						GoToXY(location.x, rows[currentPage][currentLine]);
 						HightLight(datas[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
@@ -768,7 +855,7 @@ std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Me
 					}
 					else
 					{
-						GoToXY(location.x, rows[currentPage][currentLine]);
+						GoToXY(location.x, (int)rows[currentPage][currentLine]);
 						HightLight(datas[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
 						currentLine = 0;
 						GoToXY(location.x, rows[currentPage][currentLine]);
@@ -784,7 +871,7 @@ std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Me
 				page = currentPage;
 				return temp[1];
 			}
-			else if (inputKey == Key::PAGE_DOWN && currentPage < datas.size() - 1)
+			else if (inputKey == Key::PAGE_DOWN && currentPage < (int)datas.size() - 1)
 			{
 				// in next page
 				currentPage++;

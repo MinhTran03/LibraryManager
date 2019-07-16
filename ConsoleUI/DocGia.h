@@ -14,8 +14,6 @@ enum TrangThaiTheDG
 	DangHoatDong = 1
 };
 
-static int MADOCGIAARR[MAX_DOCGIA];
-
 struct DOCGIA
 {
 	// 0001 ... 9999
@@ -31,6 +29,8 @@ struct DOCGIA
 	void Print(MYPOINT location, Color backColor, Color textColor);
 	// chen | vao giua field
 	std::string ToString();
+	// chuyen object dau sach thanh string luu file
+	std::string ToStringFile();
 };
 
 struct NODE_DOCGIA
@@ -45,14 +45,20 @@ struct NODE_DOCGIA
 
 typedef NODE_DOCGIA* LIST_DOCGIA;
 
+// Ghi du lieu ma doc gia ra file text
+bool WriteMaDGToFile(std::string path);
+// Ghi du lieu doc gia ra file text
+bool WriteToFile(LIST_DOCGIA lstDG, std::string path);
+// Remove ma doc gia from array khi them moi doc gia
+void RemoveMaDG();
+// Doc mang MADOCGIA tu file
+bool ReadMaDGFromFile(std::string path);
 // so node cua cay
 int Size(LIST_DOCGIA listDG);
 // Doc tu file txt
 bool ReadFromFile(LIST_DOCGIA& listDG,std::string path);
-// tao mang random maDocGia
-void MakeRandomArrayMaDG(LIST_DOCGIA listDG);
 // sinh madocgia ngau nhien tu dong
-int GetRandomMaDG(LIST_DOCGIA listDG, int& position);
+int GetRandomMaDG(LIST_DOCGIA listDG);
 // ...
 void SwapMaDG(int pos1, int pos2);
 // Chuyen vector string thanh doc gia

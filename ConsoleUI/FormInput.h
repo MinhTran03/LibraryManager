@@ -390,7 +390,7 @@ struct FORMINPUT
 					if (currentLine == totalLine)
 					{
 						HidePointer();
-						ClearLine(guildLocation.y, guildLocation.x, guildLocation.x + rect.size.width);
+						ClearArea(guildLocation.x, guildLocation.y, rect.size.width, 3);
 						btnOK.Draw(BUTTON_HIGHLIGHT_BG_COLOR, BUTTON_HIGHLIGHT_TEXT_COLOR);
 					}
 					else
@@ -496,7 +496,7 @@ struct FORMINPUT
 				if (currentLine == totalLine)
 				{
 					HidePointer();
-					ClearLine(guildLocation.y, guildLocation.x, guildLocation.x + rect.size.width);
+					ClearArea(guildLocation.x, guildLocation.y, rect.size.width, 3);
 					btnOK.Draw(BUTTON_HIGHLIGHT_BG_COLOR, BUTTON_HIGHLIGHT_TEXT_COLOR);
 				}
 				else

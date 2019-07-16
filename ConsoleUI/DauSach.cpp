@@ -212,6 +212,7 @@ std::string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, std::string theLoai)
 	// print data
 	for (int i = 0; i < totalLine; i++)
 	{
+		Sleep(10);
 		if (i >= MAX_ROW_PER_PAGE * currentPage && i < (currentPage + 1) * MAX_ROW_PER_PAGE)
 		{
 			listISBN[i].Print({ location.x, location.y + (int)(i % MAX_ROW_PER_PAGE) }, BG_COLOR, TEXT_INPUT_COLOR);
@@ -426,7 +427,7 @@ std::string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 		// print data
 		for (int i = 0; i < totalLine; i++)
 		{
-			//Sleep(1000);
+			Sleep(2);
 			if (i >= MAX_ROW_PER_PAGE * page && i < (page + 1) * MAX_ROW_PER_PAGE)
 			{
 				listISBN[i].Print({ location.x, location.y + (int)(i % MAX_ROW_PER_PAGE) }, BG_COLOR, TEXT_INPUT_COLOR);

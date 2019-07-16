@@ -65,7 +65,7 @@ struct FILEHANDLER
 			while (!fileInput.eof())
 			{
 				getline(fileInput, line);
-				line += "-";
+				line += delimiter;
 				size_t pos = 0;
 				std::vector<std::string> token;
 				size_t posToken = 0;
@@ -76,6 +76,49 @@ struct FILEHANDLER
 				}
 				result.push_back(token);
 				posLine++;
+			}
+			fileInput.close();
+			return result;
+		}
+	}
+
+	std::vector<std::string> GetLinesString()
+	{
+		if (IsValidFile(this->filePath) == Not_Exist)
+		{
+			throw std::runtime_error("Failed to open this file!");
+		}
+		else
+		{
+			std::ifstream fileInput(filePath);
+			std::vector<std::string> result;
+			std::string line;
+			while (!fileInput.eof())
+			{
+				getline(fileInput, line);
+				result.push_back(line);
+			}
+			fileInput.close();
+			return result;
+		}
+	}
+
+	std::vector<int> GetLinesInt()
+	{
+		if (IsValidFile(this->filePath) == Not_Exist)
+		{
+			throw std::runtime_error("Failed to open this file!");
+		}
+		else
+		{
+			std::ifstream fileInput(filePath);
+			std::vector<int> result;
+			std::string line;
+			while (!fileInput.eof())
+			{
+				getline(fileInput, line);
+				auto tem = stoi(line);
+				result.push_back(tem);
 			}
 			fileInput.close();
 			return result;
