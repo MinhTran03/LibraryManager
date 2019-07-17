@@ -171,7 +171,7 @@ void ClearLine(int lineNumber, int begin, int end, WORD color)
 	FillConsoleOutputAttribute(h, csbi.wAttributes, size, coord, &n);
 	SetConsoleCursorPosition(h, coord);
 }
-void ClearScreen(WORD color)
+void ClearScreen(WORD color, int height)
 {
 	SetBGColor(color);
 	DWORD n;
@@ -180,7 +180,7 @@ void ClearScreen(WORD color)
 	CONSOLE_SCREEN_BUFFER_INFO csbi;
 	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 	GetConsoleScreenBufferInfo(h, &csbi);
-	size = csbi.dwSize.X * 52;
+	size = csbi.dwSize.X * height;
 	FillConsoleOutputCharacter(h, ' ', size, coord, &n);
 	GetConsoleScreenBufferInfo(h, &csbi);
 	FillConsoleOutputAttribute(h, csbi.wAttributes, size, coord, &n);
@@ -203,4 +203,25 @@ void MaximizeWindow()
 {
 	HWND hWnd = GetConsoleWindow();
 	ShowWindow(hWnd, SW_SHOWMAXIMIZED);
+}
+
+// in trang
+void ShowPageNumber(int currentPage, int totalPages, int x, int y)
+{
+	SetBGColor(BG_COLOR);
+	SetTextColor(TEXT_INPUT_COLOR);
+	GoToXY(x, y);
+	std::cout << "Trang:";
+	for (int i = 0; i < totalPages; i++)
+	{
+		GoToXY(x + i * 2 + 7, y);
+		if (currentPage == i)
+		{
+			SetTextColor(Color::Red);
+			std::cout << i + 1;
+			SetTextColor(TEXT_INPUT_COLOR);
+			continue;
+		}
+		std::cout << i + 1;
+	}
 }

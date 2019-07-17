@@ -379,3 +379,41 @@ struct CONFIRMDIALOG
 		rect.Fill(BG_COLOR, BG_COLOR);
 	}
 };
+
+struct FOOTER_CHILD
+{
+	MYPOINT location;
+	Color colorIcon;
+	Color colorText;
+	std::string icon;
+	std::string text;
+	int size = 0;
+
+	FOOTER_CHILD(MYPOINT location, std::string icon, std::string text, 
+					Color colorIcon = Color::Green, Color colorText = Color::White)
+		: icon(icon), text(text), location(location), colorText(colorText), colorIcon(colorIcon)
+	{
+		size = icon.size() + text.size() + 4;
+	}
+
+	void Draw(Color colorIcon = Color::Green, Color colorText = Color::White)
+	{
+		this->colorIcon = colorIcon;
+		this->colorText = colorText;
+
+		int iconSize = icon.size() + 2;
+
+		SetBGColor(this->colorIcon);
+		SetTextColor(Color::Bright_White);
+
+		GoToXY(location.x, location.y);
+		std::cout << " " << icon << " ";
+
+		SetBGColor(this->colorText);
+		GoToXY(location.x + iconSize, location.y);
+		std::cout << " " << text << " ";
+
+		SetTextColor(TEXT_INPUT_COLOR);
+		SetBGColor(BG_COLOR);
+	}
+};

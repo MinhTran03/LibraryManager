@@ -20,7 +20,7 @@ void SaveAll(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
 
 void FormClosing(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
 {
-	GoToXY(50, 0);
+	GoToXY(0, 0);
 	std::cout << "Saving...";
 	SaveAll(listDG, listDS);
 	//Sleep(1000);
@@ -31,16 +31,38 @@ void FormClosing(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
 	}
 	listDS.Deconstructor();
 	FreeMemory(listDG);
-	GoToXY(50, 0);
+	GoToXY(0, 0);
 	std::cout << "Done       ";
+}
+
+void ShowFooter()
+{
+	int y = SCREEN_HEIGHT - FOOTER_HEIGHT + FOOTER_HEIGHT / 2;
+
+	FOOTER_CHILD footer1 = FOOTER_CHILD({ 5, y }, "ENTER", "CHON");
+	footer1.Draw(Color::Cyan, Color::Light_Cyan);
+
+	FOOTER_CHILD footer2 = FOOTER_CHILD({ footer1.location.x + footer1.size + 5, y }, "ESC", "QUAY LAI");
+	footer2.Draw(Color::Red, Color::Light_Red);
+
+	FOOTER_CHILD footer3 = FOOTER_CHILD({ footer2.location.x + footer2.size + 5, y }, "PG_UP", "QUA TRANG MOI");
+	footer3.Draw(Color::Magenta, Color::Light_Magenta);
+
+	FOOTER_CHILD footer4 = FOOTER_CHILD({ footer3.location.x + footer3.size + 5, y }, "PG_DOWN", "QUAY LAI TRANG CU");
+	footer4.Draw(Color::Blue, Color::Light_Blue);
 }
 
 void SetupConsole()
 {
+	HidePointer();
 	MaximizeWindow();
 	SetTextColor(TEXT_INPUT_COLOR);
 	SetBGColor(BG_COLOR);
+	
+	ClearScreen(Color::Gray, SCREEN_HEIGHT);
 	ClearScreen(BG_COLOR);
+
+	ShowFooter();
 }
 
 void NormalColor()
@@ -75,6 +97,7 @@ vector<int> SelectionFuntion(int rootLine, int childLine)
 	cout << menu.labels[selection[0]] << " ==> " << slide.childLabels[selection[0]][selection[1]];*/
 	return selection;
 }
+
 // Func 0 0
 void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 {
@@ -94,12 +117,12 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 	//int maThe;
 	auto locationBtn = location;
 	locationBtn.x += 22;
-	locationBtn.y += 24;
+	locationBtn.y += 25;
 	MENU menu = MENU({ "THEM", "XOA", "SUA" }, locationBtn);
 	menu.btnSize = { 10,3 };
+	tem = PrintAllDGWithHL(listDG, location, page, Show_Only);
 	while (true)
 	{
-		tem = PrintAllDGWithHL(listDG, location, page, Show_Only);
 		int selected = menu.ShowInHorizontal(Menu_Mode::Both);
 		if (selected == Key::PAGE_UP && page > 0)
 		{
@@ -145,8 +168,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 				if (selectedMaDocGia == "ESC")
 				{
 					// load lai data
-					/*std::vector<std::string> dsDocGia;
-
+					std::vector<std::string> dsDocGia;
 					if (listDG != NULL)
 					{
 						dsDocGia = GetAllStringNode(listDG);
@@ -154,11 +176,14 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 					int totalLine = dsDocGia.size();
 					auto tempLoc = location;
 					tempLoc.y += 3;
-					for (int i = 0; i < Size(listDG); i++)
+					for (int i = 0; i < totalLine; i++)
 					{
-						PrintStringDocGia(dsDocGia[i], location);
-						tempLoc.y++;
-					}*/
+						if (i >= (int)MAX_ROW_PER_PAGE * page && i < (page + 1) * (int)MAX_ROW_PER_PAGE)
+						{
+							PrintStringDocGia(dsDocGia[i], tempLoc);
+							tempLoc.y++;
+						}
+					}
 					break;
 				}
 				// ng dung an enter de xoa
@@ -207,8 +232,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 				if (selectedMaDocGia == "ESC")
 				{
 					// load lai data
-					/*std::vector<std::string> dsDocGia;
-
+					std::vector<std::string> dsDocGia;
 					if (listDG != NULL)
 					{
 						dsDocGia = GetAllStringNode(listDG);
@@ -216,11 +240,14 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 					int totalLine = dsDocGia.size();
 					auto tempLoc = location;
 					tempLoc.y += 3;
-					for (int i = 0; i < Size(listDG); i++)
+					for (int i = 0; i < totalLine; i++)
 					{
-						PrintStringDocGia(dsDocGia[i], location);
-						tempLoc.y++;
-					}*/
+						if (i >= (int)MAX_ROW_PER_PAGE * page && i < (page + 1) * (int)MAX_ROW_PER_PAGE)
+						{
+							PrintStringDocGia(dsDocGia[i], tempLoc);
+							tempLoc.y++;
+						}
+					}
 					break;
 				}
 				else
@@ -291,7 +318,7 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 	auto locationBtn = location;
 	// xem = mat
 	locationBtn.x += 30;
-	locationBtn.y += 24;
+	locationBtn.y += 25;
 	MENU menu = MENU({ "THEM", "XOA", "SUA" }, locationBtn);
 	menu.btnSize = { 10,3 };
 	while (true)

@@ -190,6 +190,7 @@ std::string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, std::string theLoai)
 	emptyTemplate = emptyTemplate + char(179) + std::string(NAMXUATBAN_WIDTH, ' ');
 	emptyTemplate = emptyTemplate + char(179) + std::string(TENTHELOAI_WIDTH, ' ');
 	emptyTemplate = emptyTemplate + char(179);
+
 	/*Color hlBGColor = Color::Cyan;
 	Color hlTextColor = Color::White;
 	int currentLine = 0;*/
@@ -213,7 +214,8 @@ std::string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, std::string theLoai)
 	for (int i = 0; i < totalLine; i++)
 	{
 		Sleep(10);
-		if (i >= MAX_ROW_PER_PAGE * currentPage && i < (currentPage + 1) * MAX_ROW_PER_PAGE)
+		ShowPageNumber(currentPage, totalPage, location.x, location.y + MAX_ROW_PER_PAGE + 1);
+		if (i >= (int)MAX_ROW_PER_PAGE * currentPage && i < (currentPage + 1) * (int)MAX_ROW_PER_PAGE)
 		{
 			listISBN[i].Print({ location.x, location.y + (int)(i % MAX_ROW_PER_PAGE) }, BG_COLOR, TEXT_INPUT_COLOR);
 		}
@@ -287,6 +289,7 @@ std::string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, std::string theLoai)
 			{
 				// in next page
 				currentPage++;
+				ShowPageNumber(currentPage, totalPage, location.x, location.y + MAX_ROW_PER_PAGE + 1);
 				SetBGColor(BG_COLOR);
 				SetTextColor(TEXT_INPUT_COLOR);
 				for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
@@ -314,6 +317,7 @@ std::string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, std::string theLoai)
 			{
 				// in prev page
 				currentPage--;
+				ShowPageNumber(currentPage, totalPage, location.x, location.y + MAX_ROW_PER_PAGE + 1);
 				SetBGColor(BG_COLOR);
 				SetTextColor(TEXT_INPUT_COLOR);
 				for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
@@ -328,7 +332,7 @@ std::string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, std::string theLoai)
 		}
 		else */if (inputKey == Key::ESC)
 		{
-			ClearArea(location.x, backUpLocation.y - 3, DAUSACH_TOTAL_WIDTH, MAX_ROW_PER_PAGE + 4);
+			ClearArea(location.x, backUpLocation.y - 3, DAUSACH_TOTAL_WIDTH, MAX_ROW_PER_PAGE + 5);
 			return "ESC";
 		}
 	} while (!_kbhit());
@@ -339,6 +343,10 @@ std::string LIST_DAUSACH::PrintAllTheLoai(MYPOINT location)
 {
 	int currentPage = 0;
 	int totalPages = this->dsTheLoai.size();
+	SetBGColor(Color::Gray);
+	SetTextColor(Color::Bright_White);
+	GoToXY(location.x + DAUSACH_TOTAL_WIDTH + 1, location.y + MAX_ROW_PER_PAGE / 2);
+	std::cout << char(62);
 	while (true)
 	{
 		std::string outPut = PrintByTheLoai(location, this->dsTheLoai[currentPage]);
@@ -347,7 +355,21 @@ std::string LIST_DAUSACH::PrintAllTheLoai(MYPOINT location)
 		{
 			if (currentPage < totalPages - 1)
 			{
+				if (currentPage == 0)
+				{
+					SetBGColor(Color::Gray);
+					SetTextColor(Color::Bright_White);
+					GoToXY(location.x - 2, location.y + MAX_ROW_PER_PAGE / 2);
+					std::cout << char(60);
+				}
 				currentPage++;
+				if (currentPage == totalPages - 1)
+				{
+					SetBGColor(BG_COLOR);
+					SetTextColor(BG_COLOR);
+					GoToXY(location.x + DAUSACH_TOTAL_WIDTH + 1, location.y + MAX_ROW_PER_PAGE / 2);
+					std::cout << " ";
+				}
 			}
 		}
 		// go to previous page
@@ -355,7 +377,21 @@ std::string LIST_DAUSACH::PrintAllTheLoai(MYPOINT location)
 		{
 			if (currentPage > 0)
 			{
+				if (currentPage == totalPages - 1)
+				{
+					SetBGColor(Color::Gray);
+					SetTextColor(Color::Bright_White);
+					GoToXY(location.x + DAUSACH_TOTAL_WIDTH + 1, location.y + MAX_ROW_PER_PAGE / 2);
+					std::cout << char(62);
+				}
 				currentPage--;
+				if (currentPage == 0)
+				{
+					SetBGColor(BG_COLOR);
+					SetTextColor(BG_COLOR);
+					GoToXY(location.x - 2, location.y + MAX_ROW_PER_PAGE / 2);
+					std::cout << " ";
+				}
 			}
 		}
 		// ESC hitted
@@ -401,18 +437,18 @@ std::string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 	MYPOINT backUpLocation = MYPOINT(0, 0);
 
 	// them page
-	for (int i = 0; i < totalLine / MAX_ROW_PER_PAGE; i++)
+	for (int i = 0; i < totalLine / (int)MAX_ROW_PER_PAGE; i++)
 	{
 		datas.push_back({});
 		rows.push_back({});
 	}
-	if (totalLine % MAX_ROW_PER_PAGE != 0)
+	if (totalLine % (int)MAX_ROW_PER_PAGE != 0)
 	{
 		datas.push_back({});
 		rows.push_back({});
 	}
 	// tranh vuot qua so trang MAX
-	if (currentPage >= datas.size())
+	if (currentPage >= (int)datas.size())
 	{
 		//currentPage = datas.size() - 1;
 		page = datas.size() - 1;
@@ -427,8 +463,9 @@ std::string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 		// print data
 		for (int i = 0; i < totalLine; i++)
 		{
-			Sleep(2);
-			if (i >= MAX_ROW_PER_PAGE * page && i < (page + 1) * MAX_ROW_PER_PAGE)
+			Sleep(1);
+			ShowPageNumber(page, datas.size(), location.x, location.y + MAX_ROW_PER_PAGE + 1);
+			if (i >= (int)MAX_ROW_PER_PAGE * page && i < (page + 1) * (int)MAX_ROW_PER_PAGE)
 			{
 				listISBN[i].Print({ location.x, location.y + (int)(i % MAX_ROW_PER_PAGE) }, BG_COLOR, TEXT_INPUT_COLOR);
 				// neu la dong dau tien thi hight light len
@@ -456,9 +493,11 @@ std::string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 	}
 	
 	currentPage = page;
+	
 	// bat phim
 	if (mode == Menu_Mode::Both)
 	{
+		
 		currentLine = 0;
 		
 		char inputKey = NULL;
@@ -490,7 +529,7 @@ std::string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 				}
 				else if (inputKey == Key::DOWN)
 				{
-					if (currentLine < rows[currentPage].size() - 1)
+					if (currentLine < (int)rows[currentPage].size() - 1)
 					{
 						GoToXY(location.x, rows[currentPage][currentLine]);
 						HightLight(datas[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
@@ -512,10 +551,11 @@ std::string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 				page = currentPage;
 				return listISBN[currentLine + MAX_ROW_PER_PAGE * currentPage].isbn;
 			}
-			else if (inputKey == Key::PAGE_DOWN && currentPage < datas.size() - 1)
+			else if (inputKey == Key::PAGE_DOWN && currentPage < (int)datas.size() - 1)
 			{
 				// in next page
 				currentPage++;
+				ShowPageNumber(currentPage, datas.size(), location.x, location.y + MAX_ROW_PER_PAGE + 1);
 				currentLine = 0;
 				SetBGColor(BG_COLOR);
 				SetTextColor(TEXT_INPUT_COLOR);
@@ -538,6 +578,7 @@ std::string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 			{
 				// in next page
 				currentPage--;
+				ShowPageNumber(currentPage, datas.size(), location.x, location.y + MAX_ROW_PER_PAGE + 1);
 				currentLine = 0;
 				SetBGColor(BG_COLOR);
 				SetTextColor(TEXT_INPUT_COLOR);

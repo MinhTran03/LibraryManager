@@ -16,6 +16,9 @@
 #define WARNING_TEXT_COLOR Color::Red
 #define DISABLE_COLOR Color::Gray
 #define TEXT_GUILD_COLOR Color::Light_Magenta
+
+const unsigned int SCREEN_HEIGHT = 44;
+const unsigned int FOOTER_HEIGHT = 5;
 #pragma endregion
 
 const int magicNumber = -1;

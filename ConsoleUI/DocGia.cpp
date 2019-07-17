@@ -536,7 +536,7 @@ std::string PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode
 			std::cout << listData[i];
 		}
 	}
-
+	ShowPageNumber(currentPage, totalPage, location.x, location.y + (int)MAX_ROW_PER_PAGE + 1);
 	if (m == Show_Only) return "";
 	// bat phim
 	char inputKey = NULL;
@@ -547,6 +547,7 @@ std::string PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode
 		if (inputKey == Key::PAGE_DOWN && currentPage < totalPage - 1)
 		{
 			currentPage++;
+			ShowPageNumber(currentPage, totalPage, location.x, location.y + (int)MAX_ROW_PER_PAGE + 1);
 			SetBGColor(BG_COLOR);
 			SetTextColor(TEXT_INPUT_COLOR);
 			for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
@@ -576,6 +577,7 @@ std::string PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode
 		{
 			// in prev page
 			currentPage--;
+			ShowPageNumber(currentPage, totalPage, location.x, location.y + (int)MAX_ROW_PER_PAGE + 1);
 			SetBGColor(BG_COLOR);
 			SetTextColor(TEXT_INPUT_COLOR);
 			for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
@@ -641,7 +643,7 @@ std::string PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location, Menu_Mode m
 		listData[posMin] = listData[i];
 		listData[i] = min;
 	}
-
+	ShowPageNumber(currentPage, totalPage, location.x, location.y + (int)MAX_ROW_PER_PAGE + 1);
 	// In ra mh
 	for (size_t i = 0; i < size; i++)
 	{
@@ -662,6 +664,7 @@ std::string PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location, Menu_Mode m
 		if (inputKey == Key::PAGE_DOWN && currentPage < totalPage - 1)
 		{
 			currentPage++;
+			ShowPageNumber(currentPage, totalPage, location.x, location.y + (int)MAX_ROW_PER_PAGE + 1);
 			SetBGColor(BG_COLOR);
 			SetTextColor(TEXT_INPUT_COLOR);
 			for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
@@ -691,6 +694,7 @@ std::string PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location, Menu_Mode m
 		{
 			// in prev page
 			currentPage--;
+			ShowPageNumber(currentPage, totalPage, location.x, location.y + (int)MAX_ROW_PER_PAGE + 1);
 			SetBGColor(BG_COLOR);
 			SetTextColor(TEXT_INPUT_COLOR);
 			for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
@@ -728,6 +732,7 @@ void PrintStringDocGia(std::string data, MYPOINT location)
 	GoToXY(location.x, location.y);
 	cout << data;
 }
+
 // in danh sach de quan ly doc gia co highLight
 std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Menu_Mode mode)
 {
@@ -777,11 +782,13 @@ std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Me
 	if (mode == Menu_Mode::Show_Only || mode == Menu_Mode::Both)
 	{
 		PrintLabelDocGia(location, MAX_ROW_PER_PAGE);
+		ShowPageNumber(currentPage, datas.size(),location.x, location.y + (int)MAX_ROW_PER_PAGE + 4);
 		location.y += 3;
 		backUpLocation = location;
 		//print data
 		for (int i = 0; i < totalLine; i++)
 		{
+			Sleep(1);
 			if (i >= (int)MAX_ROW_PER_PAGE * page && i < (page + 1) * (int)MAX_ROW_PER_PAGE)
 			{
 				PrintStringDocGia(dsDocGia[i], { location.x, location.y + (int)(i % MAX_ROW_PER_PAGE) });
@@ -875,6 +882,7 @@ std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Me
 			{
 				// in next page
 				currentPage++;
+				ShowPageNumber(currentPage, datas.size(), location.x, location.y + (int)MAX_ROW_PER_PAGE + 1);
 				currentLine = 0;
 				SetBGColor(BG_COLOR);
 				SetTextColor(TEXT_INPUT_COLOR);
@@ -899,8 +907,9 @@ std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Me
 			}
 			else if (inputKey == Key::PAGE_UP && currentPage > 0)
 			{
-				// in next page
+				// in prev page
 				currentPage--;
+				ShowPageNumber(currentPage, datas.size(), location.x, location.y + (int)MAX_ROW_PER_PAGE + 1);
 				currentLine = 0;
 				SetBGColor(BG_COLOR);
 				SetTextColor(TEXT_INPUT_COLOR);
@@ -918,7 +927,7 @@ std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Me
 			else if (inputKey == Key::ESC)
 			{
 				page = currentPage;
-				ClearArea(location.x, backUpLocation.y - 3, DAUSACH_TOTAL_WIDTH, totalLine + 4);
+				//ClearArea(location.x, backUpLocation.y - 3, DAUSACH_TOTAL_WIDTH, totalLine + 4);
 				return "ESC";
 			}
 		} while (!_kbhit());

@@ -9,16 +9,15 @@ int main()
 	LIST_DOCGIA listDG = LIST_DOCGIA();
 	LoadMaDG(listDG);
 	LoadDocGia(listDG);
-	
 	// load dau sach
 	auto listDS = LIST_DAUSACH();
 	LoadDauSach(listDS);
-
 	// load sach
 	for (int i = 0; i < listDS.size; i++)
 	{
 		LoadSach(listDS.nodes[i]->dsSach, listDS.nodes[i]->isbn);
 	}
+	ClearLine(0);
 
 	vector<int> func = { -1,-1 };
 	while (true)
@@ -88,7 +87,7 @@ int main()
 
 	SetTextColor(TEXT_INPUT_COLOR);
 	SetBGColor(BG_COLOR);
-	GoToXY(0, 35);
+	GoToXY(0, 38);
 	system("pause");
 	return 0;
 }
