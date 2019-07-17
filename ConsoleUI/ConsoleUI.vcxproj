@@ -28,6 +28,7 @@
     <ClInclude Include="DocGia.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="FileHandler.h" />
+    <ClInclude Include="FormInfo.h" />
     <ClInclude Include="FormInput.h" />
     <ClInclude Include="FunctionMethods.h" />
     <ClInclude Include="Graphics.h" />

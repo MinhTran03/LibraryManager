@@ -90,6 +90,9 @@
     <ClInclude Include="Displays.h">
       <Filter>Library\Header FIles</Filter>
     </ClInclude>
+    <ClInclude Include="FormInfo.h">
+      <Filter>Library\Header FIles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TextHandler.cpp">

@@ -6,13 +6,14 @@ bool LIST_MUONTRA::IsEmpty()
 	{
 		return true;
 	}
+	return false;
 }
 
 // tao moi 1 node
 NODE_MUONTRA* LIST_MUONTRA::MakeNode(MUONTRA muonTra) //tao 1 Node P chua thong tin la x 
 {
 	//Cap phat vung nho cho temp
-	NODE_MUONTRA* temp = (NODE_MUONTRA*)malloc(sizeof(NODE_MUONTRA));
+	NODE_MUONTRA* temp = new NODE_MUONTRA;
 	temp->data = muonTra; //Ghi du lieu vao Data
 	temp->pNext = NULL;
 	temp->pPrev = NULL;

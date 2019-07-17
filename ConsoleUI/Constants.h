@@ -56,7 +56,9 @@ const unsigned int DMS_TOTAL_WIDTH = MASACH_WIDTH + VITRI_WIDTH + TRANGTHAISACH_
 #pragma endregion
 
 #pragma region Doc Gia
+//#define MADOCGIA_FILE_PATH "D:\\C++\\LibraryManager\\ConsoleUI\\MaDocGiaArray.txt"
 #define MADOCGIA_FILE_PATH "D:\\C++\\LibraryManager\\ConsoleUI\\MaDocGiaArray.txt"
+
 
 const unsigned int MAX_DOCGIA = 1000;
 

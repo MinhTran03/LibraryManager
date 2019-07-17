@@ -26,7 +26,7 @@ struct FORMINPUT
 	int xInputCol;
 	std::string title;
 	RECTANGLE rect;
-	BORDER border;
+	BORDER border;	
 	std::string textBtn1 = "OK";
 	std::string textBtn2 = "CANCEL";
 
