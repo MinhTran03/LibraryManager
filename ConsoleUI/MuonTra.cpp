@@ -1,6 +1,6 @@
 #include "MuonTra.h"
 
-bool LIST_MUONTRA::isEmpty()
+bool LIST_MUONTRA::IsEmpty()
 {
 	if (pHead == NULL)
 	{
