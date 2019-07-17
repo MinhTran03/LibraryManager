@@ -122,6 +122,9 @@
     <ClCompile Include="Displays.cpp">
       <Filter>Library\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MuonTra.cpp">
+      <Filter>Models\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="DauSachData.txt">

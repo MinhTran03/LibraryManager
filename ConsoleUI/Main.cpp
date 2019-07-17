@@ -64,9 +64,10 @@ int main()
 		}
 		else if (func[0] == 2)
 		{
+			// MUON SACH
 			if (func[1] == 0)
 			{
-
+				MuonTraSach(listDG, listDS, locationDS);
 			}
 			else if (func[1] == 1)
 			{
