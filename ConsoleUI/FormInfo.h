@@ -2,27 +2,15 @@
 #include <conio.h>
 #include "DocGia.h"
 #include "Structs.h"
+#include "Displays.h"
 #include "TextHandler.h"
 
-struct FORMINFO
+
+void DocGiaInfo(RECTANGLE rect, std::vector<std::string> docGiaInfo)
 {
-	int totalLine;
-	BORDER border;
-	RECTANGLE rect;
-	std::string title;
-	std::vector<std::string> labels;
-	std::vector<int> rows;
-	std::vector<int> cols;
-	std::vector<int> colsLabel;
+	std::string title = "THONG TIN DOC GIA";
+	std::vector<std::string> docGiaInfo;
+	std::vector<std::string> labels = { "Ma doc gia:", "Ho:", "Ten:", "Gioi tinh:", "Trang thai the:" };
+	DrawRectangleBoder(rect);
 
-	FORMINFO(std::vector<std::string> labels, DOCGIA docGia, RECTANGLE rect, std::string title)
-		: rect(rect), title(title), border(rect.location, rect.size)
-	{
-		this->labels = labels;
-		this->totalLine = labels.size();
-		for (int i = 1; i <= totalLine; i++)
-		{
-
-		}
-	}
-};
+}
