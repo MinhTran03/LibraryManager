@@ -40,7 +40,7 @@ void ShowFooter()
 	int y = SCREEN_HEIGHT - FOOTER_HEIGHT + FOOTER_HEIGHT / 2;
 
 	FOOTER_CHILD footer1 = FOOTER_CHILD({ 5, y }, "ENTER", "CHON");
-	footer1.Draw(Color::Cyan, Color::Light_Cyan);
+	footer1.Draw(Color::Blue, Color::Light_Blue);
 
 	FOOTER_CHILD footer2 = FOOTER_CHILD({ footer1.location.x + footer1.size + 5, y }, "ESC", "QUAY LAI");
 	footer2.Draw(Color::Red, Color::Light_Red);
@@ -49,7 +49,7 @@ void ShowFooter()
 	footer3.Draw(Color::Magenta, Color::Light_Magenta);
 
 	FOOTER_CHILD footer4 = FOOTER_CHILD({ footer3.location.x + footer3.size + 5, y }, "PG_DOWN", "QUAY LAI TRANG CU");
-	footer4.Draw(Color::Blue, Color::Light_Blue);
+	footer4.Draw(Color::Cyan, Color::Light_Cyan);
 }
 
 void SetupConsole()
@@ -89,7 +89,7 @@ vector<int> SelectionFuntion(int rootLine, int childLine)
 	vector<vector<string>> temp;
 	SLIDEMENUS slide = SLIDEMENUS({ {"QUAN LY DOC GIA", "IN DANH SACH DOC GIA", "chua lam"},
 		{"HIEN THI DAU SACH", "CAP NHAT DAU SACH", "CAP NHAT DANH MUC SACH", "TIM SACH"},
-		{"CHUA LAM", "CHUA LAM", "CHUA LAM"} }, menu);
+		{"MUON & TRA SACH", "CHUA LAM", "CHUA LAM"} }, menu);
 	auto selection = slide.Show(rootLine, childLine);
 	slide.Clear();
 	//slide.Clear();
@@ -635,13 +635,75 @@ void TimSach(LIST_DAUSACH& listDS, MYPOINT location)
 		DrawMessageBox(point, "NHAP TEN SACH CAN TIM", searchKey, isEnter, isCancel, char(219), GetKey_Only);
 		if (isEnter)
 		{
-			ClearScreen(BG_COLOR);
-			DrawMessageBox(point, "NHAP TEN SACH CAN TIM", searchKey, isEnter, isCancel, char(219), Show_Only);
-			//listDS.PrintFindBooks({ location.x + 10, location.y + 10 }, searchKey);
+			ClearArea(0, point.y + 8, 168, SCREEN_HEIGHT - FOOTER_HEIGHT - point.y - 10);
+			ClearLine(1);
+
 			string selectedDauSach = listDS.PrintAllSearch({ location.x + 10, location.y + 10 }, searchKey, Menu_Mode::Both);
 			if (selectedDauSach == "Empty")
 			{
-				MakeFlickWarning({ 70,1 }, "KHONG TIM THAY DAU SACH: " + searchKey);
+				MakeFlickWarning({ point.x + 20 - (((int)searchKey.size() + 26) / 2), point.y - 1 }, "KHONG TIM THAY DAU SACH: " + searchKey);
+			}
+		}
+		if (isCancel)
+		{
+			ClearScreen(BG_COLOR);
+			return;
+		}
+	}
+}
+// Func 2 0
+void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
+{
+	MYPOINT point = { 66, 2 };
+	bool isEnter = false;
+	bool isCancel = false;
+	bool isTrue = false;
+	std::string searchKey = "";
+	DrawMessageBox(point, "NHAP MA DOC GIA", searchKey, isEnter, isCancel, char(219), Show_Only);
+	while (true)
+	{
+		isEnter = false;
+		isCancel = false;
+		isTrue = false;
+		DrawMessageBox(point, "NHAP MA DOC GIA", searchKey, isEnter, isCancel, char(219), GetKey_Only, 4);
+		if (isEnter)
+		{
+			ClearArea(0, point.y + 8, 168, SCREEN_HEIGHT - FOOTER_HEIGHT - point.y - 10);
+			ClearLine(1);
+
+			auto docGiaSearch = Search(listDG, stoi(searchKey));
+			// khong tim thay
+			if (docGiaSearch == NULL)
+			{
+				MakeFlickWarning({ point.x + 20 - (((int)searchKey.size() + 25) / 2), point.y - 1 }, "KHONG TIM THAY DOC GIA: " + searchKey);
+			}
+			// tiim thay
+			else
+			{
+				// hien thi thong tin doc gia
+
+
+				// hien thi cac sach doc gia muon
+
+
+				// menu
+				auto locationBtn = location;
+				locationBtn.x += 22;
+				locationBtn.y += 25;
+				MENU menu = MENU({ "MUON SACH", "TRA SACH" }, locationBtn);
+				menu.btnSize = { 10,3 };
+
+				int selected = menu.ShowInHorizontal(Menu_Mode::Both);
+				// muon sach
+				if(selected == 0)
+				{
+
+				}
+				// tra sach
+				else
+				{
+
+				}
 			}
 		}
 		if (isCancel)
