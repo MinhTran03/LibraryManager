@@ -6,10 +6,10 @@
 #include "TextHandler.h"
 
 
-void DocGiaInfo(RECTANGLE rect, std::vector<std::string> docGiaInfo)
+void DocGiaInfo(RECTANGLE rect, DOCGIA docGia)
 {
 	std::string title = "THONG TIN DOC GIA";
-	std::vector<std::string> docGiaInfo;
+	std::vector<std::string> docGiaInfo = GetDGtoVector(docGia);
 	std::vector<std::string> labels = { "Ma doc gia:", "Ho:", "Ten:", "Gioi tinh:", "Trang thai the:" };
 	DrawRectangleBoder(rect);
 
