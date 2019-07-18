@@ -1,5 +1,6 @@
 ﻿#include "FunctionMethods.h"
 #include "Displays.h"
+#include "FormInfo.h"
 
 void SaveAll(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
 {
@@ -681,7 +682,8 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 			else
 			{
 				// hien thi thong tin doc gia
-
+				RECTANGLE rect = { {location.x + 63, location.y + 10}, {40, 11} };
+				DocGiaInfo(rect, docGiaSearch->data);
 
 				// hien thi cac sach doc gia muon
 
