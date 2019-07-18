@@ -4,6 +4,8 @@
 
 void SaveAll(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
 {
+	GoToXY(0, 0);
+	std::cout << "Saving...";
 	// luu dau sach
 	WriteDauSach(listDS);
 	// luu sach
@@ -17,13 +19,13 @@ void SaveAll(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
 	WriteDocGia(listDG);
 	// luu ma doc gia arr
 	WriteMaDGToFile(MADOCGIA_FILE_PATH);
+	GoToXY(0, 0);
+	std::cout << "Done       ";
 }
 
 void FormClosing(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
 {
-	GoToXY(0, 0);
-	std::cout << "Saving...";
-	SaveAll(listDG, listDS);
+	//SaveAll(listDG, listDS);
 	//Sleep(1000);
 	// Huy
 	for (int i = 0; i < listDS.size; i++)
@@ -32,8 +34,6 @@ void FormClosing(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
 	}
 	listDS.Deconstructor();
 	FreeMemory(listDG);
-	GoToXY(0, 0);
-	std::cout << "Done       ";
 }
 
 void ShowFooter()
@@ -59,7 +59,7 @@ void SetupConsole()
 	MaximizeWindow();
 	SetTextColor(TEXT_INPUT_COLOR);
 	SetBGColor(BG_COLOR);
-	
+
 	ClearScreen(Color::Gray, SCREEN_HEIGHT);
 	ClearScreen(BG_COLOR);
 
@@ -541,14 +541,14 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 					// Het sach
 					if (listSach->Size() == 0)
 						break;
-					//menu.ShowDisableModeInHorizontal();
+					menu.ShowDisableModeInHorizontal();
 					maSach = listSach->PrintAll(locationListSach, Both);
 					ClearLine(1);
 					if (maSach == "ESC")
 					{
 						break;
 					}
-					auto confirm = CONFIRMDIALOG({ locationListSach.x + 3, locationListSach.y + 2 });
+					auto confirm = CONFIRMDIALOG({ locationListSach.x + 30, locationListSach.y + 13 });
 					confirm.Show("Ban chac chan muon xoa?", Yes_No);
 					confirm.Clear();
 					// dong y xoa
@@ -559,7 +559,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 						// khong duoc xoa
 						if (listSach->Search(maSach)->data.CanDelete() == false)
 						{
-							MakeFlickWarning({ locationBtn.x, 1 }, WARNING_CANT_DELETE_SACH);
+							MakeFlickWarning({ locationListSach.x + (int)DMS_TOTAL_WIDTH / 2 - 20, locationListSach.y - 1 }, WARNING_CANT_DELETE_SACH);
 						}
 						else
 						{
@@ -575,7 +575,6 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 								menu.ClearInHorizontal();
 								// show menu
 								menu.location.y--;
-
 							}
 						}
 					}
@@ -656,6 +655,7 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 {
 	MYPOINT locationDS = { 0,3 };
 	MYPOINT locationMuon = { locationDS.x + (int)DAUSACH_TOTAL_WIDTH, locationDS.y };
+	LIST_MUONTRA tempMT = LIST_MUONTRA();
 	ClearScreen(BG_COLOR);
 	// add isbn da muon chua tra
 	std::vector<std::string> isbnDaMuon;
@@ -664,32 +664,56 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 		auto arr = Split(p->data.maSach, "_");
 		isbnDaMuon.push_back(arr[0]);
 	}
+	int daMuon = isbnDaMuon.size();
+	// sach da muon
+	auto temp = nodeDocGia.data.listMuonTra.ShowFormMuonSach(listDS, locationMuon, Show_Only, daMuon);
 
 	int page = 0;
 	while (true)
 	{
-		auto cancelDS = nodeDocGia.data.listMuonTra.ShowFormMuonSach(listDS, locationMuon, Show_Only);
+		// sach du dinh muon
+		auto cancelDS = tempMT.ShowFormMuonSach(listDS, { locationMuon.x, locationDS.y + 4 + daMuon }, Show_Only, 3 - daMuon);
 		auto selectDS = listDS.PrintAll(locationDS, page, Menu_Mode::Both);
 		ClearLine(locationDS.y - 1);
 		if (selectDS == "ESC")
 		{
+			// luu thay doi
+			for (auto p = tempMT.pHead; p != NULL; p = p->pNext)
+			{
+				nodeDocGia.data.listMuonTra.InsertAtTail(p->data);
+			}
 			ClearScreen(BG_COLOR);
 			return;
 		}
 		// qua page list sach chon muon
 		else if (selectDS == "TAB")
 		{
-			if (nodeDocGia.data.listMuonTra.IsEmpty())
+			if (tempMT.IsEmpty())
 			{
 				continue;
 			}
 			// qua tab ds sach chon muon
-			cancelDS = nodeDocGia.data.listMuonTra.ShowFormMuonSach(listDS, locationMuon, Menu_Mode::Both);
+			cancelDS = tempMT.ShowFormMuonSach(listDS, { locationMuon.x, locationDS.y + 4 + daMuon }, Menu_Mode::Both, 3 - daMuon);
+			cancelDS = Trim(cancelDS);
+			// huy muon sach
+			if (cancelDS == "ESC")
+			{
+				/*ClearScreen(BG_COLOR);
+				return;*/
+			}
+			else if (cancelDS == "TAB")
+			{
+
+			}
+			else
+			{
+				tempMT.Delete(cancelDS);
+			}
 		}
 		// kiem tra list sach muon (+) chua day
 		//					=> kiem tra sach do da muoc chua => muon chuyen info sach qua
-		//					
 		//									(+) da day   => ko cho muon
+		// nguoi dung chon dau sach
 		else
 		{
 			// kiem tra sach muon day
@@ -708,8 +732,8 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 				ClearArea(locationDS.x, locationDS.y, DAUSACH_TOTAL_WIDTH, MAX_ROW_PER_PAGE + 5);
 
 				// Show ds Sach thuoc dau sach
-				auto dsSach = listDS.GetDauSach(StringToCharArray(selectDS));
-				auto maSach = dsSach->dsSach.PrintAll(locationDS, Both);
+				auto dauSach = listDS.GetDauSach(StringToCharArray(selectDS));
+				auto maSach = dauSach->dsSach.PrintAllChoMuonDuoc(locationDS, Both);
 				if (maSach == "ESC")
 				{
 					// clear sach
@@ -724,8 +748,11 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 				muonTra.maSach = maSach;
 				muonTra.ngayMuon = d;
 				muonTra.trangThai = TrangThaiMuonTra::SachChuaTra;
-				nodeDocGia.data.listMuonTra.InsertAtTail(muonTra);
+				tempMT.InsertAtTail(muonTra);
 				isbnDaMuon.push_back(selectDS);
+				// chuyen trang thai sach => da muon
+				auto sach = dauSach->dsSach.Search(maSach);
+				sach->data.trangThai = DaMuon;
 
 				// clear sach
 				ClearArea(locationDS.x, locationDS.y, DMS_TOTAL_WIDTH, MAX_ROW_PER_PAGE);
@@ -772,7 +799,6 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 					RECTANGLE rect = { {location.x + 63, location.y + 10}, {41, 11} };
 					DocGiaInfo(rect, docGiaSearch->data);
 
-
 					// hien thi cac sach doc gia muon
 					std::string maSachSelect = docGiaSearch->data.listMuonTra.Show(listDS, { 20, 27 }, Show_Only);
 
@@ -782,17 +808,25 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 					locationBtn.y += 33;
 					MENU menu = MENU({ "MUON SACH", "TRA SACH" }, locationBtn);
 					menu.btnSize = { 20, 3 };
-
 					int selected = menu.ShowInHorizontal(Menu_Mode::Both);
+
 					// muon sach
 					if (selected == 0)
 					{
 						MuonSach(*docGiaSearch, listDS);
+						//break;
 					}
 					// tra sach
 					else if (selected == 1)
 					{
-
+						while (true)
+						{
+							maSachSelect = docGiaSearch->data.listMuonTra.Show(listDS, { 20, 27 }, Both);
+							if (maSachSelect == "ESC")
+							{
+								break;
+							}
+						}
 					}
 					else
 					{

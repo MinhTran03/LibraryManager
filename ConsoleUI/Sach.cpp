@@ -282,6 +282,111 @@ std::string LIST_SACH::PrintAll(MYPOINT location, Menu_Mode mode)
 	}
 	return "NULL";
 }
+// In ra mh
+std::string LIST_SACH::PrintAllChoMuonDuoc(MYPOINT location, Menu_Mode mode)
+{
+	Color hlBGColor = Color::Cyan;
+	Color hlTextColor = Color::White;
+	int currentLine = 0;
+	int totalLine = 0;
+	// dua vao vector de sort
+	std::vector<SACH> listSach;
+	for (auto p = this->pHead; p != NULL; p = p->pNext)
+	{
+		if (p->data.trangThai == ChoMuonDuoc)
+		{
+			listSach.push_back(p->data);
+			totalLine++;
+		}
+	}
+	// sap xep theo ten sach
+	//SortByTenSach(listISBN);
+	std::vector<std::string> datas;
+	std::vector<int> rows;
+	MYPOINT backUpLocation = MYPOINT(0, 0);
+
+	// print label
+	if (mode == Menu_Mode::Show_Only || mode == Menu_Mode::Both)
+	{
+		PrintLabelSach(location, totalLine);
+		location.y += 3;
+		backUpLocation = location;
+		// print data
+		for (int i = 0; i < totalLine; i++)
+		{
+			listSach[i].Print(location, BG_COLOR, TEXT_INPUT_COLOR);
+			// neu la dong dau tien thi hight light len
+			if (location.y == backUpLocation.y && mode == Menu_Mode::Both)
+			{
+				listSach[i].Print(location, hlBGColor, hlTextColor);
+			}
+			// luu lai vi tri dong
+			rows.push_back(location.y++);
+			datas.push_back(listSach[i].ToString());
+		}
+	}
+	// bat phim
+	if (mode == Menu_Mode::Both)
+	{
+		currentLine = 0;
+		char inputKey = NULL;
+		HidePointer();
+		do
+		{
+			inputKey = _getch();
+			if (inputKey == Key::_NULL) inputKey = _getch();
+			if (inputKey == -32)
+			{
+				inputKey = _getch();
+				if (inputKey == Key::UP)
+				{
+					if (currentLine > 0)
+					{
+						GoToXY(location.x, rows[currentLine]);
+						HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
+						GoToXY(location.x, rows[--currentLine]);
+						HightLight(datas[currentLine], hlBGColor, hlTextColor);
+					}
+					else
+					{
+						GoToXY(location.x, rows[currentLine]);
+						HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
+						currentLine = totalLine - 1;
+						GoToXY(location.x, rows[currentLine]);
+						HightLight(datas[currentLine], hlBGColor, hlTextColor);
+					}
+				}
+				else if (inputKey == Key::DOWN)
+				{
+					if (currentLine < totalLine - 1)
+					{
+						GoToXY(location.x, rows[currentLine]);
+						HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
+						GoToXY(location.x, rows[++currentLine]);
+						HightLight(datas[currentLine], hlBGColor, hlTextColor);
+					}
+					else
+					{
+						GoToXY(location.x, rows[currentLine]);
+						HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
+						currentLine = 0;
+						GoToXY(location.x, rows[currentLine]);
+						HightLight(datas[currentLine], hlBGColor, hlTextColor);
+					}
+				}
+			}
+			if (inputKey == Key::ENTER)
+			{
+				return listSach[currentLine].maSach;
+			}
+			else if (inputKey == Key::ESC)
+			{
+				return "ESC";
+			}
+		} while (!_kbhit());
+	}
+	return "NULL";
+}
 // Delete sach
 void LIST_SACH::Deconstructor()
 {

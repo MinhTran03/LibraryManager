@@ -49,6 +49,8 @@ struct LIST_SACH
 	int Size();
 	// in ra mh
 	std::string PrintAll(MYPOINT location, Menu_Mode mode);
+	// in ra mh sach cho muoc duoc
+	std::string PrintAllChoMuonDuoc(MYPOINT location, Menu_Mode mode);
 	// Delete
 	void Deconstructor();
 	// constructor Init ds moi

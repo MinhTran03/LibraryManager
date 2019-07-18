@@ -27,8 +27,8 @@ int main()
 	muonTra.ngayMuon = d;
 	muonTra.trangThai = TrangThaiMuonTra::SachChuaTra;
 	listDG->data.listMuonTra.InsertAtTail(muonTra);
-	muonTra.maSach = "000002_0001";
-	listDG->data.listMuonTra.InsertAtTail(muonTra);
+	//muonTra.maSach = "000002_0001";
+	//listDG->data.listMuonTra.InsertAtTail(muonTra);
 
 	vector<int> func = { -1,-1 };
 	while (true)

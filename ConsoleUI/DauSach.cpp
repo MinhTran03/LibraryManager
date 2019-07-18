@@ -332,7 +332,7 @@ std::string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, std::string theLoai)
 		}
 		else */if (inputKey == Key::ESC)
 		{
-			ClearArea(location.x, backUpLocation.y - 3, DAUSACH_TOTAL_WIDTH, MAX_ROW_PER_PAGE + 5);
+			ClearArea(location.x - 3, backUpLocation.y - 3, DAUSACH_TOTAL_WIDTH + 6, MAX_ROW_PER_PAGE + 5);
 			return "ESC";
 		}
 	} while (!_kbhit());
@@ -667,8 +667,7 @@ std::vector<DAUSACH> LIST_DAUSACH::GetTheLoai(std::string tenTheLoai)
 DAUSACH* LIST_DAUSACH::GetDauSach(char isbn[ISBN_MAXSIZE + 1])
 {
 	for (auto dauSach : this->nodes)
-	{
-		if (strcmp(dauSach->isbn, isbn) == 0)
+	{		if (strcmp(dauSach->isbn, isbn) == 0)
 			return dauSach;
 	}
 	return NULL;

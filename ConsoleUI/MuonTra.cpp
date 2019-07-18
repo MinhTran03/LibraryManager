@@ -98,6 +98,7 @@ std::string MUONTRA::ToStringMuonSach(DAUSACH dauSach)
 	return result;
 }
 
+// ...
 LIST_MUONTRA::LIST_MUONTRA()
 {
 	this->pHead = NULL;
@@ -121,8 +122,14 @@ void PrintLabelMuonTra(MYPOINT location, int row)
 		row, BORDER_COLOR);
 }
 // hien form muon sach
-std::string LIST_MUONTRA::ShowFormMuonSach(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode)
+std::string LIST_MUONTRA::ShowFormMuonSach(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode, int totalLineKhung)
 {
+	std::string emptyTemplate = "";
+	emptyTemplate = emptyTemplate + char(179) + std::string(MASACH_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + std::string(TENSACH_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + std::string(NGAY_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179);
+
 	HidePointer();
 	MYPOINT backUpLocation = location;
 	Color hlBGColor = Color::Cyan;
@@ -137,21 +144,33 @@ std::string LIST_MUONTRA::ShowFormMuonSach(LIST_DAUSACH listDS, MYPOINT location
 
 	if (mode == Menu_Mode::Show_Only || mode == Menu_Mode::Both)
 	{
-		PrintLabelMuonSach(location, 3);
+		PrintLabelMuonSach(location, totalLineKhung);
 		location.y += 3;
 		backUpLocation = location;
-		for (int i = 0; i < totalLine; i++)
+		for (int i = 0; i < totalLineKhung; i++)
 		{
-			GoToXY(location.x, location.y);
-			if (mode == Both && i == 0)
+			if (i < totalLine)
 			{
-				SetTextColor(hlTextColor);
-				SetBGColor(hlBGColor);
+				GoToXY(location.x, location.y);
+				if (mode == Both && i == 0)
+				{
+					SetTextColor(hlTextColor);
+					SetBGColor(hlBGColor);
+					std::cout << datas[i];
+					rows.push_back(location.y++);
+					SetTextColor(TEXT_INPUT_COLOR);
+					SetBGColor(BG_COLOR);
+					continue;
+				}
 				std::cout << datas[i];
-				continue;
+				rows.push_back(location.y++);
 			}
-			std::cout << datas[i];
-			rows.push_back(location.y++);
+			// in khoang trang
+			else
+			{
+				GoToXY(location.x, location.y++);
+				std::cout << emptyTemplate;
+			}
 		}
 	}
 	if (mode == Menu_Mode::Both)
@@ -204,7 +223,9 @@ std::string LIST_MUONTRA::ShowFormMuonSach(LIST_DAUSACH listDS, MYPOINT location
 			}
 			if (inputKey == Key::ENTER)
 			{
-				auto data = Split(datas[currentLine], "-");
+				std::string d = "";
+				d += char(179);
+				auto data = Split(datas[currentLine], d);
 				return data[1];
 			}
 			else if (inputKey == Key::TAB)
@@ -247,6 +268,9 @@ std::string LIST_MUONTRA::Show(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode 
 				SetTextColor(hlTextColor);
 				SetBGColor(hlBGColor);
 				std::cout << datas[i];
+				rows.push_back(location.y++);
+				SetTextColor(TEXT_INPUT_COLOR);
+				SetBGColor(BG_COLOR);
 				continue;
 			}
 			std::cout << datas[i];
@@ -308,6 +332,8 @@ std::string LIST_MUONTRA::Show(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode 
 			}
 			else if (inputKey == Key::ESC)
 			{
+				GoToXY(location.x, rows[currentLine]);
+				HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
 				return "ESC";
 			}
 		} while (!_kbhit());
@@ -384,6 +410,18 @@ void LIST_MUONTRA::InsertAtTail(MUONTRA muonTra)
 	newNode->pPrev = pTail;
 	pTail = newNode;
 }
+// Tim muon tra theo ma sach
+NODE_MUONTRA* LIST_MUONTRA::Search(std::string maSach)
+{
+	for (auto node = this->pHead; node != NULL; node = node->pNext)
+	{
+		if (node->data.maSach == maSach)
+		{
+			return node;
+		}
+	}
+	return NULL;
+}
 // xoa o dau
 void LIST_MUONTRA::DeleteAtHead() 
 {
@@ -404,24 +442,59 @@ void LIST_MUONTRA::DeleteAtTail()
 	pTail = pTail->pPrev;
 	pTail->pNext = NULL;
 }
-//void LIST_MUONTRA::Print() {
-//	struct NODE_MUONTRA* temp = pHead;
-//	printf("\nForward: ");
-//	while (temp != NULL) {
-//		printf("%d ", temp->data);
-//		temp = temp->pNext;
-//	}
-//	printf("\n");
-//}
-//
-//void LIST_MUONTRA::ReversePrint() {
-//	struct NODE_MUONTRA* temp = pTail;
-//	if (temp == NULL) return; // empty list, exit
-//	// Traversing backward using prev pointer
-//	printf("\nReverse: ");
-//	while (temp != NULL) {
-//		printf("%d ", temp->data);
-//		temp = temp->pPrev;
-//	}
-//	printf("\n");
-//}
+// xoa muon tra dua vao ma sach
+bool LIST_MUONTRA::Delete(std::string maSach)
+{
+	if (this->IsEmpty())
+	{
+		return false;
+	}
+	else
+	{
+		NODE_MUONTRA* p;
+		NODE_MUONTRA* q;
+		p = this->Search(maSach);
+		if (p == NULL)
+		{
+			return false;
+		}
+		else
+		{
+			if (p == this->pHead)
+			{
+				this->DeleteAtHead();
+			}
+			else
+			{
+				q = this->pHead;
+				while (q->pNext != p)
+				{
+					q = q->pNext;
+				}
+				if (q->pNext == this->pTail)
+					this->DeleteAtTail();
+				else
+					this->DeleteAfter(q);
+			}
+		}
+	}
+	return true;
+}
+// xoa sau node before
+bool LIST_MUONTRA::DeleteAfter(NODE_MUONTRA* beforeNode)
+{
+	NODE_MUONTRA* afterNode;
+	NODE_MUONTRA* deleteNode;
+	if (beforeNode == NULL || beforeNode->pNext == NULL)
+	{
+		return false;
+	}
+
+	deleteNode = beforeNode->pNext;
+	afterNode = deleteNode->pNext;
+	beforeNode->pNext = afterNode;
+	afterNode->pPrev = beforeNode;
+	delete deleteNode;
+
+	return true;
+}

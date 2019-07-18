@@ -37,10 +37,11 @@ struct LIST_MUONTRA
 	NODE_MUONTRA* pTail;
 
 	LIST_MUONTRA();
-	// hien form muon sach
-	std::string ShowFormMuonSach(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode);
 	// kiem tra rong
 	bool IsEmpty();
+	// hien form muon sach
+	std::string ShowFormMuonSach(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode, int totalLine = 3);
+	// kiem tra rong
 	// tao moi 1 node
 	NODE_MUONTRA* MakeNode(MUONTRA muonTra);
 	// them o dau
@@ -51,11 +52,17 @@ struct LIST_MUONTRA
 	void DeleteAtHead();
 	// xoa o cuoi
 	void DeleteAtTail();
+	// Tim muon tra theo ma sach
+	NODE_MUONTRA* Search(std::string maSach);
 	// hien thi cac sach doc gia dang muon
 	std::string Show(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode = Both);
 	// duyet list lay data, can dau sach de tim ten sach
 	std::vector<std::string> GetAllNodeString(LIST_DAUSACH listDS);
 	// duyet list lay data
 	std::vector<std::string> GetAllNodeStringMuonSach(LIST_DAUSACH listDS);
+	// xoa dua vao maSach
+	bool Delete(std::string maSach);
+	// xoa sau node before
+	bool DeleteAfter(NODE_MUONTRA* beforeNode);
 };
 
