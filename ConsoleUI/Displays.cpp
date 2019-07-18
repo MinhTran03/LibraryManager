@@ -1,4 +1,4 @@
-#include "Displays.h"
+﻿#include "Displays.h"
 #include "Graphics.h"
 #include "Enums.h"
 #include <conio.h>
@@ -17,27 +17,27 @@ void DrawRectangle(RECTANGLE rectangle, char getChar, Color textColor, Color bgC
 				GoToXY(rect.location.x, rect.location.y);
 				if (i == 0 && j == 0)
 				{
-					cout << getChar;
+					cout << getChar;// ╔
 				}
 				else if (i == 0 && j == rect.size.width - 1)
 				{
-					cout << getChar;
+					cout << getChar;// ╗
 				}
 				else if (i == rect.size.height - 1 && j == 0)
 				{
-					cout << getChar;
+					cout << getChar;// ╚	
 				}
 				else if (i == rect.size.height - 1 && j == rect.size.width - 1)
 				{
-					cout << getChar;
+					cout << getChar;// ╝	
 				}
 				else if (i == 0 || i == rect.size.height - 1)
 				{
-					cout << getChar;
+					cout << getChar;// ═
 				}
 				else if (j == 0 || j == rect.size.width - 1)
 				{
-					cout << getChar;
+					cout << getChar;// ║
 				}
 				else if (j == 1 || j == rect.size.width - 2)
 				{
@@ -53,6 +53,60 @@ void DrawRectangle(RECTANGLE rectangle, char getChar, Color textColor, Color bgC
 			else
 			{
 				SetBGColor(bgColor); // set color bg
+				cout << " ";
+			}
+			rect.location.x++;
+		}
+		rect.location.x = rectangle.location.x;
+		rect.location.y++;
+	}
+}
+void DrawRectangleBoder(RECTANGLE rectangle)
+{
+	RECTANGLE rect = rectangle;
+
+	for (int i = 0; i < rect.size.height; i++)
+	{
+		for (int j = 0; j < rect.size.width; j++)
+		{
+			if (i == 0 || j == 0 || i == rect.size.height - 1 || j == rect.size.width - 1)
+			{
+				SetTextColor(BORDER_COLOR);
+				GoToXY(rect.location.x, rect.location.y);
+				if (i == 0 && j == 0)
+				{
+					cout << (char)218;// ╔
+				}
+				else if (i == 0 && j == rect.size.width - 1)
+				{
+					cout << (char)191;// ╗
+				}
+				else if (i == rect.size.height - 1 && j == 0)
+				{
+					cout << (char)192;// ╚	
+				}
+				else if (i == rect.size.height - 1 && j == rect.size.width - 1)
+				{
+					cout << (char)217;// ╝	
+				}
+				else if (i == 0 || i == rect.size.height - 1)
+				{
+					cout << (char)196;// ═
+				}
+				else if (j == 0 || j == rect.size.width - 1)
+				{
+					cout << (char)179;// ║
+				}
+			}
+			else if (true)
+			{
+				SetBGColor(BG_COLOR);
+				GoToXY(rect.location.x, rect.location.y);
+				cout << " ";
+			}
+			else
+			{
+				SetBGColor(BG_COLOR); // set color bg
 				cout << " ";
 			}
 			rect.location.x++;

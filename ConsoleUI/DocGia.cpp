@@ -234,6 +234,34 @@ void GetMaDGtoVector(LIST_DOCGIA lstDG, std::vector<int>& dsMaDocGia)
 		GetMaDGtoVector(lstDG->pRight, dsMaDocGia);
 	}
 }
+//
+std::vector<std::string> GetDGtoVector(DOCGIA docGia)
+{
+	std::vector<std::string> docGiaInfo;
+
+	docGiaInfo.push_back(std::to_string(docGia.maDocGia));
+	docGiaInfo.push_back(docGia.ho);
+	docGiaInfo.push_back(docGia.ten);
+
+	if (docGia.gioiTinh == Nam)
+	{
+		docGiaInfo.push_back("Nam");
+	}
+	else
+	{
+		docGiaInfo.push_back("Nu");
+	}
+	if (docGia.trangThai == DangHoatDong)
+	{
+		docGiaInfo.push_back("Dang hoat dong");
+	}
+	else
+	{
+		docGiaInfo.push_back("The bi khoa");
+	}
+
+	return docGiaInfo;
+}
 // Doc mang MADOCGIA tu file
 bool ReadMaDGFromFile(std::string path)
 {
