@@ -98,7 +98,7 @@ void DrawButton(RECTANGLE rectangle, string text, char getChar, Color textColor,
 void DrawMessageBox(MYPOINT point, string text, string& inputText, 
 	bool& isEnter, bool& isCancel, char getChar, Menu_Mode mode, int maxKyTu)
 {
-	RECTANGLE rect = RECTANGLE(point, { 40, 8 });
+	RECTANGLE rect = RECTANGLE(point, { 40, 6 });
 	SetTextColor(TEXT_INPUT_COLOR);
 	if (mode != Menu_Mode::GetKey_Only)
 	{
@@ -121,7 +121,7 @@ void DrawMessageBox(MYPOINT point, string text, string& inputText,
 			rect.location.x = point.x;
 			rect.location.y++;
 		}*/
-		ClearArea(point.x + 3, point.y + rect.size.height / 2, rect.size.width - 6, 1, BG_COLOR);
+		ClearArea(point.x + 3, point.y + rect.size.height / 2 - 1, rect.size.width - 6, 1, BG_COLOR);
 		/*for (int i = 3; i < (rect.size.width - 3); i++)
 		{
 			GoToXY(point.x + i, point.y + rect.size.height / 2);
@@ -129,18 +129,18 @@ void DrawMessageBox(MYPOINT point, string text, string& inputText,
 			SetBGColor(BG_COLOR);
 			cout << " ";
 		}*/
-		SetTextColor(Color::Bright_White);
-		SetBGColor(Color::Cyan);
-		GoToXY(point.x + +rect.size.width / 2 - text.size() / 2, point.y + 2);
+		SetTextColor(Color::White);
+		SetBGColor(Color::Blue);
+		GoToXY(point.x + +rect.size.width / 2 - text.size() / 2, point.y);
 		cout << text;
 	}
 
 	SetBGColor(BG_COLOR);
 	SetTextColor(TEXT_INPUT_COLOR);
-	GoToXY(point.x + 4, point.y + rect.size.height / 2);
+	GoToXY(point.x + 4, point.y + rect.size.height / 2 - 1);
 	cout << inputText;
 
-	RECTANGLE noBox = RECTANGLE({ point.x + 16, point.y + 6 }, { 8, 1 });
+	RECTANGLE noBox = RECTANGLE({ point.x + 16, point.y + 4 }, { 8, 1 });
 
 	DrawButton(noBox, "CANCEL", char(219), BUTTON_TEXT_COLOR, BUTTON_BG_COLOR);
 
@@ -155,7 +155,7 @@ void DrawMessageBox(MYPOINT point, string text, string& inputText,
 		if (flag == 1)
 		{
 			DrawButton(noBox, "CANCEL", char(219), BUTTON_TEXT_COLOR, BUTTON_BG_COLOR);
-			GoToXY(point.x + 4 + inputText.size(), point.y + rect.size.height / 2);
+			GoToXY(point.x + 4 + inputText.size(), point.y + rect.size.height / 2 - 1);
 			SetTextColor(TEXT_INPUT_COLOR);
 			SetBGColor(BG_COLOR);
 			ShowPointer();
@@ -191,7 +191,7 @@ void DrawMessageBox(MYPOINT point, string text, string& inputText,
 						HidePointer();
 						break;
 					}
-					else if ((isalnum(inputKey) || inputKey == ' ') && inputText.size() < maxKyTu)
+					else if ((isalnum(inputKey) || inputKey == ' ') && (int)inputText.size() < maxKyTu)
 					{
 						inputText += inputKey;
 						cout << inputKey;

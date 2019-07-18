@@ -116,7 +116,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 
 	//int maThe;
 	auto locationBtn = location;
-	locationBtn.x += 22;
+	locationBtn.x += 20;
 	locationBtn.y += 25;
 	MENU menu = MENU({ "THEM", "XOA", "SUA" }, locationBtn);
 	menu.btnSize = { 10,3 };
@@ -632,12 +632,11 @@ void TimSach(LIST_DAUSACH& listDS, MYPOINT location)
 		isEnter = false;
 		isCancel = false;
 		isTrue = false;
+		ClearArea(0, point.y + 8, 170, SCREEN_HEIGHT - FOOTER_HEIGHT - point.y - 8);
+		ClearLine(1);
 		DrawMessageBox(point, "NHAP TEN SACH CAN TIM", searchKey, isEnter, isCancel, char(219), GetKey_Only);
 		if (isEnter)
 		{
-			ClearArea(0, point.y + 8, 168, SCREEN_HEIGHT - FOOTER_HEIGHT - point.y - 10);
-			ClearLine(1);
-
 			string selectedDauSach = listDS.PrintAllSearch({ location.x + 10, location.y + 10 }, searchKey, Menu_Mode::Both);
 			if (selectedDauSach == "Empty")
 			{
@@ -652,6 +651,92 @@ void TimSach(LIST_DAUSACH& listDS, MYPOINT location)
 	}
 }
 // Func 2 0
+void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
+{
+	MYPOINT locationDS = { 0,3 };
+	MYPOINT locationMuon = { locationDS.x + (int)DAUSACH_TOTAL_WIDTH, locationDS.y };
+	ClearScreen(BG_COLOR);
+	// add isbn da muon chua tra
+	std::vector<std::string> isbnDaMuon;
+	for (auto p = nodeDocGia.data.listMuonTra.pHead; p != NULL; p = p->pNext)
+	{
+		auto arr = Split(p->data.maSach, "_");
+		isbnDaMuon.push_back(arr[0]);
+	}
+
+	int page = 0;
+	while (true)
+	{
+		auto cancelDS = nodeDocGia.data.listMuonTra.ShowFormMuonSach(listDS, locationMuon, Show_Only);
+		auto selectDS = listDS.PrintAll(locationDS, page, Menu_Mode::Both);
+		ClearLine(locationDS.y - 1);
+		if (selectDS == "ESC")
+		{
+			ClearScreen(BG_COLOR);
+			return;
+		}
+		// qua page list sach chon muon
+		else if (selectDS == "TAB")
+		{
+			if (nodeDocGia.data.listMuonTra.IsEmpty())
+			{
+				continue;
+			}
+			// qua tab ds sach chon muon
+			cancelDS = nodeDocGia.data.listMuonTra.ShowFormMuonSach(listDS, locationMuon, Menu_Mode::Both);
+		}
+		// kiem tra list sach muon (+) chua day
+		//					=> kiem tra sach do da muoc chua => muon chuyen info sach qua
+		//					
+		//									(+) da day   => ko cho muon
+		else
+		{
+			// kiem tra sach muon day
+			if (isbnDaMuon.size() == 3)
+			{
+				MakeFlickWarning({ locationDS.x, locationDS.y - 1 }, "DOC GIA CHI DUOC MUON TOI DA 3 SACH");
+				continue;
+			}
+
+			// kiem tra isbn da muon
+			auto viTri = std::find(isbnDaMuon.begin(), isbnDaMuon.end(), selectDS);
+			// isbn chua duoc muon
+			if (viTri == isbnDaMuon.end())
+			{
+				// clear dau sach
+				ClearArea(locationDS.x, locationDS.y, DAUSACH_TOTAL_WIDTH, MAX_ROW_PER_PAGE + 5);
+
+				// Show ds Sach thuoc dau sach
+				auto dsSach = listDS.GetDauSach(StringToCharArray(selectDS));
+				auto maSach = dsSach->dsSach.PrintAll(locationDS, Both);
+				if (maSach == "ESC")
+				{
+					// clear sach
+					ClearArea(locationDS.x, locationDS.y, DMS_TOTAL_WIDTH, MAX_ROW_PER_PAGE);
+					continue;
+				}
+
+				// them sach vao list muon tra cua doc gia
+				DATETIME d = DATETIME();
+				d.SetDateTimeNow();
+				MUONTRA muonTra = MUONTRA();
+				muonTra.maSach = maSach;
+				muonTra.ngayMuon = d;
+				muonTra.trangThai = TrangThaiMuonTra::SachChuaTra;
+				nodeDocGia.data.listMuonTra.InsertAtTail(muonTra);
+				isbnDaMuon.push_back(selectDS);
+
+				// clear sach
+				ClearArea(locationDS.x, locationDS.y, DMS_TOTAL_WIDTH, MAX_ROW_PER_PAGE);
+			}
+			// isbn da co => khong cho muon
+			else
+			{
+				MakeFlickWarning({ locationDS.x, locationDS.y - 1 }, "DAU SACH DA MUON. VUI LONG CHON DAU SACH KHAC");
+			}
+		}
+	}
+}
 void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 {
 	MYPOINT point = { 66, 2 };
@@ -659,18 +744,17 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 	bool isCancel = false;
 	bool isTrue = false;
 	std::string searchKey = "";
-	DrawMessageBox(point, "NHAP MA DOC GIA", searchKey, isEnter, isCancel, char(219), Show_Only);
+	//DrawMessageBox(point, "NHAP MA DOC GIA", searchKey, isEnter, isCancel, char(219), Show_Only);
 	while (true)
 	{
 		isEnter = false;
 		isCancel = false;
 		isTrue = false;
-		DrawMessageBox(point, "NHAP MA DOC GIA", searchKey, isEnter, isCancel, char(219), GetKey_Only, 4);
+		ClearArea(0, point.y + 8, 170, SCREEN_HEIGHT - FOOTER_HEIGHT - point.y - 8);
+		ClearLine(1);
+		DrawMessageBox(point, "NHAP MA DOC GIA", searchKey, isEnter, isCancel, char(219), Both, 4);
 		if (isEnter)
 		{
-			ClearArea(0, point.y + 8, 168, SCREEN_HEIGHT - FOOTER_HEIGHT - point.y - 10);
-			ClearLine(1);
-
 			auto docGiaSearch = Search(listDG, stoi(searchKey));
 			// khong tim thay
 			if (docGiaSearch == NULL)
@@ -680,29 +764,37 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 			// tiim thay
 			else
 			{
-				// hien thi thong tin doc gia
-
-
-				// hien thi cac sach doc gia muon
-
-
-				// menu
-				auto locationBtn = location;
-				locationBtn.x += 22;
-				locationBtn.y += 25;
-				MENU menu = MENU({ "MUON SACH", "TRA SACH" }, locationBtn);
-				menu.btnSize = { 10,3 };
-
-				int selected = menu.ShowInHorizontal(Menu_Mode::Both);
-				// muon sach
-				if(selected == 0)
+				while (true)
 				{
+					DrawMessageBox(point, "NHAP MA DOC GIA", searchKey, isEnter, isCancel, char(219), Show_Only, 4);
+					// hien thi thong tin doc gia
 
-				}
-				// tra sach
-				else
-				{
 
+					// hien thi cac sach doc gia muon
+					std::string maSachSelect = docGiaSearch->data.listMuonTra.Show(listDS, { 20, 27 }, Show_Only);
+
+					// menu
+					auto locationBtn = location;
+					locationBtn.x = point.x;
+					locationBtn.y += 33;
+					MENU menu = MENU({ "MUON SACH", "TRA SACH" }, locationBtn);
+					menu.btnSize = { 20, 3 };
+
+					int selected = menu.ShowInHorizontal(Menu_Mode::Both);
+					// muon sach
+					if (selected == 0)
+					{
+						MuonSach(*docGiaSearch, listDS);
+					}
+					// tra sach
+					else if (selected == 1)
+					{
+
+					}
+					else
+					{
+						break;
+					}
 				}
 			}
 		}

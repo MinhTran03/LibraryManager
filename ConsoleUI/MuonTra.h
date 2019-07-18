@@ -1,6 +1,8 @@
 #pragma once
 #include "Constants.h"
 #include "DateTime.h"
+#include "Structs.h"
+#include "DauSach.h"
 
 enum TrangThaiMuonTra
 {
@@ -11,10 +13,15 @@ enum TrangThaiMuonTra
 
 struct MUONTRA
 {
-	char maSach[MASACH_MAXSIZE + 1];
+	std::string maSach;
 	DATETIME ngayMuon;
 	DATETIME ngayTra;
 	TrangThaiMuonTra trangThai;
+
+	void Print(DAUSACH dauSach, MYPOINT location, Color bgColor = BG_COLOR, Color textColor = TEXT_INPUT_COLOR);
+	// can dau sach de tim ten sach
+	std::string ToString(DAUSACH dauSach);
+	std::string ToStringMuonSach(DAUSACH dauSach);
 };
 
 struct NODE_MUONTRA
@@ -22,7 +29,6 @@ struct NODE_MUONTRA
 	MUONTRA data;
 	NODE_MUONTRA* pNext;
 	NODE_MUONTRA* pPrev;
-	
 };
 
 struct LIST_MUONTRA
@@ -30,16 +36,26 @@ struct LIST_MUONTRA
 	NODE_MUONTRA* pHead;
 	NODE_MUONTRA* pTail;
 
-	NODE_MUONTRA* MakeNode(MUONTRA muonTra);
-
+	LIST_MUONTRA();
+	// hien form muon sach
+	std::string ShowFormMuonSach(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode);
+	// kiem tra rong
 	bool IsEmpty();
-
+	// tao moi 1 node
+	NODE_MUONTRA* MakeNode(MUONTRA muonTra);
+	// them o dau
 	void InsertAtHead(MUONTRA muonTra);
-
+	// them o cuoi
 	void InsertAtTail(MUONTRA muonTra);
-
+	// xoa o dau
 	void DeleteAtHead();
-
+	// xoa o cuoi
 	void DeleteAtTail();
+	// hien thi cac sach doc gia dang muon
+	std::string Show(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode = Both);
+	// duyet list lay data, can dau sach de tim ten sach
+	std::vector<std::string> GetAllNodeString(LIST_DAUSACH listDS);
+	// duyet list lay data
+	std::vector<std::string> GetAllNodeStringMuonSach(LIST_DAUSACH listDS);
 };
 

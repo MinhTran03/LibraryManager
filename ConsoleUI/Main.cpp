@@ -9,6 +9,7 @@ int main()
 	LIST_DOCGIA listDG = LIST_DOCGIA();
 	LoadMaDG(listDG);
 	LoadDocGia(listDG);
+	
 	// load dau sach
 	auto listDS = LIST_DAUSACH();
 	LoadDauSach(listDS);
@@ -18,6 +19,16 @@ int main()
 		LoadSach(listDS.nodes[i]->dsSach, listDS.nodes[i]->isbn);
 	}
 	ClearLine(0);
+
+	DATETIME d = DATETIME();
+	d.SetDateTimeNow();
+	MUONTRA muonTra = MUONTRA();
+	muonTra.maSach = "000001_0001";
+	muonTra.ngayMuon = d;
+	muonTra.trangThai = TrangThaiMuonTra::SachChuaTra;
+	listDG->data.listMuonTra.InsertAtTail(muonTra);
+	muonTra.maSach = "000002_0001";
+	listDG->data.listMuonTra.InsertAtTail(muonTra);
 
 	vector<int> func = { -1,-1 };
 	while (true)

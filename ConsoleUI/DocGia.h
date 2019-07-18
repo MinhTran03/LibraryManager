@@ -23,7 +23,7 @@ struct DOCGIA
 	GioiTinh gioiTinh;
 	TrangThaiTheDG trangThai;
 
-	LIST_MUONTRA listMuonTra;
+	LIST_MUONTRA listMuonTra = LIST_MUONTRA();
 
 	// in ra node
 	void Print(MYPOINT location, Color backColor, Color textColor);

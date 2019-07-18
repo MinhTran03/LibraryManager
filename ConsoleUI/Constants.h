@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "Enums.h"
 
-#pragma region DISPLAY
+#pragma region -----------------------------------------------------DISPLAY
 #define BG_COLOR Color::White
 #define TEXT_INPUT_COLOR Color::Black
 #define TEXT_INPUT_DEFAULT_COLOR Color::Gray
@@ -19,15 +19,15 @@
 
 const unsigned int SCREEN_HEIGHT = 44;
 const unsigned int FOOTER_HEIGHT = 5;
-#pragma endregion
-
-const int magicNumber = -1;
 const unsigned MAX_ROW_PER_PAGE = 20;
+
+
 #define WARNING_CANT_DELETE_DS "DAU SACH DA CO DOC GIA MUON. KHONG DUOC XOA"
 #define WARNING_CANT_DELETE_SACH "SACH DA CO DOC GIA MUON. KHONG DUOC XOA"
 #define WARNING_CANT_FIX_SACH "SACH DA CO DOC GIA MUON. KHONG DUOC CHINH SUA"
+#pragma endregion
 
-#pragma region Dau sach
+#pragma region -----------------------------------------------------Dau sach
 const unsigned int ISBN_MAXSIZE = 6;
 const unsigned int TENSACH_MAXSIZE = 36;
 const unsigned int TENTACGIA_MAXSIZE = 30;
@@ -45,7 +45,7 @@ const unsigned int NAMXUATBAN_WIDTH = 4;
 const unsigned int DAUSACH_TOTAL_WIDTH = ISBN_WIDTH + TENSACH_WIDTH + TENTACGIA_WIDTH + TENTHELOAI_WIDTH + SOTRANG_WIDTH + NAMXUATBAN_WIDTH + 7;
 #pragma endregion
 
-#pragma region Danh muc sach
+#pragma region -----------------------------------------------------Danh muc sach
 const unsigned int MASACH_MAXSIZE = 11;
 const unsigned int VITRI_MAXSIZE = 5;
 
@@ -55,7 +55,7 @@ const unsigned int TRANGTHAISACH_WIDTH = 16;
 const unsigned int DMS_TOTAL_WIDTH = MASACH_WIDTH + VITRI_WIDTH + TRANGTHAISACH_WIDTH + 4;
 #pragma endregion
 
-#pragma region Doc Gia
+#pragma region -----------------------------------------------------Doc Gia
 #define MADOCGIA_FILE_PATH "D:\\C++\\LibraryManager\\ConsoleUI\\MaDocGiaArray.txt"
 
 const unsigned int MAX_DOCGIA = 1000;
@@ -67,4 +67,13 @@ const unsigned int GIOITINH_WIDTH = 10;
 const unsigned int TRANGTHAIDG_WIDTH = 16;
 
 const unsigned int DOCGIA_TOTAL_WIDTH = MADOCGIA_WIDTH + HODOCGIA_WIDTH + TENDOCGIA_WIDTH + GIOITINH_WIDTH + TRANGTHAIDG_WIDTH + 6;
+#pragma endregion
+
+#pragma region -----------------------------------------------------Muon tra
+const unsigned int NGAY_WIDTH = 14;
+const unsigned int TRANGTHAI_MUONTRA_WIDTH = 20;
+const unsigned int SONGAYMUON_WIDTH = 16;
+
+const unsigned int MUONTRA_TOTAL_WIDTH = MASACH_WIDTH + TENSACH_WIDTH + NGAY_WIDTH * 2 + 
+							VITRI_WIDTH + TRANGTHAI_MUONTRA_WIDTH + SONGAYMUON_WIDTH + 8;
 #pragma endregion

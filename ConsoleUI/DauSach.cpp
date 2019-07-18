@@ -463,7 +463,7 @@ std::string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 		// print data
 		for (int i = 0; i < totalLine; i++)
 		{
-			Sleep(1);
+			//Sleep(1);
 			ShowPageNumber(page, datas.size(), location.x, location.y + MAX_ROW_PER_PAGE + 1);
 			if (i >= (int)MAX_ROW_PER_PAGE * page && i < (page + 1) * (int)MAX_ROW_PER_PAGE)
 			{
@@ -588,6 +588,13 @@ std::string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 					std::cout << datas[currentPage][i];
 				}
 				listISBN[MAX_ROW_PER_PAGE * currentPage].Print(backUpLocation, hlBGColor, hlTextColor);
+			}
+			else if (inputKey == Key::TAB)
+			{
+				GoToXY(location.x, rows[currentPage][currentLine]);
+				HightLight(datas[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
+				page = currentPage;
+				return "TAB";
 			}
 			else if (inputKey == Key::ESC)
 			{
