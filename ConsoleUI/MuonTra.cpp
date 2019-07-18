@@ -374,7 +374,7 @@ void LIST_MUONTRA::InsertAtHead(MUONTRA muonTra)
 void LIST_MUONTRA::InsertAtTail(MUONTRA muonTra) 
 {
 	NODE_MUONTRA* newNode = MakeNode(muonTra);
-	if (pHead == NULL) 
+	if (pHead == NULL)
 	{
 		pHead = newNode;
 		pTail = newNode;

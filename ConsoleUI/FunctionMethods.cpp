@@ -765,13 +765,12 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 			// tiim thay
 			else
 			{
-				// hien thi thong tin doc gia
-				RECTANGLE rect = { {location.x + 63, location.y + 10}, {40, 11} };
-				DocGiaInfo(rect, docGiaSearch->data);
 				while (true)
 				{
 					DrawMessageBox(point, "NHAP MA DOC GIA", searchKey, isEnter, isCancel, char(219), Show_Only, 4);
 					// hien thi thong tin doc gia
+					RECTANGLE rect = { {location.x + 63, location.y + 10}, {41, 11} };
+					DocGiaInfo(rect, docGiaSearch->data);
 
 
 					// hien thi cac sach doc gia muon

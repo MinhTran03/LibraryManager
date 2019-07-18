@@ -8,6 +8,8 @@
 
 void DocGiaInfo(RECTANGLE rect, DOCGIA docGia)
 {
+	SetBGColor(BG_COLOR);
+	SetTextColor(TEXT_INPUT_COLOR);
 	std::string title = "THONG TIN DOC GIA";
 	std::vector<std::string> docGiaInfo = GetDGtoVector(docGia);
 	std::vector<std::string> labels = { "Ma doc gia", "Ho", "Ten", "Gioi tinh", "Trang thai the" };
