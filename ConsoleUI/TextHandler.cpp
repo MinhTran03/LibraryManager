@@ -213,3 +213,12 @@ void VTString2ArrString(std::vector<std::string> data, std::string result[])
 		result[count++] = item;
 	}
 }
+void ArrString2VTString(std::vector<std::string>& data, std::string result[])
+{
+	int size = SizeOfT(result);
+	data.clear();
+	for (int i = 0; i < size; i++)
+	{
+		data.push_back(result[i]);
+	}
+}

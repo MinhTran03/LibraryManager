@@ -89,7 +89,7 @@ void MakeFlickWarning(MYPOINT location, std::string text)
 	//ClearArea(location.x, location.y, text.size(), 1);
 }
 
-vector<int> SelectionFuntion(int rootLine, int childLine)
+int* SelectionFuntion(int rootLine, int childLine)
 {
 	MENU menu = MENU({ "QUAN LY DOC GIA", "QUAN LY DAU SACH", "QUAN LY SACH" }, { 0, 3 });
 	vector<vector<string>> temp;

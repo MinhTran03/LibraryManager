@@ -21,10 +21,11 @@ int main()
 	}
 	//ClearLine(0);
 
-	vector<int> func = { -1,-1 };
+	int t1 = -1;
+	int t2 = -1;
 	while (true)
 	{
-		func = SelectionFuntion(func[0], func[1]);
+		auto func = SelectionFuntion(t1, t2);
 		if (func[0] == 0)
 		{
 			if (func[1] == 0)
@@ -83,6 +84,8 @@ int main()
 		{
 			break;
 		}
+		t1 = func[0];
+		t2 = func[1];
 	}
 
 	FormClosing(listDG, listDS);

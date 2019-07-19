@@ -22,9 +22,10 @@ struct SLIDEMENUS
 			
 		}
 	}
-	std::vector<int> Show(int rootLine = -1, int childLine = -1)
+	int* Show(int rootLine = -1, int childLine = -1)
 	{
 		//std::vector<MENU> childMenus;
+		int* result = new int[2];
 		SetupChildMenu(childMenus);
 		// Hien thi line dong
 		if (rootLine != -1)
@@ -44,7 +45,12 @@ struct SLIDEMENUS
 				continue; 
 			}
 			// Thoat
-			if(rootLine == rootMenu.totalLine - 1) return { rootLine, -1 };
+			if (rootLine == rootMenu.totalLine - 1) 
+			{
+				result[0] = rootLine;
+				result[1] = -1;
+				return result;
+			}
 			rootLine = rootMenu.currentLine;
 			if (childLine != -1)
 				childMenus[rootLine].currentLine = childLine;
@@ -77,7 +83,9 @@ struct SLIDEMENUS
 			}
 			else
 			{
-				return { rootLine, childLine };
+				result[0] = rootLine;
+				result[1] = childLine;
+				return result;
 			}
 			rootLine = -1;
 			childLine = -1;
