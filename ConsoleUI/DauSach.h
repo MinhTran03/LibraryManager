@@ -24,7 +24,7 @@ struct LIST_DAUSACH
 {
 	int size = 0;
 	DAUSACH* nodes[SODAUSACH_MAX];
-	std::vector<std::string> dsTheLoai;
+	std::string* dsTheLoai;
 
 	#pragma region Display
 	// Print list DAUSACH theo the loai (Sap xep theo ten)
@@ -59,9 +59,9 @@ struct LIST_DAUSACH
 	// Do dac tinh cua tham tri la copy vo node
 	bool Insert(DAUSACH& node, int index);
 	// Lay dau sach dua vao ten the loai
-	std::vector<DAUSACH> GetTheLoai(std::string tenTheLoai);
+	DAUSACH* GetTheLoai(std::string tenTheLoai, int &count);
 	// in sach theo ten sach (chua xong)
-	std::vector<DAUSACH> FindBooks(std::string tenSach);
+	DAUSACH* FindBooks(std::string tenSach, int& count);
 	std::string PrintAllSearch(MYPOINT location, std::string tenSach, Menu_Mode mode);
 	// tim vi tri cua dau sach theo isbn
 	int GetLocateDauSach(char isbn[ISBN_MAXSIZE + 1]);

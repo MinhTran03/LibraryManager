@@ -19,23 +19,12 @@ int main()
 	{
 		LoadSach(listDS.nodes[i]->dsSach, listDS.nodes[i]->isbn);
 	}
-	ClearLine(0);
-
-	/*DATETIME d = DATETIME();
-	d.SetDateTimeNow();
-	MUONTRA muonTra = MUONTRA();
-	muonTra.maSach = "000001_0001";
-	muonTra.ngayMuon = d;
-	muonTra.trangThai = TrangThaiMuonTra::SachChuaTra;
-	listDG->data.listMuonTra.InsertAtTail(muonTra);*/
-	//muonTra.maSach = "000002_0001";
-	//listDG->data.listMuonTra.InsertAtTail(muonTra);
+	//ClearLine(0);
 
 	vector<int> func = { -1,-1 };
 	while (true)
 	{
 		func = SelectionFuntion(func[0], func[1]);
-		//ClearScreen(BG_COLOR);
 		if (func[0] == 0)
 		{
 			if (func[1] == 0)

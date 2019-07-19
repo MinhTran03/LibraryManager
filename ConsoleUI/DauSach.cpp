@@ -1,4 +1,4 @@
- #include "DauSach.h"
+#include "DauSach.h"
 
 #pragma region ----------------------------------------------------DAUSACH
 // chuyen vector<string> vo obj DAUSACH
@@ -22,7 +22,7 @@ DAUSACH InputDauSach(LIST_DAUSACH listDS, RECTANGLE rect)
 	std::vector<CONDITION> conditions = { {Number_Only, ISBN_MAXSIZE, ISBN_MAXSIZE}, {All, 1, TENSACH_MAXSIZE},{Number_Only, 1, SOTRANG_MAXKYTU},
 													{Name, 1, TENTACGIA_MAXSIZE},{Year, 4, 4},{Word_Only, 1, TENTHELOAI_MAXSIZE} };
 	auto form = FORMINPUT(labels, conditions, rect, inputTitle);
-	std::vector<std::string> guilds = { "DAY SO CO 5 CHU SO", "TAT CA KY TU", "SO TRANG TU [1, 999999]", "CHI NHAP CHU CAI", 
+	std::vector<std::string> guilds = { "DAY SO CO 5 CHU SO", "TAT CA KY TU", "SO TRANG TU [1, 999999]", "CHI NHAP CHU CAI",
 													"PHAI NHO HON NAM HIEN TAI", "CHI NHAP CHU CAI" };
 	form.Guilds = guilds;
 	DAUSACH dauSach = DAUSACH();
@@ -151,15 +151,16 @@ std::string DAUSACH::ToStringFile()
 #pragma region ----------------------------------------------------LIST_DAUSACH
 #pragma region Graphics
 // selection sort dua vao ten sach
-void SortByTenSach(std::vector<DAUSACH>& listDauSach)
+void SortByTenSach(DAUSACH*& listDauSach)
 {
 	DAUSACH min;
 	int posMin;
-	for (size_t i = 0; i < listDauSach.size() - 1; i++)
+	int size = sizeof(*listDauSach) / sizeof(DAUSACH);
+	for (int i = 0; i < size - 1; i++)
 	{
 		min = listDauSach[i];
 		posMin = i;
-		for (size_t j = i + 1; j < listDauSach.size(); j++)
+		for (int j = i + 1; j < size; j++)
 		{
 			if (listDauSach[j].tenSach.compare(min.tenSach) < 0)
 			{
@@ -194,11 +195,11 @@ std::string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, std::string theLoai)
 	/*Color hlBGColor = Color::Cyan;
 	Color hlTextColor = Color::White;
 	int currentLine = 0;*/
+	int totalLine = 0;
 	// tim ISBN theo the loai
-	auto listISBN = GetTheLoai(theLoai);
+	auto listISBN = GetTheLoai(theLoai, totalLine);
 	// sap xep theo ten sach
 	SortByTenSach(listISBN);
-	int totalLine = listISBN.size();
 	/*std::vector<std::string> datas;
 	std::vector<int> rows;*/
 	MYPOINT backUpLocation = MYPOINT(0, 0);
@@ -342,7 +343,7 @@ std::string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, std::string theLoai)
 std::string LIST_DAUSACH::PrintAllTheLoai(MYPOINT location)
 {
 	int currentPage = 0;
-	int totalPages = this->dsTheLoai.size();
+	int totalPages = SizeOfT(this->dsTheLoai);
 	SetBGColor(Color::Gray);
 	SetTextColor(Color::Bright_White);
 	GoToXY(location.x + DAUSACH_TOTAL_WIDTH + 1, location.y + MAX_ROW_PER_PAGE / 2);
@@ -491,15 +492,15 @@ std::string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 			}
 		}
 	}
-	
+
 	currentPage = page;
-	
+
 	// bat phim
 	if (mode == Menu_Mode::Both)
 	{
-		
+
 		currentLine = 0;
-		
+
 		char inputKey = NULL;
 		HidePointer();
 		do
@@ -605,14 +606,14 @@ std::string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 	}
 	return "Empty";
 }
-// CMT
+// ...
 void LIST_DAUSACH::PrintFindBooks(MYPOINT location, std::string tenSach)
 {
 	Color hlBGColor = Color::Cyan;
 	Color hlTextColor = Color::White;
+	int totalLine = 0;
 	// tim ISBN theo the loai
-	auto listISBN = FindBooks(tenSach);
-	int totalLine = listISBN.size();
+	auto listISBN = FindBooks(tenSach, totalLine);
 	std::vector<std::string> datas;
 	std::vector<int> rows;
 	MYPOINT backUpLocation = MYPOINT(0, 0);
@@ -651,14 +652,16 @@ bool LIST_DAUSACH::IsContainTheLoai(std::string theLoai)
 	return false;
 }
 // Lay dau sach dua vao ten the loai
-std::vector<DAUSACH> LIST_DAUSACH::GetTheLoai(std::string tenTheLoai)
+DAUSACH* LIST_DAUSACH::GetTheLoai(std::string tenTheLoai, int& count)
 {
-	std::vector<DAUSACH> result;
+	DAUSACH* result = NULL;
+	//std::vector<DAUSACH> result;
+	//int count = 0;
 	for (int i = 0; i < this->size; i++)
 	{
 		if (this->nodes[i]->tenTheLoai == tenTheLoai)
 		{
-			result.push_back(*this->nodes[i]);
+			PushBack(result, *this->nodes[i], count);
 		}
 	}
 	return result;
@@ -667,7 +670,8 @@ std::vector<DAUSACH> LIST_DAUSACH::GetTheLoai(std::string tenTheLoai)
 DAUSACH* LIST_DAUSACH::GetDauSach(char isbn[ISBN_MAXSIZE + 1])
 {
 	for (auto dauSach : this->nodes)
-	{		if (strcmp(dauSach->isbn, isbn) == 0)
+	{
+		if (strcmp(dauSach->isbn, isbn) == 0)
 			return dauSach;
 	}
 	return NULL;
@@ -702,13 +706,15 @@ bool LIST_DAUSACH::WriteToFile(std::string path)
 	auto fileHandler = FILEHANDLER(path);
 	try
 	{
-		std::vector<std::string> data;
+		int c = 0;
+		std::string* data = NULL;
 		for (auto i = 0; i < this->size; i++)
 		{
 			auto temp = this->nodes[i]->ToStringFile();
 			if (i < this->size - 1)
 				temp += '\n';
-			data.push_back(temp);
+			//data.push_back(temp);
+			PushBack(data, temp, c);
 		}
 		fileHandler.WriteToFile(data, Replace);
 	}
@@ -752,15 +758,20 @@ bool LIST_DAUSACH::Insert(DAUSACH& node, int index)
 	{
 		nodes[pos + 1] = nodes[pos];
 	}
-	if (!IsContainTheLoai(node.tenTheLoai)) dsTheLoai.push_back(node.tenTheLoai);
+	if (!IsContainTheLoai(node.tenTheLoai))
+	{
+		//dsTheLoai.push_back(node.tenTheLoai);
+		int c = SizeOfT(this->dsTheLoai);
+		PushBack(this->dsTheLoai, node.tenTheLoai, c);
+	}
 	nodes[index] = &node;
 	size++;
 	return true;
 }
 // tim theo ten sach
-std::vector<DAUSACH> LIST_DAUSACH::FindBooks(std::string tenSach)
+DAUSACH* LIST_DAUSACH::FindBooks(std::string tenSach, int& count)
 {
-	std::vector<DAUSACH> result;
+	DAUSACH* result = NULL;
 	if (tenSach != "")
 	{
 		std::string toLowerName = ToLowerString(tenSach);
@@ -772,7 +783,7 @@ std::vector<DAUSACH> LIST_DAUSACH::FindBooks(std::string tenSach)
 			size_t found = toLowerTenSach.find(toLowerName);
 			if (found != std::string::npos)
 			{
-				result.push_back(*this->nodes[i]);
+				PushBack(result, *this->nodes[i], count);
 			}
 		}
 		for (size_t j = 0; j < listKey.size(); j++)
@@ -784,7 +795,7 @@ std::vector<DAUSACH> LIST_DAUSACH::FindBooks(std::string tenSach)
 				if (found != std::string::npos || toLowerTenSach == listKey[j])
 				{
 					int dem = 0;
-					for (size_t k = 0; k < result.size(); k++)
+					for (int k = 0; k < count; k++)
 					{
 						std::string temp = this->nodes[i]->isbn;
 						if (result[k].isbn == temp)
@@ -794,7 +805,7 @@ std::vector<DAUSACH> LIST_DAUSACH::FindBooks(std::string tenSach)
 					}
 					if (dem == 0)
 					{
-						result.push_back(*this->nodes[i]);
+						PushBack(result, *this->nodes[i], count);
 					}
 				}
 			}
@@ -811,9 +822,9 @@ std::string LIST_DAUSACH::PrintAllSearch(MYPOINT location, std::string tenSach, 
 	Color hlBGColor = Color::Cyan;
 	Color hlTextColor = Color::White;
 	int currentLine = 0;
+	int totalLine = 0;
 	// dua vao vector
-	std::vector<DAUSACH> listISBN = FindBooks(tenSach);
-	int totalLine = listISBN.size();
+	auto listISBN = FindBooks(tenSach, totalLine);
 	std::vector<std::string> datas;
 	std::vector<int> rows;
 	MYPOINT backUpLocation = MYPOINT(0, 0);
@@ -934,11 +945,13 @@ int LIST_DAUSACH::GetLocateDauSach(char isbn[ISBN_MAXSIZE + 1])
 // cap nhat dsTheLoai moi khi xoa 1 dau sach
 void LIST_DAUSACH::INotifyDSTheLoai()
 {
-	for (size_t i = 0; i < this->dsTheLoai.size(); i++)
+	int c = SizeOfT(this->dsTheLoai);
+	for (int i = 0; i < c; i++)
 	{
 		if (this->IsContainTheLoai(this->dsTheLoai[i]) == false)
 		{
-			this->dsTheLoai.erase(this->dsTheLoai.begin() + i);
+			//this->dsTheLoai.erase(this->dsTheLoai.begin() + i);
+			Erase(this->dsTheLoai, i);
 			return;
 		}
 	}

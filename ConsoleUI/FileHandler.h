@@ -126,7 +126,7 @@ struct FILEHANDLER
 	}
 
 	// mode = ios::
-	bool WriteToFile(std::vector<std::string> data, IosMode mode)
+	bool WriteToFile(std::string* data, IosMode mode)
 	{
 		if (IsValidFile(this->filePath) == Not_Exist)
 		{
@@ -141,9 +141,9 @@ struct FILEHANDLER
 			f.open(filePath, std::ios::app);
 
 		// 3. Ghi dữ liệu vào file, trường hợp này ta có data là dữ liệu
-		for (auto item : data)
+		for (int i = 0; i < SizeOfT(data); i++)
 		{
-			f << item;
+			f << data[i];
 		}
 
 		// 4. Đóng file

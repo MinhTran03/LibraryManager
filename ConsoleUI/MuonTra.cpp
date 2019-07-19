@@ -576,13 +576,15 @@ bool LIST_MUONTRA::WriteToFile(std::string path)
 	auto fileHandler = FILEHANDLER(path);
 	try
 	{
-		std::vector<std::string> data;
+		int c = 0;
+		std::string* data = NULL;
 		for (auto p = this->pHead; p != NULL; p = p->pNext)
 		{
 			auto temp = p->data.ToStringFile();
 			if (p != this->pTail)
 				temp += '\n';
-			data.push_back(temp);
+			//data.push_back(temp);
+			PushBack(data, temp, c);
 		}
 		fileHandler.WriteToFile(data, Replace);
 	}

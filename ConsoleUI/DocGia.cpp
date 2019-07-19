@@ -225,39 +225,53 @@ bool ReadFromFile(LIST_DOCGIA& listDG, std::string path)
 	return true;
 }
 // Lay ds maDocGia
-void GetMaDGtoVector(LIST_DOCGIA lstDG, std::vector<int>& dsMaDocGia)
+void GetMaDGtoVector(LIST_DOCGIA lstDG, int*& dsMaDocGia)
 {
 	if (lstDG != NULL)
 	{
 		GetMaDGtoVector(lstDG->pLeft, dsMaDocGia);
-		dsMaDocGia.push_back(lstDG->data.maDocGia);
+		int c = 0;
+		PushBack(dsMaDocGia, lstDG->data.maDocGia, c);
+		//dsMaDocGia.push_back(lstDG->data.maDocGia);
 		GetMaDGtoVector(lstDG->pRight, dsMaDocGia);
 	}
 }
-//
-std::vector<std::string> GetDGtoVector(DOCGIA docGia)
+// ...
+std::string* GetDGtoVector(DOCGIA docGia)
 {
-	std::vector<std::string> docGiaInfo;
+	std::string* docGiaInfo = NULL;
+	int c = 0;
 
-	docGiaInfo.push_back(std::to_string(docGia.maDocGia));
-	docGiaInfo.push_back(docGia.ho);
-	docGiaInfo.push_back(docGia.ten);
+	PushBack(docGiaInfo, std::to_string(docGia.maDocGia), c);
+	PushBack(docGiaInfo, docGia.ho, c);
+	PushBack(docGiaInfo, docGia.ten, c);
+	//docGiaInfo.push_back(std::to_string(docGia.maDocGia));
+	//docGiaInfo.push_back(docGia.ho);
+	//docGiaInfo.push_back(docGia.ten);
 
 	if (docGia.gioiTinh == Nam)
 	{
-		docGiaInfo.push_back("Nam");
+		std::string temp = "Nam";
+		PushBack(docGiaInfo, temp, c);
+		//docGiaInfo.push_back("Nam");
 	}
 	else
 	{
-		docGiaInfo.push_back("Nu");
+		std::string temp = "Nu";
+		PushBack(docGiaInfo, temp, c);
+		//docGiaInfo.push_back("Nu");
 	}
 	if (docGia.trangThai == DangHoatDong)
 	{
-		docGiaInfo.push_back("Dang hoat dong");
+		std::string temp = "Dang hoat dong";
+		PushBack(docGiaInfo, temp, c);
+		//docGiaInfo.push_back("Dang hoat dong");
 	}
 	else
 	{
-		docGiaInfo.push_back("The bi khoa");
+		std::string temp = "The bi khoa";
+		PushBack(docGiaInfo, temp, c);
+		//docGiaInfo.push_back("The bi khoa");
 	}
 
 	return docGiaInfo;
@@ -279,20 +293,22 @@ bool ReadMaDGFromFile(std::string path)
 	return true;
 }
 // duyet cay lay data string file
-void InorderGetStringFile(LIST_DOCGIA lstDG, std::vector<std::string>& result)
+void InorderGetStringFile(LIST_DOCGIA lstDG, std::string*& result, int& count)
 {
 	if (lstDG != NULL)
 	{
-		InorderGetStringFile(lstDG->pLeft, result);
-		result.push_back(lstDG->data.ToStringFile());
-		InorderGetStringFile(lstDG->pRight, result);
+		InorderGetStringFile(lstDG->pLeft, result, count);
+		PushBack(result, lstDG->data.ToStringFile(), count);
+		//result.push_back(lstDG->data.ToStringFile());
+		InorderGetStringFile(lstDG->pRight, result, count);
 	}
 }
 // duyet cay lay ToStringFile cua node doc gia
-std::vector<std::string> GetAllStringFileNode(LIST_DOCGIA listDG)
+std::string* GetAllStringFileNode(LIST_DOCGIA listDG)
 {
-	std::vector<std::string> result;
-	InorderGetStringFile(listDG, result);
+	std::string* result = NULL;
+	int count = 0;
+	InorderGetStringFile(listDG, result, count);
 	return result;
 }
 // Ghi du lieu doc gia ra file text
@@ -302,7 +318,7 @@ bool WriteToFile(LIST_DOCGIA lstDG, std::string path)
 	try
 	{
 		int size = Size(lstDG);
-		std::vector<std::string> data = GetAllStringFileNode(lstDG);
+		std::string* data = GetAllStringFileNode(lstDG);
 		for (auto i = 0; i < size; i++)
 		{
 			if (i < size - 1)
@@ -324,15 +340,17 @@ bool WriteMaDGToFile(std::string path)
 	auto fileHandler = FILEHANDLER(path);
 	try
 	{
+		int c = 0;
 		int size = maDocGiaArr.size();
-		std::vector<std::string> data;
+		std::string* data = NULL;
 		for (auto i = 0; i < size; i++)
 		{
 			std::string temp = "";
 			temp += std::to_string(maDocGiaArr[i]);
 			if (i < size - 1)
 				temp += '\n';
-			data.push_back(temp);
+			//data.push_back(temp);
+			PushBack(data, temp, c);
 		}
 		fileHandler.WriteToFile(data, Replace);
 	}
@@ -511,20 +529,21 @@ DOCGIA InputDocGia(int maThe, RECTANGLE rect)
 	return docGia;
 }
 // duyet cay lay data string
-void InorderGetString(LIST_DOCGIA lstDG, std::vector<std::string>& result)
+void InorderGetString(LIST_DOCGIA lstDG, std::string*& result, int& count)
 {
 	if (lstDG != NULL)
 	{
-		InorderGetString(lstDG->pLeft, result);
-		result.push_back(lstDG->data.ToString());
-		InorderGetString(lstDG->pRight, result);
+		InorderGetString(lstDG->pLeft, result, count);
+		PushBack(result, lstDG->data.ToString(), count);
+		InorderGetString(lstDG->pRight, result, count);
 	}
 }
 // duyet cay lay ToString cua node doc gia
-std::vector<std::string> GetAllStringNode(LIST_DOCGIA listDG)
+std::string* GetAllStringNode(LIST_DOCGIA listDG)
 {
-	std::vector<std::string> result;
-	InorderGetString(listDG, result);
+	std::string* result = NULL;
+	int count = 0;
+	InorderGetString(listDG, result, count);
 	return result;
 }
 // row la so dong data
@@ -547,8 +566,8 @@ std::string PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode
 	emptyTemplate = emptyTemplate + char(179);
 	int currentPage = 0;
 
-	std::vector<std::string> listData = GetAllStringNode(listDG);
-	size_t size = listData.size();
+	std::string* listData = GetAllStringNode(listDG);
+	int size = SizeOfT(listData);
 
 	int totalPage = size / MAX_ROW_PER_PAGE;
 	if (size % MAX_ROW_PER_PAGE != 0) totalPage++;
@@ -556,9 +575,9 @@ std::string PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode
 	deli += char(179);
 
 	// In ra mh
-	for (size_t i = 0; i < size; i++)
+	for (int i = 0; i < size; i++)
 	{
-		if (i >= MAX_ROW_PER_PAGE * currentPage && i < (currentPage + 1) * MAX_ROW_PER_PAGE)
+		if (i >= (int)MAX_ROW_PER_PAGE * currentPage && i < (currentPage + 1) * (int)MAX_ROW_PER_PAGE)
 		{
 			GoToXY(location.x, location.y + i);
 			std::cout << listData[i];
@@ -633,8 +652,8 @@ std::string PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location, Menu_Mode m
 	emptyTemplate = emptyTemplate + char(179);
 	int currentPage = 0;
 
-	std::vector<std::string> listData = GetAllStringNode(lstDG);
-	size_t size = listData.size();
+	std::string* listData = GetAllStringNode(lstDG);
+	int size = SizeOfT(listData);
 
 	int totalPage = size / MAX_ROW_PER_PAGE;
 	if (size % MAX_ROW_PER_PAGE != 0) totalPage++;
@@ -645,7 +664,7 @@ std::string PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location, Menu_Mode m
 	std::string minHT;
 	std::string min;
 	int posMin;
-	for (size_t i = 0; i < size - 1; i++)
+	for (int i = 0; i < size - 1; i++)
 	{
 		if (i == 6)
 		{
@@ -655,7 +674,7 @@ std::string PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location, Menu_Mode m
 		auto temp = Split(listData[i], deli);
 		minHT = Trim(temp[3]) + Trim(temp[2]);
 		posMin = i;
-		for (size_t j = i + 1; j < size; j++)
+		for (int j = i + 1; j < size; j++)
 		{
 			temp = Split(listData[j], deli);
 			auto t = (Trim(temp[3]) + Trim(temp[2]));
@@ -673,9 +692,9 @@ std::string PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location, Menu_Mode m
 	}
 	ShowPageNumber(currentPage, totalPage, location.x, location.y + (int)MAX_ROW_PER_PAGE + 1);
 	// In ra mh
-	for (size_t i = 0; i < size; i++)
+	for (int i = 0; i < size; i++)
 	{
-		if (i >= MAX_ROW_PER_PAGE * currentPage && i < (currentPage + 1) * MAX_ROW_PER_PAGE)
+		if (i >= (int)MAX_ROW_PER_PAGE * currentPage && i < (currentPage + 1) * (int)MAX_ROW_PER_PAGE)
 		{
 			GoToXY(location.x, location.y + i);
 			std::cout << listData[i];
@@ -773,7 +792,7 @@ std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Me
 
 	MYPOINT backUpLocation = MYPOINT(0, 0);
 	MYPOINT loc = MYPOINT(0, 0);
-	std::vector<std::string> dsDocGia;
+	std::string* dsDocGia = NULL;
 	std::vector<std::vector<std::string>> datas;
 	std::vector<std::vector<int>> rows;
 	int currentLine = 0;
@@ -786,7 +805,7 @@ std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Me
 	{
 		dsDocGia = GetAllStringNode(listDG);
 	}
-	int totalLine = dsDocGia.size();
+	int totalLine = SizeOfT(dsDocGia);
 	// them page
 	for (int i = 0; i < totalLine / (int)MAX_ROW_PER_PAGE; i++)
 	{

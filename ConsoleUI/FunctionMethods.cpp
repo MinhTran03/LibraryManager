@@ -174,12 +174,12 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 				if (selectedMaDocGia == "ESC")
 				{
 					// load lai data
-					std::vector<std::string> dsDocGia;
+					std::string* dsDocGia = NULL;
 					if (listDG != NULL)
 					{
 						dsDocGia = GetAllStringNode(listDG);
 					}
-					int totalLine = dsDocGia.size();
+					int totalLine = SizeOfT(dsDocGia);
 					auto tempLoc = location;
 					tempLoc.y += 3;
 					for (int i = 0; i < totalLine; i++)
@@ -238,12 +238,12 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 				if (selectedMaDocGia == "ESC")
 				{
 					// load lai data
-					std::vector<std::string> dsDocGia;
+					std::string* dsDocGia = NULL;
 					if (listDG != NULL)
 					{
 						dsDocGia = GetAllStringNode(listDG);
 					}
-					int totalLine = dsDocGia.size();
+					int totalLine = SizeOfT(dsDocGia);
 					auto tempLoc = location;
 					tempLoc.y += 3;
 					for (int i = 0; i < totalLine; i++)
@@ -290,10 +290,12 @@ void InDanhSachDG(LIST_DOCGIA listDG, MYPOINT location)
 		if (result == 0)
 		{
 			temp = PrintAllDocGia(listDG, location, 2);
+			ClearScreen(BG_COLOR);
 		}
 		else if (result == 1)
 		{
 			temp = PrintAllDocGia(listDG, location, 1);
+			ClearScreen(BG_COLOR);
 		}
 		else
 		{
@@ -638,8 +640,8 @@ void TimSach(LIST_DAUSACH& listDS, MYPOINT location)
 		isCancel = false;
 		isTrue = false;
 		ClearArea(0, point.y + 8, 170, SCREEN_HEIGHT - FOOTER_HEIGHT - point.y - 8);
-		ClearLine(1);
 		DrawMessageBox(point, "NHAP TEN SACH CAN TIM", searchKey, isEnter, isCancel, char(219), GetKey_Only);
+		ClearLine(1);
 		if (isEnter)
 		{
 			string selectedDauSach = listDS.PrintAllSearch({ location.x + 10, location.y + 10 }, searchKey, Menu_Mode::Both);

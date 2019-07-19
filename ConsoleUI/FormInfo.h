@@ -11,11 +11,12 @@ void DocGiaInfo(RECTANGLE rect, DOCGIA docGia)
 	SetBGColor(BG_COLOR);
 	SetTextColor(TEXT_INPUT_COLOR);
 	std::string title = "THONG TIN DOC GIA";
-	std::vector<std::string> docGiaInfo = GetDGtoVector(docGia);
+	auto docGiaInfo = GetDGtoVector(docGia);
+	int size = SizeOfT(docGiaInfo);
 	std::vector<std::string> labels = { "Ma doc gia", "Ho", "Ten", "Gioi tinh", "Trang thai the" };
 	DrawRectangleBoder(rect);
 
-	for (size_t i = 0; i < docGiaInfo.size(); i++)
+	for (int i = 0; i < size; i++)
 	{
 		GoToXY(rect.location.x + 2, rect.location.y + 1);
 		cout << labels[i];

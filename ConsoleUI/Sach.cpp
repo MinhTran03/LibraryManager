@@ -83,7 +83,7 @@ SACH ParseVectorString(std::vector<std::string> data)
 		sach.trangThai = DaMuon;
 	else
 		sach.trangThai = DaThanhLy;
-	 sach.viTri = ToUpperString(data[2]);
+	sach.viTri = ToUpperString(data[2]);
 	return sach;
 }
 SACH ParseVectorStringFile(std::vector<std::string> data)
@@ -106,7 +106,7 @@ SACH SACH::Input(RECTANGLE rect, std::string maSach)
 	std::vector<std::string> labels = { "Ma sach", "Trang thai:", "Vi tri:" };
 	std::vector<CONDITION> conditions = { {All, 6, 6, Default}, {Enum, 1, 3, Default}, {Mix, VITRI_MAXSIZE, VITRI_MAXSIZE} };
 	auto form = FORMINPUT(labels, conditions, rect, title);
-	std::vector<std::string> guilds = {"MA SACH LA TU DONG", "0: CHO MUON DUOC\n1: DA MUON\n2: DA THANH LY", "BAO GOM CHU VA SO"};
+	std::vector<std::string> guilds = { "MA SACH LA TU DONG", "0: CHO MUON DUOC\n1: DA MUON\n2: DA THANH LY", "BAO GOM CHU VA SO" };
 	form.Guilds = guilds;
 	form.ParseData({ maSach, "0", "" });
 	form.currentLine = 2;
@@ -434,13 +434,15 @@ bool LIST_SACH::WriteToFile(std::string path)
 	auto fileHandler = FILEHANDLER(path);
 	try
 	{
-		std::vector<std::string> data;
+		int c = 0;
+		std::string* data = NULL;
 		for (auto p = this->pHead; p != NULL; p = p->pNext)
 		{
 			auto temp = p->data.ToStringFile();
 			if (p != this->pTail)
 				temp += '\n';
-			data.push_back(temp);
+			//data.push_back(temp);
+			PushBack(data, temp, c);
 		}
 		fileHandler.WriteToFile(data, Replace);
 	}

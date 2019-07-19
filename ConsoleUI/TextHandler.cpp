@@ -205,3 +205,11 @@ std::string ToUpperString(std::string text)
 	}
 	return result;
 }
+void VTString2ArrString(std::vector<std::string> data, std::string result[])
+{
+	int count = 0;
+	for (auto item : data)
+	{
+		result[count++] = item;
+	}
+}

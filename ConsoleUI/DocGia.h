@@ -63,8 +63,8 @@ int GetRandomMaDG(LIST_DOCGIA listDG);
 void SwapMaDG(int pos1, int pos2);
 // Chuyen vector string thanh doc gia
 DOCGIA ParseVectorString(std::vector<std::string> data);
-//
-std::vector<std::string> GetDGtoVector(DOCGIA docGia);
+// ...
+std::string* GetDGtoVector(DOCGIA docGia);
 // Giai phong vung nho
 void FreeMemory(NODE_DOCGIA* root);
 // form nhap doc gia moi
@@ -78,7 +78,7 @@ void NLR(LIST_DOCGIA listDG);
 // tim doc gia dua vao maDocGia
 NODE_DOCGIA* Search(LIST_DOCGIA listDG, int maDocGia);
 // ...
-std::vector<std::string> GetAllStringNode(LIST_DOCGIA listDG);
+std::string* GetAllStringNode(LIST_DOCGIA listDG);
 // ...
 void TimPhanTuTheMangTraiNhatCayConPhai(LIST_DOCGIA& p, LIST_DOCGIA& q);
 // ...
