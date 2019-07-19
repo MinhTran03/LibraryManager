@@ -196,10 +196,10 @@ std::string LIST_MUONTRA::ShowFormMuonSach(LIST_DAUSACH listDS, MYPOINT location
 	int currentLine = 0;
 	int totalLine;
 
-	std::vector<std::string> datas = this->GetAllNodeStringMuonSach(listDS);
+	std::string* datas = this->GetAllNodeStringMuonSach(listDS);
 	std::vector<int> rows;
 
-	totalLine = (int)datas.size();
+	totalLine = SizeOfT(datas);
 
 	if (mode == Menu_Mode::Show_Only || mode == Menu_Mode::Both)
 	{
@@ -309,10 +309,10 @@ std::string LIST_MUONTRA::Show(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode 
 	int currentLine = 0;
 	int totalLine;
 
-	std::vector<std::string> datas = this->GetAllNodeString(listDS);
+	std::string* datas = this->GetAllNodeString(listDS);
 	std::vector<int> rows;
 
-	totalLine = (int)datas.size();
+	totalLine = SizeOfT(datas);
 
 	if (mode == Menu_Mode::Show_Only || mode == Menu_Mode::Both)
 	{
@@ -400,31 +400,35 @@ std::string LIST_MUONTRA::Show(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode 
 	return "";
 }
 // duyet list lay data
-std::vector<std::string> LIST_MUONTRA::GetAllNodeStringMuonSach(LIST_DAUSACH listDS)
+std::string* LIST_MUONTRA::GetAllNodeStringMuonSach(LIST_DAUSACH listDS)
 {
-	std::vector<std::string> result;
+	std::string* result = NULL;
+	int count = 0;
 	for (auto p = this->pHead; p != NULL; p = p->pNext)
 	{
 		if (p->data.trangThai != SachDaTra)
 		{
 			auto isbn = Split(p->data.maSach, "_");
 			auto dauSach = listDS.GetDauSach(StringToCharArray(isbn[0]));
-			result.push_back(p->data.ToStringMuonSach(*dauSach));
+			PushBack(result, p->data.ToStringMuonSach(*dauSach), count);
+			//result.push_back(p->data.ToStringMuonSach(*dauSach));
 		}
 	}
 	return result;
 }
 // duyet list lay data
-std::vector<std::string> LIST_MUONTRA::GetAllNodeString(LIST_DAUSACH listDS)
+std::string* LIST_MUONTRA::GetAllNodeString(LIST_DAUSACH listDS)
 {
-	std::vector<std::string> result;
+	std::string* result = NULL;
+	int count = 0;
 	for (auto p = this->pHead; p != NULL; p = p->pNext)
 	{
 		if (p->data.trangThai != SachDaTra)
 		{
 			auto isbn = Split(p->data.maSach, "_");
 			auto dauSach = listDS.GetDauSach(StringToCharArray(isbn[0]));
-			result.push_back(p->data.ToString(*dauSach));
+			PushBack(result, p->data.ToString(*dauSach), count);
+			//result.push_back(p->data.ToString(*dauSach));
 		}
 	}
 	return result;

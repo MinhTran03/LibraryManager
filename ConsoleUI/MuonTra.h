@@ -59,9 +59,9 @@ struct LIST_MUONTRA
 	// hien thi cac sach doc gia dang muon
 	std::string Show(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode = Both);
 	// duyet list lay data, can dau sach de tim ten sach
-	std::vector<std::string> GetAllNodeString(LIST_DAUSACH listDS);
+	std::string* GetAllNodeString(LIST_DAUSACH listDS);
 	// duyet list lay data
-	std::vector<std::string> GetAllNodeStringMuonSach(LIST_DAUSACH listDS);
+	std::string* GetAllNodeStringMuonSach(LIST_DAUSACH listDS);
 	// xoa dua vao maSach
 	bool Delete(std::string maSach);
 	// xoa sau node before
