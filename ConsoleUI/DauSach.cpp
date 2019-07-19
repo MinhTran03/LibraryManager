@@ -655,8 +655,6 @@ bool LIST_DAUSACH::IsContainTheLoai(std::string theLoai)
 DAUSACH* LIST_DAUSACH::GetTheLoai(std::string tenTheLoai, int& count)
 {
 	DAUSACH* result = NULL;
-	//std::vector<DAUSACH> result;
-	//int count = 0;
 	for (int i = 0; i < this->size; i++)
 	{
 		if (this->nodes[i]->tenTheLoai == tenTheLoai)
@@ -717,6 +715,7 @@ bool LIST_DAUSACH::WriteToFile(std::string path)
 			PushBack(data, temp, c);
 		}
 		fileHandler.WriteToFile(data, Replace);
+		delete[] data;
 	}
 	catch (const std::exception& ex)
 	{
@@ -830,7 +829,6 @@ std::string LIST_DAUSACH::PrintAllSearch(MYPOINT location, std::string tenSach, 
 	MYPOINT backUpLocation = MYPOINT(0, 0);
 
 	// print label
-
 	if (tenSach == "")
 	{
 		PrintLabelDauSach(location, totalLine);
@@ -918,11 +916,10 @@ std::string LIST_DAUSACH::PrintAllSearch(MYPOINT location, std::string tenSach, 
 					ClearArea(rect.location.x, rect.location.y, rect.size.width, rect.size.height);
 
 					std::string temp = listISBN[currentLine].dsSach.PrintAll({ location.x + (int)DAUSACH_TOTAL_WIDTH + 1, y }, Menu_Mode::Show_Only);
-					//return listISBN[currentLine].isbn;
-
 				}
 				else if (inputKey == Key::ESC)
 				{
+					delete[] listISBN;
 					return "ESC";
 				}
 			} while (!_kbhit());

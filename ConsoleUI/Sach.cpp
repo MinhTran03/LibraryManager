@@ -445,6 +445,7 @@ bool LIST_SACH::WriteToFile(std::string path)
 			PushBack(data, temp, c);
 		}
 		fileHandler.WriteToFile(data, Replace);
+		delete[] data;
 	}
 	catch (const std::exception& ex)
 	{

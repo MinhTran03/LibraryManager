@@ -285,14 +285,17 @@ std::string LIST_MUONTRA::ShowFormMuonSach(LIST_DAUSACH listDS, MYPOINT location
 				std::string d = "";
 				d += char(179);
 				auto data = Split(datas[currentLine], d);
+				delete[] datas;
 				return data[1];
 			}
 			else if (inputKey == Key::TAB)
 			{
+				delete[] datas;
 				return "TAB";
 			}
 			else if (inputKey == Key::ESC)
 			{
+				delete[] datas;
 				return "ESC";
 			}
 		} while (!_kbhit());
@@ -591,6 +594,7 @@ bool LIST_MUONTRA::WriteToFile(std::string path)
 			PushBack(data, temp, c);
 		}
 		fileHandler.WriteToFile(data, Replace);
+		delete[] data;
 	}
 	catch (const std::exception& ex)
 	{

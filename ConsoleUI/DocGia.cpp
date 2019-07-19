@@ -1,6 +1,6 @@
 #include "DocGia.h"
 
-std::vector<int> maDocGiaArr;
+int* maDocGiaArr;
 int newPos;
 
 #pragma region -------------------------------------------DOCGIA
@@ -341,7 +341,7 @@ bool WriteMaDGToFile(std::string path)
 	try
 	{
 		int c = 0;
-		int size = maDocGiaArr.size();
+		int size = SizeOfT(maDocGiaArr);
 		std::string* data = NULL;
 		for (auto i = 0; i < size; i++)
 		{
@@ -353,6 +353,7 @@ bool WriteMaDGToFile(std::string path)
 			PushBack(data, temp, c);
 		}
 		fileHandler.WriteToFile(data, Replace);
+		delete[] data;
 	}
 	catch (const std::exception& ex)
 	{
@@ -378,7 +379,8 @@ void SwapMaDG(int pos1, int pos2)
 // Remove ma doc gia from array khi them moi doc gia
 void RemoveMaDG()
 {
-	maDocGiaArr.erase(maDocGiaArr.begin() + newPos);
+	//maDocGiaArr.erase(maDocGiaArr.begin() + newPos);
+	Erase(maDocGiaArr, newPos);
 }
 // Giai phong vung nho
 void FreeMemory(NODE_DOCGIA* root)
@@ -918,10 +920,12 @@ std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Me
 			}
 			if (inputKey == Key::ENTER)
 			{
-				std::string deli = ""; deli += char(179);
+				std::string deli = ""; 
+				deli += char(179);
 				auto temp = Split(datas[currentPage][currentLine], deli);
 				temp[1] = Trim(temp[1]);
 				page = currentPage;
+				delete[] dsDocGia;
 				return temp[1];
 			}
 			else if (inputKey == Key::PAGE_DOWN && currentPage < (int)datas.size() - 1)
@@ -973,6 +977,7 @@ std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Me
 			else if (inputKey == Key::ESC)
 			{
 				page = currentPage;
+				delete[] dsDocGia;
 				//ClearArea(location.x, backUpLocation.y - 3, DAUSACH_TOTAL_WIDTH, totalLine + 4);
 				return "ESC";
 			}

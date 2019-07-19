@@ -103,7 +103,7 @@ struct FILEHANDLER
 		}
 	}
 
-	std::vector<int> GetLinesInt()
+	int* GetLinesInt()
 	{
 		if (IsValidFile(this->filePath) == Not_Exist)
 		{
@@ -112,13 +112,14 @@ struct FILEHANDLER
 		else
 		{
 			std::ifstream fileInput(filePath);
-			std::vector<int> result;
+			int* result = NULL;
 			std::string line;
+			int count = 0;
 			while (!fileInput.eof())
 			{
 				getline(fileInput, line);
 				auto tem = stoi(line);
-				result.push_back(tem);
+				PushBack(result, tem, count);
 			}
 			fileInput.close();
 			return result;
