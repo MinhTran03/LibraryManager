@@ -22,6 +22,8 @@ struct MUONTRA
 	// can dau sach de tim ten sach
 	std::string ToString(DAUSACH dauSach);
 	std::string ToStringMuonSach(DAUSACH dauSach);
+	// tao line string de ghi ra file
+	std::string ToStringFile();
 };
 
 struct NODE_MUONTRA
@@ -64,5 +66,9 @@ struct LIST_MUONTRA
 	bool Delete(std::string maSach);
 	// xoa sau node before
 	bool DeleteAfter(NODE_MUONTRA* beforeNode);
+	// ghi ra filr text
+	bool WriteToFile(std::string path);
+	// doc tu file
+	bool ReadFromFile(std::string path);
 };
 

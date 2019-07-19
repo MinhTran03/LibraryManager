@@ -9,6 +9,7 @@ int main()
 	LIST_DOCGIA listDG = LIST_DOCGIA();
 	LoadMaDG(listDG);
 	LoadDocGia(listDG);
+	DuyetDocFile(listDG);
 	
 	// load dau sach
 	auto listDS = LIST_DAUSACH();
@@ -20,13 +21,13 @@ int main()
 	}
 	ClearLine(0);
 
-	DATETIME d = DATETIME();
+	/*DATETIME d = DATETIME();
 	d.SetDateTimeNow();
 	MUONTRA muonTra = MUONTRA();
 	muonTra.maSach = "000001_0001";
 	muonTra.ngayMuon = d;
 	muonTra.trangThai = TrangThaiMuonTra::SachChuaTra;
-	listDG->data.listMuonTra.InsertAtTail(muonTra);
+	listDG->data.listMuonTra.InsertAtTail(muonTra);*/
 	//muonTra.maSach = "000002_0001";
 	//listDG->data.listMuonTra.InsertAtTail(muonTra);
 

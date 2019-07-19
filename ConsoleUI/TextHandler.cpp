@@ -176,6 +176,8 @@ void StringToCharArray(std::string source, char dest[])
 std::string Trim(std::string text)
 {
 	auto at = text.find_first_of(' ');
+	if (at > text.size())
+		return text;
 	text.erase(text.begin() + at, text.end());
 	return text;
 }

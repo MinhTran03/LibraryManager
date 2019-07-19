@@ -62,7 +62,7 @@ std::string MUONTRA::ToString(DAUSACH dauSach)
 	// TRANG THAI MUON TRA
 	result += char(179);
 	std::string tem = "";
-	if(this->trangThai == TrangThaiMuonTra::LamMatSach)
+	if (this->trangThai == TrangThaiMuonTra::LamMatSach)
 		tem += "Lam mat sach";
 	else if (this->trangThai == TrangThaiMuonTra::SachChuaTra)
 		tem += "Sach chua tra";
@@ -97,6 +97,65 @@ std::string MUONTRA::ToStringMuonSach(DAUSACH dauSach)
 	result += char(179);
 	return result;
 }
+// tao line string de ghi ra file
+std::string MUONTRA::ToStringFile()
+{
+	std::string result = "";
+	result = std::string(this->maSach);
+	result += '-';
+	result += this->ngayMuon.ToStringDate();
+	result += '-';
+	if (this->ngayTra.SubToDefaultDate() == 0)
+	{
+		result += "NULL";
+		result += '-';
+	}
+	else
+	{
+		result += this->ngayTra.ToStringDate();
+		result += '-';
+	}
+	switch (this->trangThai)
+	{
+	case TrangThaiMuonTra::LamMatSach:
+		result += "Lam mat sach";
+		break;
+	case TrangThaiMuonTra::SachChuaTra:
+		result += "Sach chua tra";
+		break;
+	case TrangThaiMuonTra::SachDaTra:
+		result += "Sach da tra";
+		break;
+	default:
+		break;
+	}
+	return result;
+}
+
+MUONTRA ParseVectorStringFile(std::vector<std::string> data)
+{
+	DATETIME dt = DATETIME();
+	MUONTRA mt;
+	mt.maSach = data[0];
+	if (data[2] == "NULL")
+	{
+		mt.ngayTra = dt;
+	}
+	else
+	{
+		dt.ParseStringDate(data[2]);
+		mt.ngayTra = dt;
+	}
+	dt.ParseStringDate(data[1]);
+	mt.ngayMuon = dt;
+	if (ToLowerString(data[3]) == "sach chua tra")
+		mt.trangThai = SachChuaTra;
+	else if (ToLowerString(data[3]) == "sach da tra")
+		mt.trangThai = SachDaTra;
+	else
+		mt.trangThai = LamMatSach;
+	return mt;
+}
 
 // ...
 LIST_MUONTRA::LIST_MUONTRA()
@@ -117,7 +176,7 @@ void PrintLabelMuonTra(MYPOINT location, int row)
 {
 	std::vector<std::string> labels = { "MA SACH", "TEN SACH", "NGAY MUON", "NGAY TRA", "SO NGAY MUON", "VI TRI", "TRANG THAI" };
 	auto lstBorder = LISTBORDERTEXT(labels);
-	lstBorder.Draw(location, { MASACH_WIDTH, TENSACH_WIDTH, NGAY_WIDTH, NGAY_WIDTH, 
+	lstBorder.Draw(location, { MASACH_WIDTH, TENSACH_WIDTH, NGAY_WIDTH, NGAY_WIDTH,
 		SONGAYMUON_WIDTH, VITRI_WIDTH, TRANGTHAI_MUONTRA_WIDTH },
 		row, BORDER_COLOR);
 }
@@ -193,7 +252,7 @@ std::string LIST_MUONTRA::ShowFormMuonSach(LIST_DAUSACH listDS, MYPOINT location
 						GoToXY(location.x, rows[--currentLine]);
 						HightLight(datas[currentLine], hlBGColor, hlTextColor);
 					}
-					else if(totalLine != 1)
+					else if (totalLine != 1)
 					{
 						GoToXY(location.x, rows[currentLine]);
 						HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
@@ -211,7 +270,7 @@ std::string LIST_MUONTRA::ShowFormMuonSach(LIST_DAUSACH listDS, MYPOINT location
 						GoToXY(location.x, rows[++currentLine]);
 						HightLight(datas[currentLine], hlBGColor, hlTextColor);
 					}
-					else if(totalLine != 1)
+					else if (totalLine != 1)
 					{
 						GoToXY(location.x, rows[currentLine]);
 						HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
@@ -346,9 +405,12 @@ std::vector<std::string> LIST_MUONTRA::GetAllNodeStringMuonSach(LIST_DAUSACH lis
 	std::vector<std::string> result;
 	for (auto p = this->pHead; p != NULL; p = p->pNext)
 	{
-		auto isbn = Split(p->data.maSach, "_");
-		auto dauSach = listDS.GetDauSach(StringToCharArray(isbn[0]));
-		result.push_back(p->data.ToStringMuonSach(*dauSach));
+		if (p->data.trangThai != SachDaTra)
+		{
+			auto isbn = Split(p->data.maSach, "_");
+			auto dauSach = listDS.GetDauSach(StringToCharArray(isbn[0]));
+			result.push_back(p->data.ToStringMuonSach(*dauSach));
+		}
 	}
 	return result;
 }
@@ -358,9 +420,12 @@ std::vector<std::string> LIST_MUONTRA::GetAllNodeString(LIST_DAUSACH listDS)
 	std::vector<std::string> result;
 	for (auto p = this->pHead; p != NULL; p = p->pNext)
 	{
-		auto isbn = Split(p->data.maSach, "_");
-		auto dauSach = listDS.GetDauSach(StringToCharArray(isbn[0]));
-		result.push_back(p->data.ToString(*dauSach));
+		if (p->data.trangThai != SachDaTra)
+		{
+			auto isbn = Split(p->data.maSach, "_");
+			auto dauSach = listDS.GetDauSach(StringToCharArray(isbn[0]));
+			result.push_back(p->data.ToString(*dauSach));
+		}
 	}
 	return result;
 }
@@ -384,7 +449,7 @@ NODE_MUONTRA* LIST_MUONTRA::MakeNode(MUONTRA muonTra) //tao 1 Node P chua thong 
 	return temp;
 }
 // them o dau
-void LIST_MUONTRA::InsertAtHead(MUONTRA muonTra) 
+void LIST_MUONTRA::InsertAtHead(MUONTRA muonTra)
 {
 	NODE_MUONTRA* newNode = MakeNode(muonTra);
 	if (pHead == NULL) {
@@ -397,7 +462,7 @@ void LIST_MUONTRA::InsertAtHead(MUONTRA muonTra)
 	pHead = newNode;
 }
 // them o cuoi
-void LIST_MUONTRA::InsertAtTail(MUONTRA muonTra) 
+void LIST_MUONTRA::InsertAtTail(MUONTRA muonTra)
 {
 	NODE_MUONTRA* newNode = MakeNode(muonTra);
 	if (pHead == NULL)
@@ -423,19 +488,26 @@ NODE_MUONTRA* LIST_MUONTRA::Search(std::string maSach)
 	return NULL;
 }
 // xoa o dau
-void LIST_MUONTRA::DeleteAtHead() 
+void LIST_MUONTRA::DeleteAtHead()
 {
-	if (pHead == NULL) 
+	if (pHead == NULL)
 	{
+		return;
+	}
+	// ds chi co 1 ptu
+	if (this->pHead->pNext == NULL)
+	{
+		this->pHead = NULL;
+		this->pTail = NULL;
 		return;
 	}
 	pHead = pHead->pNext;
 	pHead->pPrev = NULL;
 }
 // xoa o cuoi
-void LIST_MUONTRA::DeleteAtTail() 
+void LIST_MUONTRA::DeleteAtTail()
 {
-	if (pHead == NULL) 
+	if (pHead == NULL)
 	{
 		return;
 	}
@@ -496,5 +568,51 @@ bool LIST_MUONTRA::DeleteAfter(NODE_MUONTRA* beforeNode)
 	afterNode->pPrev = beforeNode;
 	delete deleteNode;
 
+	return true;
+}
+// ghi ra filr text
+bool LIST_MUONTRA::WriteToFile(std::string path)
+{
+	auto fileHandler = FILEHANDLER(path);
+	try
+	{
+		std::vector<std::string> data;
+		for (auto p = this->pHead; p != NULL; p = p->pNext)
+		{
+			auto temp = p->data.ToStringFile();
+			if (p != this->pTail)
+				temp += '\n';
+			data.push_back(temp);
+		}
+		fileHandler.WriteToFile(data, Replace);
+	}
+	catch (const std::exception& ex)
+	{
+		GoToXY(0, 0);
+		std::cout << ex.what();
+		return false;
+	}
+	return true;
+}
+// doc file
+bool LIST_MUONTRA::ReadFromFile(std::string path)
+{
+	auto fileHandler = FILEHANDLER(path);
+	try
+	{
+		auto lstMTVector = fileHandler.GetTokens();
+		int size = lstMTVector.size();
+		for (int i = 0; i < size; i++)
+		{
+			MUONTRA mt = ParseVectorStringFile(lstMTVector[i]);
+			this->InsertAtTail(mt);
+		}
+	}
+	catch (const std::exception& ex)
+	{
+		GoToXY(0, 0);
+		std::cout << ex.what();
+		return false;
+	}
 	return true;
 }

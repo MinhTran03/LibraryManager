@@ -495,7 +495,7 @@ DOCGIA InputDocGia(int maThe, RECTANGLE rect)
 	std::vector<CONDITION> conditions = { {Number_Only, 1, 4, Default}, {Name, 1, HODOCGIA_WIDTH},{Name, 1, TENDOCGIA_WIDTH},
 													{Enum, 1, 2 },{Enum2, 1, 2, Default} };
 	auto form = FORMINPUT(labels, conditions, rect, inputTitle);
-	std::vector<std::string> guilds = {"MA DOC GIA LA TU DONG", "CHI NHAP CHU CAI", "CHI NHAP CHU CAI", "0: NAM\n1: NU", "0: THE BI KHOA\n1: DANG HOAT DONG"};
+	std::vector<std::string> guilds = { "MA DOC GIA LA TU DONG", "CHI NHAP CHU CAI", "CHI NHAP CHU CAI", "0: NAM\n1: NU", "0: THE BI KHOA\n1: DANG HOAT DONG" };
 	form.Guilds = guilds;
 	DOCGIA docGia = DOCGIA();
 	form.ParseData({ std::to_string(maThe), "","","0","1" });
@@ -760,7 +760,6 @@ void PrintStringDocGia(std::string data, MYPOINT location)
 	GoToXY(location.x, location.y);
 	cout << data;
 }
-
 // in danh sach de quan ly doc gia co highLight
 std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Menu_Mode mode)
 {
@@ -810,7 +809,7 @@ std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Me
 	if (mode == Menu_Mode::Show_Only || mode == Menu_Mode::Both)
 	{
 		PrintLabelDocGia(location, MAX_ROW_PER_PAGE);
-		ShowPageNumber(currentPage, datas.size(),location.x, location.y + (int)MAX_ROW_PER_PAGE + 4);
+		ShowPageNumber(currentPage, datas.size(), location.x, location.y + (int)MAX_ROW_PER_PAGE + 4);
 		location.y += 3;
 		backUpLocation = location;
 		//print data
@@ -851,7 +850,7 @@ std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Me
 	if (mode == Menu_Mode::Both)
 	{
 		currentLine = 0;
-		
+
 		char inputKey = NULL;
 		HidePointer();
 		do
@@ -961,5 +960,45 @@ std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Me
 		} while (!_kbhit());
 	}
 	return "Empty";
+}
+// luu list muontra vo file
+bool WriteMuonTraToFile(LIST_MUONTRA& listMT, std::string maDG)
+{
+	std::string path = MUONTRA_FILE_PATH;
+	path += maDG;
+	path += ".txt";
+	return listMT.WriteToFile(path);
+}
+void DuyetLuuFile(LIST_DOCGIA lstDG)
+{
+	if (lstDG != NULL)
+	{
+		DuyetLuuFile(lstDG->pLeft);
+		if (lstDG->data.listMuonTra.IsEmpty() == false)
+		{
+			std::string maAsString = "";
+			MergeWordWithNumber(maAsString, lstDG->data.maDocGia, 4);
+			WriteMuonTraToFile(lstDG->data.listMuonTra, maAsString);
+		}
+		DuyetLuuFile(lstDG->pRight);
+	}
+}
+bool ReadMuonTraFromFile(LIST_MUONTRA& listMT, std::string maDG)
+{
+	std::string path = MUONTRA_FILE_PATH;
+	path += maDG;
+	path += ".txt";
+	return listMT.ReadFromFile(path);
+}
+void DuyetDocFile(LIST_DOCGIA& lstDG)
+{
+	if (lstDG != NULL)
+	{
+		DuyetDocFile(lstDG->pLeft);
+		std::string maAsString = "";
+		MergeWordWithNumber(maAsString, lstDG->data.maDocGia, 4);
+		ReadMuonTraFromFile(lstDG->data.listMuonTra, maAsString);
+		DuyetDocFile(lstDG->pRight);
+	}
 }
 #pragma endregion

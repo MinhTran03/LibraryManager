@@ -49,3 +49,11 @@ bool WriteDocGia(LIST_DOCGIA& listDocGia)
 	//std::string path = "D:\\WorkSpace\\LibraryManager\\ConsoleUI\\DocGiaData.txt";
 	return WriteToFile(listDocGia, path);
 }
+bool WriteMuonTra(LIST_MUONTRA& listMT, std::string maDG)
+{
+	std::string path = "D:\\C++\\LibraryManager\\ConsoleUI\\MuonTra\\";
+	//std::string path = "D:\\WorkSpace\\LibraryManager\\ConsoleUI\\MuonTra\\";
+	path += maDG;
+	path += ".txt";
+	return listMT.WriteToFile(path);
+}

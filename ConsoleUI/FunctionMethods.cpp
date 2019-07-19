@@ -6,6 +6,8 @@ void SaveAll(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
 {
 	GoToXY(0, 0);
 	std::cout << "Saving...";
+
+
 	// luu dau sach
 	WriteDauSach(listDS);
 	// luu sach
@@ -19,13 +21,16 @@ void SaveAll(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
 	WriteDocGia(listDG);
 	// luu ma doc gia arr
 	WriteMaDGToFile(MADOCGIA_FILE_PATH);
+	// luu muon tra
+	DuyetLuuFile(listDG);
+
 	GoToXY(0, 0);
 	std::cout << "Done       ";
 }
 
 void FormClosing(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
 {
-	//SaveAll(listDG, listDS);
+	SaveAll(listDG, listDS);
 	//Sleep(1000);
 	// Huy
 	for (int i = 0; i < listDS.size; i++)
@@ -681,6 +686,11 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 			for (auto p = tempMT.pHead; p != NULL; p = p->pNext)
 			{
 				nodeDocGia.data.listMuonTra.InsertAtTail(p->data);
+				auto arr = Split(p->data.maSach, "_");
+				auto dauSach = listDS.GetDauSach(StringToCharArray(arr[0]));
+				// chuyen trang thai sach => da muon
+				auto sach = dauSach->dsSach.Search(p->data.maSach);
+				sach->data.trangThai = DaMuon;
 			}
 			ClearScreen(BG_COLOR);
 			return;
@@ -688,26 +698,30 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 		// qua page list sach chon muon
 		else if (selectDS == "TAB")
 		{
-			if (tempMT.IsEmpty())
+			while (true)
 			{
-				continue;
-			}
-			// qua tab ds sach chon muon
-			cancelDS = tempMT.ShowFormMuonSach(listDS, { locationMuon.x, locationDS.y + 4 + daMuon }, Menu_Mode::Both, 3 - daMuon);
-			cancelDS = Trim(cancelDS);
-			// huy muon sach
-			if (cancelDS == "ESC")
-			{
-				/*ClearScreen(BG_COLOR);
-				return;*/
-			}
-			else if (cancelDS == "TAB")
-			{
-
-			}
-			else
-			{
-				tempMT.Delete(cancelDS);
+				if (tempMT.IsEmpty())
+				{
+					break;
+				}
+				// qua tab ds sach chon muon
+				cancelDS = tempMT.ShowFormMuonSach(listDS, { locationMuon.x, locationDS.y + 4 + daMuon }, Menu_Mode::Both, 3 - daMuon);
+				cancelDS = Trim(cancelDS);
+				// huy muon sach
+				if (cancelDS == "ESC")
+				{
+				}
+				else if (cancelDS == "TAB")
+				{
+					break;
+				}
+				else
+				{
+					tempMT.Delete(cancelDS);
+					auto arr = Split(cancelDS, "_");
+					auto viTri = std::find(isbnDaMuon.begin(), isbnDaMuon.end(), arr[0]);
+					isbnDaMuon.erase(viTri);
+				}
 			}
 		}
 		// kiem tra list sach muon (+) chua day
@@ -750,9 +764,9 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 				muonTra.trangThai = TrangThaiMuonTra::SachChuaTra;
 				tempMT.InsertAtTail(muonTra);
 				isbnDaMuon.push_back(selectDS);
-				// chuyen trang thai sach => da muon
-				auto sach = dauSach->dsSach.Search(maSach);
-				sach->data.trangThai = DaMuon;
+				//// chuyen trang thai sach => da muon
+				//auto sach = dauSach->dsSach.Search(maSach);
+				//sach->data.trangThai = DaMuon;
 
 				// clear sach
 				ClearArea(locationDS.x, locationDS.y, DMS_TOTAL_WIDTH, MAX_ROW_PER_PAGE);
