@@ -5,28 +5,28 @@ void MUONTRA::Print(DAUSACH dauSach, MYPOINT location, Color bgColor, Color text
 	SetTextColor(TEXT_INPUT_COLOR);
 	SetBGColor(BG_COLOR);
 	GoToXY(location.x, location.y);
-	std::cout << this->ToString(dauSach);
+	cout << this->ToString(dauSach);
 }
 // can dau sach de tim ten sach
-std::string MUONTRA::ToString(DAUSACH dauSach)
+string MUONTRA::ToString(DAUSACH dauSach)
 {
 	int temp;
 	// MA SACH
-	std::string result = "";
+	string result = "";
 	result += char(179);
 	result += this->maSach;
 	temp = MASACH_WIDTH - this->maSach.size();
-	result += std::string(temp, ' ');
+	result += string(temp, ' ');
 	// TENSACH
 	result += char(179);
 	result += dauSach.tenSach;
 	temp = TENSACH_WIDTH - dauSach.tenSach.size();
-	result += std::string(temp, ' ');
+	result += string(temp, ' ');
 	// NGAY MUON
 	result += char(179);
 	result += this->ngayMuon.ToStringDate();
 	temp = NGAY_WIDTH - 10;
-	result += std::string(temp, ' ');
+	result += string(temp, ' ');
 	// NGAY TRA
 	result += char(179);
 	if (this->trangThai != TrangThaiMuonTra::SachDaTra)
@@ -39,7 +39,7 @@ std::string MUONTRA::ToString(DAUSACH dauSach)
 		result += this->ngayTra.ToStringDate();
 		temp = NGAY_WIDTH - 10;
 	}
-	result += std::string(temp, ' ');
+	result += string(temp, ' ');
 	// SO NGAY MUON
 	result += char(179);
 	if (this->trangThai != TrangThaiMuonTra::SachDaTra)
@@ -53,15 +53,15 @@ std::string MUONTRA::ToString(DAUSACH dauSach)
 		result += subDay;
 		temp = SONGAYMUON_WIDTH - NumberLength(subDay);
 	}
-	result += std::string(temp, ' ');
+	result += string(temp, ' ');
 	// VI TRI
 	result += char(179);
 	result += dauSach.dsSach.Search(this->maSach)->data.viTri;
 	temp = VITRI_WIDTH - VITRI_MAXSIZE;
-	result += std::string(temp, ' ');
+	result += string(temp, ' ');
 	// TRANG THAI MUON TRA
 	result += char(179);
-	std::string tem = "";
+	string tem = "";
 	if (this->trangThai == TrangThaiMuonTra::LamMatSach)
 		tem += "Lam mat sach";
 	else if (this->trangThai == TrangThaiMuonTra::SachChuaTra)
@@ -70,38 +70,38 @@ std::string MUONTRA::ToString(DAUSACH dauSach)
 		tem += "Sach da tra";
 	result += tem;
 	temp = TENTHELOAI_WIDTH - tem.size();
-	result += std::string(temp, ' ');
+	result += string(temp, ' ');
 	result += char(179);
 	return result;
 }
 // can dau sach de tim ten sach
-std::string MUONTRA::ToStringMuonSach(DAUSACH dauSach)
+string MUONTRA::ToStringMuonSach(DAUSACH dauSach)
 {
 	int temp;
 	// MA SACH
-	std::string result = "";
+	string result = "";
 	result += char(179);
 	result += this->maSach;
 	temp = MASACH_WIDTH - this->maSach.size();
-	result += std::string(temp, ' ');
+	result += string(temp, ' ');
 	// TENSACH
 	result += char(179);
 	result += dauSach.tenSach;
 	temp = TENSACH_WIDTH - dauSach.tenSach.size();
-	result += std::string(temp, ' ');
+	result += string(temp, ' ');
 	// NGAY MUON
 	result += char(179);
 	result += this->ngayMuon.ToStringDate();
 	temp = NGAY_WIDTH - 10;
-	result += std::string(temp, ' ');
+	result += string(temp, ' ');
 	result += char(179);
 	return result;
 }
 // tao line string de ghi ra file
-std::string MUONTRA::ToStringFile()
+string MUONTRA::ToStringFile()
 {
-	std::string result = "";
-	result = std::string(this->maSach);
+	string result = "";
+	result = string(this->maSach);
 	result += '-';
 	result += this->ngayMuon.ToStringDate();
 	result += '-';
@@ -132,7 +132,7 @@ std::string MUONTRA::ToStringFile()
 	return result;
 }
 
-MUONTRA ParseVectorStringFile(std::vector<std::string> data)
+MUONTRA ParseVectorStringFile(vector<string> data)
 {
 	DATETIME dt = DATETIME();
 	MUONTRA mt;
@@ -166,7 +166,7 @@ LIST_MUONTRA::LIST_MUONTRA()
 // row la so dong data
 void PrintLabelMuonSach(MYPOINT location, int row)
 {
-	std::vector<std::string> labels = { "MA SACH", "TEN SACH", "NGAY MUON" };
+	vector<string> labels = { "MA SACH", "TEN SACH", "NGAY MUON" };
 	auto lstBorder = LISTBORDERTEXT(labels);
 	lstBorder.Draw(location, { MASACH_WIDTH, TENSACH_WIDTH, NGAY_WIDTH },
 		row, BORDER_COLOR);
@@ -174,19 +174,19 @@ void PrintLabelMuonSach(MYPOINT location, int row)
 // row la so dong data
 void PrintLabelMuonTra(MYPOINT location, int row)
 {
-	std::vector<std::string> labels = { "MA SACH", "TEN SACH", "NGAY MUON", "NGAY TRA", "SO NGAY MUON", "VI TRI", "TRANG THAI" };
+	vector<string> labels = { "MA SACH", "TEN SACH", "NGAY MUON", "NGAY TRA", "SO NGAY MUON", "VI TRI", "TRANG THAI" };
 	auto lstBorder = LISTBORDERTEXT(labels);
 	lstBorder.Draw(location, { MASACH_WIDTH, TENSACH_WIDTH, NGAY_WIDTH, NGAY_WIDTH,
 		SONGAYMUON_WIDTH, VITRI_WIDTH, TRANGTHAI_MUONTRA_WIDTH },
 		row, BORDER_COLOR);
 }
 // hien form muon sach
-std::string LIST_MUONTRA::ShowFormMuonSach(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode, int totalLineKhung)
+string LIST_MUONTRA::ShowFormMuonSach(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode, int totalLineKhung)
 {
-	std::string emptyTemplate = "";
-	emptyTemplate = emptyTemplate + char(179) + std::string(MASACH_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + std::string(TENSACH_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + std::string(NGAY_WIDTH, ' ');
+	string emptyTemplate = "";
+	emptyTemplate = emptyTemplate + char(179) + string(MASACH_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(TENSACH_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(NGAY_WIDTH, ' ');
 	emptyTemplate = emptyTemplate + char(179);
 
 	HidePointer();
@@ -196,11 +196,11 @@ std::string LIST_MUONTRA::ShowFormMuonSach(LIST_DAUSACH listDS, MYPOINT location
 	int currentLine = 0;
 	int totalLine;
 
-	std::string* datas = this->GetAllNodeStringMuonSach(listDS);
-	std::vector<int> rows;
+	string* datas = this->GetAllNodeStringMuonSach(listDS);
+	int* rows = NULL;
 
 	totalLine = SizeOfT(datas);
-
+	int count = 0;
 	if (mode == Menu_Mode::Show_Only || mode == Menu_Mode::Both)
 	{
 		PrintLabelMuonSach(location, totalLineKhung);
@@ -215,22 +215,29 @@ std::string LIST_MUONTRA::ShowFormMuonSach(LIST_DAUSACH listDS, MYPOINT location
 				{
 					SetTextColor(hlTextColor);
 					SetBGColor(hlBGColor);
-					std::cout << datas[i];
-					rows.push_back(location.y++);
+					cout << datas[i];
+					PushBack(rows, location.y++, count);
+					//rows.push_back(location.y++);
 					SetTextColor(TEXT_INPUT_COLOR);
 					SetBGColor(BG_COLOR);
 					continue;
 				}
-				std::cout << datas[i];
-				rows.push_back(location.y++);
+				cout << datas[i];
+				//rows.push_back(location.y++);
+				PushBack(rows, location.y++, count);
 			}
 			// in khoang trang
 			else
 			{
 				GoToXY(location.x, location.y++);
-				std::cout << emptyTemplate;
+				cout << emptyTemplate;
 			}
 		}
+	}
+	if (mode == Show_Only)
+	{
+		delete[] datas;
+		delete[] rows;
 	}
 	if (mode == Menu_Mode::Both)
 	{
@@ -256,7 +263,7 @@ std::string LIST_MUONTRA::ShowFormMuonSach(LIST_DAUSACH listDS, MYPOINT location
 					{
 						GoToXY(location.x, rows[currentLine]);
 						HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
-						currentLine = rows.size() - 1;
+						currentLine = count - 1;
 						GoToXY(location.x, rows[currentLine]);
 						HightLight(datas[currentLine], hlBGColor, hlTextColor);
 					}
@@ -282,20 +289,23 @@ std::string LIST_MUONTRA::ShowFormMuonSach(LIST_DAUSACH listDS, MYPOINT location
 			}
 			if (inputKey == Key::ENTER)
 			{
-				std::string d = "";
+				string d = "";
 				d += char(179);
 				auto data = Split(datas[currentLine], d);
 				delete[] datas;
+				delete[] rows;
 				return data[1];
 			}
 			else if (inputKey == Key::TAB)
 			{
 				delete[] datas;
+				delete[] rows;
 				return "TAB";
 			}
 			else if (inputKey == Key::ESC)
 			{
 				delete[] datas;
+				delete[] rows;
 				return "ESC";
 			}
 		} while (!_kbhit());
@@ -303,7 +313,7 @@ std::string LIST_MUONTRA::ShowFormMuonSach(LIST_DAUSACH listDS, MYPOINT location
 	return "";
 }
 // hien thi cac sach doc gia dang muon
-std::string LIST_MUONTRA::Show(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode)
+string LIST_MUONTRA::Show(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode)
 {
 	HidePointer();
 	MYPOINT backUpLocation = location;
@@ -312,16 +322,17 @@ std::string LIST_MUONTRA::Show(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode 
 	int currentLine = 0;
 	int totalLine;
 
-	std::string* datas = this->GetAllNodeString(listDS);
-	std::vector<int> rows;
+	string* datas = this->GetAllNodeString(listDS);
+	int* rows = NULL;
 
 	totalLine = SizeOfT(datas);
-
+	int count = 0;
 	if (mode == Menu_Mode::Show_Only || mode == Menu_Mode::Both)
 	{
 		PrintLabelMuonTra(location, 3);
 		location.y += 3;
 		backUpLocation = location;
+		
 		for (int i = 0; i < totalLine; i++)
 		{
 			GoToXY(location.x, location.y);
@@ -329,15 +340,22 @@ std::string LIST_MUONTRA::Show(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode 
 			{
 				SetTextColor(hlTextColor);
 				SetBGColor(hlBGColor);
-				std::cout << datas[i];
-				rows.push_back(location.y++);
+				cout << datas[i];
+				PushBack(rows, location.y++, count);
+				//rows.push_back(location.y++);
 				SetTextColor(TEXT_INPUT_COLOR);
 				SetBGColor(BG_COLOR);
 				continue;
 			}
-			std::cout << datas[i];
-			rows.push_back(location.y++);
+			cout << datas[i];
+			PushBack(rows, location.y++, count);
+			//rows.push_back(location.y++);
 		}
+	}
+	if (mode == Show_Only)
+	{
+		delete[] datas;
+		delete[] rows;
 	}
 	if (mode == Menu_Mode::Both)
 	{
@@ -363,7 +381,7 @@ std::string LIST_MUONTRA::Show(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode 
 					{
 						GoToXY(location.x, rows[currentLine]);
 						HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
-						currentLine = rows.size() - 1;
+						currentLine = count - 1;
 						GoToXY(location.x, rows[currentLine]);
 						HightLight(datas[currentLine], hlBGColor, hlTextColor);
 					}
@@ -391,6 +409,7 @@ std::string LIST_MUONTRA::Show(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode 
 			{
 				auto data = Split(datas[currentLine], "-");
 				delete[] datas;
+				delete[] rows;
 				return data[1];
 			}
 			else if (inputKey == Key::ESC)
@@ -398,6 +417,7 @@ std::string LIST_MUONTRA::Show(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode 
 				GoToXY(location.x, rows[currentLine]);
 				HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
 				delete[] datas;
+				delete[] rows;
 				return "ESC";
 			}
 		} while (!_kbhit());
@@ -405,9 +425,9 @@ std::string LIST_MUONTRA::Show(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode 
 	return "";
 }
 // duyet list lay data
-std::string* LIST_MUONTRA::GetAllNodeStringMuonSach(LIST_DAUSACH listDS)
+string* LIST_MUONTRA::GetAllNodeStringMuonSach(LIST_DAUSACH listDS)
 {
-	std::string* result = NULL;
+	string* result = NULL;
 	int count = 0;
 	for (auto p = this->pHead; p != NULL; p = p->pNext)
 	{
@@ -422,9 +442,9 @@ std::string* LIST_MUONTRA::GetAllNodeStringMuonSach(LIST_DAUSACH listDS)
 	return result;
 }
 // duyet list lay data
-std::string* LIST_MUONTRA::GetAllNodeString(LIST_DAUSACH listDS)
+string* LIST_MUONTRA::GetAllNodeString(LIST_DAUSACH listDS)
 {
-	std::string* result = NULL;
+	string* result = NULL;
 	int count = 0;
 	for (auto p = this->pHead; p != NULL; p = p->pNext)
 	{
@@ -485,7 +505,7 @@ void LIST_MUONTRA::InsertAtTail(MUONTRA muonTra)
 	pTail = newNode;
 }
 // Tim muon tra theo ma sach
-NODE_MUONTRA* LIST_MUONTRA::Search(std::string maSach)
+NODE_MUONTRA* LIST_MUONTRA::Search(string maSach)
 {
 	for (auto node = this->pHead; node != NULL; node = node->pNext)
 	{
@@ -524,7 +544,7 @@ void LIST_MUONTRA::DeleteAtTail()
 	pTail->pNext = NULL;
 }
 // xoa muon tra dua vao ma sach
-bool LIST_MUONTRA::Delete(std::string maSach)
+bool LIST_MUONTRA::Delete(string maSach)
 {
 	if (this->IsEmpty())
 	{
@@ -580,13 +600,13 @@ bool LIST_MUONTRA::DeleteAfter(NODE_MUONTRA* beforeNode)
 	return true;
 }
 // ghi ra filr text
-bool LIST_MUONTRA::WriteToFile(std::string path)
+bool LIST_MUONTRA::WriteToFile(string path)
 {
 	auto fileHandler = FILEHANDLER(path);
 	try
 	{
 		int c = 0;
-		std::string* data = NULL;
+		string* data = NULL;
 		for (auto p = this->pHead; p != NULL; p = p->pNext)
 		{
 			auto temp = p->data.ToStringFile();
@@ -598,16 +618,16 @@ bool LIST_MUONTRA::WriteToFile(std::string path)
 		fileHandler.WriteToFile(data, Replace);
 		delete[] data;
 	}
-	catch (const std::exception& ex)
+	catch (const exception& ex)
 	{
 		GoToXY(0, 0);
-		std::cout << ex.what();
+		cout << ex.what();
 		return false;
 	}
 	return true;
 }
 // doc file
-bool LIST_MUONTRA::ReadFromFile(std::string path)
+bool LIST_MUONTRA::ReadFromFile(string path)
 {
 	auto fileHandler = FILEHANDLER(path);
 	try
@@ -620,10 +640,10 @@ bool LIST_MUONTRA::ReadFromFile(std::string path)
 			this->InsertAtTail(mt);
 		}
 	}
-	catch (const std::exception& ex)
+	catch (const exception& ex)
 	{
 		GoToXY(0, 0);
-		std::cout << ex.what();
+		cout << ex.what();
 		return false;
 	}
 	return true;

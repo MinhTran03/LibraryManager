@@ -18,8 +18,8 @@ struct DOCGIA
 {
 	// 0001 ... 9999
 	int maDocGia;
-	std::string ho;
-	std::string ten;
+	string ho;
+	string ten;
 	GioiTinh gioiTinh;
 	TrangThaiTheDG trangThai;
 
@@ -28,9 +28,9 @@ struct DOCGIA
 	// in ra node
 	void Print(MYPOINT location, Color backColor, Color textColor);
 	// chen | vao giua field
-	std::string ToString();
+	string ToString();
 	// chuyen object dau sach thanh string luu file
-	std::string ToStringFile();
+	string ToStringFile();
 };
 
 struct NODE_DOCGIA
@@ -46,25 +46,25 @@ struct NODE_DOCGIA
 typedef NODE_DOCGIA* LIST_DOCGIA;
 
 // Ghi du lieu ma doc gia ra file text
-bool WriteMaDGToFile(std::string path, LIST_DOCGIA listDG);
+bool WriteMaDGToFile(string path, LIST_DOCGIA listDG);
 // Ghi du lieu doc gia ra file text
-bool WriteToFile(LIST_DOCGIA lstDG, std::string path);
+bool WriteToFile(LIST_DOCGIA lstDG, string path);
 // Remove ma doc gia from array khi them moi doc gia
 void RemoveMaDG(LIST_DOCGIA listDG);
 // Doc mang MADOCGIA tu file
-bool ReadMaDGFromFile(std::string path);
+bool ReadMaDGFromFile(string path);
 // so node cua cay
 int Size(LIST_DOCGIA listDG);
 // Doc tu file txt
-bool ReadFromFile(LIST_DOCGIA& listDG,std::string path);
+bool ReadFromFile(LIST_DOCGIA& listDG,string path);
 // sinh madocgia ngau nhien tu dong
 int GetRandomMaDG(LIST_DOCGIA listDG);
 // ...
 void SwapMaDG(int pos1, int pos2);
 // Chuyen vector string thanh doc gia
-DOCGIA ParseVectorString(std::vector<std::string> data);
+DOCGIA ParseVectorString(vector<string> data);
 // ...
-std::string* GetDGtoVector(DOCGIA docGia);
+string* GetDGtoVector(DOCGIA docGia);
 // Giai phong vung nho
 void FreeMemory(NODE_DOCGIA* root);
 // form nhap doc gia moi
@@ -78,7 +78,7 @@ void NLR(LIST_DOCGIA listDG);
 // tim doc gia dua vao maDocGia
 NODE_DOCGIA* Search(LIST_DOCGIA listDG, int maDocGia);
 // ...
-std::string* GetAllStringNode(LIST_DOCGIA listDG);
+string* GetAllStringNode(LIST_DOCGIA listDG);
 // ...
 void TimPhanTuTheMangTraiNhatCayConPhai(LIST_DOCGIA& p, LIST_DOCGIA& q);
 // ...
@@ -87,13 +87,13 @@ void TimpPhanTuTheMangPhaiNhatCayConTrai(LIST_DOCGIA& p, LIST_DOCGIA& q);
 bool DeleteNode(LIST_DOCGIA& listDG, DOCGIA docGia);
 // In ds doc gia: mode = 1 (Sort theo maDG)
 //                mode = 2 (Sort theo hoTen)
-std::string PrintAllDocGia(LIST_DOCGIA lstDG, MYPOINT location, int mode = 1, Menu_Mode m = Both);
+string PrintAllDocGia(LIST_DOCGIA lstDG, MYPOINT location, int mode = 1, Menu_Mode m = Both);
 // ...
 DOCGIA InputFixDocGia(RECTANGLE rect, DOCGIA docGia);
 // ...
-void PrintStringDocGia(std::string data, MYPOINT location);
+void PrintStringDocGia(string data, MYPOINT location);
 // ...
-std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Menu_Mode mode);
+string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Menu_Mode mode);
 // luu list muon tra vo file
 void DuyetLuuFile(LIST_DOCGIA lstDG);
 void DuyetDocFile(LIST_DOCGIA& lstDG);

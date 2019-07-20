@@ -7,21 +7,21 @@ void SACH::Print(MYPOINT location, Color bgSelectColor, Color textColor)
 	GoToXY(location.x, location.y);
 	SetTextColor(textColor);
 	SetBGColor(bgSelectColor);
-	std::cout << SACH::ToString();
+	cout << SACH::ToString();
 }
 // chen | giua cac field
-std::string SACH::ToString()
+string SACH::ToString()
 {
 	int temp;
 	// Ma sach
-	std::string result = "";
+	string result = "";
 	result += char(179);
 	result += this->maSach;
 	temp = MASACH_WIDTH - this->maSach.size();
-	result += std::string(temp, ' ');
+	result += string(temp, ' ');
 	// Trang thai
 	result += char(179);
-	std::string str = "";
+	string str = "";
 	switch (this->trangThai)
 	{
 	case 0:
@@ -38,22 +38,22 @@ std::string SACH::ToString()
 	}
 	result += str;
 	temp = TRANGTHAISACH_WIDTH - str.size();
-	result += std::string(temp, ' ');
+	result += string(temp, ' ');
 	// Vi tri
 	result += char(179);
 	result += this->viTri;
 	temp = VITRI_WIDTH - this->viTri.size();
-	result += std::string(temp, ' ');
+	result += string(temp, ' ');
 	result += char(179);
 	return result;
 }
 // chuyen object sach sach thanh string luu file
-std::string SACH::ToStringFile()
+string SACH::ToStringFile()
 {
-	std::string result = "";
-	result = std::string(this->maSach);
+	string result = "";
+	result = string(this->maSach);
 	result += '-';
-	std::string str = "";
+	string str = "";
 	switch (this->trangThai)
 	{
 	case 0:
@@ -73,7 +73,7 @@ std::string SACH::ToStringFile()
 	return result;
 }
 //c chuyen vector<string> vo obj Sach
-SACH ParseVectorString(std::vector<std::string> data)
+SACH ParseVectorString(vector<string> data)
 {
 	SACH sach;
 	sach.maSach = data[0];
@@ -86,7 +86,7 @@ SACH ParseVectorString(std::vector<std::string> data)
 	sach.viTri = ToUpperString(data[2]);
 	return sach;
 }
-SACH ParseVectorStringFile(std::vector<std::string> data)
+SACH ParseVectorStringFile(vector<string> data)
 {
 	SACH sach;
 	sach.maSach = data[0];
@@ -100,13 +100,13 @@ SACH ParseVectorStringFile(std::vector<std::string> data)
 	return sach;
 }
 // hien form nhap SACH
-SACH SACH::Input(RECTANGLE rect, std::string maSach)
+SACH SACH::Input(RECTANGLE rect, string maSach)
 {
-	std::string title = "NHAP THONG TIN SACH";
-	std::vector<std::string> labels = { "Ma sach", "Trang thai:", "Vi tri:" };
-	std::vector<CONDITION> conditions = { {All, 6, 6, Default}, {Enum, 1, 3, Default}, {Mix, VITRI_MAXSIZE, VITRI_MAXSIZE} };
+	string title = "NHAP THONG TIN SACH";
+	vector<string> labels = { "Ma sach", "Trang thai:", "Vi tri:" };
+	vector<CONDITION> conditions = { {All, 6, 6, Default}, {Enum, 1, 3, Default}, {Mix, VITRI_MAXSIZE, VITRI_MAXSIZE} };
 	auto form = FORMINPUT(labels, conditions, rect, title);
-	std::vector<std::string> guilds = { "MA SACH LA TU DONG", "0: CHO MUON DUOC\n1: DA MUON\n2: DA THANH LY", "BAO GOM CHU VA SO" };
+	vector<string> guilds = { "MA SACH LA TU DONG", "0: CHO MUON DUOC\n1: DA MUON\n2: DA THANH LY", "BAO GOM CHU VA SO" };
 	form.Guilds = guilds;
 	form.ParseData({ maSach, "0", "" });
 	form.currentLine = 2;
@@ -122,14 +122,14 @@ SACH SACH::Input(RECTANGLE rect, std::string maSach)
 }
 SACH SACH::InputFix(RECTANGLE rect)
 {
-	std::string title = "CAP NHAT THONG TIN SACH";
-	std::vector<std::string> labels = { "Ma sach", "Trang thai:", "Vi tri:" };
-	std::vector<CONDITION> conditions = { {All, 6, 6, Default}, {Enum, 1, 3}, {Mix, VITRI_MAXSIZE, VITRI_MAXSIZE} };
+	string title = "CAP NHAT THONG TIN SACH";
+	vector<string> labels = { "Ma sach", "Trang thai:", "Vi tri:" };
+	vector<CONDITION> conditions = { {All, 6, 6, Default}, {Enum, 1, 3}, {Mix, VITRI_MAXSIZE, VITRI_MAXSIZE} };
 
 	auto form = FORMINPUT(labels, conditions, rect, title);
-	form.ParseData({ this->maSach, std::to_string(this->trangThai), this->viTri });
+	form.ParseData({ this->maSach, to_string(this->trangThai), this->viTri });
 	form.currentLine = 1;
-	std::vector<std::string> guilds = { "MA SACH LA TU DONG", "0: CHO MUON DUOC\n1: DA MUON\n2: DA THANH LY", "BAO GOM CHU VA SO" };
+	vector<string> guilds = { "MA SACH LA TU DONG", "0: CHO MUON DUOC\n1: DA MUON\n2: DA THANH LY", "BAO GOM CHU VA SO" };
 	form.Guilds = guilds;
 	if (form.Show(2))
 	{
@@ -155,7 +155,6 @@ NODE_SACH::NODE_SACH(SACH& data)
 	this->data = data;
 	this->pNext = NULL;
 }
-
 #pragma endregion
 
 #pragma region -------------------------------------------LIST_SACH
@@ -166,7 +165,7 @@ bool LIST_SACH::IsEmpty()
 // row la so dong data
 void PrintLabelSach(MYPOINT location, int row)
 {
-	std::vector<std::string> labels = { "MA SACH", "TRANG THAI", "VI TRI" };
+	vector<string> labels = { "MA SACH", "TRANG THAI", "VI TRI" };
 	auto lstBorder = LISTBORDERTEXT(labels);
 	lstBorder.Draw(location, { MASACH_WIDTH, TRANGTHAISACH_WIDTH, VITRI_WIDTH }, row, BORDER_COLOR);
 }
@@ -181,23 +180,22 @@ int LIST_SACH::Size()
 	return count;
 }
 // In ra mh
-std::string LIST_SACH::PrintAll(MYPOINT location, Menu_Mode mode)
+string LIST_SACH::PrintAll(MYPOINT location, Menu_Mode mode)
 {
 	Color hlBGColor = Color::Cyan;
 	Color hlTextColor = Color::White;
 	int currentLine = 0;
 	int totalLine = 0;
 	// dua vao vector de sort
-	std::vector<SACH> listSach;
+	SACH* listSach = NULL;
 	for (auto p = this->pHead; p != NULL; p = p->pNext)
 	{
-		listSach.push_back(p->data);
-		totalLine++;
+		PushBack(listSach, p->data, totalLine);
 	}
 	// sap xep theo ten sach
 	//SortByTenSach(listISBN);
-	std::vector<std::string> datas;
-	std::vector<int> rows;
+	string* datas = NULL;
+	int* rows = NULL;
 	MYPOINT backUpLocation = MYPOINT(0, 0);
 
 	// print label
@@ -207,6 +205,8 @@ std::string LIST_SACH::PrintAll(MYPOINT location, Menu_Mode mode)
 		location.y += 3;
 		backUpLocation = location;
 		// print data
+		int c1 = 0;
+		int c2 = 0;
 		for (int i = 0; i < totalLine; i++)
 		{
 			listSach[i].Print(location, BG_COLOR, TEXT_INPUT_COLOR);
@@ -216,9 +216,15 @@ std::string LIST_SACH::PrintAll(MYPOINT location, Menu_Mode mode)
 				listSach[i].Print(location, hlBGColor, hlTextColor);
 			}
 			// luu lai vi tri dong
-			rows.push_back(location.y++);
-			datas.push_back(listSach[i].ToString());
+			PushBack(rows, location.y++, c2);
+			PushBack(datas, listSach[i].ToString(), c1);
 		}
+	}
+	if (mode == Show_Only)
+	{
+		delete[] listSach;
+		delete[] rows;
+		delete[] datas;
 	}
 	// bat phim
 	if (mode == Menu_Mode::Both)
@@ -272,10 +278,17 @@ std::string LIST_SACH::PrintAll(MYPOINT location, Menu_Mode mode)
 			}
 			if (inputKey == Key::ENTER)
 			{
-				return listSach[currentLine].maSach;
+				auto temp = listSach[currentLine].maSach;
+				delete[] listSach;
+				delete[] rows;
+				delete[] datas;
+				return temp;
 			}
 			else if (inputKey == Key::ESC)
 			{
+				delete[] rows;
+				delete[] datas;
+				delete[] listSach;
 				return "ESC";
 			}
 		} while (!_kbhit());
@@ -283,26 +296,25 @@ std::string LIST_SACH::PrintAll(MYPOINT location, Menu_Mode mode)
 	return "NULL";
 }
 // In ra mh
-std::string LIST_SACH::PrintAllChoMuonDuoc(MYPOINT location, Menu_Mode mode)
+string LIST_SACH::PrintAllChoMuonDuoc(MYPOINT location, Menu_Mode mode)
 {
 	Color hlBGColor = Color::Cyan;
 	Color hlTextColor = Color::White;
 	int currentLine = 0;
 	int totalLine = 0;
 	// dua vao vector de sort
-	std::vector<SACH> listSach;
+	SACH* listSach = NULL;
 	for (auto p = this->pHead; p != NULL; p = p->pNext)
 	{
 		if (p->data.trangThai == ChoMuonDuoc)
 		{
-			listSach.push_back(p->data);
-			totalLine++;
+			PushBack(listSach, p->data, totalLine);
 		}
 	}
 	// sap xep theo ten sach
 	//SortByTenSach(listISBN);
-	std::vector<std::string> datas;
-	std::vector<int> rows;
+	string* datas = NULL;
+	int* rows = NULL;
 	MYPOINT backUpLocation = MYPOINT(0, 0);
 
 	// print label
@@ -312,6 +324,8 @@ std::string LIST_SACH::PrintAllChoMuonDuoc(MYPOINT location, Menu_Mode mode)
 		location.y += 3;
 		backUpLocation = location;
 		// print data
+		int c1 = 0;
+		int c2 = 0;
 		for (int i = 0; i < totalLine; i++)
 		{
 			listSach[i].Print(location, BG_COLOR, TEXT_INPUT_COLOR);
@@ -321,9 +335,15 @@ std::string LIST_SACH::PrintAllChoMuonDuoc(MYPOINT location, Menu_Mode mode)
 				listSach[i].Print(location, hlBGColor, hlTextColor);
 			}
 			// luu lai vi tri dong
-			rows.push_back(location.y++);
-			datas.push_back(listSach[i].ToString());
+			PushBack(rows, location.y++, c2);
+			PushBack(datas, listSach[i].ToString(), c1);
 		}
+	}
+	if (mode == Show_Only)
+	{
+		delete[] listSach;
+		delete[] rows;
+		delete[] datas;
 	}
 	// bat phim
 	if (mode == Menu_Mode::Both)
@@ -377,10 +397,17 @@ std::string LIST_SACH::PrintAllChoMuonDuoc(MYPOINT location, Menu_Mode mode)
 			}
 			if (inputKey == Key::ENTER)
 			{
-				return listSach[currentLine].maSach;
+				auto temp = listSach[currentLine].maSach;
+				delete[] listSach;
+				delete[] rows;
+				delete[] datas;
+				return temp;
 			}
 			else if (inputKey == Key::ESC)
 			{
+				delete[] listSach;
+				delete[] rows;
+				delete[] datas;
 				return "ESC";
 			}
 		} while (!_kbhit());
@@ -405,7 +432,7 @@ LIST_SACH::LIST_SACH()
 	this->pTail = NULL;
 }
 // Doc ds danh muc sach tu file. Moi file chua 1 dms cua 1 dau sach
-bool LIST_SACH::ReadFromFile(std::string path)
+bool LIST_SACH::ReadFromFile(string path)
 {
 	auto fileHandler = FILEHANDLER(path);
 	try
@@ -420,22 +447,22 @@ bool LIST_SACH::ReadFromFile(std::string path)
 			AddTail(*nodeSach);
 		}
 	}
-	catch (const std::exception& ex)
+	catch (const exception& ex)
 	{
 		GoToXY(0, 0);
-		std::cout << ex.what();
+		cout << ex.what();
 		return false;
 	}
 	return true;
 }
 // Doc obj SACH tu file
-bool LIST_SACH::WriteToFile(std::string path)
+bool LIST_SACH::WriteToFile(string path)
 {
 	auto fileHandler = FILEHANDLER(path);
 	try
 	{
 		int c = 0;
-		std::string* data = NULL;
+		string* data = NULL;
 		for (auto p = this->pHead; p != NULL; p = p->pNext)
 		{
 			auto temp = p->data.ToStringFile();
@@ -447,18 +474,18 @@ bool LIST_SACH::WriteToFile(std::string path)
 		fileHandler.WriteToFile(data, Replace);
 		delete[] data;
 	}
-	catch (const std::exception& ex)
+	catch (const exception& ex)
 	{
 		GoToXY(0, 0);
-		std::cout << ex.what();
+		cout << ex.what();
 		return false;
 	}
 	return true;
 }
 // Thuat toan tu sinh ma sach
-std::string LIST_SACH::AutoGenerateMaSach(char isbn[ISBN_MAXSIZE + 1])
+string LIST_SACH::AutoGenerateMaSach(char isbn[ISBN_MAXSIZE + 1])
 {
-	std::string maSach = isbn;
+	string maSach = isbn;
 	maSach += "_";
 	// kiem tra ds sach rong
 	if (this->pHead == NULL)
@@ -467,8 +494,8 @@ std::string LIST_SACH::AutoGenerateMaSach(char isbn[ISBN_MAXSIZE + 1])
 	}
 	else
 	{
-		std::string oldMax = Split(this->pTail->data.maSach, "_")[1];
-		int newNum = std::stoi(oldMax) + 1;
+		string oldMax = Split(this->pTail->data.maSach, "_")[1];
+		int newNum = stoi(oldMax) + 1;
 		MergeWordWithNumber(maSach, newNum, MASACH_MAXSIZE);
 	}
 	return maSach;
@@ -487,7 +514,7 @@ void LIST_SACH::AddTail(NODE_SACH& node)
 	}
 }
 // Tim sach theo ma
-NODE_SACH* LIST_SACH::Search(std::string maSach)
+NODE_SACH* LIST_SACH::Search(string maSach)
 {
 	for (auto node = this->pHead; node != NULL; node = node->pNext)
 	{
@@ -524,7 +551,7 @@ bool LIST_SACH::DeleteAfter(NODE_SACH* beforeNode)
 	return true;
 }
 // Delete sach dua vao ma sach
-bool LIST_SACH::Delete(std::string maSach)
+bool LIST_SACH::Delete(string maSach)
 {
 	if (this->IsEmpty())
 	{

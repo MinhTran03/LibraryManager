@@ -13,17 +13,17 @@ enum TrangThaiMuonTra
 
 struct MUONTRA
 {
-	std::string maSach;
+	string maSach;
 	DATETIME ngayMuon;
 	DATETIME ngayTra;
 	TrangThaiMuonTra trangThai;
 
 	void Print(DAUSACH dauSach, MYPOINT location, Color bgColor = BG_COLOR, Color textColor = TEXT_INPUT_COLOR);
 	// can dau sach de tim ten sach
-	std::string ToString(DAUSACH dauSach);
-	std::string ToStringMuonSach(DAUSACH dauSach);
+	string ToString(DAUSACH dauSach);
+	string ToStringMuonSach(DAUSACH dauSach);
 	// tao line string de ghi ra file
-	std::string ToStringFile();
+	string ToStringFile();
 };
 
 struct NODE_MUONTRA
@@ -42,7 +42,7 @@ struct LIST_MUONTRA
 	// kiem tra rong
 	bool IsEmpty();
 	// hien form muon sach
-	std::string ShowFormMuonSach(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode, int totalLine = 3);
+	string ShowFormMuonSach(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode, int totalLine = 3);
 	// kiem tra rong
 	// tao moi 1 node
 	NODE_MUONTRA* MakeNode(MUONTRA muonTra);
@@ -55,20 +55,20 @@ struct LIST_MUONTRA
 	// xoa o cuoi
 	void DeleteAtTail();
 	// Tim muon tra theo ma sach
-	NODE_MUONTRA* Search(std::string maSach);
+	NODE_MUONTRA* Search(string maSach);
 	// hien thi cac sach doc gia dang muon
-	std::string Show(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode = Both);
+	string Show(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode = Both);
 	// duyet list lay data, can dau sach de tim ten sach
-	std::string* GetAllNodeString(LIST_DAUSACH listDS);
+	string* GetAllNodeString(LIST_DAUSACH listDS);
 	// duyet list lay data
-	std::string* GetAllNodeStringMuonSach(LIST_DAUSACH listDS);
+	string* GetAllNodeStringMuonSach(LIST_DAUSACH listDS);
 	// xoa dua vao maSach
-	bool Delete(std::string maSach);
+	bool Delete(string maSach);
 	// xoa sau node before
 	bool DeleteAfter(NODE_MUONTRA* beforeNode);
 	// ghi ra filr text
-	bool WriteToFile(std::string path);
+	bool WriteToFile(string path);
 	// doc tu file
-	bool ReadFromFile(std::string path);
+	bool ReadFromFile(string path);
 };
 

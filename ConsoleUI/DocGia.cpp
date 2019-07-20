@@ -5,7 +5,7 @@ int newPos;
 
 #pragma region -------------------------------------------DOCGIA
 // Chuyen vector string trong file thanh doc gia
-DOCGIA ParseVectorStringFile(std::vector<std::string> data)
+DOCGIA ParseVectorStringFile(vector<string> data)
 {
 	DOCGIA docGia;// = new DOCGIA;
 	docGia.maDocGia = atoi(StringToCharArray(data[0]));
@@ -30,7 +30,7 @@ DOCGIA ParseVectorStringFile(std::vector<std::string> data)
 	return docGia;
 }
 // Chuyen vector string thanh doc gia
-DOCGIA ParseVectorString(std::vector<std::string> data)
+DOCGIA ParseVectorString(vector<string> data)
 {
 	DOCGIA docGia;// = new DOCGIA;
 	docGia.maDocGia = atoi(StringToCharArray(data[0]));
@@ -60,30 +60,30 @@ void DOCGIA::Print(MYPOINT location, Color backColor, Color textColor)
 	GoToXY(location.x, location.y);
 	SetTextColor(textColor);
 	SetBGColor(backColor);
-	std::cout << DOCGIA::ToString();
+	cout << DOCGIA::ToString();
 }
 // chen | vao giua field
-std::string DOCGIA::ToString()
+string DOCGIA::ToString()
 {
-	std::string tempStr = "";
+	string tempStr = "";
 	MergeWordWithNumber(tempStr, this->maDocGia, 4);
 	int temp;
 	// ma doc gia
-	std::string result = "";
+	string result = "";
 	result += char(179);
 	result += tempStr;
 	temp = MADOCGIA_WIDTH - tempStr.size();
-	result += std::string(temp, ' ');
+	result += string(temp, ' ');
 	// ho
 	result += char(179);
 	result += this->ho;
 	temp = HODOCGIA_WIDTH - this->ho.size();
-	result += std::string(temp, ' ');
+	result += string(temp, ' ');
 	// ten
 	result += char(179);
 	result += this->ten;
 	temp = TENDOCGIA_WIDTH - this->ten.size();
-	result += std::string(temp, ' ');
+	result += string(temp, ' ');
 	// gioi tinh
 	result += char(179);
 	if (this->gioiTinh == Nam)
@@ -96,7 +96,7 @@ std::string DOCGIA::ToString()
 	}
 	result += tempStr;
 	temp = GIOITINH_WIDTH - tempStr.size();
-	result += std::string(temp, ' ');
+	result += string(temp, ' ');
 	// NAMXUATBAN
 	result += char(179);
 	if (this->trangThai == TheBiKhoa)
@@ -109,15 +109,15 @@ std::string DOCGIA::ToString()
 	}
 	result += tempStr;
 	temp = TRANGTHAIDG_WIDTH - tempStr.size();
-	result += std::string(temp, ' ');
+	result += string(temp, ' ');
 	result += char(179);
 	return result;
 }
 // chuyen object dau sach thanh string luu file
-std::string DOCGIA::ToStringFile()
+string DOCGIA::ToStringFile()
 {
-	std::string result = "";
-	result = std::to_string(this->maDocGia);
+	string result = "";
+	result = to_string(this->maDocGia);
 	result += '-';
 	result += this->ho + '-';
 	result += this->ten + '-';
@@ -142,13 +142,13 @@ std::string DOCGIA::ToStringFile()
 // ...
 DOCGIA InputFixDocGia(RECTANGLE rect, DOCGIA docGia)
 {
-	std::vector<std::string> labels = { "Ma doc gia:", "Ho:", "Ten:", "Gioi tinh:", "Trang thai the:" };
-	std::string inputTitle = "NHAP THONG TIN DOC GIA";
-	std::vector<CONDITION> conditions = { {Number_Only, 1, 4, Default}, {Name, 1, HODOCGIA_WIDTH},{Name, 1, TENDOCGIA_WIDTH},
+	vector<string> labels = { "Ma doc gia:", "Ho:", "Ten:", "Gioi tinh:", "Trang thai the:" };
+	string inputTitle = "NHAP THONG TIN DOC GIA";
+	vector<CONDITION> conditions = { {Number_Only, 1, 4, Default}, {Name, 1, HODOCGIA_WIDTH},{Name, 1, TENDOCGIA_WIDTH},
 									{Enum, 1, 2 },{Enum2, 1, 2, Default} };
 	auto form = FORMINPUT(labels, conditions, rect, inputTitle);
 	//DOCGIA docGia = DOCGIA();
-	std::string temp1, temp2;
+	string temp1, temp2;
 	if (docGia.gioiTinh == Nam)
 	{
 		temp1 = "0";
@@ -165,7 +165,7 @@ DOCGIA InputFixDocGia(RECTANGLE rect, DOCGIA docGia)
 	{
 		temp2 = "1";
 	}
-	form.ParseData({ std::to_string(docGia.maDocGia) , docGia.ho, docGia.ten, temp1, temp2 });
+	form.ParseData({ to_string(docGia.maDocGia) , docGia.ho, docGia.ten, temp1, temp2 });
 	form.currentLine = 1;
 	while (true)
 	{
@@ -201,7 +201,7 @@ int Size(LIST_DOCGIA listDG)
 		return 1 + Size(listDG->pLeft) + Size(listDG->pRight);
 }
 // Doc tu file txt
-bool ReadFromFile(LIST_DOCGIA& listDG, std::string path)
+bool ReadFromFile(LIST_DOCGIA& listDG, string path)
 {
 	auto fileHandler = FILEHANDLER(path);
 	try
@@ -216,10 +216,10 @@ bool ReadFromFile(LIST_DOCGIA& listDG, std::string path)
 			Insert(listDG, *docGia);
 		}
 	}
-	catch (const std::exception& ex)
+	catch (const exception& ex)
 	{
 		GoToXY(0, 0);
-		std::cout << ex.what();
+		cout << ex.what();
 		return false;
 	}
 	return true;
@@ -237,39 +237,39 @@ void GetMaDGtoVector(LIST_DOCGIA lstDG, int*& dsMaDocGia)
 	}
 }
 // ...
-std::string* GetDGtoVector(DOCGIA docGia)
+string* GetDGtoVector(DOCGIA docGia)
 {
-	std::string* docGiaInfo = NULL;
+	string* docGiaInfo = NULL;
 	int c = 0;
 
-	PushBack(docGiaInfo, std::to_string(docGia.maDocGia), c);
+	PushBack(docGiaInfo, to_string(docGia.maDocGia), c);
 	PushBack(docGiaInfo, docGia.ho, c);
 	PushBack(docGiaInfo, docGia.ten, c);
-	//docGiaInfo.push_back(std::to_string(docGia.maDocGia));
+	//docGiaInfo.push_back(to_string(docGia.maDocGia));
 	//docGiaInfo.push_back(docGia.ho);
 	//docGiaInfo.push_back(docGia.ten);
 
 	if (docGia.gioiTinh == Nam)
 	{
-		std::string temp = "Nam";
+		string temp = "Nam";
 		PushBack(docGiaInfo, temp, c);
 		//docGiaInfo.push_back("Nam");
 	}
 	else
 	{
-		std::string temp = "Nu";
+		string temp = "Nu";
 		PushBack(docGiaInfo, temp, c);
 		//docGiaInfo.push_back("Nu");
 	}
 	if (docGia.trangThai == DangHoatDong)
 	{
-		std::string temp = "Dang hoat dong";
+		string temp = "Dang hoat dong";
 		PushBack(docGiaInfo, temp, c);
 		//docGiaInfo.push_back("Dang hoat dong");
 	}
 	else
 	{
-		std::string temp = "The bi khoa";
+		string temp = "The bi khoa";
 		PushBack(docGiaInfo, temp, c);
 		//docGiaInfo.push_back("The bi khoa");
 	}
@@ -277,41 +277,41 @@ std::string* GetDGtoVector(DOCGIA docGia)
 	return docGiaInfo;
 }
 // Doc mang MADOCGIA tu file
-bool ReadMaDGFromFile(std::string path)
+bool ReadMaDGFromFile(string path)
 {
 	auto fileHandler = FILEHANDLER(path);
 	try
 	{
 		maDocGiaArr = fileHandler.GetLinesInt();
 	}
-	catch (const std::exception& ex)
+	catch (const exception& ex)
 	{
 		GoToXY(0, 0);
-		std::cout << ex.what();
+		cout << ex.what();
 		return false;
 	}
 	return true;
 }
 // duyet cay lay data string file
-void PreoderGetStringFile(LIST_DOCGIA lstDG, std::string*& result, int& count)
+void PreorderGetStringFile(LIST_DOCGIA lstDG, string*& result, int& count)
 {
 	if (lstDG != NULL)
 	{
-		PreoderGetStringFile(lstDG->pLeft, result, count);
-		PreoderGetStringFile(lstDG->pRight, result, count);
+		PreorderGetStringFile(lstDG->pLeft, result, count);
+		PreorderGetStringFile(lstDG->pRight, result, count);
 		PushBack(result, lstDG->data.ToStringFile(), count);
 	}
 }
 // duyet cay lay ToStringFile cua node doc gia
-std::string* GetAllStringFileNodePre(LIST_DOCGIA listDG)
+string* GetAllStringFileNodePre(LIST_DOCGIA listDG)
 {
-	std::string* result = NULL;
+	string* result = NULL;
 	int count = 0;
-	PreoderGetStringFile(listDG, result, count);
+	PreorderGetStringFile(listDG, result, count);
 	return result;
 }
 // duyet cay lay data string file
-void InorderGetStringFile(LIST_DOCGIA lstDG, std::string*& result, int& count)
+void InorderGetStringFile(LIST_DOCGIA lstDG, string*& result, int& count)
 {
 	if (lstDG != NULL)
 	{
@@ -322,21 +322,21 @@ void InorderGetStringFile(LIST_DOCGIA lstDG, std::string*& result, int& count)
 	}
 }
 // duyet cay lay ToStringFile cua node doc gia
-std::string* GetAllStringFileNode(LIST_DOCGIA listDG)
+string* GetAllStringFileNode(LIST_DOCGIA listDG)
 {
-	std::string* result = NULL;
+	string* result = NULL;
 	int count = 0;
 	InorderGetStringFile(listDG, result, count);
 	return result;
 }
 // Ghi du lieu doc gia ra file text
-bool WriteToFile(LIST_DOCGIA lstDG, std::string path)
+bool WriteToFile(LIST_DOCGIA lstDG, string path)
 {
 	auto fileHandler = FILEHANDLER(path);
 	try
 	{
 		int size = Size(lstDG);
-		std::string* data = GetAllStringFileNodePre(lstDG);
+		string* data = GetAllStringFileNodePre(lstDG);
 		for (auto i = 0; i < size; i++)
 		{
 			if (i < size - 1)
@@ -344,16 +344,16 @@ bool WriteToFile(LIST_DOCGIA lstDG, std::string path)
 		}
 		fileHandler.WriteToFile(data, Replace);
 	}
-	catch (const std::exception& ex)
+	catch (const exception& ex)
 	{
 		GoToXY(0, 0);
-		std::cout << ex.what();
+		cout << ex.what();
 		return false;
 	}
 	return true;
 }
 // Ghi du lieu ma doc gia ra file text
-bool WriteMaDGToFile(std::string path, LIST_DOCGIA listDG)
+bool WriteMaDGToFile(string path, LIST_DOCGIA listDG)
 {
 	auto fileHandler = FILEHANDLER(path);
 	try
@@ -361,11 +361,11 @@ bool WriteMaDGToFile(std::string path, LIST_DOCGIA listDG)
 		int c = 0;
 		int size = MAX_DOCGIA - Size(listDG);
 		int size2 = SizeOfT(maDocGiaArr);
- 		std::string* data = NULL;
+ 		string* data = NULL;
 		for (auto i = 0; i < size; i++)
 		{
-			std::string temp = "";
-			temp += std::to_string(maDocGiaArr[i]);
+			string temp = "";
+			temp += to_string(maDocGiaArr[i]);
 			if (i < size - 1)
 				temp += '\n';
 			//data.push_back(temp);
@@ -374,10 +374,10 @@ bool WriteMaDGToFile(std::string path, LIST_DOCGIA listDG)
 		fileHandler.WriteToFile(data, Replace);
 		delete[] data;
 	}
-	catch (const std::exception& ex)
+	catch (const exception& ex)
 	{
 		GoToXY(0, 0);
-		std::cout << ex.what();
+		cout << ex.what();
 		return false;
 	}
 	return true;
@@ -529,15 +529,15 @@ bool DeleteNode(LIST_DOCGIA& lstDG, DOCGIA docGia)
 // form nhap doc gia moi
 DOCGIA InputDocGia(int maThe, RECTANGLE rect)
 {
-	std::vector<std::string> labels = { "Ma doc gia:", "Ho:", "Ten:", "Gioi tinh:", "Trang thai the:" };
-	std::string inputTitle = "NHAP THONG TIN DOC GIA";
-	std::vector<CONDITION> conditions = { {Number_Only, 1, 4, Default}, {Name, 1, HODOCGIA_WIDTH},{Name, 1, TENDOCGIA_WIDTH},
+	vector<string> labels = { "Ma doc gia:", "Ho:", "Ten:", "Gioi tinh:", "Trang thai the:" };
+	string inputTitle = "NHAP THONG TIN DOC GIA";
+	vector<CONDITION> conditions = { {Number_Only, 1, 4, Default}, {Name, 1, HODOCGIA_WIDTH},{Name, 1, TENDOCGIA_WIDTH},
 													{Enum, 1, 2 },{Enum2, 1, 2, Default} };
 	auto form = FORMINPUT(labels, conditions, rect, inputTitle);
-	std::vector<std::string> guilds = { "MA DOC GIA LA TU DONG", "CHI NHAP CHU CAI", "CHI NHAP CHU CAI", "0: NAM\n1: NU", "0: THE BI KHOA\n1: DANG HOAT DONG" };
+	vector<string> guilds = { "MA DOC GIA LA TU DONG", "CHI NHAP CHU CAI", "CHI NHAP CHU CAI", "0: NAM\n1: NU", "0: THE BI KHOA\n1: DANG HOAT DONG" };
 	form.Guilds = guilds;
 	DOCGIA docGia = DOCGIA();
-	form.ParseData({ std::to_string(maThe), "","","0","1" });
+	form.ParseData({ to_string(maThe), "","","0","1" });
 	form.currentLine = 1;
 	if (form.Show(1, 4))
 	{
@@ -550,7 +550,7 @@ DOCGIA InputDocGia(int maThe, RECTANGLE rect)
 	return docGia;
 }
 // duyet cay lay data string
-void InorderGetString(LIST_DOCGIA lstDG, std::string*& result, int& count)
+void InorderGetString(LIST_DOCGIA lstDG, string*& result, int& count)
 {
 	if (lstDG != NULL)
 	{
@@ -560,9 +560,9 @@ void InorderGetString(LIST_DOCGIA lstDG, std::string*& result, int& count)
 	}
 }
 // duyet cay lay ToString cua node doc gia
-std::string* GetAllStringNode(LIST_DOCGIA listDG)
+string* GetAllStringNode(LIST_DOCGIA listDG)
 {
-	std::string* result = NULL;
+	string* result = NULL;
 	int count = 0;
 	InorderGetString(listDG, result, count);
 	return result;
@@ -570,29 +570,29 @@ std::string* GetAllStringNode(LIST_DOCGIA listDG)
 // row la so dong data
 void PrintLabelDocGia(MYPOINT location, int row)
 {
-	std::vector<std::string> labels = { "MA DOC GIA", "HO", "TEN", "GIOI TINH", "TRANG THAI THE" };
+	vector<string> labels = { "MA DOC GIA", "HO", "TEN", "GIOI TINH", "TRANG THAI THE" };
 	auto lstBorder = LISTBORDERTEXT(labels);
 	lstBorder.Draw(location, { MADOCGIA_WIDTH, HODOCGIA_WIDTH, TENDOCGIA_WIDTH, GIOITINH_WIDTH, TRANGTHAIDG_WIDTH },
 		row, BORDER_COLOR);
 }
 // in content theo maDG
-std::string PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode m)
+string PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode m)
 {
-	std::string emptyTemplate = "";
-	emptyTemplate = emptyTemplate + char(179) + std::string(MADOCGIA_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + std::string(HODOCGIA_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + std::string(TENDOCGIA_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + std::string(GIOITINH_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + std::string(TRANGTHAIDG_WIDTH, ' ');
+	string emptyTemplate = "";
+	emptyTemplate = emptyTemplate + char(179) + string(MADOCGIA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(HODOCGIA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(TENDOCGIA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(GIOITINH_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(TRANGTHAIDG_WIDTH, ' ');
 	emptyTemplate = emptyTemplate + char(179);
 	int currentPage = 0;
 
-	std::string* listData = GetAllStringNode(listDG);
+	string* listData = GetAllStringNode(listDG);
 	int size = SizeOfT(listData);
 
 	int totalPage = size / MAX_ROW_PER_PAGE;
 	if (size % MAX_ROW_PER_PAGE != 0) totalPage++;
-	std::string deli = "";
+	string deli = "";
 	deli += char(179);
 
 	// In ra mh
@@ -601,7 +601,7 @@ std::string PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode
 		if (i >= (int)MAX_ROW_PER_PAGE * currentPage && i < (currentPage + 1) * (int)MAX_ROW_PER_PAGE)
 		{
 			GoToXY(location.x, location.y + i);
-			std::cout << listData[i];
+			cout << listData[i];
 		}
 	}
 	ShowPageNumber(currentPage, totalPage, location.x, location.y + (int)MAX_ROW_PER_PAGE + 1);
@@ -624,7 +624,7 @@ std::string PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode
 				if (currentPage < totalPage - 1 || (currentPage == totalPage - 1 && size % MAX_ROW_PER_PAGE == 0))
 				{
 					GoToXY(location.x, location.y + (int)i);
-					std::cout << listData[i + MAX_ROW_PER_PAGE * currentPage];
+					cout << listData[i + MAX_ROW_PER_PAGE * currentPage];
 					continue;
 				}
 				// in trang cuoi cung
@@ -632,12 +632,12 @@ std::string PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode
 					&& i < size % MAX_ROW_PER_PAGE)
 				{
 					GoToXY(location.x, location.y + (int)i);
-					std::cout << listData[i + MAX_ROW_PER_PAGE * currentPage];
+					cout << listData[i + MAX_ROW_PER_PAGE * currentPage];
 				}
 				else
 				{
 					GoToXY(location.x, location.y + i);
-					std::cout << emptyTemplate;
+					cout << emptyTemplate;
 				}
 			}
 		}
@@ -651,7 +651,7 @@ std::string PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode
 			for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
 			{
 				GoToXY(location.x, location.y + (int)i);
-				std::cout << listData[i + MAX_ROW_PER_PAGE * currentPage];
+				cout << listData[i + MAX_ROW_PER_PAGE * currentPage];
 			}
 		}
 		else if (inputKey == Key::ESC)
@@ -662,28 +662,28 @@ std::string PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode
 	return "";
 }
 // In ds doc gia theo ten
-std::string PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location, Menu_Mode m)
+string PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location, Menu_Mode m)
 {
-	std::string emptyTemplate = "";
-	emptyTemplate = emptyTemplate + char(179) + std::string(MADOCGIA_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + std::string(HODOCGIA_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + std::string(TENDOCGIA_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + std::string(GIOITINH_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + std::string(TRANGTHAIDG_WIDTH, ' ');
+	string emptyTemplate = "";
+	emptyTemplate = emptyTemplate + char(179) + string(MADOCGIA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(HODOCGIA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(TENDOCGIA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(GIOITINH_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(TRANGTHAIDG_WIDTH, ' ');
 	emptyTemplate = emptyTemplate + char(179);
 	int currentPage = 0;
 
-	std::string* listData = GetAllStringNode(lstDG);
+	string* listData = GetAllStringNode(lstDG);
 	int size = SizeOfT(listData);
 
 	int totalPage = size / MAX_ROW_PER_PAGE;
 	if (size % MAX_ROW_PER_PAGE != 0) totalPage++;
-	std::string deli = "";
+	string deli = "";
 	deli += char(179);
 
 	// sort
-	std::string minHT;
-	std::string min;
+	string minHT;
+	string min;
 	int posMin;
 	for (int i = 0; i < size - 1; i++)
 	{
@@ -718,7 +718,7 @@ std::string PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location, Menu_Mode m
 		if (i >= (int)MAX_ROW_PER_PAGE * currentPage && i < (currentPage + 1) * (int)MAX_ROW_PER_PAGE)
 		{
 			GoToXY(location.x, location.y + i);
-			std::cout << listData[i];
+			cout << listData[i];
 		}
 	}
 
@@ -741,7 +741,7 @@ std::string PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location, Menu_Mode m
 				if (currentPage < totalPage - 1 || (currentPage == totalPage - 1 && size % MAX_ROW_PER_PAGE == 0))
 				{
 					GoToXY(location.x, location.y + (int)i);
-					std::cout << listData[i + MAX_ROW_PER_PAGE * currentPage];
+					cout << listData[i + MAX_ROW_PER_PAGE * currentPage];
 					continue;
 				}
 				// in trang cuoi cung
@@ -749,12 +749,12 @@ std::string PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location, Menu_Mode m
 					&& i < size % MAX_ROW_PER_PAGE)
 				{
 					GoToXY(location.x, location.y + (int)i);
-					std::cout << listData[i + MAX_ROW_PER_PAGE * currentPage];
+					cout << listData[i + MAX_ROW_PER_PAGE * currentPage];
 				}
 				else
 				{
 					GoToXY(location.x, location.y + i);
-					std::cout << emptyTemplate;
+					cout << emptyTemplate;
 				}
 			}
 		}
@@ -768,7 +768,7 @@ std::string PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location, Menu_Mode m
 			for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
 			{
 				GoToXY(location.x, location.y + (int)i);
-				std::cout << listData[i + MAX_ROW_PER_PAGE * currentPage];
+				cout << listData[i + MAX_ROW_PER_PAGE * currentPage];
 			}
 		}
 		else if (inputKey == Key::ESC)
@@ -780,7 +780,7 @@ std::string PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location, Menu_Mode m
 }
 // In ds doc gia: mode = 1 (Sort theo maDG)
 //                mode = 2 (Sort theo hoTen)
-std::string PrintAllDocGia(LIST_DOCGIA lstDG, MYPOINT location, int mode, Menu_Mode m)
+string PrintAllDocGia(LIST_DOCGIA lstDG, MYPOINT location, int mode, Menu_Mode m)
 {
 	PrintLabelDocGia(location, MAX_ROW_PER_PAGE);
 	auto loc = location;
@@ -795,64 +795,65 @@ std::string PrintAllDocGia(LIST_DOCGIA lstDG, MYPOINT location, int mode, Menu_M
 	}
 }
 // ...
-void PrintStringDocGia(std::string data, MYPOINT location)
+void PrintStringDocGia(string data, MYPOINT location)
 {
 	GoToXY(location.x, location.y);
 	cout << data;
 }
 // in danh sach de quan ly doc gia co highLight
-std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Menu_Mode mode)
+string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Menu_Mode mode)
 {
-	std::string emptyTemplate = "";
-	emptyTemplate = emptyTemplate + char(179) + std::string(MADOCGIA_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + std::string(HODOCGIA_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + std::string(TENDOCGIA_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + std::string(GIOITINH_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + std::string(TRANGTHAIDG_WIDTH, ' ');
+	string emptyTemplate = "";
+	emptyTemplate = emptyTemplate + char(179) + string(MADOCGIA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(HODOCGIA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(TENDOCGIA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(GIOITINH_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(TRANGTHAIDG_WIDTH, ' ');
 	emptyTemplate = emptyTemplate + char(179);
 
 	MYPOINT backUpLocation = MYPOINT(0, 0);
 	MYPOINT loc = MYPOINT(0, 0);
-	std::string* dsDocGia = NULL;
-	std::vector<std::vector<std::string>> datas;
-	std::vector<std::vector<int>> rows;
+	string* dsDocGia = NULL;
+	string** datas = NULL;
+	int** rows = NULL;
 	int currentLine = 0;
 	int currentPage = page;
 	Color hlBGColor = Color::Cyan;
 	Color hlTextColor = Color::White;
+	int totalLine = Size(listDG);
+	int totalPages = totalLine / (int)MAX_ROW_PER_PAGE + (totalLine % (int)MAX_ROW_PER_PAGE == 0 ? 0 : 1);;
 
 	// chuyen list doc gia ve mang string
 	if (listDG != NULL)
 	{
 		dsDocGia = GetAllStringNode(listDG);
 	}
-	int totalLine = SizeOfT(dsDocGia);
+	//int totalLine = SizeOfT(dsDocGia);
 	// them page
-	for (int i = 0; i < totalLine / (int)MAX_ROW_PER_PAGE; i++)
-	{
-		datas.push_back({});
-		rows.push_back({});
-	}
-	if (totalLine % MAX_ROW_PER_PAGE != 0)
-	{
-		datas.push_back({});
-		rows.push_back({});
-	}
+	datas = new string * [totalPages];
+	rows = new int* [totalPages];
 	// tranh vuot qua so trang MAX
-	if (currentPage >= (int)datas.size())
+	if (currentPage >= totalPages)
 	{
 		//currentPage = datas.size() - 1;
-		page = datas.size() - 1;
+		page = totalPages - 1;
 		return "";
 	}
 	// print label
 	if (mode == Menu_Mode::Show_Only || mode == Menu_Mode::Both)
 	{
 		PrintLabelDocGia(location, MAX_ROW_PER_PAGE);
-		ShowPageNumber(currentPage, datas.size(), location.x, location.y + (int)MAX_ROW_PER_PAGE + 4);
+		ShowPageNumber(currentPage, totalPages, location.x, location.y + (int)MAX_ROW_PER_PAGE + 4);
 		location.y += 3;
 		backUpLocation = location;
 		//print data
+		for (int i = 0; i < totalPages - 1; i++)
+		{
+			rows[i] = new int[MAX_ROW_PER_PAGE];
+			datas[i] = new string[MAX_ROW_PER_PAGE];
+		}
+		rows[totalPages - 1] = new int[totalLine % MAX_ROW_PER_PAGE];
+		datas[totalPages - 1] = new string[totalLine % MAX_ROW_PER_PAGE];
 		for (int i = 0; i < totalLine; i++)
 		{
 			//Sleep(1);
@@ -870,20 +871,26 @@ std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Me
 			}
 			// luu lai vi tri dong
 			currentPage = i / MAX_ROW_PER_PAGE;
-			rows[currentPage].push_back(i % MAX_ROW_PER_PAGE + location.y);
-			datas[currentPage].push_back(dsDocGia[i]);
+			rows[currentPage][i % MAX_ROW_PER_PAGE] = (i % MAX_ROW_PER_PAGE + location.y);
+			datas[currentPage][i % MAX_ROW_PER_PAGE] = (dsDocGia[i]);
 		}
 		// xoa nhung line du cua trang truoc do
-		if (page == datas.size() - 1 && totalLine % MAX_ROW_PER_PAGE != 0 && page != 0)
+		if (page == totalPages - 1 && totalLine % MAX_ROW_PER_PAGE != 0 && page != 0)
 		{
 			SetBGColor(BG_COLOR);
 			SetTextColor(TEXT_INPUT_COLOR);
 			for (int i = totalLine % MAX_ROW_PER_PAGE; i < MAX_ROW_PER_PAGE; i++)
 			{
 				GoToXY(location.x, rows[page - 1][i]);
-				std::cout << emptyTemplate;
+				cout << emptyTemplate;
 			}
 		}
+	}
+	if (mode == Show_Only)
+	{
+		delete[] dsDocGia;
+		delete[] rows;
+		delete[] datas;
 	}
 	currentPage = page;
 	// bat phim
@@ -913,14 +920,14 @@ std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Me
 					{
 						GoToXY(location.x, rows[currentPage][currentLine]);
 						HightLight(datas[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
-						currentLine = rows[currentPage].size() - 1;
+						currentLine = SizeOfT(datas[currentPage]) - 1;
 						GoToXY(location.x, rows[currentPage][currentLine]);
 						HightLight(datas[currentPage][currentLine], hlBGColor, hlTextColor);
 					}
 				}
 				else if (inputKey == Key::DOWN)
 				{
-					if (currentLine < (int)rows[currentPage].size() - 1)
+					if (currentLine < SizeOfT(datas[currentPage]) - 1)
 					{
 						GoToXY(location.x, rows[currentPage][currentLine]);
 						HightLight(datas[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
@@ -929,7 +936,7 @@ std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Me
 					}
 					else
 					{
-						GoToXY(location.x, (int)rows[currentPage][currentLine]);
+						GoToXY(location.x, rows[currentPage][currentLine]);
 						HightLight(datas[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
 						currentLine = 0;
 						GoToXY(location.x, rows[currentPage][currentLine]);
@@ -939,7 +946,7 @@ std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Me
 			}
 			if (inputKey == Key::ENTER)
 			{
-				std::string deli = ""; 
+				string deli = ""; 
 				deli += char(179);
 				auto temp = Split(datas[currentPage][currentLine], deli);
 				temp[1] = Trim(temp[1]);
@@ -947,25 +954,25 @@ std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Me
 				delete[] dsDocGia;
 				return temp[1];
 			}
-			else if (inputKey == Key::PAGE_DOWN && currentPage < (int)datas.size() - 1)
+			else if (inputKey == Key::PAGE_DOWN && currentPage < totalPages - 1)
 			{
 				// in next page
 				currentPage++;
-				ShowPageNumber(currentPage, datas.size(), location.x, location.y + (int)MAX_ROW_PER_PAGE + 1);
+				ShowPageNumber(currentPage, totalPages, location.x, location.y + (int)MAX_ROW_PER_PAGE + 1);
 				currentLine = 0;
 				SetBGColor(BG_COLOR);
 				SetTextColor(TEXT_INPUT_COLOR);
-				for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
+				for (int i = 0; i < MAX_ROW_PER_PAGE; i++)
 				{
-					if (i < rows[currentPage].size())
+					if (i < SizeOfT(datas[currentPage]))
 					{
 						GoToXY(backUpLocation.x, backUpLocation.y + i);
-						std::cout << datas[currentPage][i];
+						cout << datas[currentPage][i];
 					}
 					else
 					{
 						GoToXY(backUpLocation.x, backUpLocation.y + i);
-						std::cout << emptyTemplate;
+						cout << emptyTemplate;
 					}
 				}
 				SetBGColor(hlBGColor);
@@ -978,14 +985,14 @@ std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Me
 			{
 				// in prev page
 				currentPage--;
-				ShowPageNumber(currentPage, datas.size(), location.x, location.y + (int)MAX_ROW_PER_PAGE + 1);
+				ShowPageNumber(currentPage, totalPages, location.x, location.y + (int)MAX_ROW_PER_PAGE + 1);
 				currentLine = 0;
 				SetBGColor(BG_COLOR);
 				SetTextColor(TEXT_INPUT_COLOR);
 				for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
 				{
 					GoToXY(backUpLocation.x, backUpLocation.y + i);
-					std::cout << datas[currentPage][i];
+					cout << datas[currentPage][i];
 				}
 				SetBGColor(hlBGColor);
 				SetTextColor(hlTextColor);
@@ -997,6 +1004,8 @@ std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Me
 			{
 				page = currentPage;
 				delete[] dsDocGia;
+				delete[] rows;
+				delete[] datas;
 				//ClearArea(location.x, backUpLocation.y - 3, DAUSACH_TOTAL_WIDTH, totalLine + 4);
 				return "ESC";
 			}
@@ -1005,9 +1014,9 @@ std::string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Me
 	return "Empty";
 }
 // luu list muontra vo file
-bool WriteMuonTraToFile(LIST_MUONTRA& listMT, std::string maDG)
+bool WriteMuonTraToFile(LIST_MUONTRA& listMT, string maDG)
 {
-	std::string path = MUONTRA_FILE_PATH;
+	string path = MUONTRA_FILE_PATH;
 	path += maDG;
 	path += ".txt";
 	return listMT.WriteToFile(path);
@@ -1018,7 +1027,7 @@ void DuyetLuuFile(LIST_DOCGIA lstDG)
 	{
 		if (lstDG->data.listMuonTra.IsEmpty() == false)
 		{
-			std::string maAsString = "";
+			string maAsString = "";
 			MergeWordWithNumber(maAsString, lstDG->data.maDocGia, 4);
 			WriteMuonTraToFile(lstDG->data.listMuonTra, maAsString);
 		}
@@ -1026,9 +1035,9 @@ void DuyetLuuFile(LIST_DOCGIA lstDG)
 		DuyetLuuFile(lstDG->pRight);
 	}
 }
-bool ReadMuonTraFromFile(LIST_MUONTRA& listMT, std::string maDG)
+bool ReadMuonTraFromFile(LIST_MUONTRA& listMT, string maDG)
 {
-	std::string path = MUONTRA_FILE_PATH;
+	string path = MUONTRA_FILE_PATH;
 	path += maDG;
 	path += ".txt";
 	return listMT.ReadFromFile(path);
@@ -1038,7 +1047,7 @@ void DuyetDocFile(LIST_DOCGIA& lstDG)
 	if (lstDG != NULL)
 	{
 		DuyetDocFile(lstDG->pLeft);
-		std::string maAsString = "";
+		string maAsString = "";
 		MergeWordWithNumber(maAsString, lstDG->data.maDocGia, 4);
 		ReadMuonTraFromFile(lstDG->data.listMuonTra, maAsString);
 		DuyetDocFile(lstDG->pRight);

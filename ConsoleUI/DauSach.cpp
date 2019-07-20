@@ -2,14 +2,14 @@
 
 #pragma region ----------------------------------------------------DAUSACH
 // chuyen vector<string> vo obj DAUSACH
-DAUSACH ParseVectorString(std::vector<std::string> data)
+DAUSACH ParseVectorString(vector<string> data)
 {
 	DAUSACH dauSach;// = new DAUSACH;
 	StringToCharArray(data[0], dauSach.isbn);
 	dauSach.tenSach = data[1];
-	dauSach.soTrang = std::stoi(data[2]);
+	dauSach.soTrang = stoi(data[2]);
 	dauSach.tenTacGia = data[3];
-	dauSach.namXuatBan = std::stoi(data[4]);
+	dauSach.namXuatBan = stoi(data[4]);
 	dauSach.tenTheLoai = data[5];
 	FormatWord(dauSach.tenTheLoai);
 	return dauSach;
@@ -17,16 +17,16 @@ DAUSACH ParseVectorString(std::vector<std::string> data)
 // hien form nhap DAUSACH / truyen listDS de kiem tra du lieu co trung khong
 DAUSACH InputDauSach(LIST_DAUSACH listDS, RECTANGLE rect)
 {
-	std::vector<std::string> labels = { "ISBN:","Ten sach:","So trang:","Tac gia:", "Nam xuat ban:","The loai:" };
-	std::string inputTitle = "NHAP THONG TIN DAU SACH";
-	std::vector<CONDITION> conditions = { {Number_Only, ISBN_MAXSIZE, ISBN_MAXSIZE}, {All, 1, TENSACH_MAXSIZE},{Number_Only, 1, SOTRANG_MAXKYTU},
+	vector<string> labels = { "ISBN:","Ten sach:","So trang:","Tac gia:", "Nam xuat ban:","The loai:" };
+	string inputTitle = "NHAP THONG TIN DAU SACH";
+	vector<CONDITION> conditions = { {Number_Only, ISBN_MAXSIZE, ISBN_MAXSIZE}, {All, 1, TENSACH_MAXSIZE},{Number_Only, 1, SOTRANG_MAXKYTU},
 													{Name, 1, TENTACGIA_MAXSIZE},{Year, 4, 4},{Word_Only, 1, TENTHELOAI_MAXSIZE} };
 	auto form = FORMINPUT(labels, conditions, rect, inputTitle);
-	std::vector<std::string> guilds = { "DAY SO CO 5 CHU SO", "TAT CA KY TU", "SO TRANG TU [1, 999999]", "CHI NHAP CHU CAI",
+	vector<string> guilds = { "DAY SO CO 5 CHU SO", "TAT CA KY TU", "SO TRANG TU [1, 999999]", "CHI NHAP CHU CAI",
 													"PHAI NHO HON NAM HIEN TAI", "CHI NHAP CHU CAI" };
 	form.Guilds = guilds;
 	DAUSACH dauSach = DAUSACH();
-	std::vector<std::string> tempData = form.OutputResults;
+	vector<string> tempData = form.OutputResults;
 
 	while (true)
 	{
@@ -38,7 +38,7 @@ DAUSACH InputDauSach(LIST_DAUSACH listDS, RECTANGLE rect)
 			{
 				GoToXY(form.cols[0] - 6, form.rows[0] + 1);
 				SetTextColor(WARNING_TEXT_COLOR);
-				std::cout << "ISBN da bi trung";
+				cout << "ISBN da bi trung";
 				form.currentLine = 0;
 				tempData = form.OutputResults;
 			}
@@ -59,17 +59,17 @@ DAUSACH InputFixDauSach(LIST_DAUSACH listDS, RECTANGLE rect, DAUSACH dauSach)
 {
 	auto tempDSSach = dauSach.dsSach;
 
-	std::vector<std::string> labels = { "ISBN:","Ten sach:","So trang:","Tac gia:", "Nam xuat ban:","The loai:" };
-	std::string inputTitle = "NHAP THONG TIN DAU SACH";
-	std::vector<CONDITION> conditions = { {Number_Only, ISBN_MAXSIZE, ISBN_MAXSIZE, Default}, {All, 1, TENSACH_MAXSIZE},{Number_Only, 1, SOTRANG_MAXKYTU},
+	vector<string> labels = { "ISBN:","Ten sach:","So trang:","Tac gia:", "Nam xuat ban:","The loai:" };
+	string inputTitle = "NHAP THONG TIN DAU SACH";
+	vector<CONDITION> conditions = { {Number_Only, ISBN_MAXSIZE, ISBN_MAXSIZE, Default}, {All, 1, TENSACH_MAXSIZE},{Number_Only, 1, SOTRANG_MAXKYTU},
 													{Name, 1, TENTACGIA_MAXSIZE},{Year, 4, 4},{Word_Only, 1, TENTHELOAI_MAXSIZE} };
 	auto form = FORMINPUT(labels, conditions, rect, inputTitle);
 	//DAUSACH dauSach = DAUSACH();
-	std::vector<std::string> guilds = { "DAY SO CO 5 CHU SO", "TAT CA KY TU", "SO TRANG TU [1, 999999]", "CHI NHAP CHU CAI",
+	vector<string> guilds = { "DAY SO CO 5 CHU SO", "TAT CA KY TU", "SO TRANG TU [1, 999999]", "CHI NHAP CHU CAI",
 													"PHAI NHO HON NAM HIEN TAI", "CHI NHAP CHU CAI" };
 	form.Guilds = guilds;
-	form.ParseData({ std::string(dauSach.isbn), dauSach.tenSach, std::to_string(dauSach.soTrang),
-				dauSach.tenTacGia, std::to_string(dauSach.namXuatBan), dauSach.tenTheLoai });
+	form.ParseData({ string(dauSach.isbn), dauSach.tenSach, to_string(dauSach.soTrang),
+				dauSach.tenTacGia, to_string(dauSach.namXuatBan), dauSach.tenTheLoai });
 	form.currentLine = 1;
 	while (true)
 	{
@@ -93,14 +93,14 @@ void DAUSACH::Print(MYPOINT location, Color backColor, Color textColor)
 	GoToXY(location.x, location.y);
 	SetTextColor(textColor);
 	SetBGColor(backColor);
-	std::cout << DAUSACH::ToString();
+	cout << DAUSACH::ToString();
 }
 // chen | giua cac field
-std::string DAUSACH::ToString()
+string DAUSACH::ToString()
 {
 	int temp;
 	// ISBN
-	std::string result = "";
+	string result = "";
 	result += char(179);
 	result += this->isbn;
 	//result += " ";
@@ -108,40 +108,40 @@ std::string DAUSACH::ToString()
 	result += char(179);
 	result += this->tenSach;
 	temp = TENSACH_WIDTH - this->tenSach.size();
-	result += std::string(temp, ' ');
+	result += string(temp, ' ');
 	// SOTRANG
 	result += char(179);
-	result += std::to_string(this->soTrang);
+	result += to_string(this->soTrang);
 	temp = SOTRANG_WIDTH - NumberLength(this->soTrang);
-	result += std::string(temp, ' ');
+	result += string(temp, ' ');
 	// TENTACGIA
 	result += char(179);
 	result += this->tenTacGia;
 	temp = TENTACGIA_WIDTH - this->tenTacGia.size();
-	result += std::string(temp, ' ');
+	result += string(temp, ' ');
 	// NAMXUATBAN
 	result += char(179);
-	result += std::to_string(this->namXuatBan);
+	result += to_string(this->namXuatBan);
 	temp = NAMXUATBAN_WIDTH - NumberLength(this->namXuatBan);
-	result += std::string(temp, ' ');
+	result += string(temp, ' ');
 	// TENTHELOAI
 	result += char(179);
 	result += this->tenTheLoai;
 	temp = TENTHELOAI_WIDTH - this->tenTheLoai.size();
-	result += std::string(temp, ' ');
+	result += string(temp, ' ');
 	result += char(179);
 	return result;
 }
 // chuyen object dau sach thanh string luu file
-std::string DAUSACH::ToStringFile()
+string DAUSACH::ToStringFile()
 {
-	std::string result = "";
-	result = std::string(this->isbn);
+	string result = "";
+	result = string(this->isbn);
 	result += '-';
 	result += this->tenSach + '-';
-	result += std::to_string(this->soTrang) + '-';
+	result += to_string(this->soTrang) + '-';
 	result += this->tenTacGia + '-';
-	result += std::to_string(this->namXuatBan) + '-';
+	result += to_string(this->namXuatBan) + '-';
 	result += this->tenTheLoai;
 	//result += '\n';
 	return result;
@@ -155,7 +155,7 @@ void SortByTenSach(DAUSACH*& listDauSach)
 {
 	DAUSACH min;
 	int posMin;
-	int size = sizeof(*listDauSach) / sizeof(DAUSACH);
+	int size = SizeOfT(listDauSach);
 	for (int i = 0; i < size - 1; i++)
 	{
 		min = listDauSach[i];
@@ -175,21 +175,21 @@ void SortByTenSach(DAUSACH*& listDauSach)
 // row la so dong data
 void PrintLabelDauSach(MYPOINT location, int row)
 {
-	std::vector<std::string> labels = { "ISBN", "TEN SACH", "SO TRANG", "TEN TAC GIA", "NXB", "TEN THE LOAI" };
+	vector<string> labels = { "ISBN", "TEN SACH", "SO TRANG", "TEN TAC GIA", "NXB", "TEN THE LOAI" };
 	auto lstBorder = LISTBORDERTEXT(labels);
 	lstBorder.Draw(location, { ISBN_WIDTH, TENSACH_WIDTH, SOTRANG_WIDTH, TENTACGIA_WIDTH, NAMXUATBAN_WIDTH, TENTHELOAI_WIDTH },
 		row, BORDER_COLOR);
 }
 // Print list DAUSACH theo the loai (Sap xep theo ten)
-std::string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, std::string theLoai)
+string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, string theLoai)
 {
-	std::string emptyTemplate = "";
-	emptyTemplate = emptyTemplate + char(179) + std::string(ISBN_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + std::string(TENSACH_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + std::string(SOTRANG_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + std::string(TENTACGIA_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + std::string(NAMXUATBAN_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + std::string(TENTHELOAI_WIDTH, ' ');
+	string emptyTemplate = "";
+	emptyTemplate = emptyTemplate + char(179) + string(ISBN_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(TENSACH_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(SOTRANG_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(TENTACGIA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(NAMXUATBAN_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(TENTHELOAI_WIDTH, ' ');
 	emptyTemplate = emptyTemplate + char(179);
 
 	/*Color hlBGColor = Color::Cyan;
@@ -310,7 +310,7 @@ std::string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, std::string theLoai)
 					else
 					{
 						GoToXY(backUpLocation.x, backUpLocation.y + i);
-						std::cout << emptyTemplate;
+						cout << emptyTemplate;
 					}
 				}
 			}
@@ -341,17 +341,17 @@ std::string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, std::string theLoai)
 	return "";
 }
 // In tat ca the loai thanh nhieu page
-std::string LIST_DAUSACH::PrintAllTheLoai(MYPOINT location)
+string LIST_DAUSACH::PrintAllTheLoai(MYPOINT location)
 {
 	int currentPage = 0;
 	int totalPages = SizeOfT(this->dsTheLoai);
 	SetBGColor(Color::Gray);
 	SetTextColor(Color::Bright_White);
 	GoToXY(location.x + DAUSACH_TOTAL_WIDTH + 1, location.y + MAX_ROW_PER_PAGE / 2);
-	std::cout << char(62);
+	cout << char(62);
 	while (true)
 	{
-		std::string outPut = PrintByTheLoai(location, this->dsTheLoai[currentPage]);
+		string outPut = PrintByTheLoai(location, this->dsTheLoai[currentPage]);
 		// go to next page
 		if (outPut == "RIGHT")
 		{
@@ -362,7 +362,7 @@ std::string LIST_DAUSACH::PrintAllTheLoai(MYPOINT location)
 					SetBGColor(Color::Gray);
 					SetTextColor(Color::Bright_White);
 					GoToXY(location.x - 2, location.y + MAX_ROW_PER_PAGE / 2);
-					std::cout << char(60);
+					cout << char(60);
 				}
 				currentPage++;
 				if (currentPage == totalPages - 1)
@@ -370,7 +370,7 @@ std::string LIST_DAUSACH::PrintAllTheLoai(MYPOINT location)
 					SetBGColor(BG_COLOR);
 					SetTextColor(BG_COLOR);
 					GoToXY(location.x + DAUSACH_TOTAL_WIDTH + 1, location.y + MAX_ROW_PER_PAGE / 2);
-					std::cout << " ";
+					cout << " ";
 				}
 			}
 		}
@@ -384,7 +384,7 @@ std::string LIST_DAUSACH::PrintAllTheLoai(MYPOINT location)
 					SetBGColor(Color::Gray);
 					SetTextColor(Color::Bright_White);
 					GoToXY(location.x + DAUSACH_TOTAL_WIDTH + 1, location.y + MAX_ROW_PER_PAGE / 2);
-					std::cout << char(62);
+					cout << char(62);
 				}
 				currentPage--;
 				if (currentPage == 0)
@@ -392,7 +392,7 @@ std::string LIST_DAUSACH::PrintAllTheLoai(MYPOINT location)
 					SetBGColor(BG_COLOR);
 					SetTextColor(BG_COLOR);
 					GoToXY(location.x - 2, location.y + MAX_ROW_PER_PAGE / 2);
-					std::cout << " ";
+					cout << " ";
 				}
 			}
 		}
@@ -410,15 +410,15 @@ std::string LIST_DAUSACH::PrintAllTheLoai(MYPOINT location)
 }
 // In tat ca dau sach
 // DO NOT CHANGE ANYTHINGS IN THIS FUNC. IT'S WORKING
-std::string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
+string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 {
-	std::string emptyTemplate = "";
-	emptyTemplate = emptyTemplate + char(179) + std::string(ISBN_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + std::string(TENSACH_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + std::string(SOTRANG_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + std::string(TENTACGIA_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + std::string(NAMXUATBAN_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + std::string(TENTHELOAI_WIDTH, ' ');
+	string emptyTemplate = "";
+	emptyTemplate = emptyTemplate + char(179) + string(ISBN_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(TENSACH_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(SOTRANG_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(TENTACGIA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(NAMXUATBAN_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(TENTHELOAI_WIDTH, ' ');
 	emptyTemplate = emptyTemplate + char(179);
 
 	Color hlBGColor = Color::Cyan;
@@ -428,47 +428,47 @@ std::string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 	// dua vao vector de sort
 	DAUSACH* listISBN = NULL;
 	int totalLine = this->size;
+	int totalPages = 0;
 	int count = 0;
 	for (int i = 0; i < this->size; i++)
 	{
 		PushBack(listISBN, *this->nodes[i], count);
-		//listISBN.push_back(*this->nodes[i]);
 	}
 	// sap xep theo ten sach
-	//SortByTenSach(listISBN);
-	std::vector<std::vector<std::string>> datas;
-	std::vector<std::vector<int>> rows;
+	string** datas = NULL;
+	int** rows = NULL;
 	MYPOINT backUpLocation = MYPOINT(0, 0);
+	totalPages = totalLine / (int)MAX_ROW_PER_PAGE + (totalLine % (int)MAX_ROW_PER_PAGE == 0 ? 0 : 1);
 
-	// them page
-	for (int i = 0; i < totalLine / (int)MAX_ROW_PER_PAGE; i++)
-	{
-		datas.push_back({});
-		rows.push_back({});
-	}
-	if (totalLine % (int)MAX_ROW_PER_PAGE != 0)
-	{
-		datas.push_back({});
-		rows.push_back({});
-	}
+	datas = new string * [totalPages];
+	rows = new int* [totalPages];
+	
 	// tranh vuot qua so trang MAX
-	if (currentPage >= (int)datas.size())
+	if (currentPage >= totalPages)
 	{
 		//currentPage = datas.size() - 1;
-		page = datas.size() - 1;
+		page = totalPages - 1;
 		return "";
 	}
 	// print label
 	if (mode == Menu_Mode::Show_Only || mode == Menu_Mode::Both)
 	{
+		count = 0;
 		PrintLabelDauSach(location, MAX_ROW_PER_PAGE);
 		location.y += 3;
 		backUpLocation = location;
 		// print data
+		for (int i = 0; i < totalPages - 1; i++)
+		{
+			rows[i] = new int[MAX_ROW_PER_PAGE];
+			datas[i] = new string[MAX_ROW_PER_PAGE];
+		}
+		rows[totalPages - 1] = new int[totalLine % MAX_ROW_PER_PAGE];
+		datas[totalPages - 1] = new string[totalLine % MAX_ROW_PER_PAGE];
 		for (int i = 0; i < totalLine; i++)
 		{
 			//Sleep(1);
-			ShowPageNumber(page, datas.size(), location.x, location.y + MAX_ROW_PER_PAGE + 1);
+			ShowPageNumber(page, totalPages, location.x, location.y + MAX_ROW_PER_PAGE + 1);
 			if (i >= (int)MAX_ROW_PER_PAGE * page && i < (page + 1) * (int)MAX_ROW_PER_PAGE)
 			{
 				listISBN[i].Print({ location.x, location.y + (int)(i % MAX_ROW_PER_PAGE) }, BG_COLOR, TEXT_INPUT_COLOR);
@@ -480,22 +480,27 @@ std::string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 			}
 			// luu lai vi tri dong
 			currentPage = i / MAX_ROW_PER_PAGE;
-			rows[currentPage].push_back(i % MAX_ROW_PER_PAGE + location.y);
-			datas[currentPage].push_back(this->nodes[i]->ToString());
+			rows[currentPage][i % MAX_ROW_PER_PAGE] = (i % MAX_ROW_PER_PAGE + location.y);
+			datas[currentPage][i % MAX_ROW_PER_PAGE] = (this->nodes[i]->ToString());
 		}
 		// xoa nhung line du cua trang truoc do
-		if (page == datas.size() - 1 && totalLine % MAX_ROW_PER_PAGE != 0 && page != 0)
+		if (page == totalPages - 1 && totalLine % MAX_ROW_PER_PAGE != 0 && page != 0)
 		{
 			SetBGColor(BG_COLOR);
 			SetTextColor(TEXT_INPUT_COLOR);
 			for (int i = totalLine % MAX_ROW_PER_PAGE; i < MAX_ROW_PER_PAGE; i++)
 			{
 				GoToXY(location.x, rows[page - 1][i]);
-				std::cout << emptyTemplate;
+				cout << emptyTemplate;
 			}
 		}
 	}
-
+	if (mode == Show_Only)
+	{
+		delete[] listISBN;
+		delete[] datas;
+		delete[] rows;
+	}
 	currentPage = page;
 
 	// bat phim
@@ -526,14 +531,15 @@ std::string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 					{
 						GoToXY(location.x, rows[currentPage][currentLine]);
 						HightLight(datas[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
-						currentLine = rows[currentPage].size() - 1;
+						//currentLine = rows[currentPage].size() - 1;
+						currentLine = SizeOfT(datas[currentPage]) - 1;
 						GoToXY(location.x, rows[currentPage][currentLine]);
 						HightLight(datas[currentPage][currentLine], hlBGColor, hlTextColor);
 					}
 				}
 				else if (inputKey == Key::DOWN)
 				{
-					if (currentLine < (int)rows[currentPage].size() - 1)
+					if (currentLine < SizeOfT(datas[currentPage]) - 1)
 					{
 						GoToXY(location.x, rows[currentPage][currentLine]);
 						HightLight(datas[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
@@ -553,29 +559,29 @@ std::string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 			if (inputKey == Key::ENTER)
 			{
 				page = currentPage;
-				std::string temp = listISBN[currentLine + MAX_ROW_PER_PAGE * currentPage].isbn;
+				string temp = listISBN[currentLine + MAX_ROW_PER_PAGE * currentPage].isbn;
 				delete[] listISBN;
 				return temp;
 			}
-			else if (inputKey == Key::PAGE_DOWN && currentPage < (int)datas.size() - 1)
+			else if (inputKey == Key::PAGE_DOWN && currentPage < totalPages - 1)
 			{
 				// in next page
 				currentPage++;
-				ShowPageNumber(currentPage, datas.size(), location.x, location.y + MAX_ROW_PER_PAGE + 1);
+				ShowPageNumber(currentPage, totalPages, location.x, location.y + MAX_ROW_PER_PAGE + 1);
 				currentLine = 0;
 				SetBGColor(BG_COLOR);
 				SetTextColor(TEXT_INPUT_COLOR);
-				for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
+				for (int i = 0; i < (int)MAX_ROW_PER_PAGE; i++)
 				{
-					if (i < rows[currentPage].size())
+					if (i < SizeOfT(datas[currentPage]))
 					{
 						GoToXY(backUpLocation.x, backUpLocation.y + i);
-						std::cout << datas[currentPage][i];
+						cout << datas[currentPage][i];
 					}
 					else
 					{
 						GoToXY(backUpLocation.x, backUpLocation.y + i);
-						std::cout << emptyTemplate;
+						cout << emptyTemplate;
 					}
 				}
 				listISBN[MAX_ROW_PER_PAGE * currentPage].Print(backUpLocation, hlBGColor, hlTextColor);
@@ -584,14 +590,14 @@ std::string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 			{
 				// in next page
 				currentPage--;
-				ShowPageNumber(currentPage, datas.size(), location.x, location.y + MAX_ROW_PER_PAGE + 1);
+				ShowPageNumber(currentPage, totalPages, location.x, location.y + MAX_ROW_PER_PAGE + 1);
 				currentLine = 0;
 				SetBGColor(BG_COLOR);
 				SetTextColor(TEXT_INPUT_COLOR);
 				for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
 				{
 					GoToXY(backUpLocation.x, backUpLocation.y + i);
-					std::cout << datas[currentPage][i];
+					cout << datas[currentPage][i];
 				}
 				listISBN[MAX_ROW_PER_PAGE * currentPage].Print(backUpLocation, hlBGColor, hlTextColor);
 			}
@@ -601,12 +607,16 @@ std::string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 				HightLight(datas[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
 				page = currentPage;
 				delete[] listISBN;
+				delete[] datas;
+				delete[] rows;
 				return "TAB";
 			}
 			else if (inputKey == Key::ESC)
 			{
 				page = currentPage;
 				delete[] listISBN;
+				delete[] datas;
+				delete[] rows;
 				return "ESC";
 			}
 		} while (!_kbhit());
@@ -614,15 +624,14 @@ std::string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 	return "Empty";
 }
 // ...
-void LIST_DAUSACH::PrintFindBooks(MYPOINT location, std::string tenSach)
+void LIST_DAUSACH::PrintFindBooks(MYPOINT location, string tenSach)
 {
 	Color hlBGColor = Color::Cyan;
 	Color hlTextColor = Color::White;
 	int totalLine = 0;
 	// tim ISBN theo the loai
 	auto listISBN = FindBooks(tenSach, totalLine);
-	std::vector<std::string> datas;
-	std::vector<int> rows;
+
 	MYPOINT backUpLocation = MYPOINT(0, 0);
 
 	// print label
@@ -650,9 +659,9 @@ void LIST_DAUSACH::Deconstructor()
 	}
 }
 // kiem tra theLoai sach da ton tai hay chua
-bool LIST_DAUSACH::IsContainTheLoai(std::string theLoai)
+bool LIST_DAUSACH::IsContainTheLoai(string theLoai)
 {
-	std::string theLoaiAsLower = ToLowerString(theLoai);
+	string theLoaiAsLower = ToLowerString(theLoai);
 	for (int i = 0; i < this->size; i++)
 	{
 		if (ToLowerString(this->nodes[i]->tenTheLoai) == theLoaiAsLower) return true;
@@ -660,7 +669,7 @@ bool LIST_DAUSACH::IsContainTheLoai(std::string theLoai)
 	return false;
 }
 // Lay dau sach dua vao ten the loai
-DAUSACH* LIST_DAUSACH::GetTheLoai(std::string tenTheLoai, int& count)
+DAUSACH* LIST_DAUSACH::GetTheLoai(string tenTheLoai, int& count)
 {
 	DAUSACH* result = NULL;
 	for (int i = 0; i < this->size; i++)
@@ -683,7 +692,7 @@ DAUSACH* LIST_DAUSACH::GetDauSach(char isbn[ISBN_MAXSIZE + 1])
 	return NULL;
 }
 // Doc obj DAUSACH tu file
-bool LIST_DAUSACH::ReadFromFile(std::string path)
+bool LIST_DAUSACH::ReadFromFile(string path)
 {
 	auto fileHandler = FILEHANDLER(path);
 	try
@@ -698,22 +707,22 @@ bool LIST_DAUSACH::ReadFromFile(std::string path)
 			Insert(*dauSach, this->size);
 		}
 	}
-	catch (const std::exception& ex)
+	catch (const exception& ex)
 	{
 		GoToXY(0, 0);
-		std::cout << ex.what();
+		cout << ex.what();
 		return false;
 	}
 	return true;
 }
 // Ghi du lieu dau sach ra file text
-bool LIST_DAUSACH::WriteToFile(std::string path)
+bool LIST_DAUSACH::WriteToFile(string path)
 {
 	auto fileHandler = FILEHANDLER(path);
 	try
 	{
 		int c = 0;
-		std::string* data = NULL;
+		string* data = NULL;
 		for (auto i = 0; i < this->size; i++)
 		{
 			auto temp = this->nodes[i]->ToStringFile();
@@ -725,10 +734,10 @@ bool LIST_DAUSACH::WriteToFile(std::string path)
 		fileHandler.WriteToFile(data, Replace);
 		delete[] data;
 	}
-	catch (const std::exception& ex)
+	catch (const exception& ex)
 	{
 		GoToXY(0, 0);
-		std::cout << ex.what();
+		cout << ex.what();
 		return false;
 	}
 	return true;
@@ -776,19 +785,19 @@ bool LIST_DAUSACH::Insert(DAUSACH& node, int index)
 	return true;
 }
 // tim theo ten sach
-DAUSACH* LIST_DAUSACH::FindBooks(std::string tenSach, int& count)
+DAUSACH* LIST_DAUSACH::FindBooks(string tenSach, int& count)
 {
 	DAUSACH* result = NULL;
 	if (tenSach != "")
 	{
-		std::string toLowerName = ToLowerString(tenSach);
-		std::vector<std::string> listKey = Split(toLowerName, " ");
+		string toLowerName = ToLowerString(tenSach);
+		vector<string> listKey = Split(toLowerName, " ");
 
 		for (int i = 0; i < this->size; i++)
 		{
-			std::string toLowerTenSach = ToLowerString(this->nodes[i]->tenSach);
+			string toLowerTenSach = ToLowerString(this->nodes[i]->tenSach);
 			size_t found = toLowerTenSach.find(toLowerName);
-			if (found != std::string::npos)
+			if (found != string::npos)
 			{
 				PushBack(result, *this->nodes[i], count);
 			}
@@ -797,14 +806,14 @@ DAUSACH* LIST_DAUSACH::FindBooks(std::string tenSach, int& count)
 		{
 			for (int i = 0; i < this->size; i++)
 			{
-				std::string toLowerTenSach = ToLowerString(this->nodes[i]->tenSach);
+				string toLowerTenSach = ToLowerString(this->nodes[i]->tenSach);
 				size_t found = toLowerTenSach.find(listKey[j]);
-				if (found != std::string::npos || toLowerTenSach == listKey[j])
+				if (found != string::npos || toLowerTenSach == listKey[j])
 				{
 					int dem = 0;
 					for (int k = 0; k < count; k++)
 					{
-						std::string temp = this->nodes[i]->isbn;
+						string temp = this->nodes[i]->isbn;
 						if (result[k].isbn == temp)
 						{
 							dem++;
@@ -821,7 +830,7 @@ DAUSACH* LIST_DAUSACH::FindBooks(std::string tenSach, int& count)
 	return result;
 }
 // In tat ca Dau sach tim dc ra mh
-std::string LIST_DAUSACH::PrintAllSearch(MYPOINT location, std::string tenSach, Menu_Mode mode)
+string LIST_DAUSACH::PrintAllSearch(MYPOINT location, string tenSach, Menu_Mode mode)
 {
 	int x = location.x + (int)DAUSACH_TOTAL_WIDTH + 1;
 	int y = location.y;
@@ -832,8 +841,8 @@ std::string LIST_DAUSACH::PrintAllSearch(MYPOINT location, std::string tenSach, 
 	int totalLine = 0;
 	// dua vao vector
 	auto listISBN = FindBooks(tenSach, totalLine);
-	std::vector<std::string> datas;
-	std::vector<int> rows;
+	vector<string> datas;
+	vector<int> rows;
 	MYPOINT backUpLocation = MYPOINT(0, 0);
 
 	// print label
@@ -923,7 +932,7 @@ std::string LIST_DAUSACH::PrintAllSearch(MYPOINT location, std::string tenSach, 
 					RECTANGLE rect = { { location.x + (int)DAUSACH_TOTAL_WIDTH + 1, y } , {DMS_TOTAL_WIDTH, 20} };
 					ClearArea(rect.location.x, rect.location.y, rect.size.width, rect.size.height);
 
-					std::string temp = listISBN[currentLine].dsSach.PrintAll({ location.x + (int)DAUSACH_TOTAL_WIDTH + 1, y }, Menu_Mode::Show_Only);
+					string temp = listISBN[currentLine].dsSach.PrintAll({ location.x + (int)DAUSACH_TOTAL_WIDTH + 1, y }, Menu_Mode::Show_Only);
 				}
 				else if (inputKey == Key::ESC)
 				{

@@ -4,37 +4,37 @@
 struct DAUSACH
 {
 	char isbn[ISBN_MAXSIZE + 1];
-	std::string tenSach;
+	string tenSach;
 	int soTrang = NULL;
-	std::string tenTacGia;
+	string tenTacGia;
 	int namXuatBan = NULL;
-	std::string tenTheLoai;
+	string tenTheLoai;
 
 	LIST_SACH dsSach;
 
 	// in ra node
 	void Print(MYPOINT location, Color bgSelectColor, Color textColor);
 	// chen | giua cac field
-	std::string ToString();
+	string ToString();
 	// chuyen object dau sach thanh string luu file
-	std::string ToStringFile();
+	string ToStringFile();
 };
 
 struct LIST_DAUSACH
 {
 	int size = 0;
 	DAUSACH* nodes[SODAUSACH_MAX];
-	std::string* dsTheLoai;
+	string* dsTheLoai;
 
 	#pragma region Display
 	// Print list DAUSACH theo the loai (Sap xep theo ten)
-	std::string PrintByTheLoai(MYPOINT location, std::string tenTheLoai);
+	string PrintByTheLoai(MYPOINT location, string tenTheLoai);
 	// In tat ca the loai thanh nhieu page
-	std::string PrintAllTheLoai(MYPOINT location);
+	string PrintAllTheLoai(MYPOINT location);
 	// In tat ca dau sach
-	std::string PrintAll(MYPOINT location, int& page, Menu_Mode mode = Menu_Mode::Show_Only);
+	string PrintAll(MYPOINT location, int& page, Menu_Mode mode = Menu_Mode::Show_Only);
 	// tim sach theo ten (chua xong)
-	void PrintFindBooks(MYPOINT location, std::string tenSach);
+	void PrintFindBooks(MYPOINT location, string tenSach);
 	#pragma endregion
 
 	// Cap nhat dsTheLoai
@@ -42,11 +42,11 @@ struct LIST_DAUSACH
 	// Giai phong
 	void Deconstructor();
 	// kiem tra theLoai sach da ton tai hay chua
-	bool IsContainTheLoai(std::string theLoai);
+	bool IsContainTheLoai(string theLoai);
 	// Doc obj DAUSACH tu file
-	bool ReadFromFile(std::string path);
+	bool ReadFromFile(string path);
 	// Ghi du lieu dau sach ra file text
-	bool WriteToFile(std::string path);
+	bool WriteToFile(string path);
 	// lay dau sach theo ISBN
 	DAUSACH* GetDauSach(char isbn[ISBN_MAXSIZE + 1]);
 	// Return true if list full (1000)
@@ -59,10 +59,10 @@ struct LIST_DAUSACH
 	// Do dac tinh cua tham tri la copy vo node
 	bool Insert(DAUSACH& node, int index);
 	// Lay dau sach dua vao ten the loai
-	DAUSACH* GetTheLoai(std::string tenTheLoai, int &count);
+	DAUSACH* GetTheLoai(string tenTheLoai, int &count);
 	// in sach theo ten sach (chua xong)
-	DAUSACH* FindBooks(std::string tenSach, int& count);
-	std::string PrintAllSearch(MYPOINT location, std::string tenSach, Menu_Mode mode);
+	DAUSACH* FindBooks(string tenSach, int& count);
+	string PrintAllSearch(MYPOINT location, string tenSach, Menu_Mode mode);
 	// tim vi tri cua dau sach theo isbn
 	int GetLocateDauSach(char isbn[ISBN_MAXSIZE + 1]);
 	// Xoa 1 dau sach dua vao ISBN
