@@ -142,11 +142,13 @@ string DOCGIA::ToStringFile()
 // ...
 DOCGIA InputFixDocGia(RECTANGLE rect, DOCGIA docGia)
 {
-	vector<string> labels = { "Ma doc gia:", "Ho:", "Ten:", "Gioi tinh:", "Trang thai the:" };
+	string labels[] = { "Ma doc gia:", "Ho:", "Ten:", "Gioi tinh:", "Trang thai the:" };
 	string inputTitle = "NHAP THONG TIN DOC GIA";
-	vector<CONDITION> conditions = { {Number_Only, 1, 4, Default}, {Name, 1, HODOCGIA_WIDTH},{Name, 1, TENDOCGIA_WIDTH},
+	CONDITION conditions[] = { {Number_Only, 1, 4, Default}, {Name, 1, HODOCGIA_WIDTH},{Name, 1, TENDOCGIA_WIDTH},
 									{Enum, 1, 2 },{Enum2, 1, 2, Default} };
-	auto form = FORMINPUT(labels, conditions, rect, inputTitle);
+	string guilds[] = { "MA DOC GIA LA TU DONG", "CHI NHAP CHU CAI", "CHI NHAP CHU CAI", "0: NAM\n1: NU", "0: THE BI KHOA\n1: DANG HOAT DONG" };
+	auto form = FORMINPUT(labels, conditions, rect, inputTitle, 5);
+	form.Guilds = guilds;
 	//DOCGIA docGia = DOCGIA();
 	string temp1, temp2;
 	if (docGia.gioiTinh == Nam)
@@ -531,12 +533,12 @@ bool DeleteNode(LIST_DOCGIA& lstDG, DOCGIA docGia)
 // form nhap doc gia moi
 DOCGIA InputDocGia(int maThe, RECTANGLE rect)
 {
-	vector<string> labels = { "Ma doc gia:", "Ho:", "Ten:", "Gioi tinh:", "Trang thai the:" };
+	string labels[] = { "Ma doc gia:", "Ho:", "Ten:", "Gioi tinh:", "Trang thai the:" };
 	string inputTitle = "NHAP THONG TIN DOC GIA";
-	vector<CONDITION> conditions = { {Number_Only, 1, 4, Default}, {Name, 1, HODOCGIA_WIDTH},{Name, 1, TENDOCGIA_WIDTH},
+	CONDITION conditions[] = { {Number_Only, 1, 4, Default}, {Name, 1, HODOCGIA_WIDTH},{Name, 1, TENDOCGIA_WIDTH},
 													{Enum, 1, 2 },{Enum2, 1, 2, Default} };
-	auto form = FORMINPUT(labels, conditions, rect, inputTitle);
-	vector<string> guilds = { "MA DOC GIA LA TU DONG", "CHI NHAP CHU CAI", "CHI NHAP CHU CAI", "0: NAM\n1: NU", "0: THE BI KHOA\n1: DANG HOAT DONG" };
+	auto form = FORMINPUT(labels, conditions, rect, inputTitle, 5);
+	string guilds[] = { "MA DOC GIA LA TU DONG", "CHI NHAP CHU CAI", "CHI NHAP CHU CAI", "0: NAM\n1: NU", "0: THE BI KHOA\n1: DANG HOAT DONG" };
 	form.Guilds = guilds;
 	DOCGIA docGia = DOCGIA();
 	string datas[5] = { to_string(maThe), "","","0","1" };
@@ -573,8 +575,8 @@ string* GetAllStringNode(LIST_DOCGIA listDG)
 // row la so dong data
 void PrintLabelDocGia(MYPOINT location, int row)
 {
-	vector<string> labels = { "MA DOC GIA", "HO", "TEN", "GIOI TINH", "TRANG THAI THE" };
-	auto lstBorder = LISTBORDERTEXT(labels);
+	string labels[] = { "MA DOC GIA", "HO", "TEN", "GIOI TINH", "TRANG THAI THE" };
+	auto lstBorder = LISTBORDERTEXT(labels, 5);
 	lstBorder.Draw(location, { MADOCGIA_WIDTH, HODOCGIA_WIDTH, TENDOCGIA_WIDTH, GIOITINH_WIDTH, TRANGTHAIDG_WIDTH },
 		row, BORDER_COLOR);
 }

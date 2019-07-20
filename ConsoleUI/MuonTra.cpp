@@ -166,16 +166,16 @@ LIST_MUONTRA::LIST_MUONTRA()
 // row la so dong data
 void PrintLabelMuonSach(MYPOINT location, int row)
 {
-	vector<string> labels = { "MA SACH", "TEN SACH", "NGAY MUON" };
-	auto lstBorder = LISTBORDERTEXT(labels);
+	string labels[] = { "MA SACH", "TEN SACH", "NGAY MUON" };
+	auto lstBorder = LISTBORDERTEXT(labels, 3);
 	lstBorder.Draw(location, { MASACH_WIDTH, TENSACH_WIDTH, NGAY_WIDTH },
 		row, BORDER_COLOR);
 }
 // row la so dong data
 void PrintLabelMuonTra(MYPOINT location, int row)
 {
-	vector<string> labels = { "MA SACH", "TEN SACH", "NGAY MUON", "NGAY TRA", "SO NGAY MUON", "VI TRI", "TRANG THAI" };
-	auto lstBorder = LISTBORDERTEXT(labels);
+	string labels[] = { "MA SACH", "TEN SACH", "NGAY MUON", "NGAY TRA", "SO NGAY MUON", "VI TRI", "TRANG THAI" };
+	auto lstBorder = LISTBORDERTEXT(labels, 7);
 	lstBorder.Draw(location, { MASACH_WIDTH, TENSACH_WIDTH, NGAY_WIDTH, NGAY_WIDTH,
 		SONGAYMUON_WIDTH, VITRI_WIDTH, TRANGTHAI_MUONTRA_WIDTH },
 		row, BORDER_COLOR);

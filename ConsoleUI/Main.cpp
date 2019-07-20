@@ -19,7 +19,7 @@ int main()
 	{
 		LoadSach(listDS.nodes[i]->dsSach, listDS.nodes[i]->isbn);
 	}
-	//ClearLine(0);
+	ClearLine(0);
 
 	int t1 = -1;
 	int t2 = -1;

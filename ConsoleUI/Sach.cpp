@@ -103,10 +103,10 @@ SACH ParseVectorStringFile(string* data)
 SACH SACH::Input(RECTANGLE rect, string maSach)
 {
 	string title = "NHAP THONG TIN SACH";
-	vector<string> labels = { "Ma sach", "Trang thai:", "Vi tri:" };
-	vector<CONDITION> conditions = { {All, 6, 6, Default}, {Enum, 1, 3, Default}, {Mix, VITRI_MAXSIZE, VITRI_MAXSIZE} };
-	auto form = FORMINPUT(labels, conditions, rect, title);
-	vector<string> guilds = { "MA SACH LA TU DONG", "0: CHO MUON DUOC\n1: DA MUON\n2: DA THANH LY", "BAO GOM CHU VA SO" };
+	string labels[] = { "Ma sach", "Trang thai:", "Vi tri:" };
+	CONDITION conditions[] = { {All, 6, 6, Default}, {Enum, 1, 3, Default}, {Mix, VITRI_MAXSIZE, VITRI_MAXSIZE} };
+	auto form = FORMINPUT(labels, conditions, rect, title, 3);
+	string guilds[] = { "MA SACH LA TU DONG", "0: CHO MUON DUOC\n1: DA MUON\n2: DA THANH LY", "BAO GOM CHU VA SO" };
 	form.Guilds = guilds;
 	string datas[3] = { maSach, "0", "" };
 	form.ParseData(datas);
@@ -124,14 +124,14 @@ SACH SACH::Input(RECTANGLE rect, string maSach)
 SACH SACH::InputFix(RECTANGLE rect)
 {
 	string title = "CAP NHAT THONG TIN SACH";
-	vector<string> labels = { "Ma sach", "Trang thai:", "Vi tri:" };
-	vector<CONDITION> conditions = { {All, 6, 6, Default}, {Enum, 1, 3}, {Mix, VITRI_MAXSIZE, VITRI_MAXSIZE} };
+	string labels[] = { "Ma sach", "Trang thai:", "Vi tri:" };
+	CONDITION conditions[] = { {All, 6, 6, Default}, {Enum, 1, 3}, {Mix, VITRI_MAXSIZE, VITRI_MAXSIZE} };
 
-	auto form = FORMINPUT(labels, conditions, rect, title);
+	auto form = FORMINPUT(labels, conditions, rect, title, 3);
 	string datas[3] = { this->maSach, to_string(this->trangThai), this->viTri };
 	form.ParseData(datas);
 	form.currentLine = 1;
-	vector<string> guilds = { "MA SACH LA TU DONG", "0: CHO MUON DUOC\n1: DA MUON\n2: DA THANH LY", "BAO GOM CHU VA SO" };
+	string guilds[] = { "MA SACH LA TU DONG", "0: CHO MUON DUOC\n1: DA MUON\n2: DA THANH LY", "BAO GOM CHU VA SO" };
 	form.Guilds = guilds;
 	if (form.Show(2))
 	{
@@ -167,8 +167,8 @@ bool LIST_SACH::IsEmpty()
 // row la so dong data
 void PrintLabelSach(MYPOINT location, int row)
 {
-	vector<string> labels = { "MA SACH", "TRANG THAI", "VI TRI" };
-	auto lstBorder = LISTBORDERTEXT(labels);
+	string labels[] = { "MA SACH", "TRANG THAI", "VI TRI" };
+	auto lstBorder = LISTBORDERTEXT(labels, 3);
 	lstBorder.Draw(location, { MASACH_WIDTH, TRANGTHAISACH_WIDTH, VITRI_WIDTH }, row, BORDER_COLOR);
 }
 // tinh kich co cua dslk

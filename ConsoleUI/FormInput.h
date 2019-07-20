@@ -13,9 +13,9 @@ struct FORMINPUT
 {
 	MYPOINT guildLocation = { 0,0 };
 	string* OutputResults;
-	vector<string> Guilds;
-	vector<string> labels;
-	vector<CONDITION> conditions;
+	string* Guilds;
+	string* labels;
+	CONDITION* conditions;
 	// Chua index y tuong ung voi vi tri label
 	vector<int> rows;
 	// CHua index x tuong ung voi vi tri text nguoi dung dang nhap vo
@@ -30,12 +30,11 @@ struct FORMINPUT
 	string textBtn1 = "OK";
 	string textBtn2 = "CANCEL";
 
-	FORMINPUT(vector<string> labels, vector<CONDITION> conditions, RECTANGLE rect, string title)
-		: rect(rect), title(title), border(rect.location, rect.size)
+	FORMINPUT(string* labels, CONDITION* conditions, RECTANGLE rect, string title, int totalLine)
+		: rect(rect), title(title), border(rect.location, rect.size), totalLine(totalLine)
 	{
 		this->labels = labels;
 		this->currentLine = 0;
-		this->totalLine = labels.size();
 		this->xInputCol = MaxLengthLabel() + rect.location.x + 3;
 		this->conditions = conditions;
 		guildLocation = { rect.location.x + 1, rect.location.y + rect.size.height };
@@ -215,9 +214,9 @@ struct FORMINPUT
 	int MaxLengthLabel()
 	{
 		size_t max = 0;
-		for (auto label : labels)
+		for(int i = 0; i < this->totalLine; i++)
 		{
-			if (label.length() > max) max = label.length();
+			if (labels[i].length() > max) max = labels[i].length();
 		}
 		return max;
 	}
@@ -318,7 +317,7 @@ struct FORMINPUT
 	}
 	void ShowGuildLine(int currentLine)
 	{
-		if (Guilds.size() == 0) return;
+		if (SizeOfT(Guilds) == 0) return;
 		int x = WhereX();
 		int y = WhereY();
 		//ClearLine(guildLocation.y, guildLocation.x, guildLocation.x + rect.size.width);

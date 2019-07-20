@@ -17,12 +17,12 @@ DAUSACH ParseVectorString(string* data)
 // hien form nhap DAUSACH / truyen listDS de kiem tra du lieu co trung khong
 DAUSACH InputDauSach(LIST_DAUSACH listDS, RECTANGLE rect)
 {
-	vector<string> labels = { "ISBN:","Ten sach:","So trang:","Tac gia:", "Nam xuat ban:","The loai:" };
+	string labels[] = { "ISBN:","Ten sach:","So trang:","Tac gia:", "Nam xuat ban:","The loai:" };
 	string inputTitle = "NHAP THONG TIN DAU SACH";
-	vector<CONDITION> conditions = { {Number_Only, ISBN_MAXSIZE, ISBN_MAXSIZE}, {All, 1, TENSACH_MAXSIZE},{Number_Only, 1, SOTRANG_MAXKYTU},
+	CONDITION conditions[] = { {Number_Only, ISBN_MAXSIZE, ISBN_MAXSIZE}, {All, 1, TENSACH_MAXSIZE},{Number_Only, 1, SOTRANG_MAXKYTU},
 													{Name, 1, TENTACGIA_MAXSIZE},{Year, 4, 4},{Word_Only, 1, TENTHELOAI_MAXSIZE} };
-	auto form = FORMINPUT(labels, conditions, rect, inputTitle);
-	vector<string> guilds = { "DAY SO CO 5 CHU SO", "TAT CA KY TU", "SO TRANG TU [1, 999999]", "CHI NHAP CHU CAI",
+	auto form = FORMINPUT(labels, conditions, rect, inputTitle, 6);
+	string guilds[] = { "DAY SO CO 5 CHU SO", "TAT CA KY TU", "SO TRANG TU [1, 999999]", "CHI NHAP CHU CAI",
 													"PHAI NHO HON NAM HIEN TAI", "CHI NHAP CHU CAI" };
 	form.Guilds = guilds;
 	DAUSACH dauSach = DAUSACH();
@@ -61,13 +61,13 @@ DAUSACH InputFixDauSach(LIST_DAUSACH listDS, RECTANGLE rect, DAUSACH dauSach)
 {
 	auto tempDSSach = dauSach.dsSach;
 
-	vector<string> labels = { "ISBN:","Ten sach:","So trang:","Tac gia:", "Nam xuat ban:","The loai:" };
+	string labels[] = { "ISBN:","Ten sach:","So trang:","Tac gia:", "Nam xuat ban:","The loai:" };
 	string inputTitle = "NHAP THONG TIN DAU SACH";
-	vector<CONDITION> conditions = { {Number_Only, ISBN_MAXSIZE, ISBN_MAXSIZE, Default}, {All, 1, TENSACH_MAXSIZE},{Number_Only, 1, SOTRANG_MAXKYTU},
+	CONDITION conditions[] = { {Number_Only, ISBN_MAXSIZE, ISBN_MAXSIZE, Default}, {All, 1, TENSACH_MAXSIZE},{Number_Only, 1, SOTRANG_MAXKYTU},
 													{Name, 1, TENTACGIA_MAXSIZE},{Year, 4, 4},{Word_Only, 1, TENTHELOAI_MAXSIZE} };
-	auto form = FORMINPUT(labels, conditions, rect, inputTitle);
+	auto form = FORMINPUT(labels, conditions, rect, inputTitle, 6);
 	//DAUSACH dauSach = DAUSACH();
-	vector<string> guilds = { "DAY SO CO 5 CHU SO", "TAT CA KY TU", "SO TRANG TU [1, 999999]", "CHI NHAP CHU CAI",
+	string guilds[] = { "DAY SO CO 5 CHU SO", "TAT CA KY TU", "SO TRANG TU [1, 999999]", "CHI NHAP CHU CAI",
 													"PHAI NHO HON NAM HIEN TAI", "CHI NHAP CHU CAI" };
 	form.Guilds = guilds;
 	string datas[] = { string(dauSach.isbn), dauSach.tenSach, to_string(dauSach.soTrang),
@@ -178,8 +178,8 @@ void SortByTenSach(DAUSACH*& listDauSach)
 // row la so dong data
 void PrintLabelDauSach(MYPOINT location, int row)
 {
-	vector<string> labels = { "ISBN", "TEN SACH", "SO TRANG", "TEN TAC GIA", "NXB", "TEN THE LOAI" };
-	auto lstBorder = LISTBORDERTEXT(labels);
+	string labels[] = { "ISBN", "TEN SACH", "SO TRANG", "TEN TAC GIA", "NXB", "TEN THE LOAI" };
+	auto lstBorder = LISTBORDERTEXT(labels, 6);
 	lstBorder.Draw(location, { ISBN_WIDTH, TENSACH_WIDTH, SOTRANG_WIDTH, TENTACGIA_WIDTH, NAMXUATBAN_WIDTH, TENTHELOAI_WIDTH },
 		row, BORDER_COLOR);
 }
@@ -845,8 +845,8 @@ string LIST_DAUSACH::PrintAllSearch(MYPOINT location, string tenSach, Menu_Mode 
 	int totalLine = 0;
 	// dua vao vector
 	auto listISBN = FindBooks(tenSach, totalLine);
-	vector<string> datas;
-	vector<int> rows;
+	string* datas = NULL;
+	int* rows = NULL;
 	MYPOINT backUpLocation = MYPOINT(0, 0);
 
 	// print label
@@ -866,7 +866,8 @@ string LIST_DAUSACH::PrintAllSearch(MYPOINT location, string tenSach, Menu_Mode 
 			location.y += 3;
 			backUpLocation = location;
 			// print data
-
+			int c1 = 0;
+			int c2 = 0;
 			for (int i = 0; i < totalLine; i++)
 			{
 				listISBN[i].Print(location, BG_COLOR, TEXT_INPUT_COLOR);
@@ -876,8 +877,10 @@ string LIST_DAUSACH::PrintAllSearch(MYPOINT location, string tenSach, Menu_Mode 
 					listISBN[i].Print(location, hlBGColor, hlTextColor);
 				}
 				// luu lai vi tri dong
-				rows.push_back(location.y++);
-				datas.push_back(listISBN[i].ToString());
+				//rows.push_back(location.y++);
+				//datas.push_back(listISBN[i].ToString());
+				PushBack(rows, location.y++, c1);
+				PushBack(datas, listISBN[i].ToString(), c2);
 			}
 
 		}
@@ -941,6 +944,8 @@ string LIST_DAUSACH::PrintAllSearch(MYPOINT location, string tenSach, Menu_Mode 
 				else if (inputKey == Key::ESC)
 				{
 					delete[] listISBN;
+					delete[] rows;
+					delete[] datas;
 					return "ESC";
 				}
 			} while (!_kbhit());

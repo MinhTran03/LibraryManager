@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 #include "Constants.h"
-
+using namespace std;
 enum Mode_Input
 {
 	CanChange,
@@ -62,24 +62,24 @@ struct BORDER
 		SetBGColor(BG_COLOR);
 		// to 4 goc
 		GoToXY(location.x, location.y);
-		std::cout << char(218);
+		cout << char(218);
 		GoToXY(location.x + size.width - 1, location.y);
-		std::cout << char(191);
+		cout << char(191);
 		GoToXY(location.x, location.y + size.height - 1);
-		std::cout << char(192);
+		cout << char(192);
 		GoToXY(location.x + size.width - 1, location.y + size.height - 1);
-		std::cout << char(217);
+		cout << char(217);
 		// to canh
 		GoToXY(location.x + 1, location.y);
-		std::cout << std::string(size.width - 2, char(196));
+		cout << string(size.width - 2, char(196));
 		GoToXY(location.x + 1, location.y + size.height - 1);
-		std::cout << std::string(size.width - 2, char(196));
+		cout << string(size.width - 2, char(196));
 		for (int y = location.y + 1; y < location.y + size.height - 1; y++)
 		{
 			GoToXY(location.x, y);
-			std::cout << char(179);
+			cout << char(179);
 			GoToXY(location.x + size.width - 1, y);
-			std::cout << char(179);
+			cout << char(179);
 		}
 	}
 	void Draw2Line(Color borderColor)
@@ -88,24 +88,24 @@ struct BORDER
 		SetBGColor(BG_COLOR);
 		// to 4 goc
 		GoToXY(location.x, location.y);
-		std::cout << char(201);
+		cout << char(201);
 		GoToXY(location.x + size.width - 1, location.y);
-		std::cout << char(187);
+		cout << char(187);
 		GoToXY(location.x, location.y + size.height - 1);
-		std::cout << char(200);
+		cout << char(200);
 		GoToXY(location.x + size.width - 1, location.y + size.height - 1);
-		std::cout << char(188);
+		cout << char(188);
 		// to canh
 		GoToXY(location.x + 1, location.y);
-		std::cout << std::string(size.width - 2, char(205));
+		cout << string(size.width - 2, char(205));
 		GoToXY(location.x + 1, location.y + size.height - 1);
-		std::cout << std::string(size.width - 2, char(205));
+		cout << string(size.width - 2, char(205));
 		for (int y = location.y + 1; y < location.y + size.height - 1; y++)
 		{
 			GoToXY(location.x, y);
-			std::cout << char(186);
+			cout << char(186);
 			GoToXY(location.x + size.width - 1, y);
-			std::cout << char(186);
+			cout << char(186);
 		}
 	}
 };
@@ -117,7 +117,7 @@ struct BORDERTEXT
 	{
 
 	}
-	void Draw1Line(std::string text, Align align = Align::Left, Color borderColor = Color::White)
+	void Draw1Line(string text, Align align = Align::Left, Color borderColor = Color::White)
 	{
 		int x = border.location.x + 1;
 		int y = border.location.y + border.size.height / 2;
@@ -128,42 +128,43 @@ struct BORDERTEXT
 		}
 		border.Draw1Line(borderColor);
 		GoToXY(x, y);
-		std::cout << text;
+		cout << text;
 	}
 };
 
 struct LISTBORDERTEXT
 {
-	std::vector<std::string> labels;
-	LISTBORDERTEXT(std::vector<std::string> labels) : labels(labels)
+	string* labels;
+	int totalLine;
+	LISTBORDERTEXT(string* labels, int totalLine) : labels(labels), totalLine(totalLine)
 	{
 
 	}
-	void Draw(MYPOINT location, std::vector<int> widths, int row, Color borderColor = Color::White)
+	void Draw(MYPOINT location, vector<int> widths, int row, Color borderColor = Color::White)
 	{
 		auto temp = location;
-		for (size_t i = 0; i < labels.size(); i++)
+		for (int i = 0; i < this->totalLine; i++)
 		{
 			auto b = BORDER(location, { widths[i] + 2, 3 + row + 1 });
 			b.Draw1Line(borderColor);
 			auto b1 = BORDERTEXT({ location, {widths[i] + 2, 3} });
 			b1.Draw1Line(labels[i], Align::Center, borderColor);
 			location.x += b1.border.size.width - 1;
-			if (i > 0 && i < labels.size())
+			if (i > 0 && i < this->totalLine)
 			{
 				GoToXY(location.x - b1.border.size.width + 1, location.y);
-				std::cout << char(194);
+				cout << char(194);
 				GoToXY(location.x - b1.border.size.width + 1, location.y + 2);
-				std::cout << char(197);
+				cout << char(197);
 				GoToXY(location.x - b1.border.size.width + 1, location.y + 2 + row + 1);
-				std::cout << char(193);
+				cout << char(193);
 			}
 		}
 
 		GoToXY(temp.x, temp.y + 2);
-		std::cout << char(195);
+		cout << char(195);
 		GoToXY(location.x, location.y + 2);
-		std::cout << char(180);
+		cout << char(180);
 	}
 };
 
@@ -178,18 +179,18 @@ struct RECTANGLE
 	{
 		/*SetTextColor(color);
 		GoToXY(location.x, location.y);
-		std::cout << std::string(size.width, getChar);
+		cout << string(size.width, getChar);
 		GoToXY(location.x, location.y + size.height - 1);
-		std::cout << std::string(size.width, getChar);
+		cout << string(size.width, getChar);
 		for (int y = location.y; y < location.y + size.height; y++)
 		{
 			GoToXY(location.x, y);
-			std::cout << getChar;
+			cout << getChar;
 		}
 		for (int y = location.y; y < location.y + size.height; y++)
 		{
 			GoToXY(location.x + size.width - 1, y);
-			std::cout << getChar;
+			cout << getChar;
 		}*/
 		ClearArea(location.x, location.y, size.width, size.height);
 	}
@@ -200,7 +201,7 @@ struct RECTANGLE
 		for (int i = location.y + 1; i < location.y + size.height - 1; i++)
 		{
 			GoToXY(location.x + 1, i);
-			std::cout << std::string(size.width - 2, char(219));
+			cout << string(size.width - 2, char(219));
 		}*/
 		ClearArea(location.x, location.y, size.width, size.height, bgColor);
 	}
@@ -210,8 +211,8 @@ struct BUTTON
 {
 	RECTANGLE rect;
 	BORDER border;
-	std::string text;
-	BUTTON(RECTANGLE rect, std::string text) : rect(rect), text(text), border(rect.location, rect.size)
+	string text;
+	BUTTON(RECTANGLE rect, string text) : rect(rect), text(text), border(rect.location, rect.size)
 	{
 		if (rect.size.height > 3)
 		{
@@ -263,13 +264,13 @@ struct BUTTON
 		SetTextColor(textColor);
 		SetBGColor(bgColor);
 		GoToXY(x, y);
-		std::cout << text;
+		cout << text;
 		if (modeSelect != -1)
 		{
 			x = rect.location.x + rect.size.width - 1;
 			GoToXY(x, y);
 			SetTextColor(Color::Bright_White);
-			std::cout << ">";
+			cout << ">";
 			SetTextColor(TEXT_INPUT_COLOR);
 		}
 		GoToXY(rect.location.x, rect.location.y);
@@ -285,7 +286,7 @@ struct CONFIRMDIALOG
 		: location(location), result(DialogResult::Null), size(0, 0)
 	{
 	}
-	void Show(std::string message, DialogResult result, Color bgColor = Color::Cyan, Color btnColor = Color::Green, Color textColor = Color::White)
+	void Show(string message, DialogResult result, Color bgColor = Color::Cyan, Color btnColor = Color::Green, Color textColor = Color::White)
 	{
 		int padding = 10;
 		Color selectColor = Color::Blue;
@@ -299,7 +300,7 @@ struct CONFIRMDIALOG
 		border.Draw2Line(bgColor);
 
 		// In button
-		std::string text1, text2;
+		string text1, text2;
 		int widthBtn = 8;
 		int heightBtn = 1;
 		int x = rect.location.x + rect.size.width / 4 - widthBtn / 2 - widthBtn % 2;
@@ -330,7 +331,7 @@ struct CONFIRMDIALOG
 		SetTextColor(textColor);
 		SetBGColor(bgColor);
 		GoToXY(x, y);
-		std::cout << message;
+		cout << message;
 		GoToXY(rect.location.x, rect.location.y);
 
 		// Bat phim
@@ -385,11 +386,11 @@ struct FOOTER_CHILD
 	MYPOINT location;
 	Color colorIcon;
 	Color colorText;
-	std::string icon;
-	std::string text;
+	string icon;
+	string text;
 	int size = 0;
 
-	FOOTER_CHILD(MYPOINT location, std::string icon, std::string text, 
+	FOOTER_CHILD(MYPOINT location, string icon, string text, 
 					Color colorIcon = Color::Green, Color colorText = Color::White)
 		: icon(icon), text(text), location(location), colorText(colorText), colorIcon(colorIcon)
 	{
@@ -407,11 +408,11 @@ struct FOOTER_CHILD
 		SetTextColor(Color::Bright_White);
 
 		GoToXY(location.x, location.y);
-		std::cout << " " << icon << " ";
+		cout << " " << icon << " ";
 
 		SetBGColor(this->colorText);
 		GoToXY(location.x + iconSize, location.y);
-		std::cout << " " << text << " ";
+		cout << " " << text << " ";
 
 		SetTextColor(TEXT_INPUT_COLOR);
 		SetBGColor(BG_COLOR);
