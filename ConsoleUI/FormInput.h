@@ -321,13 +321,14 @@ struct FORMINPUT
 		//ClearLine(guildLocation.y, guildLocation.x, guildLocation.x + rect.size.width);
 		ClearArea(guildLocation.x, guildLocation.y, rect.size.width, 3);
 		SetTextColor(TEXT_GUILD_COLOR);
-		auto texts = Split(Guilds[currentLine], "\n");
+		string* texts = Split(Guilds[currentLine], "\n");
 		int temp = rect.size.width / 2 - texts[0].size() / 2 + guildLocation.x;
-		for (size_t i = 0; i < texts.size(); i++)
+		for (int i = 0; i < SizeOfT(texts); i++)
 		{
 			GoToXY(temp, guildLocation.y + i);
 			std::cout << texts[i];
 		}
+		delete[] texts;
 		SetTextColor(TEXT_INPUT_COLOR);
 		GoToXY(x, y);
 	}

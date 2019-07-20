@@ -19,8 +19,8 @@ void WriteLine(char* word)
 {
 	if (word == NULL) return;
 	for (unsigned int i = 0; i < strlen(word); i++)
-		std::cout << word[i];
-	std::cout << std::endl;
+		cout << word[i];
+	cout << endl;
 }
 void Split(char**& arrTokens, char* word, const char* separator)
 {
@@ -105,7 +105,7 @@ void FormatWord(char*& fullName, WordType type)
 	MergeTokens(fullName, tokens, nTokens);
 	delete tokens;
 }
-void FormatWord(std::string& fullName)
+void FormatWord(string& fullName)
 {
 	for (char& c : fullName)
 	{
@@ -139,7 +139,7 @@ void MergeWordWithNumber(char*& word, unsigned int number, unsigned int maxLengt
 	// nối số vào cuối
 	strcat(word, numberAsString);
 }
-void MergeWordWithNumber(std::string& word, unsigned int number, unsigned int maxLengthWord)
+void MergeWordWithNumber(string& word, unsigned int number, unsigned int maxLengthWord)
 {
 	// số chữ số của number
 	int numberSize = NumberLength(number);
@@ -155,25 +155,27 @@ void MergeWordWithNumber(std::string& word, unsigned int number, unsigned int ma
 	// nối số vào cuối
 	word += numberAsString;
 }
-std::vector<std::string> Split(std::string text, std::string delimiter)
+string* Split(string text, string delimiter)
 {
-	std::vector<std::string> result;
+	string* result;
 	size_t pos = 0;
-	std::string token;
+	string token;
 	text += delimiter;
-	while ((pos = text.find(delimiter)) != std::string::npos)
+	int count = 0;
+	while ((pos = text.find(delimiter)) != string::npos)
 	{
 		token = text.substr(0, pos);
-		result.push_back(token);
+		PushBack(result, token, count);
+		//result.push_back(token);
 		text.erase(0, pos + delimiter.length());
 	}
 	return result;
 }
-void StringToCharArray(std::string source, char dest[])
+void StringToCharArray(string source, char dest[])
 {
 	strcpy(dest, source.c_str());
 }
-std::string Trim(std::string text)
+string Trim(string text)
 {
 	auto at = text.find_first_of(' ');
 	if (at > text.size())
@@ -181,31 +183,31 @@ std::string Trim(std::string text)
 	text.erase(text.begin() + at, text.end());
 	return text;
 }
-char* StringToCharArray(std::string source)
+char* StringToCharArray(string source)
 {
 	char* result = new char[source.size() + 1];
 	strcpy(result, source.c_str());
 	return result;
 }
-std::string ToLowerString(std::string text)
+string ToLowerString(string text)
 {
-	std::string result = text;
+	string result = text;
 	for (char& c : result)
 	{
 		c = tolower(c);
 	}
 	return result;
 }
-std::string ToUpperString(std::string text)
+string ToUpperString(string text)
 {
-	std::string result = text;
+	string result = text;
 	for (char& c : result)
 	{
 		c = toupper(c);
 	}
 	return result;
 }
-void VTString2ArrString(std::vector<std::string> data, std::string result[])
+void VTString2ArrString(vector<string> data, string result[])
 {
 	int count = 0;
 	for (auto item : data)
@@ -213,7 +215,7 @@ void VTString2ArrString(std::vector<std::string> data, std::string result[])
 		result[count++] = item;
 	}
 }
-void ArrString2VTString(std::vector<std::string>& data, std::string result[])
+void ArrString2VTString(vector<string>& data, string result[])
 {
 	int size = SizeOfT(result);
 	data.clear();
@@ -222,11 +224,3 @@ void ArrString2VTString(std::vector<std::string>& data, std::string result[])
 		data.push_back(result[i]);
 	}
 }
-//template <class T>
-//int SizeOfT(T* list)
-//{
-//	if (list == NULL) return 0;
-//	//int s = *(((int*)list) - 1);
-//	int s = *(((int*)list) - 1);
-//	return s;
-//}

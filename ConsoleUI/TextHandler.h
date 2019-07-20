@@ -4,6 +4,8 @@
 #include <string>
 #include "Enums.h"
 
+using namespace std;
+
 // count các từ có trong word phân cách bằng separator(mặc định là whitespace)
 int WordCount(char* word, const char* separator = " ");
 // in char* ra màn hình
@@ -16,18 +18,18 @@ bool IsCapitalLetter(char c);
 bool IsLowerLetter(char c);
 // format full name ( " tRaN  COng mINH " => "Tran Cong Minh" )
 void FormatWord(char*& fullName, WordType type);
-void FormatWord(std::string& fullName);
+void FormatWord(string& fullName);
 int NumberLength(unsigned int num);
 // merge number vào sau word
 void MergeWordWithNumber(char*& word, unsigned int number, unsigned int maxLengthWord);
-void MergeWordWithNumber(std::string& word, unsigned int number, unsigned int maxLengthWord);
-std::vector<std::string> Split(std::string, std::string delimiter = " ");
-void StringToCharArray(std::string source, char dest[]);
-std::string ToLowerString(std::string text);
-std::string ToUpperString(std::string text);
-std::string Trim(std::string text);
-char* StringToCharArray(std::string source);
-void VTString2ArrString(std::vector<std::string> data, std::string result[]);
+void MergeWordWithNumber(string& word, unsigned int number, unsigned int maxLengthWord);
+string* Split(string, string delimiter = " ");
+void StringToCharArray(string source, char dest[]);
+string ToLowerString(string text);
+string ToUpperString(string text);
+string Trim(string text);
+char* StringToCharArray(string source);
+void VTString2ArrString(vector<string> data, string result[]);
 
 template <class T>
 void Swap(T& a, T& b)

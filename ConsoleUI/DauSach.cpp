@@ -442,7 +442,7 @@ string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 
 	datas = new string * [totalPages];
 	rows = new int* [totalPages];
-	
+
 	// tranh vuot qua so trang MAX
 	if (currentPage >= totalPages)
 	{
@@ -791,7 +791,7 @@ DAUSACH* LIST_DAUSACH::FindBooks(string tenSach, int& count)
 	if (tenSach != "")
 	{
 		string toLowerName = ToLowerString(tenSach);
-		vector<string> listKey = Split(toLowerName, " ");
+		string* listKey = Split(toLowerName, " ");
 
 		for (int i = 0; i < this->size; i++)
 		{
@@ -802,7 +802,7 @@ DAUSACH* LIST_DAUSACH::FindBooks(string tenSach, int& count)
 				PushBack(result, *this->nodes[i], count);
 			}
 		}
-		for (size_t j = 0; j < listKey.size(); j++)
+		for (int j = 0; j < SizeOfT(listKey); j++)
 		{
 			for (int i = 0; i < this->size; i++)
 			{
@@ -826,6 +826,7 @@ DAUSACH* LIST_DAUSACH::FindBooks(string tenSach, int& count)
 				}
 			}
 		}
+		delete[] listKey;
 	}
 	return result;
 }
