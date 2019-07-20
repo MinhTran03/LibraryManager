@@ -132,7 +132,7 @@ string MUONTRA::ToStringFile()
 	return result;
 }
 
-MUONTRA ParseVectorStringFile(vector<string> data)
+MUONTRA ParseVectorStringFile(string* data)
 {
 	DATETIME dt = DATETIME();
 	MUONTRA mt;
@@ -632,8 +632,8 @@ bool LIST_MUONTRA::ReadFromFile(string path)
 	auto fileHandler = FILEHANDLER(path);
 	try
 	{
-		auto lstMTVector = fileHandler.GetTokens();
-		int size = lstMTVector.size();
+		int size = 0;
+		auto lstMTVector = fileHandler.GetTokens(size);
 		for (int i = 0; i < size; i++)
 		{
 			MUONTRA mt = ParseVectorStringFile(lstMTVector[i]);

@@ -2,7 +2,7 @@
 
 #pragma region ----------------------------------------------------DAUSACH
 // chuyen vector<string> vo obj DAUSACH
-DAUSACH ParseVectorString(vector<string> data)
+DAUSACH ParseVectorString(string* data)
 {
 	DAUSACH dauSach;// = new DAUSACH;
 	StringToCharArray(data[0], dauSach.isbn);
@@ -26,7 +26,7 @@ DAUSACH InputDauSach(LIST_DAUSACH listDS, RECTANGLE rect)
 													"PHAI NHO HON NAM HIEN TAI", "CHI NHAP CHU CAI" };
 	form.Guilds = guilds;
 	DAUSACH dauSach = DAUSACH();
-	vector<string> tempData = form.OutputResults;
+	string* tempData = form.OutputResults;
 
 	while (true)
 	{
@@ -44,12 +44,14 @@ DAUSACH InputDauSach(LIST_DAUSACH listDS, RECTANGLE rect)
 			}
 			else
 			{
+				delete[] tempData;
 				return dauSach;
 			}
 		}
 		else
 		{
 			form.ResetOutput();
+			delete[] tempData;
 			break;
 		}
 	}
@@ -68,8 +70,9 @@ DAUSACH InputFixDauSach(LIST_DAUSACH listDS, RECTANGLE rect, DAUSACH dauSach)
 	vector<string> guilds = { "DAY SO CO 5 CHU SO", "TAT CA KY TU", "SO TRANG TU [1, 999999]", "CHI NHAP CHU CAI",
 													"PHAI NHO HON NAM HIEN TAI", "CHI NHAP CHU CAI" };
 	form.Guilds = guilds;
-	form.ParseData({ string(dauSach.isbn), dauSach.tenSach, to_string(dauSach.soTrang),
-				dauSach.tenTacGia, to_string(dauSach.namXuatBan), dauSach.tenTheLoai });
+	string datas[] = { string(dauSach.isbn), dauSach.tenSach, to_string(dauSach.soTrang),
+				dauSach.tenTacGia, to_string(dauSach.namXuatBan), dauSach.tenTheLoai };
+	form.ParseData(datas);
 	form.currentLine = 1;
 	while (true)
 	{
@@ -697,9 +700,8 @@ bool LIST_DAUSACH::ReadFromFile(string path)
 	auto fileHandler = FILEHANDLER(path);
 	try
 	{
-		auto lstDauSachVector = fileHandler.GetTokens();
-		int size = lstDauSachVector.size();
-		//DAUSACH* dauSach = new DAUSACH[size];
+		int size = 0;
+		auto lstDauSachVector = fileHandler.GetTokens(size);
 		for (int i = 0; i < size; i++)
 		{
 			DAUSACH* dauSach = new DAUSACH;

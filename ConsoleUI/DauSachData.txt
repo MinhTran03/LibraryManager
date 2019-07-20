@@ -17,7 +17,7 @@
 000017-Tuoi tre dang bao nhieu-285-Rosie Nguyen-2016-Ky nang song
 000018-Hanh ly hu vo-164-Nguyen Ngoc Tu-2019-Van hoc
 000019-Loi song toi gian cua nguoi Nhat-294-Sasaki Fumio-2018-Nghe thuat song dep
-000020-Khong tu khinh bi khong tu phi hoai-368-Van Tinh-2019-Ky nang song
+000020-Khong tu khinh bi khong tu phi hoai-368-Van Tinh-2019-Van hoc
 000021-Cong pha toan 1-523-Nhieu tac gia-2018-Sach tham khao
 000022-Cong pha toan 2-524-Nhieu tac gia-2018-Sach tham khao
 000023-Cong pha toan 3-523-Nhieu tac gia-2018-Sach tham khao

@@ -4,6 +4,8 @@
 #include <vector>
 #include <string>
 
+using namespace std;
+
 enum FileHandlerResult
 {
 	Exist,
@@ -18,15 +20,15 @@ enum IosMode
 
 struct FILEHANDLER
 {
-	std::string filePath;
-	std::string delimiter = "-";
-	FILEHANDLER(std::string filePath) : filePath(filePath)
+	string filePath;
+	string delimiter = "-";
+	FILEHANDLER(string filePath) : filePath(filePath)
 	{
 	}
 
-	FileHandlerResult IsValidFile(std::string filePath)
+	FileHandlerResult IsValidFile(string filePath)
 	{
-		std::ifstream fileInput(filePath);
+		ifstream fileInput(filePath);
 		if (fileInput.fail())
 		{
 			fileInput.close();
@@ -50,31 +52,34 @@ struct FILEHANDLER
 		}
 	}
 
-	std::vector<std::vector<std::string>> GetTokens(std::string delimiter = "-")
+	string** GetTokens(int& count, string delimiter = "-")
 	{
 		if (IsValidFile(this->filePath) == Not_Exist)
 		{
-			throw std::runtime_error("Failed to open this file!");
+			throw runtime_error("Failed to open this file!");
 		}
 		else
 		{
-			std::ifstream fileInput(filePath);
-			std::vector<std::vector<std::string>> result;
-			std::string line;
+			ifstream fileInput(filePath);
+			string** result = NULL;
+			string line;
 			size_t posLine = 0;
 			while (!fileInput.eof())
 			{
 				getline(fileInput, line);
 				line += delimiter;
 				size_t pos = 0;
-				std::vector<std::string> token;
+				string* token = NULL;
 				size_t posToken = 0;
-				while ((pos = line.find(delimiter)) != std::string::npos)
+				int count2 = 0;
+				while ((pos = line.find(delimiter)) != string::npos)
 				{
-					token.push_back(line.substr(0, pos));
+					//token.push_back(line.substr(0, pos));
+					PushBack(token, line.substr(0, pos), count2);
 					line.erase(0, pos + delimiter.length());
 				}
-				result.push_back(token);
+				//result.push_back(token);
+				PushBack(result, token, count);
 				posLine++;
 			}
 			fileInput.close();
@@ -82,21 +87,22 @@ struct FILEHANDLER
 		}
 	}
 
-	std::vector<std::string> GetLinesString()
+	string* GetLinesString()
 	{
 		if (IsValidFile(this->filePath) == Not_Exist)
 		{
-			throw std::runtime_error("Failed to open this file!");
+			throw runtime_error("Failed to open this file!");
 		}
 		else
 		{
-			std::ifstream fileInput(filePath);
-			std::vector<std::string> result;
-			std::string line;
+			ifstream fileInput(filePath);
+			string* result = NULL;
+			string line;
+			int count = 0;
 			while (!fileInput.eof())
 			{
 				getline(fileInput, line);
-				result.push_back(line);
+				PushBack(result, line, count);
 			}
 			fileInput.close();
 			return result;
@@ -107,13 +113,13 @@ struct FILEHANDLER
 	{
 		if (IsValidFile(this->filePath) == Not_Exist)
 		{
-			throw std::runtime_error("Failed to open this file!");
+			throw runtime_error("Failed to open this file!");
 		}
 		else
 		{
-			std::ifstream fileInput(filePath);
+			ifstream fileInput(filePath);
 			int* result = NULL;
-			std::string line;
+			string line;
 			int count = 0;
 			while (!fileInput.eof())
 			{
@@ -127,19 +133,19 @@ struct FILEHANDLER
 	}
 
 	// mode = ios::
-	bool WriteToFile(std::string* data, IosMode mode)
+	bool WriteToFile(string* data, IosMode mode)
 	{
 		if (IsValidFile(this->filePath) == Not_Exist)
 		{
-			std::ofstream outfile(filePath);
+			ofstream outfile(filePath);
 		}
 
 		// 2. Mở file
-		std::ofstream f;
+		ofstream f;
 		if(mode == Replace)
-			f.open(filePath, std::ios::trunc);
+			f.open(filePath, ios::trunc);
 		else
-			f.open(filePath, std::ios::app);
+			f.open(filePath, ios::app);
 
 		// 3. Ghi dữ liệu vào file, trường hợp này ta có data là dữ liệu
 		for (int i = 0; i < SizeOfT(data); i++)

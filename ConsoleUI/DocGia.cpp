@@ -5,7 +5,7 @@ int newPos;
 
 #pragma region -------------------------------------------DOCGIA
 // Chuyen vector string trong file thanh doc gia
-DOCGIA ParseVectorStringFile(vector<string> data)
+DOCGIA ParseVectorStringFile(string* data)
 {
 	DOCGIA docGia;// = new DOCGIA;
 	docGia.maDocGia = atoi(StringToCharArray(data[0]));
@@ -30,7 +30,7 @@ DOCGIA ParseVectorStringFile(vector<string> data)
 	return docGia;
 }
 // Chuyen vector string thanh doc gia
-DOCGIA ParseVectorString(vector<string> data)
+DOCGIA ParseVectorString(string* data)
 {
 	DOCGIA docGia;// = new DOCGIA;
 	docGia.maDocGia = atoi(StringToCharArray(data[0]));
@@ -165,7 +165,8 @@ DOCGIA InputFixDocGia(RECTANGLE rect, DOCGIA docGia)
 	{
 		temp2 = "1";
 	}
-	form.ParseData({ to_string(docGia.maDocGia) , docGia.ho, docGia.ten, temp1, temp2 });
+	string datas[5] = { to_string(docGia.maDocGia) , docGia.ho, docGia.ten, temp1, temp2 };
+	form.ParseData(datas);
 	form.currentLine = 1;
 	while (true)
 	{
@@ -206,8 +207,8 @@ bool ReadFromFile(LIST_DOCGIA& listDG, string path)
 	auto fileHandler = FILEHANDLER(path);
 	try
 	{
-		auto lstDocGia = fileHandler.GetTokens();
-		int size = lstDocGia.size();
+		int size = 0;
+		auto lstDocGia = fileHandler.GetTokens(size);
 		//DAUSACH* dauSach = new DAUSACH[size];
 		for (int i = 0; i < size; i++)
 		{
@@ -537,7 +538,8 @@ DOCGIA InputDocGia(int maThe, RECTANGLE rect)
 	vector<string> guilds = { "MA DOC GIA LA TU DONG", "CHI NHAP CHU CAI", "CHI NHAP CHU CAI", "0: NAM\n1: NU", "0: THE BI KHOA\n1: DANG HOAT DONG" };
 	form.Guilds = guilds;
 	DOCGIA docGia = DOCGIA();
-	form.ParseData({ to_string(maThe), "","","0","1" });
+	string datas[5] = { to_string(maThe), "","","0","1" };
+	form.ParseData(datas);
 	form.currentLine = 1;
 	if (form.Show(1, 4))
 	{

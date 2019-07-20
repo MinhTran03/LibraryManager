@@ -73,7 +73,7 @@ string SACH::ToStringFile()
 	return result;
 }
 //c chuyen vector<string> vo obj Sach
-SACH ParseVectorString(vector<string> data)
+SACH ParseVectorString(string* data)
 {
 	SACH sach;
 	sach.maSach = data[0];
@@ -86,7 +86,7 @@ SACH ParseVectorString(vector<string> data)
 	sach.viTri = ToUpperString(data[2]);
 	return sach;
 }
-SACH ParseVectorStringFile(vector<string> data)
+SACH ParseVectorStringFile(string* data)
 {
 	SACH sach;
 	sach.maSach = data[0];
@@ -108,7 +108,8 @@ SACH SACH::Input(RECTANGLE rect, string maSach)
 	auto form = FORMINPUT(labels, conditions, rect, title);
 	vector<string> guilds = { "MA SACH LA TU DONG", "0: CHO MUON DUOC\n1: DA MUON\n2: DA THANH LY", "BAO GOM CHU VA SO" };
 	form.Guilds = guilds;
-	form.ParseData({ maSach, "0", "" });
+	string datas[3] = { maSach, "0", "" };
+	form.ParseData(datas);
 	form.currentLine = 2;
 	if (form.Show(2))
 	{
@@ -127,7 +128,8 @@ SACH SACH::InputFix(RECTANGLE rect)
 	vector<CONDITION> conditions = { {All, 6, 6, Default}, {Enum, 1, 3}, {Mix, VITRI_MAXSIZE, VITRI_MAXSIZE} };
 
 	auto form = FORMINPUT(labels, conditions, rect, title);
-	form.ParseData({ this->maSach, to_string(this->trangThai), this->viTri });
+	string datas[3] = { this->maSach, to_string(this->trangThai), this->viTri };
+	form.ParseData(datas);
 	form.currentLine = 1;
 	vector<string> guilds = { "MA SACH LA TU DONG", "0: CHO MUON DUOC\n1: DA MUON\n2: DA THANH LY", "BAO GOM CHU VA SO" };
 	form.Guilds = guilds;
@@ -437,8 +439,8 @@ bool LIST_SACH::ReadFromFile(string path)
 	auto fileHandler = FILEHANDLER(path);
 	try
 	{
-		auto lstSachVector = fileHandler.GetTokens();
-		int size = lstSachVector.size();
+		int size = 0;
+		auto lstSachVector = fileHandler.GetTokens(size);
 		SACH* dauSach = new SACH[size];
 		for (int i = 0; i < size; i++)
 		{

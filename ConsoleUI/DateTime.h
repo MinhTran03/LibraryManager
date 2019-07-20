@@ -8,8 +8,8 @@
 
 struct DATETIME
 {
-	std::time_t t = std::time(0);
-	std::tm* now = std::localtime(&t);
+	time_t t = time(0);
+	tm* now = localtime(&t);
 
 	unsigned int day;
 	unsigned int month;
@@ -64,34 +64,34 @@ struct DATETIME
 		this->minute = now->tm_min;
 		this->second = now->tm_sec;
 	}
-	std::string ToStringDate()
+	string ToStringDate()
 	{
-		std::string result = "";
+		string result = "";
 
 		if (this->day < 10) result = "0";
-		result += std::to_string(this->day);
+		result += to_string(this->day);
 		result += "/";
 
 		if (this->month < 10) result += "0";
-		result += std::to_string(this->month);
+		result += to_string(this->month);
 		result += "/";
-		result += std::to_string(this->year);
+		result += to_string(this->year);
 		return result;
 	}
-	std::string ToStringTime()
+	string ToStringTime()
 	{
-		std::string result = "";
+		string result = "";
 
 		if (this->hour < 10) result = "0";
-		result += std::to_string(this->hour);
+		result += to_string(this->hour);
 		result += ":";
 
 		if (this->minute < 10) result += "0";
-		result += std::to_string(this->minute);
+		result += to_string(this->minute);
 		result += ":";
 
 		if (this->second < 10) result += "0";
-		result += std::to_string(this->second);
+		result += to_string(this->second);
 		return result;
 	}
 
@@ -106,7 +106,7 @@ struct DATETIME
 			year > 9999) ? false : true;
 	}
 
-	DATETIME ParseStringDate(std::string dateAsString)
+	DATETIME ParseStringDate(string dateAsString)
 	{
 		auto date = Split(dateAsString, "/");
 		day = stoi(date[0]);
@@ -114,7 +114,7 @@ struct DATETIME
 		year = stoi(date[2]);
 		return *this;
 	}
-	DATETIME ParseStringTime(std::string timeAsString)
+	DATETIME ParseStringTime(string timeAsString)
 	{
 		auto time = Split(timeAsString, ":");
 		hour = stoi(time[0]);

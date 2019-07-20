@@ -12,25 +12,25 @@
 struct FORMINPUT
 {
 	MYPOINT guildLocation = { 0,0 };
-	std::vector<std::string> OutputResults;
-	std::vector<std::string> Guilds;
-	std::vector<std::string> labels;
-	std::vector<CONDITION> conditions;
+	string* OutputResults;
+	vector<string> Guilds;
+	vector<string> labels;
+	vector<CONDITION> conditions;
 	// Chua index y tuong ung voi vi tri label
-	std::vector<int> rows;
+	vector<int> rows;
 	// CHua index x tuong ung voi vi tri text nguoi dung dang nhap vo
-	std::vector<int> cols;
-	std::vector<int> colsLabel;
+	vector<int> cols;
+	vector<int> colsLabel;
 	int currentLine = 0;
 	int totalLine;
 	int xInputCol;
-	std::string title;
+	string title;
 	RECTANGLE rect;
 	BORDER border;	
-	std::string textBtn1 = "OK";
-	std::string textBtn2 = "CANCEL";
+	string textBtn1 = "OK";
+	string textBtn2 = "CANCEL";
 
-	FORMINPUT(std::vector<std::string> labels, std::vector<CONDITION> conditions, RECTANGLE rect, std::string title)
+	FORMINPUT(vector<string> labels, vector<CONDITION> conditions, RECTANGLE rect, string title)
 		: rect(rect), title(title), border(rect.location, rect.size)
 	{
 		this->labels = labels;
@@ -39,26 +39,29 @@ struct FORMINPUT
 		this->xInputCol = MaxLengthLabel() + rect.location.x + 3;
 		this->conditions = conditions;
 		guildLocation = { rect.location.x + 1, rect.location.y + rect.size.height };
+		int count = 0;
 		for (int i = 1; i <= totalLine; i++)
 		{
 			rows.push_back(rect.location.y + 2 * i + 2);
 			colsLabel.push_back(rect.location.x + 2);
 			cols.push_back(xInputCol);
-			OutputResults.push_back("");
+			//OutputResults.push_back("");
+			string te = "";
+			PushBack(OutputResults, te, count);
 		}
 	}
 
-	void ParseData(std::vector<std::string> data)
+	void ParseData(string* data)
 	{
 		OutputResults = data;
-		for (size_t i = 0; i < data.size(); i++)
+		for (int i = 0; i < this->totalLine; i++)
 		{
 			cols[i] += data[i].size();
 		}
 	}
 	void ResetOutput()
 	{
-		for (size_t i = 0; i < OutputResults.size(); i++)
+		for (int i = 0; i < this->totalLine; i++)
 		{
 			OutputResults[i] = "";
 			cols[i] = xInputCol;
@@ -67,19 +70,19 @@ struct FORMINPUT
 	void PrintLabelsTitle(int mode = 0, int mode2 = 0)
 	{
 		GoToXY(rect.location.x + rect.size.width / 2 - title.length() / 2 - title.length() % 2, rows[0] - 2);
-		std::cout << title;
+		cout << title;
 		
 		// In label va text ra man hinh
 		for (int i = 0; i < totalLine; i++)
 		{
 			SetTextColor(LABEL_TEXT_COLOR);
 			GoToXY(colsLabel[i], rows[i]);
-			std::cout << labels[i];
+			cout << labels[i];
 			SetTextColor(TEXT_INPUT_COLOR);
 			if (conditions[i].mode == Default)
 				SetTextColor(TEXT_INPUT_DEFAULT_COLOR);
 			GoToXY(xInputCol, rows[i]);
-			std::cout << OutputResults[i];
+			cout << OutputResults[i];
 			if (conditions[i].type == Enum && mode != 0)
 			{
 				int num = OutputResults[i][0] - '0';
@@ -90,11 +93,11 @@ struct FORMINPUT
 				{
 					if (num == 0)
 					{
-						std::cout << "Nam";
+						cout << "Nam";
 					}
 					else if (num == 1)
 					{
-						std::cout << "Nu";
+						cout << "Nu";
 					}
 				}
 				// trang thai sach
@@ -102,15 +105,15 @@ struct FORMINPUT
 				{
 					if (num == 0)
 					{
-						std::cout << "Cho muon duoc";
+						cout << "Cho muon duoc";
 					}
 					else if (num == 1)
 					{
-						std::cout << "Da muon";
+						cout << "Da muon";
 					}
 					else if (num == 2)
 					{
-						std::cout << "Da thanh ly";
+						cout << "Da thanh ly";
 					}
 				}
 				// trang thai muon tra
@@ -118,26 +121,26 @@ struct FORMINPUT
 				{
 					if (num == 0)
 					{
-						std::cout << "Sach chua tra";
+						cout << "Sach chua tra";
 					}
 					else if (num == 1)
 					{
-						std::cout << "Sach da tra";
+						cout << "Sach da tra";
 					}
 					else if (num == 2)
 					{
-						std::cout << "Lam mat sach";
+						cout << "Lam mat sach";
 					}
 				}
 				else if (mode == 4)
 				{
 					if (num == 0)
 					{
-						std::cout << "The bi khoa";
+						cout << "The bi khoa";
 					}
 					else if (num == 1)
 					{
-						std::cout << "Dang hoat dong";
+						cout << "Dang hoat dong";
 					}
 				}
 				GoToXY(x, WhereY());
@@ -152,11 +155,11 @@ struct FORMINPUT
 				{
 					if (num == 0)
 					{
-						std::cout << "Nam";
+						cout << "Nam";
 					}
 					else if (num == 1)
 					{
-						std::cout << "Nu";
+						cout << "Nu";
 					}
 				}
 				// trang thai sach
@@ -164,15 +167,15 @@ struct FORMINPUT
 				{
 					if (num == 0)
 					{
-						std::cout << "Cho muon duoc";
+						cout << "Cho muon duoc";
 					}
 					else if (num == 1)
 					{
-						std::cout << "Da muon";
+						cout << "Da muon";
 					}
 					else if (num == 2)
 					{
-						std::cout << "Da thanh ly";
+						cout << "Da thanh ly";
 					}
 				}
 				// trang thai muon tra
@@ -180,26 +183,26 @@ struct FORMINPUT
 				{
 					if (num == 0)
 					{
-						std::cout << "Sach chua tra";
+						cout << "Sach chua tra";
 					}
 					else if (num == 1)
 					{
-						std::cout << "Sach da tra";
+						cout << "Sach da tra";
 					}
 					else if (num == 2)
 					{
-						std::cout << "Lam mat sach";
+						cout << "Lam mat sach";
 					}
 				}
 				else if (mode2 == 4)
 				{
 					if (num == 0)
 					{
-						std::cout << "The bi khoa";
+						cout << "The bi khoa";
 					}
 					else if (num == 1)
 					{
-						std::cout << "Dang hoat dong";
+						cout << "Dang hoat dong";
 					}
 				}
 				GoToXY(x, WhereY());
@@ -218,7 +221,7 @@ struct FORMINPUT
 		}
 		return max;
 	}
-	bool IsValidCondition(char& c, int currentLine, std::string value)
+	bool IsValidCondition(char& c, int currentLine, string value)
 	{
 		auto condition = conditions[currentLine];
 		if (condition.type == Enum && value.size() >= 1)
@@ -231,7 +234,7 @@ struct FORMINPUT
 		{
 		case WordType::Enum:
 		{
-			std::string max = std::to_string(condition.maxLength);
+			string max = to_string(condition.maxLength);
 			return IsNumber(c) && c >= 48 && c < max[0];
 		}
 		case WordType::Mix:
@@ -273,9 +276,9 @@ struct FORMINPUT
 		}
 		return true;
 	}
-	std::vector<int> IsValidOutput()
+	vector<int> IsValidOutput()
 	{
-		std::vector<int> error;
+		vector<int> error;
 		for (int i = 0; i < totalLine; i++)
 		{
 			// check min length
@@ -298,7 +301,7 @@ struct FORMINPUT
 			{
 				auto dateNow = DATETIME();
 				dateNow.SetDateTimeNow();
-				if ((size_t)std::stoi(OutputResults[i]) > dateNow.year || (size_t)std::stoi(OutputResults[i]) < 1000)
+				if ((size_t)stoi(OutputResults[i]) > dateNow.year || (size_t)stoi(OutputResults[i]) < 1000)
 					error.push_back(i);
 			}
 			else if (conditions[i].type == Number_Only)
@@ -326,7 +329,7 @@ struct FORMINPUT
 		for (int i = 0; i < SizeOfT(texts); i++)
 		{
 			GoToXY(temp, guildLocation.y + i);
-			std::cout << texts[i];
+			cout << texts[i];
 		}
 		delete[] texts;
 		SetTextColor(TEXT_INPUT_COLOR);
@@ -431,7 +434,7 @@ struct FORMINPUT
 						{
 							ClearForm();
 							return true;
-							/*std::string text = "Ban chac chan muon luu thong tin?";
+							/*string text = "Ban chac chan muon luu thong tin?";
 							auto confirm = CONFIRMDIALOG({ rect.location.x + rect.size.width / 2 - (int)text.length() / 2 - 4,
 															rect.location.y + rect.size.height / 2 - 2 });
 							confirm.Show(text, Yes_No);
@@ -458,9 +461,9 @@ struct FORMINPUT
 							for (size_t i = 0; i < errorsLength.size(); i++)
 							{
 								GoToXY(xInputCol, rows[errorsLength[i]] + 1);
-								std::string tempLabel = labels[errorsLength[i]];
-								tempLabel.erase(std::remove(tempLabel.begin(), tempLabel.end(), ':'), tempLabel.end());
-								std::cout << tempLabel << " khong hop le";
+								string tempLabel = labels[errorsLength[i]];
+								tempLabel.erase(remove(tempLabel.begin(), tempLabel.end(), ':'), tempLabel.end());
+								cout << tempLabel << " khong hop le";
 							}
 							currentLine = errorsLength[0];
 							ShowGuildLine(currentLine);
@@ -472,7 +475,7 @@ struct FORMINPUT
 					// Phim Cancel duoc nhan
 					else if (cols[currentLine] > halfWidthForm)
 					{
-						std::string text = "Ban chac chan muon huy?";
+						string text = "Ban chac chan muon huy?";
 						auto confirm = CONFIRMDIALOG({ rect.location.x + rect.size.width / 2 - (int)text.length() / 2 - 6,
 														rect.location.y + rect.size.height / 2 - 4 });
 						confirm.Show(text, Yes_No);
@@ -537,7 +540,7 @@ struct FORMINPUT
 			}
 			else if (inputKey == Key::ESC)
 			{
-				std::string text = "Ban chac chan muon thoat?";
+				string text = "Ban chac chan muon thoat?";
 				auto confirm = CONFIRMDIALOG({ rect.location.x + rect.size.width / 2 - (int)text.length() / 2 - 6,
 												rect.location.y + rect.size.height / 2 - 4 });
 				confirm.Show(text, Yes_No);
@@ -572,11 +575,11 @@ struct FORMINPUT
 						{
 							if (num == 0)
 							{
-								std::cout << "Nam";
+								cout << "Nam";
 							}
 							else if (num == 1)
 							{
-								std::cout << "Nu";
+								cout << "Nu";
 							}
 						}
 						// trang thai sach
@@ -584,15 +587,15 @@ struct FORMINPUT
 						{
 							if (num == 0)
 							{
-								std::cout << "Cho muon duoc";
+								cout << "Cho muon duoc";
 							}
 							else if (num == 1)
 							{
-								std::cout << "Da muon";
+								cout << "Da muon";
 							}
 							else if (num == 2)
 							{
-								std::cout << "Da thanh ly";
+								cout << "Da thanh ly";
 							}
 						}
 						// trang thai muon tra
@@ -600,26 +603,26 @@ struct FORMINPUT
 						{
 							if (num == 0)
 							{
-								std::cout << "Sach chua tra";
+								cout << "Sach chua tra";
 							}
 							else if (num == 1)
 							{
-								std::cout << "Sach da tra";
+								cout << "Sach da tra";
 							}
 							else if (num == 2)
 							{
-								std::cout << "Lam mat sach";
+								cout << "Lam mat sach";
 							}
 						}
 						else if (mode == 4)
 						{
 							if (num == 0)
 							{
-								std::cout << "Dang hoat dong";
+								cout << "Dang hoat dong";
 							}
 							else if (num == 1)
 							{
-								std::cout << "The bi khoa";
+								cout << "The bi khoa";
 							}
 						}
 						GoToXY(x, WhereY());
@@ -634,11 +637,11 @@ struct FORMINPUT
 						{
 							if (num == 0)
 							{
-								std::cout << "Nam";
+								cout << "Nam";
 							}
 							else if (num == 1)
 							{
-								std::cout << "Nu";
+								cout << "Nu";
 							}
 						}
 						// trang thai sach
@@ -646,15 +649,15 @@ struct FORMINPUT
 						{
 							if (num == 0)
 							{
-								std::cout << "Cho muon duoc";
+								cout << "Cho muon duoc";
 							}
 							else if (num == 1)
 							{
-								std::cout << "Da muon";
+								cout << "Da muon";
 							}
 							else if (num == 2)
 							{
-								std::cout << "Da thanh ly";
+								cout << "Da thanh ly";
 							}
 						}
 						// trang thai muon tra
@@ -662,26 +665,26 @@ struct FORMINPUT
 						{
 							if (num == 0)
 							{
-								std::cout << "Sach chua tra";
+								cout << "Sach chua tra";
 							}
 							else if (num == 1)
 							{
-								std::cout << "Sach da tra";
+								cout << "Sach da tra";
 							}
 							else if (num == 2)
 							{
-								std::cout << "Lam mat sach";
+								cout << "Lam mat sach";
 							}
 						}
 						else if (mode2 == 4)
 						{
 							if (num == 0)
 							{
-								std::cout << "Dang hoat dong";
+								cout << "Dang hoat dong";
 							}
 							else if (num == 1)
 							{
-								std::cout << "The bi khoa";
+								cout << "The bi khoa";
 							}
 						}
 						GoToXY(x, WhereY());
@@ -704,19 +707,19 @@ struct FORMINPUT
 						if (OutputResults[currentLine].size() == 2 || OutputResults[currentLine].size() == 5)
 						{
 							OutputResults[currentLine] += '/';
-							std::cout << '/';
+							cout << '/';
 							cols[currentLine]++;
 						}
 					}
 					OutputResults[currentLine] += inputKey;
-					std::cout << inputKey;
+					cout << inputKey;
 					cols[currentLine]++;
 					if (conditions[currentLine].type == DateTime)
 					{
 						if (OutputResults[currentLine].size() == 2 || OutputResults[currentLine].size() == 5)
 						{
 							OutputResults[currentLine] += '/';
-							std::cout << '/';
+							cout << '/';
 							cols[currentLine]++;
 						}
 					}
@@ -732,24 +735,24 @@ struct FORMINPUT
 				{
 					int x = WhereX();
 					GoToXY(x + 4, WhereY());
-					std::cout << std::string(13, ' ');
+					cout << string(13, ' ');
 					GoToXY(x, WhereY());
 				}
 				else if (conditions[currentLine].type == Enum2 && mode2 != 0)
 				{
 					int x = WhereX();
 					GoToXY(x + 4, WhereY());
-					std::cout << std::string(13, ' ');
+					cout << string(13, ' ');
 					GoToXY(x, WhereY());
 				}
 
 				int lengthCurrentValue = OutputResults[currentLine].length();
 				auto end = OutputResults[currentLine].end();
-				OutputResults[currentLine].erase(std::remove(end - 1, end, OutputResults[currentLine][lengthCurrentValue - 1]));
+				OutputResults[currentLine].erase(remove(end - 1, end, OutputResults[currentLine][lengthCurrentValue - 1]));
 				cols[currentLine]--;
 
 				GoToXY(cols[currentLine], rows[currentLine]);
-				std::cout << std::string(1, ' ');
+				cout << string(1, ' ');
 				GoToXY(cols[currentLine], rows[currentLine]);
 			}
 
@@ -787,7 +790,7 @@ struct FORMINPUT
 		for (int i = 0; i <= rect.size.height + 2; i++)
 		{
 			GoToXY(x, y + i);
-			std::cout << std::string(width, char(219));
+			cout << string(width, char(219));
 		}
 		SetTextColor(TEXT_INPUT_COLOR);
 	}
