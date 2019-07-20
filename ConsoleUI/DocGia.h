@@ -46,11 +46,11 @@ struct NODE_DOCGIA
 typedef NODE_DOCGIA* LIST_DOCGIA;
 
 // Ghi du lieu ma doc gia ra file text
-bool WriteMaDGToFile(std::string path);
+bool WriteMaDGToFile(std::string path, LIST_DOCGIA listDG);
 // Ghi du lieu doc gia ra file text
 bool WriteToFile(LIST_DOCGIA lstDG, std::string path);
 // Remove ma doc gia from array khi them moi doc gia
-void RemoveMaDG();
+void RemoveMaDG(LIST_DOCGIA listDG);
 // Doc mang MADOCGIA tu file
 bool ReadMaDGFromFile(std::string path);
 // so node cua cay

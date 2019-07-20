@@ -79,7 +79,23 @@ template <class T>
 int SizeOfT(T* list)
 {
 	if (list == NULL) return 0;
-	return *(((int*)list) - 1);
+	int s = *(((int*)list) - 1);
+	return s;
+}
+
+template <class T>
+bool Erase(T*& list, int at, int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		if (i == at)
+		{
+			list[i] = list[size - 1];
+			ResizeArray(list, size, size - 1);
+			return true;
+		}
+	}
+	return false;
 }
 
 template <class T>

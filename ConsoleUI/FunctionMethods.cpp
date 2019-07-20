@@ -20,7 +20,7 @@ void SaveAll(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
 	// luu doc gia
 	WriteDocGia(listDG);
 	// luu ma doc gia arr
-	WriteMaDGToFile(MADOCGIA_FILE_PATH);
+	WriteMaDGToFile(MADOCGIA_FILE_PATH, listDG);
 	// luu muon tra
 	DuyetLuuFile(listDG);
 
@@ -152,7 +152,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 			}
 			else
 			{
-				RemoveMaDG();
+				RemoveMaDG(listDG);
 				Insert(listDG, *newDocGia);
 				tem = PrintAllDocGia(listDG, location, 1, Show_Only);
 			}
@@ -213,9 +213,9 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 						else
 						{
 							//DeleteNode(listDG, temp->data);
-							SetBGColor(BG_COLOR);
+							/*SetBGColor(BG_COLOR);
 							GoToXY(location.x, Size(listDG) + location.y + 3);
-							cout << emptyTemplate;
+							cout << emptyTemplate;*/
 							// da cap nhat ds the loai trong DeleteDauSach
 							tem = PrintAllDGWithHL(listDG, location, page, Show_Only);
 						}

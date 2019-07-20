@@ -390,12 +390,14 @@ std::string LIST_MUONTRA::Show(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode 
 			if (inputKey == Key::ENTER)
 			{
 				auto data = Split(datas[currentLine], "-");
+				delete[] datas;
 				return data[1];
 			}
 			else if (inputKey == Key::ESC)
 			{
 				GoToXY(location.x, rows[currentLine]);
 				HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
+				delete[] datas;
 				return "ESC";
 			}
 		} while (!_kbhit());

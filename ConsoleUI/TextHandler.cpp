@@ -222,3 +222,11 @@ void ArrString2VTString(std::vector<std::string>& data, std::string result[])
 		data.push_back(result[i]);
 	}
 }
+//template <class T>
+//int SizeOfT(T* list)
+//{
+//	if (list == NULL) return 0;
+//	//int s = *(((int*)list) - 1);
+//	int s = *(((int*)list) - 1);
+//	return s;
+//}

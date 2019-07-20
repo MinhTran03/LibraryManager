@@ -200,8 +200,6 @@ std::string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, std::string theLoai)
 	auto listISBN = GetTheLoai(theLoai, totalLine);
 	// sap xep theo ten sach
 	SortByTenSach(listISBN);
-	/*std::vector<std::string> datas;
-	std::vector<int> rows;*/
 	MYPOINT backUpLocation = MYPOINT(0, 0);
 	int currentPage = 0;
 	int totalPage = 0;
@@ -279,11 +277,13 @@ std::string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, std::string theLoai)
 			else */if (inputKey == Key::RIGHT)
 			{
 				ClearArea(location.x, backUpLocation.y - 3, DAUSACH_TOTAL_WIDTH, totalLine + 4);
+				delete[] listISBN;
 				return "RIGHT";
 			}
 			else if (inputKey == Key::LEFT)
 			{
 				ClearArea(location.x, backUpLocation.y - 3, DAUSACH_TOTAL_WIDTH, totalLine + 4);
+				delete[] listISBN;
 				return "LEFT";
 			}
 			else if (inputKey == Key::PAGE_DOWN && currentPage < totalPage - 1)
@@ -334,6 +334,7 @@ std::string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, std::string theLoai)
 		else */if (inputKey == Key::ESC)
 		{
 			ClearArea(location.x - 3, backUpLocation.y - 3, DAUSACH_TOTAL_WIDTH + 6, MAX_ROW_PER_PAGE + 5);
+			delete[] listISBN;
 			return "ESC";
 		}
 	} while (!_kbhit());
@@ -425,14 +426,16 @@ std::string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 	int currentLine = 0;
 	int currentPage = page;
 	// dua vao vector de sort
-	std::vector<DAUSACH> listISBN;
+	DAUSACH* listISBN = NULL;
+	int totalLine = this->size;
+	int count = 0;
 	for (int i = 0; i < this->size; i++)
 	{
-		listISBN.push_back(*this->nodes[i]);
+		PushBack(listISBN, *this->nodes[i], count);
+		//listISBN.push_back(*this->nodes[i]);
 	}
 	// sap xep theo ten sach
 	//SortByTenSach(listISBN);
-	int totalLine = this->size;
 	std::vector<std::vector<std::string>> datas;
 	std::vector<std::vector<int>> rows;
 	MYPOINT backUpLocation = MYPOINT(0, 0);
@@ -550,7 +553,9 @@ std::string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 			if (inputKey == Key::ENTER)
 			{
 				page = currentPage;
-				return listISBN[currentLine + MAX_ROW_PER_PAGE * currentPage].isbn;
+				std::string temp = listISBN[currentLine + MAX_ROW_PER_PAGE * currentPage].isbn;
+				delete[] listISBN;
+				return temp;
 			}
 			else if (inputKey == Key::PAGE_DOWN && currentPage < (int)datas.size() - 1)
 			{
@@ -595,11 +600,13 @@ std::string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 				GoToXY(location.x, rows[currentPage][currentLine]);
 				HightLight(datas[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
 				page = currentPage;
+				delete[] listISBN;
 				return "TAB";
 			}
 			else if (inputKey == Key::ESC)
 			{
 				page = currentPage;
+				delete[] listISBN;
 				return "ESC";
 			}
 		} while (!_kbhit());
@@ -629,6 +636,7 @@ void LIST_DAUSACH::PrintFindBooks(MYPOINT location, std::string tenSach)
 		listISBN[i].Print(location, BG_COLOR, TEXT_INPUT_COLOR);
 		location.y++;
 	}
+	delete[] listISBN;
 }
 #pragma endregion
 

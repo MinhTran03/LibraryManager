@@ -1,6 +1,6 @@
 #include "DocGia.h"
 
-int* maDocGiaArr;
+int* maDocGiaArr = NULL;
 int newPos;
 
 #pragma region -------------------------------------------DOCGIA
@@ -293,6 +293,24 @@ bool ReadMaDGFromFile(std::string path)
 	return true;
 }
 // duyet cay lay data string file
+void PreoderGetStringFile(LIST_DOCGIA lstDG, std::string*& result, int& count)
+{
+	if (lstDG != NULL)
+	{
+		PreoderGetStringFile(lstDG->pLeft, result, count);
+		PreoderGetStringFile(lstDG->pRight, result, count);
+		PushBack(result, lstDG->data.ToStringFile(), count);
+	}
+}
+// duyet cay lay ToStringFile cua node doc gia
+std::string* GetAllStringFileNodePre(LIST_DOCGIA listDG)
+{
+	std::string* result = NULL;
+	int count = 0;
+	PreoderGetStringFile(listDG, result, count);
+	return result;
+}
+// duyet cay lay data string file
 void InorderGetStringFile(LIST_DOCGIA lstDG, std::string*& result, int& count)
 {
 	if (lstDG != NULL)
@@ -318,7 +336,7 @@ bool WriteToFile(LIST_DOCGIA lstDG, std::string path)
 	try
 	{
 		int size = Size(lstDG);
-		std::string* data = GetAllStringFileNode(lstDG);
+		std::string* data = GetAllStringFileNodePre(lstDG);
 		for (auto i = 0; i < size; i++)
 		{
 			if (i < size - 1)
@@ -335,14 +353,15 @@ bool WriteToFile(LIST_DOCGIA lstDG, std::string path)
 	return true;
 }
 // Ghi du lieu ma doc gia ra file text
-bool WriteMaDGToFile(std::string path)
+bool WriteMaDGToFile(std::string path, LIST_DOCGIA listDG)
 {
 	auto fileHandler = FILEHANDLER(path);
 	try
 	{
 		int c = 0;
-		int size = SizeOfT(maDocGiaArr);
-		std::string* data = NULL;
+		int size = MAX_DOCGIA - Size(listDG);
+		int size2 = SizeOfT(maDocGiaArr);
+ 		std::string* data = NULL;
 		for (auto i = 0; i < size; i++)
 		{
 			std::string temp = "";
@@ -377,10 +396,10 @@ void SwapMaDG(int pos1, int pos2)
 	Swap(maDocGiaArr[pos1], maDocGiaArr[pos2]);
 }
 // Remove ma doc gia from array khi them moi doc gia
-void RemoveMaDG()
+void RemoveMaDG(LIST_DOCGIA listDG)
 {
 	//maDocGiaArr.erase(maDocGiaArr.begin() + newPos);
-	Erase(maDocGiaArr, newPos);
+	Erase(maDocGiaArr, newPos, MAX_DOCGIA - Size(listDG));
 }
 // Giai phong vung nho
 void FreeMemory(NODE_DOCGIA* root)
@@ -997,13 +1016,13 @@ void DuyetLuuFile(LIST_DOCGIA lstDG)
 {
 	if (lstDG != NULL)
 	{
-		DuyetLuuFile(lstDG->pLeft);
 		if (lstDG->data.listMuonTra.IsEmpty() == false)
 		{
 			std::string maAsString = "";
 			MergeWordWithNumber(maAsString, lstDG->data.maDocGia, 4);
 			WriteMuonTraToFile(lstDG->data.listMuonTra, maAsString);
 		}
+		DuyetLuuFile(lstDG->pLeft);
 		DuyetLuuFile(lstDG->pRight);
 	}
 }
