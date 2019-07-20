@@ -448,6 +448,7 @@ bool LIST_SACH::ReadFromFile(string path)
 			auto nodeSach = new NODE_SACH(dauSach[i]);
 			AddTail(*nodeSach);
 		}
+		delete[] lstSachVector;
 	}
 	catch (const exception& ex)
 	{

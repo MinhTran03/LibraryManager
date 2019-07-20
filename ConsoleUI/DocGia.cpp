@@ -209,13 +209,13 @@ bool ReadFromFile(LIST_DOCGIA& listDG, string path)
 	{
 		int size = 0;
 		auto lstDocGia = fileHandler.GetTokens(size);
-		//DAUSACH* dauSach = new DAUSACH[size];
 		for (int i = 0; i < size; i++)
 		{
 			DOCGIA* docGia = new DOCGIA;
 			*docGia = ParseVectorStringFile(lstDocGia[i]);
 			Insert(listDG, *docGia);
 		}
+		delete[] lstDocGia;
 	}
 	catch (const exception& ex)
 	{
@@ -344,6 +344,7 @@ bool WriteToFile(LIST_DOCGIA lstDG, string path)
 				data[i] += '\n';
 		}
 		fileHandler.WriteToFile(data, Replace);
+		delete[] data;
 	}
 	catch (const exception& ex)
 	{
@@ -854,8 +855,8 @@ string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Menu_Mo
 			rows[i] = new int[MAX_ROW_PER_PAGE];
 			datas[i] = new string[MAX_ROW_PER_PAGE];
 		}
-		rows[totalPages - 1] = new int[totalLine % MAX_ROW_PER_PAGE];
-		datas[totalPages - 1] = new string[totalLine % MAX_ROW_PER_PAGE];
+		rows[totalPages - 1] = new int[totalLine % MAX_ROW_PER_PAGE == 0 ? MAX_ROW_PER_PAGE : (totalLine % MAX_ROW_PER_PAGE)];
+		datas[totalPages - 1] = new string[totalLine % MAX_ROW_PER_PAGE == 0 ? MAX_ROW_PER_PAGE : (totalLine % MAX_ROW_PER_PAGE)];
 		for (int i = 0; i < totalLine; i++)
 		{
 			//Sleep(1);

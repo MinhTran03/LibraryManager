@@ -639,6 +639,7 @@ bool LIST_MUONTRA::ReadFromFile(string path)
 			MUONTRA mt = ParseVectorStringFile(lstMTVector[i]);
 			this->InsertAtTail(mt);
 		}
+		delete[] lstMTVector;
 	}
 	catch (const exception& ex)
 	{

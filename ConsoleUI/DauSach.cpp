@@ -466,8 +466,8 @@ string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 			rows[i] = new int[MAX_ROW_PER_PAGE];
 			datas[i] = new string[MAX_ROW_PER_PAGE];
 		}
-		rows[totalPages - 1] = new int[totalLine % MAX_ROW_PER_PAGE];
-		datas[totalPages - 1] = new string[totalLine % MAX_ROW_PER_PAGE];
+		rows[totalPages - 1] = new int[totalLine % MAX_ROW_PER_PAGE == 0 ? MAX_ROW_PER_PAGE : (totalLine % MAX_ROW_PER_PAGE)];
+		datas[totalPages - 1] = new string[totalLine % MAX_ROW_PER_PAGE == 0 ? MAX_ROW_PER_PAGE : (totalLine % MAX_ROW_PER_PAGE)];
 		for (int i = 0; i < totalLine; i++)
 		{
 			//Sleep(1);
@@ -708,6 +708,7 @@ bool LIST_DAUSACH::ReadFromFile(string path)
 			*dauSach = ParseVectorString(lstDauSachVector[i]);
 			Insert(*dauSach, this->size);
 		}
+		delete[] lstDauSachVector;
 	}
 	catch (const exception& ex)
 	{

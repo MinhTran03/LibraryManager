@@ -35,5 +35,5 @@
 000036-That tich khong mua-319-Lau Vu Tinh-2013-Van hoc
 000037-Toi tu hoc-262-Thu Giang-2017-Ky nang song
 000038-Mau ban-373-John Carreyrou-2019-Kinh doanh
-000039-Cirvil War-366-Kevin-1998-Truyen tranh
-000040-Toi tai gioi, ban cung the-251-Chua Cap Nhat-2014-Ky nang song
+000040-Toi tai gioi, ban cung the-251-Null-2014-Ky nang song
+000041-Cach nghi de thanh cong-411-Napoleon Hill-2008-Ky nang song

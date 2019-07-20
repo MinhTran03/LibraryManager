@@ -794,4 +794,8 @@ struct FORMINPUT
 		}
 		SetTextColor(TEXT_INPUT_COLOR);
 	}
+	void FreeData()
+	{
+		delete[] OutputResults;
+	}
 };
