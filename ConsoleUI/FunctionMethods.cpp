@@ -182,6 +182,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 					int totalLine = SizeOfT(dsDocGia);
 					auto tempLoc = location;
 					tempLoc.y += 3;
+					SetTextColor(TEXT_INPUT_COLOR);
 					for (int i = 0; i < totalLine; i++)
 					{
 						if (i >= (int)MAX_ROW_PER_PAGE * page && i < (page + 1) * (int)MAX_ROW_PER_PAGE)

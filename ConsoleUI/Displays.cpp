@@ -183,7 +183,7 @@ void DrawMessageBox(MYPOINT point, string text, string& inputText,
 			SetBGColor(BG_COLOR);
 			cout << " ";
 		}*/
-		SetTextColor(Color::White);
+		SetTextColor(Color::Bright_White);
 		SetBGColor(Color::Blue);
 		GoToXY(point.x + +rect.size.width / 2 - text.size() / 2, point.y);
 		cout << text;
@@ -218,7 +218,6 @@ void DrawMessageBox(MYPOINT point, string text, string& inputText,
 			{
 				do
 				{
-					//Sleep(100);
 					inputKey = _getch();
 					//GoToXY(point.x + 4, point.y + rect.size.height / 2);
 					if (inputKey == 0 || inputKey == -32)
@@ -267,7 +266,8 @@ void DrawMessageBox(MYPOINT point, string text, string& inputText,
 			HidePointer();
 			do
 			{
-				Sleep(100);
+				//Sleep(100);
+				SetTextColor(TEXT_INPUT_COLOR);
 				char inputKey1 = _getch();
 				if (inputKey1 == 0 || inputKey1 == -32)
 				{

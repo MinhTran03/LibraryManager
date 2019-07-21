@@ -215,7 +215,7 @@ string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, string theLoai)
 	// print data
 	for (int i = 0; i < totalLine; i++)
 	{
-		Sleep(10);
+		//Sleep(10);
 		ShowPageNumber(currentPage, totalPage, location.x, location.y + MAX_ROW_PER_PAGE + 1);
 		if (i >= (int)MAX_ROW_PER_PAGE * currentPage && i < (currentPage + 1) * (int)MAX_ROW_PER_PAGE)
 		{
