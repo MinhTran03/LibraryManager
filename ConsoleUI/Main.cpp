@@ -9,7 +9,7 @@ int main()
 	LIST_DOCGIA listDG = LIST_DOCGIA();
 	LoadMaDG(listDG);
 	LoadDocGia(listDG);
-	DuyetDocFile(listDG);
+	DuyetDocFile(listDG, GetPath());
 	
 	// load dau sach
 	auto listDS = LIST_DAUSACH();

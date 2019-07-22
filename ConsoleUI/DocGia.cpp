@@ -1042,22 +1042,22 @@ void DuyetLuuFile(LIST_DOCGIA lstDG)
 		DuyetLuuFile(lstDG->pRight);
 	}
 }
-bool ReadMuonTraFromFile(LIST_MUONTRA& listMT, string maDG)
+bool ReadMuonTraFromFile(LIST_MUONTRA& listMT, string maDG, string path)
 {
-	string path = MUONTRA_FILE_PATH;
+	path += MUONTRA_FILE_PATH;
 	path += maDG;
 	path += ".txt";
 	return listMT.ReadFromFile(path);
 }
-void DuyetDocFile(LIST_DOCGIA& lstDG)
+void DuyetDocFile(LIST_DOCGIA& lstDG, string path)
 {
 	if (lstDG != NULL)
 	{
-		DuyetDocFile(lstDG->pLeft);
+		DuyetDocFile(lstDG->pLeft, path);
 		string maAsString = "";
 		MergeWordWithNumber(maAsString, lstDG->data.maDocGia, 4);
-		ReadMuonTraFromFile(lstDG->data.listMuonTra, maAsString);
-		DuyetDocFile(lstDG->pRight);
+		ReadMuonTraFromFile(lstDG->data.listMuonTra, maAsString, path);
+		DuyetDocFile(lstDG->pRight, path);
 	}
 }
 #pragma endregion

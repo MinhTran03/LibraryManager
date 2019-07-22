@@ -21,6 +21,7 @@ const unsigned int SCREEN_HEIGHT = 44;
 const unsigned int FOOTER_HEIGHT = 5;
 const unsigned MAX_ROW_PER_PAGE = 20;
 
+const int MAGIC_NUMBER = -1;
 
 #define WARNING_CANT_DELETE_DS "DAU SACH DA CO DOC GIA MUON. KHONG DUOC XOA"
 #define WARNING_CANT_DELETE_SACH "SACH DA CO DOC GIA MUON. KHONG DUOC XOA"
@@ -57,7 +58,7 @@ const unsigned int DMS_TOTAL_WIDTH = MASACH_WIDTH + VITRI_WIDTH + TRANGTHAISACH_
 
 #pragma region -----------------------------------------------------Doc Gia
 #pragma region Doc Gia
-#define MADOCGIA_FILE_PATH "MaDocGiaArray.txt"
+#define MADOCGIA_FILE_PATH "\\MaDocGiaArray.txt"
 
 
 const unsigned int MAX_DOCGIA = 30;
@@ -72,7 +73,7 @@ const unsigned int DOCGIA_TOTAL_WIDTH = MADOCGIA_WIDTH + HODOCGIA_WIDTH + TENDOC
 #pragma endregion
 
 #pragma region -----------------------------------------------------Muon tra
-#define MUONTRA_FILE_PATH "MuonTra\\"
+#define MUONTRA_FILE_PATH "\\MuonTra\\"
 const unsigned int NGAY_WIDTH = 14;
 const unsigned int TRANGTHAI_MUONTRA_WIDTH = 20;
 const unsigned int SONGAYMUON_WIDTH = 16;

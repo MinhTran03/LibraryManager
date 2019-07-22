@@ -96,4 +96,4 @@ void PrintStringDocGia(string data, MYPOINT location);
 string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Menu_Mode mode);
 // luu list muon tra vo file
 void DuyetLuuFile(LIST_DOCGIA lstDG);
-void DuyetDocFile(LIST_DOCGIA& lstDG);
+void DuyetDocFile(LIST_DOCGIA& lstDG, string path);

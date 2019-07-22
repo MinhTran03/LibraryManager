@@ -666,13 +666,13 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 	LIST_MUONTRA tempMT = LIST_MUONTRA();
 	ClearScreen(BG_COLOR);
 	// add isbn da muon chua tra
-	vector<string> isbnDaMuon;
+	string* isbnDaMuon = NULL;
+	int daMuon = 0;
 	for (auto p = nodeDocGia.data.listMuonTra.pHead; p != NULL; p = p->pNext)
 	{
 		auto arr = Split(p->data.maSach, "_");
-		isbnDaMuon.push_back(arr[0]);
+		PushBack(isbnDaMuon, arr[0], daMuon);
 	}
-	int daMuon = isbnDaMuon.size();
 	// sach da muon
 	auto temp = nodeDocGia.data.listMuonTra.ShowFormMuonSach(listDS, locationMuon, Show_Only, daMuon);
 
@@ -713,6 +713,7 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 				// huy muon sach
 				if (cancelDS == "ESC")
 				{
+					// do nothing
 				}
 				else if (cancelDS == "TAB")
 				{
@@ -722,8 +723,16 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 				{
 					tempMT.Delete(cancelDS);
 					auto arr = Split(cancelDS, "_");
-					auto viTri = find(isbnDaMuon.begin(), isbnDaMuon.end(), arr[0]);
-					isbnDaMuon.erase(viTri);
+					auto viTri = 0;
+					for (int i = 0; i < daMuon; i++)
+					{
+						if (isbnDaMuon[i] == cancelDS)
+						{
+							viTri = i;
+							break;
+						}
+					}
+					Erase(isbnDaMuon, viTri, daMuon--);
 				}
 			}
 		}
@@ -734,16 +743,24 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 		else
 		{
 			// kiem tra sach muon day
-			if (isbnDaMuon.size() == 3)
+			if (daMuon == 3)
 			{
 				MakeFlickWarning({ locationDS.x, locationDS.y - 1 }, "DOC GIA CHI DUOC MUON TOI DA 3 SACH");
 				continue;
 			}
 
 			// kiem tra isbn da muon
-			auto viTri = find(isbnDaMuon.begin(), isbnDaMuon.end(), selectDS);
+			auto viTri = MAGIC_NUMBER;
+			for (int i = 0; i < daMuon; i++)
+			{
+				if (isbnDaMuon[i] == cancelDS)
+				{
+					viTri = i;
+					break;
+				}
+			}
 			// isbn chua duoc muon
-			if (viTri == isbnDaMuon.end())
+			if (viTri == MAGIC_NUMBER)
 			{
 				// clear dau sach
 				ClearArea(locationDS.x, locationDS.y, DAUSACH_TOTAL_WIDTH, MAX_ROW_PER_PAGE + 5);
@@ -766,7 +783,8 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 				muonTra.ngayMuon = d;
 				muonTra.trangThai = TrangThaiMuonTra::SachChuaTra;
 				tempMT.InsertAtTail(muonTra);
-				isbnDaMuon.push_back(selectDS);
+				PushBack(isbnDaMuon, selectDS, daMuon);
+				//isbnDaMuon.push_back(selectDS);
 				//// chuyen trang thai sach => da muon
 				//auto sach = dauSach->dsSach.Search(maSach);
 				//sach->data.trangThai = DaMuon;
