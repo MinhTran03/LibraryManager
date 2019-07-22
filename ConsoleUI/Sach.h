@@ -74,3 +74,5 @@ struct LIST_SACH
 	// Kiem tra LIST_SACH co xoa duoc hay khong
 	bool CanDelete();
 };
+
+std::string GetMaDauSach(std::string maSach);

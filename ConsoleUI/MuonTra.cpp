@@ -50,7 +50,7 @@ string MUONTRA::ToString(DAUSACH dauSach)
 	else
 	{
 		int subDay = this->ngayTra.SubDate(this->ngayMuon);
-		result += subDay;
+		result += to_string(subDay);
 		temp = SONGAYMUON_WIDTH - NumberLength(subDay);
 	}
 	result += string(temp, ' ');
@@ -315,6 +315,16 @@ string LIST_MUONTRA::ShowFormMuonSach(LIST_DAUSACH listDS, MYPOINT location, Men
 // hien thi cac sach doc gia dang muon
 string LIST_MUONTRA::Show(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode)
 {
+	string emptyTemplate = "";
+	emptyTemplate = emptyTemplate + char(179) + string(MASACH_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(TENSACH_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(NGAY_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(NGAY_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(SONGAYMUON_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(VITRI_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(TRANGTHAI_MUONTRA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179);
+
 	HidePointer();
 	MYPOINT backUpLocation = location;
 	Color hlBGColor = Color::Cyan;
@@ -333,7 +343,7 @@ string LIST_MUONTRA::Show(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode)
 		location.y += 3;
 		backUpLocation = location;
 		
-		for (int i = 0; i < totalLine; i++)
+		for (int i = 0; i < 3; i++)
 		{
 			GoToXY(location.x, location.y);
 			if (mode == Both && i == 0)
@@ -347,8 +357,15 @@ string LIST_MUONTRA::Show(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode)
 				SetBGColor(BG_COLOR);
 				continue;
 			}
-			cout << datas[i];
-			PushBack(rows, location.y++, count);
+			if (i < totalLine)
+			{
+				cout << datas[i];
+				PushBack(rows, location.y++, count);
+			}
+			else
+			{
+				cout << emptyTemplate;
+			}
 			//rows.push_back(location.y++);
 		}
 	}
@@ -407,10 +424,14 @@ string LIST_MUONTRA::Show(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode)
 			}
 			if (inputKey == Key::ENTER)
 			{
-				auto data = Split(datas[currentLine], "-");
+				
+				std::string key = "";
+				key += char(179);
+				auto temp = Split(datas[currentLine], key);
+				std::string keyTrim = Trim(temp[1]);
 				delete[] datas;
 				delete[] rows;
-				return data[1];
+				return keyTrim;
 			}
 			else if (inputKey == Key::ESC)
 			{

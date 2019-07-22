@@ -539,7 +539,7 @@ DOCGIA InputDocGia(int maThe, RECTANGLE rect)
 	string guilds[] = { "MA DOC GIA LA TU DONG", "CHI NHAP CHU CAI", "CHI NHAP CHU CAI", "0: NAM\n1: NU", "0: THE BI KHOA\n1: DANG HOAT DONG" };
 	form.Guilds = guilds;
 	DOCGIA docGia = DOCGIA();
-	string datas[5] = { to_string(maThe), "","","0","1" };
+	string datas[] = { to_string(maThe), "","","0","1" };
 	form.ParseData(datas);
 	form.currentLine = 1;
 	if (form.Show(1, 4))

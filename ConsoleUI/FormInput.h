@@ -324,8 +324,9 @@ struct FORMINPUT
 		ClearArea(guildLocation.x, guildLocation.y, rect.size.width, 3);
 		SetTextColor(TEXT_GUILD_COLOR);
 		string* texts = Split(Guilds[currentLine], "\n");
+		int size = WordCount(StringToCharArray(Guilds[currentLine]), "\n");
 		int temp = rect.size.width / 2 - texts[0].size() / 2 + guildLocation.x;
-		for (int i = 0; i < totalLine; i++)
+		for (int i = 0; i < size; i++)
 		{
 			GoToXY(temp, guildLocation.y + i);
 			cout << texts[i];
