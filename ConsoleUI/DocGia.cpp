@@ -345,7 +345,7 @@ bool WriteToFile(LIST_DOCGIA lstDG, string path)
 			if (i < size - 1)
 				data[i] += '\n';
 		}
-		fileHandler.WriteToFile(data, Replace);
+		fileHandler.WriteToFile(data, Replace, size);
 		delete[] data;
 	}
 	catch (const exception& ex)
@@ -364,7 +364,6 @@ bool WriteMaDGToFile(string path, LIST_DOCGIA listDG)
 	{
 		int c = 0;
 		int size = MAX_DOCGIA - Size(listDG);
-		int size2 = SizeOfT(maDocGiaArr);
  		string* data = NULL;
 		for (auto i = 0; i < size; i++)
 		{
@@ -372,10 +371,9 @@ bool WriteMaDGToFile(string path, LIST_DOCGIA listDG)
 			temp += to_string(maDocGiaArr[i]);
 			if (i < size - 1)
 				temp += '\n';
-			//data.push_back(temp);
 			PushBack(data, temp, c);
 		}
-		fileHandler.WriteToFile(data, Replace);
+		fileHandler.WriteToFile(data, Replace, c);
 		delete[] data;
 	}
 	catch (const exception& ex)
@@ -565,10 +563,10 @@ void InorderGetString(LIST_DOCGIA lstDG, string*& result, int& count)
 	}
 }
 // duyet cay lay ToString cua node doc gia
-string* GetAllStringNode(LIST_DOCGIA listDG)
+string* GetAllStringNode(LIST_DOCGIA listDG, int& count)
 {
 	string* result = NULL;
-	int count = 0;
+	//int count = 0;
 	InorderGetString(listDG, result, count);
 	return result;
 }
@@ -592,8 +590,8 @@ string PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode m)
 	emptyTemplate = emptyTemplate + char(179);
 	int currentPage = 0;
 
-	string* listData = GetAllStringNode(listDG);
-	int size = SizeOfT(listData);
+	int size = 0;
+	string* listData = GetAllStringNode(listDG, size);
 
 	int totalPage = size / MAX_ROW_PER_PAGE;
 	if (size % MAX_ROW_PER_PAGE != 0) totalPage++;
@@ -678,8 +676,8 @@ string PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location, Menu_Mode m)
 	emptyTemplate = emptyTemplate + char(179);
 	int currentPage = 0;
 
-	string* listData = GetAllStringNode(lstDG);
-	int size = SizeOfT(listData);
+	int size = 0;
+	string* listData = GetAllStringNode(lstDG, size);
 
 	int totalPage = size / MAX_ROW_PER_PAGE;
 	if (size % MAX_ROW_PER_PAGE != 0) totalPage++;
@@ -820,19 +818,20 @@ string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Menu_Mo
 	MYPOINT loc = MYPOINT(0, 0);
 	string* dsDocGia = NULL;
 	string** datas = NULL;
+	int* rowsOfPage = NULL;
 	int** rows = NULL;
 	int currentLine = 0;
 	int currentPage = page;
 	Color hlBGColor = Color::Cyan;
 	Color hlTextColor = Color::White;
-	int totalLine = Size(listDG);
-	int totalPages = totalLine / (int)MAX_ROW_PER_PAGE + (totalLine % (int)MAX_ROW_PER_PAGE == 0 ? 0 : 1);;
+	int totalLine = 0;
 
 	// chuyen list doc gia ve mang string
 	if (listDG != NULL)
 	{
-		dsDocGia = GetAllStringNode(listDG);
+		dsDocGia = GetAllStringNode(listDG, totalLine);
 	}
+	int totalPages = totalLine / (int)MAX_ROW_PER_PAGE + (totalLine % (int)MAX_ROW_PER_PAGE == 0 ? 0 : 1);;
 	//int totalLine = SizeOfT(dsDocGia);
 	// them page
 	datas = new string * [totalPages];
@@ -852,13 +851,16 @@ string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Menu_Mo
 		location.y += 3;
 		backUpLocation = location;
 		//print data
+		int c = 0;
 		for (int i = 0; i < totalPages - 1; i++)
 		{
 			rows[i] = new int[MAX_ROW_PER_PAGE];
 			datas[i] = new string[MAX_ROW_PER_PAGE];
+			PushBack(rowsOfPage, (int)MAX_ROW_PER_PAGE, c);
 		}
 		rows[totalPages - 1] = new int[totalLine % MAX_ROW_PER_PAGE == 0 ? MAX_ROW_PER_PAGE : (totalLine % MAX_ROW_PER_PAGE)];
 		datas[totalPages - 1] = new string[totalLine % MAX_ROW_PER_PAGE == 0 ? MAX_ROW_PER_PAGE : (totalLine % MAX_ROW_PER_PAGE)];
+		PushBack(rowsOfPage, (int)(totalLine % MAX_ROW_PER_PAGE == 0 ? MAX_ROW_PER_PAGE : (totalLine % MAX_ROW_PER_PAGE)), c);
 		for (int i = 0; i < totalLine; i++)
 		{
 			//Sleep(1);
@@ -925,14 +927,14 @@ string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Menu_Mo
 					{
 						GoToXY(location.x, rows[currentPage][currentLine]);
 						HightLight(datas[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
-						currentLine = SizeOfT(datas[currentPage]) - 1;
+						currentLine = (rowsOfPage[currentPage]) - 1;
 						GoToXY(location.x, rows[currentPage][currentLine]);
 						HightLight(datas[currentPage][currentLine], hlBGColor, hlTextColor);
 					}
 				}
 				else if (inputKey == Key::DOWN)
 				{
-					if (currentLine < SizeOfT(datas[currentPage]) - 1)
+					if (currentLine < (rowsOfPage[currentPage]) - 1)
 					{
 						GoToXY(location.x, rows[currentPage][currentLine]);
 						HightLight(datas[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
@@ -969,7 +971,7 @@ string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Menu_Mo
 				SetTextColor(TEXT_INPUT_COLOR);
 				for (int i = 0; i < MAX_ROW_PER_PAGE; i++)
 				{
-					if (i < SizeOfT(datas[currentPage]))
+					if (i < (rowsOfPage[currentPage]))
 					{
 						GoToXY(backUpLocation.x, backUpLocation.y + i);
 						cout << datas[currentPage][i];

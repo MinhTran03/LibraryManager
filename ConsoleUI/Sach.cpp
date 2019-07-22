@@ -474,7 +474,7 @@ bool LIST_SACH::WriteToFile(string path)
 			//data.push_back(temp);
 			PushBack(data, temp, c);
 		}
-		fileHandler.WriteToFile(data, Replace);
+		fileHandler.WriteToFile(data, Replace, c);
 		delete[] data;
 	}
 	catch (const exception& ex)

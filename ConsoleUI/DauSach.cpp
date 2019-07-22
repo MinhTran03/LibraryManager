@@ -154,11 +154,11 @@ string DAUSACH::ToStringFile()
 #pragma region ----------------------------------------------------LIST_DAUSACH
 #pragma region Graphics
 // selection sort dua vao ten sach
-void SortByTenSach(DAUSACH*& listDauSach)
+void SortByTenSach(DAUSACH*& listDauSach, int size)
 {
 	DAUSACH min;
 	int posMin;
-	int size = SizeOfT(listDauSach);
+	//int size = SizeOfT(listDauSach);
 	for (int i = 0; i < size - 1; i++)
 	{
 		min = listDauSach[i];
@@ -195,14 +195,11 @@ string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, string theLoai)
 	emptyTemplate = emptyTemplate + char(179) + string(TENTHELOAI_WIDTH, ' ');
 	emptyTemplate = emptyTemplate + char(179);
 
-	/*Color hlBGColor = Color::Cyan;
-	Color hlTextColor = Color::White;
-	int currentLine = 0;*/
 	int totalLine = 0;
 	// tim ISBN theo the loai
 	auto listISBN = GetTheLoai(theLoai, totalLine);
 	// sap xep theo ten sach
-	SortByTenSach(listISBN);
+	SortByTenSach(listISBN, totalLine);
 	MYPOINT backUpLocation = MYPOINT(0, 0);
 	int currentPage = 0;
 	int totalPage = 0;
@@ -221,17 +218,9 @@ string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, string theLoai)
 		{
 			listISBN[i].Print({ location.x, location.y + (int)(i % MAX_ROW_PER_PAGE) }, BG_COLOR, TEXT_INPUT_COLOR);
 		}
-
-		// neu la dong dau tien thi hight light len
-		/*if (location.y == backUpLocation.y)
-			listISBN[i].Print(location, hlBGColor, hlTextColor);*/
-			// luu lai vi tri dong
-			/*rows.push_back(location.y++);
-			datas.push_back(listISBN[i].ToString());*/
 	}
 
 	// bat phim
-	//currentLine = 0;
 	char inputKey = NULL;
 	HidePointer();
 	do
@@ -241,43 +230,7 @@ string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, string theLoai)
 		if (inputKey == -32)
 		{
 			inputKey = _getch();
-			/*if (inputKey == Key::UP)
-			{
-				if (currentLine > 0)
-				{
-					GoToXY(location.x, rows[currentLine]);
-					HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
-					GoToXY(location.x, rows[--currentLine]);
-					HightLight(datas[currentLine], hlBGColor, hlTextColor);
-				}
-				else
-				{
-					GoToXY(location.x, rows[currentLine]);
-					HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
-					currentLine = totalLine - 1;
-					GoToXY(location.x, rows[currentLine]);
-					HightLight(datas[currentLine], hlBGColor, hlTextColor);
-				}
-			}
-			else if (inputKey == Key::DOWN)
-			{
-				if (currentLine < totalLine - 1)
-				{
-					GoToXY(location.x, rows[currentLine]);
-					HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
-					GoToXY(location.x, rows[++currentLine]);
-					HightLight(datas[currentLine], hlBGColor, hlTextColor);
-				}
-				else
-				{
-					GoToXY(location.x, rows[currentLine]);
-					HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
-					currentLine = 0;
-					GoToXY(location.x, rows[currentLine]);
-					HightLight(datas[currentLine], hlBGColor, hlTextColor);
-				}
-			}
-			else */if (inputKey == Key::RIGHT)
+			if (inputKey == Key::RIGHT)
 			{
 				ClearArea(location.x, backUpLocation.y - 3, DAUSACH_TOTAL_WIDTH, totalLine + 4);
 				delete[] listISBN;
@@ -330,11 +283,7 @@ string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, string theLoai)
 				}
 			}
 		}
-		/*if (inputKey == Key::ENTER)
-		{
-			return listISBN[currentLine].isbn;
-		}
-		else */if (inputKey == Key::ESC)
+		if (inputKey == Key::ESC)
 		{
 			ClearArea(location.x - 3, backUpLocation.y - 3, DAUSACH_TOTAL_WIDTH + 6, MAX_ROW_PER_PAGE + 5);
 			delete[] listISBN;
@@ -347,7 +296,7 @@ string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, string theLoai)
 string LIST_DAUSACH::PrintAllTheLoai(MYPOINT location)
 {
 	int currentPage = 0;
-	int totalPages = SizeOfT(this->dsTheLoai);
+	int totalPages = this->soTheLoai;
 	SetBGColor(Color::Gray);
 	SetTextColor(Color::Bright_White);
 	GoToXY(location.x + DAUSACH_TOTAL_WIDTH + 1, location.y + MAX_ROW_PER_PAGE / 2);
@@ -440,6 +389,7 @@ string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 	// sap xep theo ten sach
 	string** datas = NULL;
 	int** rows = NULL;
+	int* rowsOfPage = NULL;
 	MYPOINT backUpLocation = MYPOINT(0, 0);
 	totalPages = totalLine / (int)MAX_ROW_PER_PAGE + (totalLine % (int)MAX_ROW_PER_PAGE == 0 ? 0 : 1);
 
@@ -461,13 +411,16 @@ string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 		location.y += 3;
 		backUpLocation = location;
 		// print data
+		int c = 0;
 		for (int i = 0; i < totalPages - 1; i++)
 		{
 			rows[i] = new int[MAX_ROW_PER_PAGE];
 			datas[i] = new string[MAX_ROW_PER_PAGE];
+			PushBack(rowsOfPage, (int)(MAX_ROW_PER_PAGE), c);
 		}
 		rows[totalPages - 1] = new int[totalLine % MAX_ROW_PER_PAGE == 0 ? MAX_ROW_PER_PAGE : (totalLine % MAX_ROW_PER_PAGE)];
 		datas[totalPages - 1] = new string[totalLine % MAX_ROW_PER_PAGE == 0 ? MAX_ROW_PER_PAGE : (totalLine % MAX_ROW_PER_PAGE)];
+		PushBack(rowsOfPage, (int)(totalLine % MAX_ROW_PER_PAGE == 0 ? MAX_ROW_PER_PAGE : (totalLine % MAX_ROW_PER_PAGE)), c);
 		for (int i = 0; i < totalLine; i++)
 		{
 			//Sleep(1);
@@ -535,14 +488,14 @@ string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 						GoToXY(location.x, rows[currentPage][currentLine]);
 						HightLight(datas[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
 						//currentLine = rows[currentPage].size() - 1;
-						currentLine = SizeOfT(datas[currentPage]) - 1;
+						currentLine = (rowsOfPage[currentPage]) - 1;
 						GoToXY(location.x, rows[currentPage][currentLine]);
 						HightLight(datas[currentPage][currentLine], hlBGColor, hlTextColor);
 					}
 				}
 				else if (inputKey == Key::DOWN)
 				{
-					if (currentLine < SizeOfT(datas[currentPage]) - 1)
+					if (currentLine < (rowsOfPage[currentPage]) - 1)
 					{
 						GoToXY(location.x, rows[currentPage][currentLine]);
 						HightLight(datas[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
@@ -576,7 +529,7 @@ string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 				SetTextColor(TEXT_INPUT_COLOR);
 				for (int i = 0; i < (int)MAX_ROW_PER_PAGE; i++)
 				{
-					if (i < SizeOfT(datas[currentPage]))
+					if (i < (rowsOfPage[currentPage]))
 					{
 						GoToXY(backUpLocation.x, backUpLocation.y + i);
 						cout << datas[currentPage][i];
@@ -734,7 +687,7 @@ bool LIST_DAUSACH::WriteToFile(string path)
 			//data.push_back(temp);
 			PushBack(data, temp, c);
 		}
-		fileHandler.WriteToFile(data, Replace);
+		fileHandler.WriteToFile(data, Replace, c);
 		delete[] data;
 	}
 	catch (const exception& ex)
@@ -780,8 +733,7 @@ bool LIST_DAUSACH::Insert(DAUSACH& node, int index)
 	if (!IsContainTheLoai(node.tenTheLoai))
 	{
 		//dsTheLoai.push_back(node.tenTheLoai);
-		int c = SizeOfT(this->dsTheLoai);
-		PushBack(this->dsTheLoai, node.tenTheLoai, c);
+		PushBack(this->dsTheLoai, node.tenTheLoai, this->soTheLoai);
 	}
 	nodes[index] = &node;
 	size++;
@@ -805,7 +757,8 @@ DAUSACH* LIST_DAUSACH::FindBooks(string tenSach, int& count)
 				PushBack(result, *this->nodes[i], count);
 			}
 		}
-		for (int j = 0; j < SizeOfT(listKey); j++)
+		int wordCount = WordCount(StringToCharArray(tenSach));
+		for (int j = 0; j < wordCount; j++)
 		{
 			for (int i = 0; i < this->size; i++)
 			{
@@ -968,13 +921,14 @@ int LIST_DAUSACH::GetLocateDauSach(char isbn[ISBN_MAXSIZE + 1])
 // cap nhat dsTheLoai moi khi xoa 1 dau sach
 void LIST_DAUSACH::INotifyDSTheLoai()
 {
-	int c = SizeOfT(this->dsTheLoai);
+	int c = this->soTheLoai;
 	for (int i = 0; i < c; i++)
 	{
 		if (this->IsContainTheLoai(this->dsTheLoai[i]) == false)
 		{
 			//this->dsTheLoai.erase(this->dsTheLoai.begin() + i);
-			Erase(this->dsTheLoai, i);
+			Erase(this->dsTheLoai, i, c);
+			this->soTheLoai--;
 			return;
 		}
 	}

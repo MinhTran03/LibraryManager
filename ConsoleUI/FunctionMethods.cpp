@@ -174,12 +174,12 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 				if (selectedMaDocGia == "ESC")
 				{
 					// load lai data
+					int totalLine = 0;
 					std::string* dsDocGia = NULL;
 					if (listDG != NULL)
 					{
-						dsDocGia = GetAllStringNode(listDG);
+						dsDocGia = GetAllStringNode(listDG, totalLine);
 					}
-					int totalLine = SizeOfT(dsDocGia);
 					auto tempLoc = location;
 					tempLoc.y += 3;
 					SetTextColor(TEXT_INPUT_COLOR);
@@ -239,12 +239,12 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 				if (selectedMaDocGia == "ESC")
 				{
 					// load lai data
+					int totalLine = 0;
 					std::string* dsDocGia = NULL;
 					if (listDG != NULL)
 					{
-						dsDocGia = GetAllStringNode(listDG);
+						dsDocGia = GetAllStringNode(listDG, totalLine);
 					}
-					int totalLine = SizeOfT(dsDocGia);
 					auto tempLoc = location;
 					tempLoc.y += 3;
 					for (int i = 0; i < totalLine; i++)

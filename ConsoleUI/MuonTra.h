@@ -59,9 +59,9 @@ struct LIST_MUONTRA
 	// hien thi cac sach doc gia dang muon
 	string Show(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode = Both);
 	// duyet list lay data, can dau sach de tim ten sach
-	string* GetAllNodeString(LIST_DAUSACH listDS);
+	string* GetAllNodeString(LIST_DAUSACH listDS, int& count);
 	// duyet list lay data
-	string* GetAllNodeStringMuonSach(LIST_DAUSACH listDS);
+	string* GetAllNodeStringMuonSach(LIST_DAUSACH listDS, int& count);
 	// xoa dua vao maSach
 	bool Delete(string maSach);
 	// xoa sau node before

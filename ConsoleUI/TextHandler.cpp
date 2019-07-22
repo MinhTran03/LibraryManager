@@ -207,20 +207,3 @@ string ToUpperString(string text)
 	}
 	return result;
 }
-void VTString2ArrString(vector<string> data, string result[])
-{
-	int count = 0;
-	for (auto item : data)
-	{
-		result[count++] = item;
-	}
-}
-void ArrString2VTString(vector<string>& data, string result[])
-{
-	int size = SizeOfT(result);
-	data.clear();
-	for (int i = 0; i < size; i++)
-	{
-		data.push_back(result[i]);
-	}
-}

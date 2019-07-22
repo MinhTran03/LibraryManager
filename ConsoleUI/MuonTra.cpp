@@ -196,10 +196,10 @@ string LIST_MUONTRA::ShowFormMuonSach(LIST_DAUSACH listDS, MYPOINT location, Men
 	int currentLine = 0;
 	int totalLine;
 
-	string* datas = this->GetAllNodeStringMuonSach(listDS);
+	totalLine = 0;
+	string* datas = this->GetAllNodeStringMuonSach(listDS, totalLine);
 	int* rows = NULL;
 
-	totalLine = SizeOfT(datas);
 	int count = 0;
 	if (mode == Menu_Mode::Show_Only || mode == Menu_Mode::Both)
 	{
@@ -322,10 +322,10 @@ string LIST_MUONTRA::Show(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode)
 	int currentLine = 0;
 	int totalLine;
 
-	string* datas = this->GetAllNodeString(listDS);
+	totalLine = 0;
+	string* datas = this->GetAllNodeString(listDS, totalLine);
 	int* rows = NULL;
 
-	totalLine = SizeOfT(datas);
 	int count = 0;
 	if (mode == Menu_Mode::Show_Only || mode == Menu_Mode::Both)
 	{
@@ -425,10 +425,10 @@ string LIST_MUONTRA::Show(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode)
 	return "";
 }
 // duyet list lay data
-string* LIST_MUONTRA::GetAllNodeStringMuonSach(LIST_DAUSACH listDS)
+string* LIST_MUONTRA::GetAllNodeStringMuonSach(LIST_DAUSACH listDS, int& count)
 {
 	string* result = NULL;
-	int count = 0;
+	//int count = 0;
 	for (auto p = this->pHead; p != NULL; p = p->pNext)
 	{
 		if (p->data.trangThai != SachDaTra)
@@ -442,10 +442,10 @@ string* LIST_MUONTRA::GetAllNodeStringMuonSach(LIST_DAUSACH listDS)
 	return result;
 }
 // duyet list lay data
-string* LIST_MUONTRA::GetAllNodeString(LIST_DAUSACH listDS)
+string* LIST_MUONTRA::GetAllNodeString(LIST_DAUSACH listDS, int& count)
 {
 	string* result = NULL;
-	int count = 0;
+	//int count = 0;
 	for (auto p = this->pHead; p != NULL; p = p->pNext)
 	{
 		if (p->data.trangThai != SachDaTra)
@@ -615,7 +615,7 @@ bool LIST_MUONTRA::WriteToFile(string path)
 			//data.push_back(temp);
 			PushBack(data, temp, c);
 		}
-		fileHandler.WriteToFile(data, Replace);
+		fileHandler.WriteToFile(data, Replace, c);
 		delete[] data;
 	}
 	catch (const exception& ex)

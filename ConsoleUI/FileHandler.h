@@ -133,7 +133,7 @@ struct FILEHANDLER
 	}
 
 	// mode = ios::
-	bool WriteToFile(string* data, IosMode mode)
+	bool WriteToFile(string* data, IosMode mode, int totalLine)
 	{
 		if (IsValidFile(this->filePath) == Not_Exist)
 		{
@@ -148,7 +148,7 @@ struct FILEHANDLER
 			f.open(filePath, ios::app);
 
 		// 3. Ghi dữ liệu vào file, trường hợp này ta có data là dữ liệu
-		for (int i = 0; i < SizeOfT(data); i++)
+		for (int i = 0; i < totalLine; i++)
 		{
 			f << data[i];
 		}

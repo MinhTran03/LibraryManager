@@ -317,7 +317,7 @@ struct FORMINPUT
 	}
 	void ShowGuildLine(int currentLine)
 	{
-		if (SizeOfT(Guilds) == 0) return;
+		//if (SizeOfT(Guilds) == 0) return;
 		int x = WhereX();
 		int y = WhereY();
 		//ClearLine(guildLocation.y, guildLocation.x, guildLocation.x + rect.size.width);
@@ -325,7 +325,7 @@ struct FORMINPUT
 		SetTextColor(TEXT_GUILD_COLOR);
 		string* texts = Split(Guilds[currentLine], "\n");
 		int temp = rect.size.width / 2 - texts[0].size() / 2 + guildLocation.x;
-		for (int i = 0; i < SizeOfT(texts); i++)
+		for (int i = 0; i < totalLine; i++)
 		{
 			GoToXY(temp, guildLocation.y + i);
 			cout << texts[i];

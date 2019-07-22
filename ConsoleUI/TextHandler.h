@@ -29,7 +29,6 @@ string ToLowerString(string text);
 string ToUpperString(string text);
 string Trim(string text);
 char* StringToCharArray(string source);
-void VTString2ArrString(vector<string> data, string result[]);
 
 template <class T>
 void Swap(T& a, T& b)
@@ -77,13 +76,13 @@ void PushBack(T*& list, T obj, int& count)
 	count++;
 }
 
-template <class T>
-int SizeOfT(T* list)
-{
-	if (list == NULL) return 0;
-	int s = *(((int*)list) - 1);
-	return s;
-}
+//template <class T>
+//int SizeOfT(T* list)
+//{
+//	if (list == NULL) return 0;
+//	int s = *(((int*)list) - 1);
+//	return s;
+//}
 
 template <class T>
 bool Erase(T*& list, int at, int size)
@@ -100,18 +99,18 @@ bool Erase(T*& list, int at, int size)
 	return false;
 }
 
-template <class T>
-bool Erase(T*& list, int at)
-{
-	int size = SizeOfT(list);
-	for (int i = 0; i < size; i++)
-	{
-		if (i == at)
-		{
-			list[i] = list[size - 1];
-			ResizeArray(list, size, size - 1);
-			return true;
-		}
-	}
-	return false;
-}
+//template <class T>
+//bool Erase(T*& list, int at)
+//{
+//	int size = SizeOfT(list);
+//	for (int i = 0; i < size; i++)
+//	{
+//		if (i == at)
+//		{
+//			list[i] = list[size - 1];
+//			ResizeArray(list, size, size - 1);
+//			return true;
+//		}
+//	}
+//	return false;
+//}

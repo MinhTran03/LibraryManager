@@ -25,6 +25,7 @@ struct LIST_DAUSACH
 	int size = 0;
 	DAUSACH* nodes[SODAUSACH_MAX];
 	string* dsTheLoai;
+	int soTheLoai = 0;
 
 	#pragma region Display
 	// Print list DAUSACH theo the loai (Sap xep theo ten)
