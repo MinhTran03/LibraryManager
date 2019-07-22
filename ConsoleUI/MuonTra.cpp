@@ -670,3 +670,12 @@ bool LIST_MUONTRA::ReadFromFile(string path)
 	}
 	return true;
 }
+
+void LIST_MUONTRA::DuyetDSSachChuaTra(int & count)
+{
+	for (auto p = this->pHead;  p != NULL; p = p->pNext)
+	{
+		p->data.trangThai == SachChuaTra;
+		count++;
+	}
+}
