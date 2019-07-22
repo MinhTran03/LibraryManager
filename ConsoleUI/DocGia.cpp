@@ -159,7 +159,7 @@ DOCGIA InputFixDocGia(RECTANGLE rect, DOCGIA docGia)
 	{
 		temp1 = "1";
 	}
-	if (docGia.trangThai)
+	if (docGia.trangThai == TheBiKhoa)
 	{
 		temp2 = "0";
 	}
