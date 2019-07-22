@@ -71,6 +71,6 @@ struct LIST_MUONTRA
 	// doc tu file
 	bool ReadFromFile(string path);
 
-	void DuyetDSSachChuaTra(int& count);
+	int DuyetDSSachChuaTra();
 };
 

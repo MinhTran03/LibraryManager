@@ -854,10 +854,11 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 					// tra sach
 					else if (selected == 1)
 					{
-						int count = 0;
-						docGiaSearch->data.listMuonTra.DuyetDSSachChuaTra(count);
+						
 						while (true)
 						{
+							int count = 0;
+							count = docGiaSearch->data.listMuonTra.DuyetDSSachChuaTra();
 							maSachSelect = docGiaSearch->data.listMuonTra.Show(listDS, { 20, 27 }, Both);
 							if (count == 0)
 							{
