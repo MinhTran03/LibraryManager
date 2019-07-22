@@ -14,7 +14,8 @@
 *.userprefs
 
 # Build results
-[Dd]ebug/
+[Dd]ebug/*.exe
+ConsoleUI/[Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
@@ -286,7 +287,7 @@ _Pvt_Extensions
 
 # Paket dependency manager
 .paket/paket.exe
-# paket-files/
+paket-files/
 
 # FAKE - F# Make
 .fake/
