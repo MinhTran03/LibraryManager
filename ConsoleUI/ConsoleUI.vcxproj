@@ -52,11 +52,6 @@
     <ClCompile Include="Sach.cpp" />
     <ClCompile Include="TextHandler.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="DauSachData.txt" />
-    <Text Include="DocGiaData.txt" />
-    <Text Include="MaDocGiaArray.txt" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{C901E2B5-BB4F-49DD-B2E3-B1A971FE33EE}</ProjectGuid>

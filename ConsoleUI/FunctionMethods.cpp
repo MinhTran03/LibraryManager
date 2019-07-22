@@ -5,7 +5,7 @@
 void SaveAll(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
 {
 	GoToXY(0, 0);
-	std::cout << "Saving...";
+	cout << "Saving...";
 
 
 	// luu dau sach
@@ -25,7 +25,7 @@ void SaveAll(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
 	DuyetLuuFile(listDG);
 
 	GoToXY(0, 0);
-	std::cout << "Done       ";
+	cout << "Done       ";
 }
 
 void FormClosing(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
@@ -77,7 +77,7 @@ void NormalColor()
 	SetBGColor(BG_COLOR);
 }
 
-void MakeFlickWarning(MYPOINT location, std::string text)
+void MakeFlickWarning(MYPOINT location, string text)
 {
 	int x = location.x;
 	int y = location.y;
@@ -118,7 +118,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 	string selectedMaDocGia;
 	int page = 0;
 	string tem = PrintAllDGWithHL(listDG, location, page, Show_Only);
-	std::string MaDocGia = StringToCharArray(selectedMaDocGia);
+	string MaDocGia = StringToCharArray(selectedMaDocGia);
 
 	//int maThe;
 	auto locationBtn = location;
@@ -175,7 +175,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 				{
 					// load lai data
 					int totalLine = 0;
-					std::string* dsDocGia = NULL;
+					string* dsDocGia = NULL;
 					if (listDG != NULL)
 					{
 						dsDocGia = GetAllStringNode(listDG, totalLine);
@@ -202,7 +202,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 					// dong y xoa
 					if (confirm.result == Yes)
 					{
-						int MaDG = std::stoi(MaDocGia);
+						int MaDG = stoi(MaDocGia);
 						auto temp = Search(listDG, MaDG);
 						// chua kiem tra co duoc xoa hay khong???
 						// ...
@@ -240,7 +240,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 				{
 					// load lai data
 					int totalLine = 0;
-					std::string* dsDocGia = NULL;
+					string* dsDocGia = NULL;
 					if (listDG != NULL)
 					{
 						dsDocGia = GetAllStringNode(listDG, totalLine);
@@ -260,7 +260,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 				else
 				{
 					// cap nhat dsDocGia
-					int MaDG = std::stoi(MaDocGia);
+					int MaDG = stoi(MaDocGia);
 					auto temp = Search(listDG, MaDG);
 					temp->data = InputFixDocGia({ {DAUSACH_TOTAL_WIDTH + 2, location.y}, {50, 18} }, temp->data);
 					tem = PrintAllDGWithHL(listDG, location, page, Show_Only);
@@ -279,7 +279,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 void InDanhSachDG(LIST_DOCGIA listDG, MYPOINT location)
 {
 	auto locationMenu = location;
-	std::string temp;
+	string temp;
 	locationMenu.x = 62;
 	location.y += 3;
 	MENU menu = MENU({ "SAP XEP THEO HO TEN", "SAP XEP THEO MA" }, locationMenu);
@@ -633,7 +633,7 @@ void TimSach(LIST_DAUSACH& listDS, MYPOINT location)
 	bool isEnter = false;
 	bool isCancel = false;
 	bool isTrue = false;
-	std::string searchKey = "";
+	string searchKey = "";
 	DrawMessageBox(point, "NHAP TEN SACH CAN TIM", searchKey, isEnter, isCancel, char(219), Show_Only);
 	while (true)
 	{
@@ -666,7 +666,7 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 	LIST_MUONTRA tempMT = LIST_MUONTRA();
 	ClearScreen(BG_COLOR);
 	// add isbn da muon chua tra
-	std::vector<std::string> isbnDaMuon;
+	vector<string> isbnDaMuon;
 	for (auto p = nodeDocGia.data.listMuonTra.pHead; p != NULL; p = p->pNext)
 	{
 		auto arr = Split(p->data.maSach, "_");
@@ -722,7 +722,7 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 				{
 					tempMT.Delete(cancelDS);
 					auto arr = Split(cancelDS, "_");
-					auto viTri = std::find(isbnDaMuon.begin(), isbnDaMuon.end(), arr[0]);
+					auto viTri = find(isbnDaMuon.begin(), isbnDaMuon.end(), arr[0]);
 					isbnDaMuon.erase(viTri);
 				}
 			}
@@ -741,7 +741,7 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 			}
 
 			// kiem tra isbn da muon
-			auto viTri = std::find(isbnDaMuon.begin(), isbnDaMuon.end(), selectDS);
+			auto viTri = find(isbnDaMuon.begin(), isbnDaMuon.end(), selectDS);
 			// isbn chua duoc muon
 			if (viTri == isbnDaMuon.end())
 			{
@@ -788,7 +788,7 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 	bool isEnter = false;
 	bool isCancel = false;
 	bool isTrue = false;
-	std::string searchKey = "";
+	string searchKey = "";
 	//DrawMessageBox(point, "NHAP MA DOC GIA", searchKey, isEnter, isCancel, char(219), Show_Only);
 	while (true)
 	{
@@ -817,7 +817,7 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 					DocGiaInfo(rect, docGiaSearch->data);
 
 					// hien thi cac sach doc gia muon
-					std::string maSachSelect = docGiaSearch->data.listMuonTra.Show(listDS, { 20, 27 }, Show_Only);
+					string maSachSelect = docGiaSearch->data.listMuonTra.Show(listDS, { 20, 27 }, Show_Only);
 
 					// menu
 					auto locationBtn = location;
@@ -845,7 +845,7 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 							}
 							else if (maSachSelect != "")
 							{
-								std::string temp = GetMaDauSach(maSachSelect);
+								string temp = GetMaDauSach(maSachSelect);
 								auto dauSach = StringToCharArray(temp);
 								DAUSACH* ListSach = listDS.GetDauSach(dauSach);
 								ListSach->dsSach.Search(maSachSelect)->data.trangThai = ChoMuonDuoc;

@@ -600,7 +600,8 @@ bool LIST_SACH::CanDelete()
 	}
 	return true;
 }
-std::string GetMaDauSach(std::string maSach)
+// ...
+string GetMaDauSach(string maSach)
 {
 	auto temp = Split(maSach, "_");
 	return temp[0];

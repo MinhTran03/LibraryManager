@@ -75,4 +75,4 @@ struct LIST_SACH
 	bool CanDelete();
 };
 
-std::string GetMaDauSach(std::string maSach);
+string GetMaDauSach(string maSach);
