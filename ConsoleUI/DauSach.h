@@ -54,6 +54,7 @@ struct LIST_DAUSACH
 	bool IsFull();
 	// Return true if list empty
 	bool IsEmpty();
+	
 	// kiem tra dau sach da ton tai isbn hay chua
 	bool IsContainISBN(char isbn[ISBN_MAXSIZE + 1]);
 	// DAUSACH phai dung tham bien (&) vi neu dung tham tri thi node se mat sau khi ra khoi ham

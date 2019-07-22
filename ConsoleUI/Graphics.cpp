@@ -143,6 +143,7 @@ void ClearArea(int x, int y, int width, int height, WORD color)
 
 	for (short i = 0; i < height; i++)
 	{
+		//Sleep(8);
 		coord = { (short)x,(short)y + i };
 		FillConsoleOutputCharacter(h, ' ', size, coord, &n);
 		GetConsoleScreenBufferInfo(h, &csbi);

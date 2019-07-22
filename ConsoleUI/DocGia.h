@@ -13,6 +13,14 @@ enum TrangThaiTheDG
 	TheBiKhoa = 0,
 	DangHoatDong = 1
 };
+enum ExeptionMuonSach
+{
+	Accept,
+	BiKhoaThe,
+	SachBiMat,
+	GiuQua7Ngay,
+	MuonDuSach
+};
 
 struct DOCGIA
 {
@@ -31,6 +39,11 @@ struct DOCGIA
 	string ToString();
 	// chuyen object dau sach thanh string luu file
 	string ToStringFile();
+	// kiem tra xem doc gia co duoc muon sach
+	// 1> khong muon sach qua 7 ngay
+	// 2> the doc gia dang hoat dong
+	// 3> muon toi da 3 sach
+	ExeptionMuonSach IsMuonSach();
 };
 
 struct NODE_DOCGIA

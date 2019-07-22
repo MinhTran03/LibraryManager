@@ -418,3 +418,37 @@ struct FOOTER_CHILD
 		SetBGColor(BG_COLOR);
 	}
 };
+
+struct CONFIRMMODEVERSION
+{
+	int result = -1;
+	string question = "";
+	MYPOINT location = { 0,0 };
+	CONFIRMMODEVERSION(string question, MYPOINT location) : question(question), location(location)
+	{
+
+	}
+	void Show()
+	{
+		SetTextColor(Color::Blue);
+		ShowPointer();
+		GoToXY(location.x, location.y);
+		cout << question << " (y = yes, n = no, c = cancel): ";
+		//char key = NULL;
+		string key = "";
+		getline(cin, key);
+		key[0] = tolower(key[0]);
+		if (key == "y")
+			result = true;
+		else if (key == "n")
+			result = false;
+		else
+			result = -1;
+		HidePointer();
+		Clear();
+	}
+	void Clear()
+	{
+		ClearLine(location.y);
+	}
+};

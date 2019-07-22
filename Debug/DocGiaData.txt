@@ -17,7 +17,7 @@
 24-Duy-Khanh-Nam-The bi khoa
 21-Duy-Hoang-Nam-Dang hoat dong
 13-Phan-Long-Nam-Dang hoat dong
-12-Linh-Zuto-Nu-The bi khoa
+12-Linh-Zuto-Nu-Dang hoat dong
 10-Pham-Hung-Nam-The bi khoa
 9-Ngoc-Trinh-Nu-Dang hoat dong
 7-Tram-Anh-Nu-The bi khoa

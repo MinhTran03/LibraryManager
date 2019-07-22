@@ -44,8 +44,11 @@ string MUONTRA::ToString(DAUSACH dauSach)
 	result += char(179);
 	if (this->trangThai != TrangThaiMuonTra::SachDaTra)
 	{
-		result += "NULL";
-		temp = SONGAYMUON_WIDTH - 4;
+		auto today = DATETIME();
+		today.SetDateTimeNow();
+		int subDay = today.SubDate(this->ngayMuon);
+		result += to_string(subDay);
+		temp = SONGAYMUON_WIDTH - NumberLength(subDay);
 	}
 	else
 	{

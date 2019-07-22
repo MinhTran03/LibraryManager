@@ -223,7 +223,7 @@ struct FORMINPUT
 	bool IsValidCondition(char& c, int currentLine, string value)
 	{
 		auto condition = conditions[currentLine];
-		if (condition.type == Enum && value.size() >= 1)
+		if ((condition.type == Enum || condition.type == Enum2)&& value.size() >= 1)
 			return false;
 		// check maxLength
 		else if (value.size() >= condition.maxLength)
@@ -231,7 +231,7 @@ struct FORMINPUT
 		// check type
 		switch (condition.type)
 		{
-		case WordType::Enum:
+		case WordType::Enum: case WordType::Enum2:
 		{
 			string max = to_string(condition.maxLength);
 			return IsNumber(c) && c >= 48 && c < max[0];
@@ -251,24 +251,6 @@ struct FORMINPUT
 				c = toupper(c);
 			if (!IsName(c)) return false;
 			break;
-		/*case WordType::Gender:
-			switch (value.size())
-			{
-			case 0:
-				return c == 'N' || c == 'n';
-				break;
-			case 1:
-				return c == 'a' || c == 'u';
-				break;
-			case 2:
-				if (value == "Na" || value == "na")
-					return c == 'm';
-				return false;
-				break;
-			default:
-				break;
-			}
-			break;*/
 		default: case WordType::All:
 			return true;
 			break;
@@ -508,36 +490,6 @@ struct FORMINPUT
 					ShowGuildLine(currentLine);
 				}
 			}
-			else if (inputKey == Key::TAB)
-			{
-				// Con tro truoc do o vi tri cua button Cancel
-				/*if (currentLine == -1)
-				{
-					currentLine++;
-					btnOK.Draw(normalColor, Color::White);
-					btnCancel.Draw(normalColor, Color::White);
-					ShowPointer();
-				}*/
-				// Neu line hien tai < so dong => tang line
-				//else if (currentLine < totalLine) currentLine++;
-				/*GoToXY(cols[currentLine], rows[currentLine]);
-				if (currentLine == totalLine)
-				{
-					HidePointer();
-					if (cols[currentLine] < halfWidthForm)
-					{
-						btnOK.Draw(selectColor, Color::White);
-						cols[currentLine] = btnCancel.rect.location.x;
-					}
-					else if (cols[currentLine] > halfWidthForm)
-					{
-						btnOK.Draw(normalColor, Color::White);
-						btnCancel.Draw(selectColor, Color::White);
-						cols[currentLine] = btnOK.rect.location.x;
-						currentLine = -1;
-					}
-				}*/
-			}
 			else if (inputKey == Key::ESC)
 			{
 				string text = "Ban chac chan muon thoat?";
@@ -616,11 +568,11 @@ struct FORMINPUT
 						}
 						else if (mode == 4)
 						{
-							if (num == 0)
+							if (num == 1)
 							{
 								cout << "Dang hoat dong";
 							}
-							else if (num == 1)
+							else if (num == 0)
 							{
 								cout << "The bi khoa";
 							}
@@ -678,11 +630,11 @@ struct FORMINPUT
 						}
 						else if (mode2 == 4)
 						{
-							if (num == 0)
+							if (num == 1)
 							{
 								cout << "Dang hoat dong";
 							}
-							else if (num == 1)
+							else if (num == 0)
 							{
 								cout << "The bi khoa";
 							}
@@ -734,15 +686,13 @@ struct FORMINPUT
 				if (conditions[currentLine].type == Enum && mode != 0)
 				{
 					int x = WhereX();
-					GoToXY(x + 4, WhereY());
-					cout << string(13, ' ');
+					ClearLine(WhereY(), x + 4, x + 19);
 					GoToXY(x, WhereY());
 				}
 				else if (conditions[currentLine].type == Enum2 && mode2 != 0)
 				{
 					int x = WhereX();
-					GoToXY(x + 4, WhereY());
-					cout << string(13, ' ');
+					ClearLine(WhereY(), x + 4, x + 19);
 					GoToXY(x, WhereY());
 				}
 

@@ -25,7 +25,7 @@ DOCGIA ParseVectorStringFile(string* data)
 	}
 	else
 	{
-		docGia.trangThai = TheBiKhoa;
+		docGia.trangThai = TrangThaiTheDG::TheBiKhoa;
 	}
 	return docGia;
 }
@@ -50,7 +50,7 @@ DOCGIA ParseVectorString(string* data)
 	}
 	else
 	{
-		docGia.trangThai = TheBiKhoa;
+		docGia.trangThai = TrangThaiTheDG::TheBiKhoa;
 	}
 	return docGia;
 }
@@ -142,10 +142,11 @@ string DOCGIA::ToStringFile()
 // ...
 DOCGIA InputFixDocGia(RECTANGLE rect, DOCGIA docGia)
 {
+	auto listMTBackUp = docGia.listMuonTra;
 	string labels[] = { "Ma doc gia:", "Ho:", "Ten:", "Gioi tinh:", "Trang thai the:" };
 	string inputTitle = "NHAP THONG TIN DOC GIA";
 	CONDITION conditions[] = { {Number_Only, 1, 4, Default}, {Name, 1, HODOCGIA_WIDTH},{Name, 1, TENDOCGIA_WIDTH},
-									{Enum, 1, 2 },{Enum2, 1, 2, Default} };
+									{Enum, 1, 2 },{Enum2, 1, 2} };
 	string guilds[] = { "MA DOC GIA LA TU DONG", "CHI NHAP CHU CAI", "CHI NHAP CHU CAI", "0: NAM\n1: NU", "0: THE BI KHOA\n1: DANG HOAT DONG" };
 	auto form = FORMINPUT(labels, conditions, rect, inputTitle, 5);
 	form.Guilds = guilds;
@@ -159,7 +160,7 @@ DOCGIA InputFixDocGia(RECTANGLE rect, DOCGIA docGia)
 	{
 		temp1 = "1";
 	}
-	if (docGia.trangThai)
+	if (docGia.trangThai == TheBiKhoa)
 	{
 		temp2 = "0";
 	}
@@ -175,6 +176,7 @@ DOCGIA InputFixDocGia(RECTANGLE rect, DOCGIA docGia)
 		if (form.Show(1, 4))
 		{
 			auto newDocGia = ParseVectorString(form.OutputResults);
+			newDocGia.listMuonTra = listMTBackUp;
 			return newDocGia;
 		}
 		else
@@ -184,6 +186,35 @@ DOCGIA InputFixDocGia(RECTANGLE rect, DOCGIA docGia)
 		}
 	}
 	return docGia;
+}
+// kiem tra xem doc gia co duoc muon sach
+// 0> lam mat sach
+// 1> khong muon sach qua 7 ngay
+// 2> the doc gia dang hoat dong
+// 3> muon toi da 3 sach
+ExeptionMuonSach DOCGIA::IsMuonSach()
+{
+	// 2> the doc gia dang hoat dong
+	if (this->trangThai == TheBiKhoa) return BiKhoaThe;
+	auto toDay = DATETIME();
+	toDay.SetDateTimeNow();
+	//1 > khong muon sach qua 7 ngay
+	int soSachChuaTra = 0;
+	for (auto p = this->listMuonTra.pHead; p != NULL && p->data.trangThai != SachDaTra; p = p ->pNext)
+	{
+		if (p->data.trangThai == LamMatSach)
+		{
+			return SachBiMat;
+		}
+		if (toDay.SubDate(p->data.ngayMuon) > 7)
+		{
+			return GiuQua7Ngay;
+		}
+		soSachChuaTra++;
+	}
+	// 3> muon toi da 3 sach
+	if (soSachChuaTra >= 3) return MuonDuSach;
+	return Accept;
 }
 #pragma endregion
 

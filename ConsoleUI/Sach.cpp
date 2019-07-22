@@ -148,6 +148,7 @@ bool SACH::CanDelete()
 {
 	return this->trangThai != DaMuon;
 }
+
 #pragma endregion
 
 #pragma region -------------------------------------------NODE_SACH
@@ -605,5 +606,15 @@ string GetMaDauSach(string maSach)
 {
 	auto temp = Split(maSach, "_");
 	return temp[0];
+}
+// kiem tra sach cho muon duoc
+bool LIST_SACH::IsChoMuonDuoc()
+{
+	for (auto p = this->pHead; p != NULL; p = p->pNext)
+	{
+		if (p->data.trangThai == ChoMuonDuoc)
+			return true;
+	}
+	return false;
 }
 #pragma endregion

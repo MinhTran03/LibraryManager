@@ -27,6 +27,7 @@ struct SACH
 	string ToStringFile();
 	// kiem tra sach co xoa duoc khong
 	bool CanDelete();
+	
 };
 
 struct NODE_SACH
@@ -73,6 +74,8 @@ struct LIST_SACH
 	bool Delete(string maSach);
 	// Kiem tra LIST_SACH co xoa duoc hay khong
 	bool CanDelete();
+	// kiem tra sach cho muon duoc
+	bool IsChoMuonDuoc();
 };
 
 string GetMaDauSach(string maSach);
