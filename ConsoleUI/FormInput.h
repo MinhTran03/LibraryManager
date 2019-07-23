@@ -6,7 +6,7 @@
 #include "Structs.h"
 #include "DateTime.h"
 
-#define widthBtn 8
+#define widthBtn 7
 #define heightBtn 1
 
 struct FORMINPUT
@@ -27,8 +27,8 @@ struct FORMINPUT
 	string title;
 	RECTANGLE rect;
 	BORDER border;	
-	string textBtn1 = "OK";
-	string textBtn2 = "CANCEL";
+	string textBtn1 = "LUU";
+	string textBtn2 = "HUY";
 
 	FORMINPUT(string* labels, CONDITION* conditions, RECTANGLE rect, string title, int totalLine)
 		: rect(rect), title(title), border(rect.location, rect.size), totalLine(totalLine)

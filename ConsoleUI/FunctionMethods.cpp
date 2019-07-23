@@ -669,7 +669,7 @@ void TimSach(LIST_DAUSACH& listDS, MYPOINT location)
 void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 {
 	MYPOINT locationDS = { 0,3 };
-	MYPOINT locationMuon = { locationDS.x + (int)DAUSACH_TOTAL_WIDTH, locationDS.y };
+	MYPOINT locationMuon = { locationDS.x + (int)DAUSACH_TOTAL_WIDTH, locationDS.y + 1 };
 	LIST_MUONTRA tempMT = LIST_MUONTRA();
 	ClearScreen(BG_COLOR);
 	// add isbn da muon chua tra
@@ -686,13 +686,17 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 	}
 	// sach da muon
 	tongMuon = daMuon;
+	GoToXY(locationMuon.x + 27, locationMuon.y - 1);
+	SetTextColor(Color::Blue);
+	cout << "SACH DA MUON";
+	GoToXY(locationMuon.x + 26, locationMuon.y + 4 + daMuon);
+	cout << "SACH MUON THEM";
 	auto temp = nodeDocGia.data.listMuonTra.ShowFormMuonSach(listDS, locationMuon, Show_Only, daMuon);
-
 	int page = 0;
 	while (true)
 	{
 		// sach du dinh muon
-		auto cancelDS = tempMT.ShowFormMuonSach(listDS, { locationMuon.x, locationDS.y + 4 + daMuon }, Show_Only, 3 - daMuon);
+		auto cancelDS = tempMT.ShowFormMuonSach(listDS, { locationMuon.x, locationMuon.y + 5 + daMuon }, Show_Only, 3 - daMuon);
 		auto selectDS = listDS.PrintAll(locationDS, page, Menu_Mode::Both);
 		//ClearLine(locationDS.y - 1);
 		if (selectDS == "ESC")
@@ -737,7 +741,7 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 					break;
 				}
 				// qua tab ds sach chon muon
-				cancelDS = tempMT.ShowFormMuonSach(listDS, { locationMuon.x, locationDS.y + 4 + daMuon }, Menu_Mode::Both, 3 - daMuon);
+				cancelDS = tempMT.ShowFormMuonSach(listDS, { locationMuon.x, locationMuon.y + 5 + daMuon }, Menu_Mode::Both, 3 - daMuon);
 				cancelDS = Trim(cancelDS);
 				// huy muon sach
 				if (cancelDS == "ESC")
@@ -941,16 +945,22 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 							}
 							else if (maSachSelect != "")
 							{
-								string temp = GetMaDauSach(maSachSelect);
-								auto dauSach = StringToCharArray(temp);
-								DAUSACH* ListSach = listDS.GetDauSach(dauSach);
-								DATETIME time = DATETIME();
-								time.SetDateTimeNow();
-								MUONTRA muonTra = MUONTRA();
-								auto t = docGiaSearch->data.listMuonTra.Search(maSachSelect);
-								t->data.ngayTra = time;
-								t->data.trangThai = SachDaTra;
-								ListSach->dsSach.Search(maSachSelect)->data.trangThai = ChoMuonDuoc;
+								// xac nhan truoc khi thay doi
+								auto confirm = CONFIRMMODEVERSION("", { 72, 31 });
+								confirm.ShowEnterConfirm();
+								if (confirm.result == true)
+								{
+									string temp = GetMaDauSach(maSachSelect);
+									auto dauSach = StringToCharArray(temp);
+									DAUSACH* ListSach = listDS.GetDauSach(dauSach);
+									DATETIME time = DATETIME();
+									time.SetDateTimeNow();
+									MUONTRA muonTra = MUONTRA();
+									auto t = docGiaSearch->data.listMuonTra.Search(maSachSelect);
+									t->data.ngayTra = time;
+									t->data.trangThai = SachDaTra;
+									ListSach->dsSach.Search(maSachSelect)->data.trangThai = ChoMuonDuoc;
+								}
 							}
 						}
 					}
