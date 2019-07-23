@@ -207,3 +207,11 @@ string ToUpperString(string text)
 	}
 	return result;
 }
+bool IsNumber(string text)
+{
+	for (auto c : text)
+	{
+		if (!isdigit(c)) return false;
+	}
+	return true;
+}

@@ -349,19 +349,19 @@ string LIST_MUONTRA::Show(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode)
 		for (int i = 0; i < 3; i++)
 		{
 			GoToXY(location.x, location.y);
-			if (mode == Both && i == 0)
-			{
-				SetTextColor(hlTextColor);
-				SetBGColor(hlBGColor);
-				cout << datas[i];
-				PushBack(rows, location.y++, count);
-				//rows.push_back(location.y++);
-				SetTextColor(TEXT_INPUT_COLOR);
-				SetBGColor(BG_COLOR);
-				continue;
-			}
 			if (i < totalLine)
 			{
+				if (mode == Both && i == 0)
+				{
+					SetTextColor(hlTextColor);
+					SetBGColor(hlBGColor);
+					cout << datas[i];
+					PushBack(rows, location.y++, count);
+					//rows.push_back(location.y++);
+					SetTextColor(TEXT_INPUT_COLOR);
+					SetBGColor(BG_COLOR);
+					continue;
+				}
 				cout << datas[i];
 				PushBack(rows, location.y++, count);
 			}
@@ -377,6 +377,7 @@ string LIST_MUONTRA::Show(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode)
 		delete[] datas;
 		delete[] rows;
 	}
+	if (totalLine == 0) return "ESC";
 	if (mode == Menu_Mode::Both)
 	{
 		currentLine = 0;

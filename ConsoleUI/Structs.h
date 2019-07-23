@@ -428,7 +428,7 @@ struct CONFIRMMODEVERSION
 	{
 
 	}
-	void Show()
+	void Show3Option()
 	{
 		SetTextColor(Color::Blue);
 		ShowPointer();
@@ -444,6 +444,20 @@ struct CONFIRMMODEVERSION
 			result = false;
 		else
 			result = -1;
+		HidePointer();
+		Clear();
+	}
+	void ShowEnterConfirm()
+	{
+		SetBGColor(BG_COLOR);
+		SetTextColor(Color::Blue);
+		ShowPointer();
+		GoToXY(location.x, location.y);
+		cout << question << "An ENTER de xac nhan: ";
+		char key = NULL;
+		key = _getch();
+		if (key == Key::ENTER)
+			result = true;
 		HidePointer();
 		Clear();
 	}

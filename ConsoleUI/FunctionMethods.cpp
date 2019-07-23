@@ -81,11 +81,18 @@ void MakeFlickWarning(MYPOINT location, string text)
 {
 	int x = location.x;
 	int y = location.y;
-
 	GoToXY(x, y);
 	SetBGColor(BG_COLOR);
 	SetTextColor(WARNING_TEXT_COLOR);
+	int distance = (text.size() - 29) / 2;
 	cout << text;
+	GoToXY(x + distance, y + 1);
+	cout << "An phim bat ky de tiep tuc...";
+	ShowPointer();
+	_getch();
+	HidePointer();
+	ClearLine(y);
+	ClearLine(y + 1);
 	//ClearArea(location.x, location.y, text.size(), 1);
 }
 
@@ -169,7 +176,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 					break;
 				}
 				selectedMaDocGia = PrintAllDGWithHL(listDG, location, page, Menu_Mode::Both);
-				ClearLine(1);
+				//ClearLine(1);
 				MaDocGia = StringToCharArray(selectedMaDocGia);
 				if (selectedMaDocGia == "ESC")
 				{
@@ -209,7 +216,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 						// D khong duoc phep xoa
 						if (DeleteNode(listDG, temp->data) == false)
 						{
-							MakeFlickWarning({ locationBtn.x - 5, 1 }, WARNING_CANT_DELETE_DS);
+							MakeFlickWarning({ locationBtn.x - 5, 0 }, WARNING_CANT_DELETE_DS);
 						}
 						else
 						{
@@ -234,7 +241,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 					break;
 				}
 				selectedMaDocGia = PrintAllDGWithHL(listDG, location, page, Menu_Mode::Both);
-				ClearLine(1);
+				//ClearLine(1);
 				MaDocGia = StringToCharArray(selectedMaDocGia);
 				if (selectedMaDocGia == "ESC")
 				{
@@ -378,7 +385,7 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 				}
 
 				selectedISBN = listDS.PrintAll(location, page, Menu_Mode::Both);
-				ClearLine(1);
+				//ClearLine(1);
 				isbnAsArr = StringToCharArray(selectedISBN);
 				if (selectedISBN == "ESC")
 				{
@@ -409,7 +416,7 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 						// Dau sach khong duoc phep xoa
 						if (listDS.GetDauSach(isbnAsArr)->dsSach.CanDelete() == false)
 						{
-							MakeFlickWarning({ locationBtn.x - 5, 1 }, WARNING_CANT_DELETE_DS);
+							MakeFlickWarning({ locationBtn.x - 5, 0 }, WARNING_CANT_DELETE_DS);
 						}
 						else
 						{
@@ -551,7 +558,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 						break;
 					menu.ShowDisableModeInHorizontal();
 					maSach = listSach->PrintAll(locationListSach, Both);
-					ClearLine(1);
+					//ClearLine(1);
 					if (maSach == "ESC")
 					{
 						break;
@@ -567,7 +574,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 						// khong duoc xoa
 						if (listSach->Search(maSach)->data.CanDelete() == false)
 						{
-							MakeFlickWarning({ locationListSach.x + (int)DMS_TOTAL_WIDTH / 2 - 20, locationListSach.y - 1 }, WARNING_CANT_DELETE_SACH);
+							MakeFlickWarning({ locationListSach.x + (int)DMS_TOTAL_WIDTH / 2 - 20, locationListSach.y - 2 }, WARNING_CANT_DELETE_SACH);
 						}
 						else
 						{
@@ -608,7 +615,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 						// khong duoc xoa
 						if (nodeFix->data.CanDelete() == false)
 						{
-							MakeFlickWarning({ locationBtn.x, 1 }, WARNING_CANT_FIX_SACH);
+							MakeFlickWarning({ locationBtn.x, 0 }, WARNING_CANT_FIX_SACH);
 						}
 						else
 						{
@@ -648,7 +655,7 @@ void TimSach(LIST_DAUSACH& listDS, MYPOINT location)
 			string selectedDauSach = listDS.PrintAllSearch({ location.x + 10, location.y + 10 }, searchKey, Menu_Mode::Both);
 			if (selectedDauSach == "Empty")
 			{
-				MakeFlickWarning({ point.x + 20 - (((int)searchKey.size() + 26) / 2), point.y - 1 }, "KHONG TIM THAY DAU SACH: " + searchKey);
+				MakeFlickWarning({ point.x + 20 - (((int)searchKey.size() + 26) / 2), point.y - 2 }, "KHONG TIM THAY DAU SACH: " + searchKey);
 			}
 		}
 		if (isCancel)
@@ -671,8 +678,11 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 	int tongMuon = 0;
 	for (auto p = nodeDocGia.data.listMuonTra.pHead; p != NULL; p = p->pNext)
 	{
-		auto arr = Split(p->data.maSach, "_");
-		PushBack(isbnDaMuon, arr[0], daMuon);
+		if (p->data.trangThai == SachChuaTra)
+		{
+			auto arr = Split(p->data.maSach, "_");
+			PushBack(isbnDaMuon, arr[0], daMuon);
+		}
 	}
 	// sach da muon
 	tongMuon = daMuon;
@@ -684,7 +694,7 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 		// sach du dinh muon
 		auto cancelDS = tempMT.ShowFormMuonSach(listDS, { locationMuon.x, locationDS.y + 4 + daMuon }, Show_Only, 3 - daMuon);
 		auto selectDS = listDS.PrintAll(locationDS, page, Menu_Mode::Both);
-		ClearLine(locationDS.y - 1);
+		//ClearLine(locationDS.y - 1);
 		if (selectDS == "ESC")
 		{
 			// khong muon them khoi hoi
@@ -694,7 +704,7 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 			}
 			// hoi truoc khi luu
 			auto confirm = CONFIRMMODEVERSION("LUU SACH DA CHON?", { 55, 1 });
-			confirm.Show();
+			confirm.Show3Option();
 			// cancel
 			if (confirm.result == -1)
 			{
@@ -713,7 +723,7 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 					sach->data.trangThai = DaMuon;
 				}
 			}
-			
+
 			ClearScreen(BG_COLOR);
 			return;
 		}
@@ -764,7 +774,7 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 			// kiem tra sach muon day
 			if (tongMuon == 3)
 			{
-				MakeFlickWarning({ locationDS.x + 31, locationDS.y - 1 }, "DOC GIA CHI DUOC MUON TOI DA 3 SACH");
+				MakeFlickWarning({ locationDS.x + 31, locationDS.y - 2 }, "DOC GIA CHI DUOC MUON TOI DA 3 SACH");
 				continue;
 			}
 
@@ -781,14 +791,15 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 			// isbn chua duoc muon
 			if (viTri == MAGIC_NUMBER)
 			{
-				// clear dau sach
-				ClearArea(locationDS.x, locationDS.y, DAUSACH_TOTAL_WIDTH, MAX_ROW_PER_PAGE + 5);
 
 				// Show ds Sach thuoc dau sach
 				auto dauSach = listDS.GetDauSach(StringToCharArray(selectDS));
 				// kiem tra dau sach con sach hay khong
 				if (dauSach->dsSach.IsChoMuonDuoc())
 				{
+					// clear dau sach
+					ClearArea(locationDS.x, locationDS.y, DAUSACH_TOTAL_WIDTH, MAX_ROW_PER_PAGE + 5);
+
 					auto maSach = dauSach->dsSach.PrintAllChoMuonDuoc(locationDS, Both);
 					if (maSach == "ESC")
 					{
@@ -812,13 +823,13 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 				}
 				else
 				{
-					MakeFlickWarning({ locationDS.x + 15, locationDS.y - 1 }, "DAU SACH BAN CHON DA HET SACH. VUI LONG CHON DAU SACH KHAC");
+					MakeFlickWarning({ locationDS.x + 15, locationDS.y - 2 }, "DAU SACH BAN CHON DA HET SACH. VUI LONG CHON DAU SACH KHAC");
 				}
 			}
 			// isbn da co => khong cho muon
 			else
 			{
-				MakeFlickWarning({ locationDS.x + 27, locationDS.y - 1 },    "DAU SACH DA MUON. VUI LONG CHON DAU SACH KHAC");
+				MakeFlickWarning({ locationDS.x + 27, locationDS.y - 2 }, "DAU SACH DA MUON. VUI LONG CHON DAU SACH KHAC");
 			}
 		}
 	}
@@ -838,32 +849,38 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 		isCancel = false;
 		isTrue = false;
 		ClearArea(0, point.y + 8, 170, SCREEN_HEIGHT - FOOTER_HEIGHT - point.y - 8);
-		ClearLine(1);
+		//ClearLine(1);
 		DrawMessageBox(point, "NHAP MA DOC GIA", searchKey, isEnter, isCancel, char(219), Both, 4);
 		if (isEnter)
 		{
+			// chua kiem tra searchKey
+			if (!IsNumber(searchKey))
+			{
+				MakeFlickWarning({ point.x + 21 - (((int)searchKey.size() + 25) / 2), point.y - 2 }, "MA DOC GIA KHONG HOP LE");
+				continue;
+			}
 			auto docGiaSearch = Search(listDG, stoi(searchKey));
 			// khong tim thay
 			if (docGiaSearch == NULL)
 			{
-				MakeFlickWarning({ point.x + 20 - (((int)searchKey.size() + 25) / 2), point.y - 1 }, "KHONG TIM THAY DOC GIA: " + searchKey);
+				MakeFlickWarning({ point.x + 21 - (((int)searchKey.size() + 25) / 2), point.y - 2 }, "KHONG TIM THAY DOC GIA: " + searchKey);
 			}
 			// tiim thay
 			else
 			{
 				DrawMessageBox(point, "NHAP MA DOC GIA", searchKey, isEnter, isCancel, char(219), Show_Only, 4);
 				// hien thi thong tin doc gia
-				RECTANGLE rect = { {location.x + 63, location.y + 10}, {41, 11} };
+				RECTANGLE rect = { {location.x + 61, location.y + 8}, {45, 11} };
 				DocGiaInfo(rect, docGiaSearch->data);
 
 				// hien thi cac sach doc gia muon
-				string maSachSelect = docGiaSearch->data.listMuonTra.Show(listDS, { 20, 27 }, Show_Only);
+				string maSachSelect = docGiaSearch->data.listMuonTra.Show(listDS, { 20, 23 }, Show_Only);
 
 				// menu
 				auto locationBtn = location;
-				locationBtn.x = point.x;
-				locationBtn.y += 33;
-				MENU menu = MENU({ "MUON SACH", "TRA SACH" }, locationBtn);
+				locationBtn.x = point.x - 12;
+				locationBtn.y += 31;
+				MENU menu = MENU({ "MUON SACH", "TRA SACH", "BAO MAT SACH" }, locationBtn);
 				menu.btnSize = { 20, 3 };
 				while (true)
 				{
@@ -871,22 +888,15 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 					{
 						DrawMessageBox(point, "NHAP MA DOC GIA", searchKey, isEnter, isCancel, char(219), Show_Only, 4);
 						// hien thi thong tin doc gia
-						RECTANGLE rect = { {location.x + 63, location.y + 10}, {41, 11} };
 						DocGiaInfo(rect, docGiaSearch->data);
 
 						// hien thi cac sach doc gia muon
-						string maSachSelect = docGiaSearch->data.listMuonTra.Show(listDS, { 20, 27 }, Show_Only);
+						maSachSelect = docGiaSearch->data.listMuonTra.Show(listDS, { 20, 23 }, Show_Only);
 
-						// menu
-						auto locationBtn = location;
-						locationBtn.x = point.x;
-						locationBtn.y += 33;
-						MENU menu = MENU({ "MUON SACH", "TRA SACH" }, locationBtn);
-						menu.btnSize = { 20, 3 };
 						isReload = false;
 					}
 					int selected = menu.ShowInHorizontal(Menu_Mode::Both);
-					ClearLine(26);
+					//ClearLine(22);
 
 					// muon sach
 					if (selected == 0)
@@ -902,21 +912,20 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 							switch (result)
 							{
 							case BiKhoaThe:
-								MakeFlickWarning({ 65, 26 }, "THE DOC GIA BI KHOA, KHONG THE MUON SACH");
+								MakeFlickWarning({ 65, 21 }, "THE DOC GIA BI KHOA, KHONG THE MUON SACH");
 								break;
 							case SachBiMat:
-								MakeFlickWarning({ 48, 26 }, "DOC GIA LAM MAT SACH, VUI LONG BOI THUONG LAI SACH DE TIEP TUC MUON SACH");
+								MakeFlickWarning({ 48, 21 }, "DOC GIA LAM MAT SACH, VUI LONG BOI THUONG LAI SACH DE TIEP TUC MUON SACH");
 								break;
 							case GiuQua7Ngay:
-								MakeFlickWarning({ 40, 26 }, "DOC GIA GIU SACH QUA HAN QUY DINH, VUI LONG TRA LAI SACH DE TIEP DUC MUON SACH");
+								MakeFlickWarning({ 40, 21 }, "DOC GIA GIU SACH QUA HAN QUY DINH, VUI LONG TRA LAI SACH DE TIEP DUC MUON SACH");
 								break;
 							case MuonDuSach:
-								MakeFlickWarning({ 63, 26 }, "MOI DOC GIA CHI DUOC MUON TOI DA 3 CUON SACH");
+								MakeFlickWarning({ 63, 21 }, "MOI DOC GIA CHI DUOC MUON TOI DA 3 CUON SACH");
 								break;
 							default:
 								break;
 							}
-							
 						}
 					}
 					// tra sach
@@ -924,7 +933,7 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 					{
 						while (true)
 						{
-							maSachSelect = docGiaSearch->data.listMuonTra.Show(listDS, { 20, 27 }, Both);
+							maSachSelect = docGiaSearch->data.listMuonTra.Show(listDS, { 20, 23 }, Both);
 							if (maSachSelect == "ESC")
 							{
 								break;
@@ -942,6 +951,33 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 								auto t = docGiaSearch->data.listMuonTra.Search(maSachSelect);
 								t->data.ngayTra = time;
 								t->data.trangThai = SachDaTra;
+							}
+						}
+					}
+					// bao mat sach
+					else if (selected == 2)
+					{
+						while (true)
+						{
+							maSachSelect = docGiaSearch->data.listMuonTra.Show(listDS, { 20, 23 }, Both);
+							if (maSachSelect == "ESC")
+							{
+								break;
+							}
+							else if (maSachSelect != "")
+							{
+								// xac nhan truoc khi thay doi
+								auto confirm = CONFIRMMODEVERSION("", { 72, 31 });
+								confirm.ShowEnterConfirm();
+								if (confirm.result == true)
+								{
+									DATETIME time = DATETIME();
+									time.SetDateTimeNow();
+									MUONTRA muonTra = MUONTRA();
+									NODE_MUONTRA* nodeMT = docGiaSearch->data.listMuonTra.Search(maSachSelect);
+									//nodeMT->data.ngayTra = time;
+									nodeMT->data.trangThai = LamMatSach;
+								}
 							}
 						}
 					}

@@ -158,31 +158,7 @@ void DrawMessageBox(MYPOINT point, string text, string& inputText,
 	{
 		ClearArea(rect.location.x, rect.location.y, rect.size.width, rect.size.height, Cyan);
 		ClearArea(rect.location.x, rect.location.y, rect.size.width, 1, Blue);
-		/*for (int i = 0; i < rect.size.height; i++)
-		{
-			if (i == 0)
-			{
-				SetTextColor(Color::Blue);
-				GoToXY(rect.location.x, rect.location.y);
-				cout << std::string(rect.size.width, getChar);
-			}
-			else
-			{
-				SetTextColor(Color::Cyan);
-				GoToXY(rect.location.x, rect.location.y);
-				cout << std::string(rect.size.width, getChar);
-			}
-			rect.location.x = point.x;
-			rect.location.y++;
-		}*/
 		ClearArea(point.x + 3, point.y + rect.size.height / 2 - 1, rect.size.width - 6, 1, BG_COLOR);
-		/*for (int i = 3; i < (rect.size.width - 3); i++)
-		{
-			GoToXY(point.x + i, point.y + rect.size.height / 2);
-			SetTextColor(TEXT_INPUT_COLOR);
-			SetBGColor(BG_COLOR);
-			cout << " ";
-		}*/
 		SetTextColor(Color::Bright_White);
 		SetBGColor(Color::Blue);
 		GoToXY(point.x + +rect.size.width / 2 - text.size() / 2, point.y);
@@ -213,13 +189,11 @@ void DrawMessageBox(MYPOINT point, string text, string& inputText,
 			SetTextColor(TEXT_INPUT_COLOR);
 			SetBGColor(BG_COLOR);
 			ShowPointer();
-			//getline(cin, inputText);
 			if (1)
 			{
 				do
 				{
 					inputKey = _getch();
-					//GoToXY(point.x + 4, point.y + rect.size.height / 2);
 					if (inputKey == 0 || inputKey == -32)
 					{
 						inputKey = _getch();
@@ -229,7 +203,6 @@ void DrawMessageBox(MYPOINT point, string text, string& inputText,
 					{
 						isEnter = true;
 						return;
-						//cout << inputText;
 					}
 					else if (inputKey == Key::ESC)
 					{

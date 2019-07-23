@@ -29,6 +29,7 @@ string ToLowerString(string text);
 string ToUpperString(string text);
 string Trim(string text);
 char* StringToCharArray(string source);
+bool IsNumber(string text);
 
 template <class T>
 void Swap(T& a, T& b)
