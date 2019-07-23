@@ -43,6 +43,8 @@ const unsigned int TENTACGIA_WIDTH = 21;
 const unsigned int TENTHELOAI_WIDTH = 20;
 const unsigned int SOTRANG_WIDTH = 8;
 const unsigned int NAMXUATBAN_WIDTH = 4;
+const unsigned int SOLUOTMUON_WIDTH = 15;
+
 const unsigned int DAUSACH_TOTAL_WIDTH = ISBN_WIDTH + TENSACH_WIDTH + TENTACGIA_WIDTH + TENTHELOAI_WIDTH + SOTRANG_WIDTH + NAMXUATBAN_WIDTH + 7;
 #pragma endregion
 

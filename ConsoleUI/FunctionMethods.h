@@ -17,3 +17,4 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location);
 void CapNhatDanhMucSach(LIST_DAUSACH& listDS);
 void TimSach(LIST_DAUSACH& listDS, MYPOINT location);
 void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location);
+void InDSDauSachMuonNhieuNhat(LIST_DAUSACH& listDS, MYPOINT location);

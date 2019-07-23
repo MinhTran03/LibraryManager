@@ -9,13 +9,16 @@ struct DAUSACH
 	string tenTacGia;
 	int namXuatBan = NULL;
 	string tenTheLoai;
+	int soLuotMuon;
 
 	LIST_SACH dsSach;
 
 	// in ra node
 	void Print(MYPOINT location, Color bgSelectColor, Color textColor);
+	void PrintFull(MYPOINT location, Color backColor, Color textColor);
 	// chen | giua cac field
 	string ToString();
+	string ToStringMuonTra();
 	// chuyen object dau sach thanh string luu file
 	string ToStringFile();
 };
@@ -73,3 +76,4 @@ struct LIST_DAUSACH
 
 DAUSACH InputDauSach(LIST_DAUSACH listDS, RECTANGLE rect);
 DAUSACH InputFixDauSach(LIST_DAUSACH listDS, RECTANGLE rect, DAUSACH dauSach);
+void PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location);

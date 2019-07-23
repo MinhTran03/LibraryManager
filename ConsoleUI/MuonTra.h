@@ -72,5 +72,5 @@ struct LIST_MUONTRA
 	bool ReadFromFile(string path);
 
 	int DuyetDSSachChuaTra();
-};
 
+};

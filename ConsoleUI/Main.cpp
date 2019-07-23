@@ -71,13 +71,10 @@ int main()
 			{
 				MuonTraSach(listDG, listDS, locationDS);
 			}
+			// TOP 10 DAU SACH
 			else if (func[1] == 1)
 			{
-
-			}
-			else if (func[1] == 2)
-			{
-
+				InDSDauSachMuonNhieuNhat(listDS, locationDS);
 			}
 		}
 		else
