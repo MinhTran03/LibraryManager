@@ -1060,4 +1060,5 @@ void DuyetDocFile(LIST_DOCGIA& lstDG, string path)
 		DuyetDocFile(lstDG->pRight, path);
 	}
 }
+
 #pragma endregion

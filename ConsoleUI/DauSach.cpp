@@ -98,6 +98,13 @@ void DAUSACH::Print(MYPOINT location, Color backColor, Color textColor)
 	SetBGColor(backColor);
 	cout << DAUSACH::ToString();
 }
+void DAUSACH::PrintFull(MYPOINT location, Color backColor, Color textColor)
+{
+	GoToXY(location.x, location.y);
+	SetTextColor(textColor);
+	SetBGColor(backColor);
+	cout << DAUSACH::ToStringMuonTra();
+}
 // chen | giua cac field
 string DAUSACH::ToString()
 {
@@ -133,6 +140,48 @@ string DAUSACH::ToString()
 	temp = TENTHELOAI_WIDTH - this->tenTheLoai.size();
 	result += string(temp, ' ');
 	result += char(179);
+	return result;
+}
+
+string DAUSACH::ToStringMuonTra()
+{
+	int temp;
+	// ISBN
+	string result = "";
+	result += char(179);
+	result += this->isbn;
+	//result += " ";
+	// TENSACH
+	result += char(179);
+	result += this->tenSach;
+	temp = TENSACH_WIDTH - this->tenSach.size();
+	result += string(temp, ' ');
+	// SOTRANG
+	result += char(179);
+	result += to_string(this->soTrang);
+	temp = SOTRANG_WIDTH - NumberLength(this->soTrang);
+	result += string(temp, ' ');
+	// TENTACGIA
+	result += char(179);
+	result += this->tenTacGia;
+	temp = TENTACGIA_WIDTH - this->tenTacGia.size();
+	result += string(temp, ' ');
+	// NAMXUATBAN
+	result += char(179);
+	result += to_string(this->namXuatBan);
+	temp = NAMXUATBAN_WIDTH - NumberLength(this->namXuatBan);
+	result += string(temp, ' ');
+	// TENTHELOAI
+	result += char(179);
+	result += this->tenTheLoai;
+	temp = TENTHELOAI_WIDTH - this->tenTheLoai.size();
+	result += string(temp, ' ');
+	// SOLANMUON
+	result += char(179);
+	result += this->soLuotMuon;
+	temp = SOLUOTMUON_WIDTH - NumberLength(this->soLuotMuon);
+	result += char(179);
+
 	return result;
 }
 // chuyen object dau sach thanh string luu file
@@ -962,5 +1011,46 @@ bool LIST_DAUSACH::DeleteDauSach(char isbn[ISBN_MAXSIZE + 1])
 	// cap nhat dsTheLoai
 	this->INotifyDSTheLoai();
 	return true;
+}
+
+void PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
+{
+	string emptyTemplate = "";
+	emptyTemplate = emptyTemplate + char(179) + string(3, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(ISBN_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(TENSACH_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(SOTRANG_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(TENTACGIA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(NAMXUATBAN_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(TENTHELOAI_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(SOLUOTMUON_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179);
+
+	DAUSACH* temp;
+	int totalLine = listDS.size;
+	for (int i = 0; i < totalLine - 1; i++)
+	{
+		for (int j = i + 1; j < totalLine; j++)
+		{
+			if (listDS.nodes[i]->soLuotMuon < listDS.nodes[j]->soLuotMuon)
+			{
+				// Hoan vi 2 so a[i] va a[j]
+				temp = listDS.nodes[i];
+				listDS.nodes[i] = listDS.nodes[j];
+				listDS.nodes[j] = temp;
+			}
+		}
+	}
+	// Print Label
+	string labels[] = { "ISBN", "TEN SACH", "SO TRANG", "TEN TAC GIA", "NXB", "TEN THE LOAI" };
+	auto lstBorder = LISTBORDERTEXT(labels, 6);
+	lstBorder.Draw(location, { ISBN_WIDTH, TENSACH_WIDTH, SOTRANG_WIDTH, TENTACGIA_WIDTH, NAMXUATBAN_WIDTH, TENTHELOAI_WIDTH },
+		10, BORDER_COLOR);
+	location.y += 3;
+	for (int i = 0; i < 10; i++)
+	{
+		listDS.nodes[i]->PrintFull({ location.x, location.y }, BG_COLOR, TEXT_INPUT_COLOR);
+		location.y++;
+	}
 }
 #pragma endregion
