@@ -70,5 +70,7 @@ struct LIST_MUONTRA
 	bool WriteToFile(string path);
 	// doc tu file
 	bool ReadFromFile(string path);
+
+	int DuyetDSSachChuaTra();
 };
 

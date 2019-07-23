@@ -1,7 +1,8 @@
 #pragma once
 #include "SlideMenu.h"
-#include "DauSach.h"
 #include "Database.h"
+#include "DauSach.h"
+#include "MuonTra.h"
 #include "DocGia.h"
 
 using namespace std;

@@ -931,6 +931,7 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 					// tra sach
 					else if (selected == 1)
 					{
+						
 						while (true)
 						{
 							maSachSelect = docGiaSearch->data.listMuonTra.Show(listDS, { 20, 23 }, Both);
@@ -943,14 +944,13 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 								string temp = GetMaDauSach(maSachSelect);
 								auto dauSach = StringToCharArray(temp);
 								DAUSACH* ListSach = listDS.GetDauSach(dauSach);
-								ListSach->dsSach.Search(maSachSelect)->data.trangThai = ChoMuonDuoc;
-
 								DATETIME time = DATETIME();
 								time.SetDateTimeNow();
 								MUONTRA muonTra = MUONTRA();
 								auto t = docGiaSearch->data.listMuonTra.Search(maSachSelect);
 								t->data.ngayTra = time;
 								t->data.trangThai = SachDaTra;
+								ListSach->dsSach.Search(maSachSelect)->data.trangThai = ChoMuonDuoc;
 							}
 						}
 					}
