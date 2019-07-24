@@ -40,10 +40,8 @@ DOCGIA ParseVectorString(string* data)
 	auto maAsChar = StringToCharArray(data[0]);
 	docGia.maDocGia = atoi(maAsChar);
 	delete[] maAsChar;
-	docGia.ho = data[1];
-	FormatName(docGia.ho);
-	docGia.ten = data[2];
-	FormatName(docGia.ten);
+	docGia.ho = Trim(data[1]);
+	docGia.ten = Trim(data[2]);
 	if (data[3] == "0")
 	{
 		docGia.gioiTinh = Nam;
@@ -902,7 +900,7 @@ void PrintStringDocGia(string data, MYPOINT location)
 	cout << data;
 }
 // in danh sach de quan ly doc gia co highLight
-string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Menu_Mode mode)
+string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Menu_Mode mode, int line)
 {
 	string emptyTemplate = "";
 	emptyTemplate = emptyTemplate + char(179) + string(MADOCGIA_WIDTH, ' ');
@@ -965,11 +963,11 @@ string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Menu_Mo
 			if (i >= (int)MAX_ROW_PER_PAGE * page && i < (page + 1) * (int)MAX_ROW_PER_PAGE)
 			{
 				PrintStringDocGia(dsDocGia[i], { location.x, location.y + (int)(i % MAX_ROW_PER_PAGE) });
-				if (backUpLocation.y == WhereY() && mode == Menu_Mode::Both)
+				if (/*backUpLocation.y == WhereY()*/i == line + page*MAX_ROW_PER_PAGE && mode == Menu_Mode::Both)
 				{
 					SetBGColor(hlBGColor);
 					SetTextColor(hlTextColor);
-					PrintStringDocGia(dsDocGia[i], location);
+					PrintStringDocGia(dsDocGia[i], { location.x, location.y + (int)(i % MAX_ROW_PER_PAGE) });
 					SetBGColor(BG_COLOR);
 					SetTextColor(TEXT_INPUT_COLOR);
 				}
@@ -1001,7 +999,7 @@ string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Menu_Mo
 	// bat phim
 	if (mode == Menu_Mode::Both)
 	{
-		currentLine = 0;
+		currentLine = line;
 
 		char inputKey = NULL;
 		HidePointer();
@@ -1108,10 +1106,11 @@ string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Menu_Mo
 			else if (inputKey == Key::ESC)
 			{
 				page = currentPage;
+				GoToXY(location.x, rows[currentPage][currentLine]);
+				HightLight(datas[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
 				delete[] dsDocGia;
 				delete[] rows;
 				delete[] datas;
-				//ClearArea(location.x, backUpLocation.y - 3, DAUSACH_TOTAL_WIDTH, totalLine + 4);
 				return "ESC";
 			}
 		} while (!_kbhit());

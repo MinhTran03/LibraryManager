@@ -210,6 +210,7 @@ void MaximizeWindow()
 // in trang
 void ShowPageNumber(int currentPage, int totalPages, int x, int y)
 {
+	ClearLine(y);
 	SetBGColor(BG_COLOR);
 	SetTextColor(TEXT_INPUT_COLOR);
 	GoToXY(x, y);

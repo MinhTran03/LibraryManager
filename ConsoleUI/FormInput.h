@@ -228,6 +228,11 @@ struct FORMINPUT
 		// check maxLength
 		else if (value.size() >= condition.maxLength)
 			return false;
+		// ko viet 2 space canh nhau
+		if (value.size() != 0 && value.at(value.size() - 1) == ' ' && c == ' ')
+			return false;
+		// chu dau ko la space
+		if (value.size() == 0 && c == ' ') return false;
 		// check type
 		switch (condition.type)
 		{
@@ -242,7 +247,7 @@ struct FORMINPUT
 		case WordType::Word_Only:
 			return IsLetterOnly(c);
 			break;
-		case WordType::DateTime: case Year: case WordType::Number_Only:
+		case Year: case WordType::Number_Only:
 			return IsNumber(c);
 			break;
 		case WordType::Name:
@@ -416,22 +421,6 @@ struct FORMINPUT
 						{
 							ClearForm();
 							return true;
-							/*string text = "Ban chac chan muon luu thong tin?";
-							auto confirm = CONFIRMDIALOG({ rect.location.x + rect.size.width / 2 - (int)text.length() / 2 - 4,
-															rect.location.y + rect.size.height / 2 - 2 });
-							confirm.Show(text, Yes_No);
-							ClearScreen(Black);
-							if (confirm.result == No)
-							{
-								ReDraw();
-								btnOK.Draw(bgBtnSelectColor, textLabelColor);
-							}
-							else
-							{
-								cols[currentLine] = btnCancel.rect.location.x;
-								ResetOutput();
-								return;
-							}*/
 						}
 						// error
 						else
@@ -653,20 +642,20 @@ struct FORMINPUT
 						if (temp != ' ')
 							inputKey = tolower(inputKey);
 					}
-					// Tu them '/'
-					if (conditions[currentLine].type == DateTime)
-					{
-						if (OutputResults[currentLine].size() == 2 || OutputResults[currentLine].size() == 5)
-						{
-							OutputResults[currentLine] += '/';
-							cout << '/';
-							cols[currentLine]++;
-						}
-					}
+					//// Tu them '/'
+					//if (conditions[currentLine].type == DateTime)
+					//{
+					//	if (OutputResults[currentLine].size() == 2 || OutputResults[currentLine].size() == 5)
+					//	{
+					//		OutputResults[currentLine] += '/';
+					//		cout << '/';
+					//		cols[currentLine]++;
+					//	}
+					//}
 					OutputResults[currentLine] += inputKey;
 					cout << inputKey;
 					cols[currentLine]++;
-					if (conditions[currentLine].type == DateTime)
+					/*if (conditions[currentLine].type == DateTime)
 					{
 						if (OutputResults[currentLine].size() == 2 || OutputResults[currentLine].size() == 5)
 						{
@@ -674,7 +663,7 @@ struct FORMINPUT
 							cout << '/';
 							cols[currentLine]++;
 						}
-					}
+					}*/
 				}
 			}
 			// Xu ly xoa ky tu cuoi cung

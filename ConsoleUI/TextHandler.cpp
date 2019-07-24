@@ -73,56 +73,56 @@ bool IsLowerLetter(char c)
 	return false;
 }
 // format 1 từ theo chuẩn name ( "tRan" => "Tran" )
-void FormatName(char*& name)
-{
-	int doDaiChuoi = strlen(name);
-	if (IsLowerLetter(name[0]))
-		name[0] -= 32;
-	for (int i = 1; i < doDaiChuoi; i++)
-		if (IsCapitalLetter(name[i]))
-			name[i] += 32;
-}
 void FormatName(string& name)
 {
 	name = Trim(name);
-	int doDaiChuoi = name.size();
-	if (IsLowerLetter(name[0]))
-		name[0] -= 32;
-	for (int i = 1; i < doDaiChuoi; i++)
-		if (IsCapitalLetter(name[i]))
-			name[i] += 32;
-}
-void FormatWord(char*& fullName, WordType type)
-{
-	int nTokens = WordCount(fullName);
-	char** tokens = NULL;
-	Split(tokens, fullName);
-
-	for (int i = 0; i < nTokens; i++)
+	string* tokens = NULL;
+	string delimiter = " ";
+	size_t pos = 0;
+	string token;
+	name += delimiter;
+	int count = 0;
+	while ((pos = name.find(delimiter)) != string::npos)
 	{
-		if (type == WordType::Name)
-		{
-			FormatName(tokens[i]);
-		}
-		else if (type == WordType::Word_Only)
-		{
-			// token đầu viết hoa
-			if (i == 0) FormatName(tokens[i]);
-			else _strlwr(tokens[i]);
-		}
+		token = name.substr(0, pos);
+		if (token != "")
+			PushBack(tokens, token, count);
+		name.erase(0, pos + delimiter.length());
 	}
-	fullName = NULL;
-	MergeTokens(fullName, tokens, nTokens);
-	delete tokens;
-}
-void FormatWord(string& fullName)
-{
-	fullName = Trim(fullName);
-	for (char& c : fullName)
+	for (int i = 0; i < count; i++)
 	{
-		c = tolower(c);
+		tokens[i] = ToLowerString(tokens[i]);
+		tokens[i][0] = toupper(tokens[i][0]);
+		name += tokens[i] + " ";
 	}
-	fullName[0] = toupper(fullName[0]);
+	name = Trim(name);
+	delete[] tokens;
+}
+void FormatWord(string& text)
+{
+	text = Trim(text);
+	string* tokens = NULL;
+	string delimiter = " ";
+	size_t pos = 0;
+	string token;
+	text += delimiter;
+	int count = 0;
+	while ((pos = text.find(delimiter)) != string::npos)
+	{
+		token = text.substr(0, pos);
+		if (token != "")
+			PushBack(tokens, token, count);
+		text.erase(0, pos + delimiter.length());
+	}
+	for (int i = 0; i < count; i++)
+	{
+		tokens[i] = ToLowerString(tokens[i]);
+		if (i == 0)
+			tokens[i][0] = toupper(tokens[i][0]);
+		text += tokens[i] + " ";
+	}
+	text = Trim(text);
+	delete[] tokens;
 }
 int NumberLength(unsigned int num)
 {
@@ -182,19 +182,35 @@ string* Split(string text, string delimiter)
 	}
 	return result;
 }
+string* SplitReal(string text, string delimiter)
+{
+	string* result = NULL;
+	size_t pos = 0;
+	string token;
+	text += delimiter;
+	int count = 0;
+	while ((pos = text.find(delimiter)) != string::npos)
+	{
+		token = text.substr(0, pos);
+		if (token != "")
+			PushBack(result, token, count);
+		text.erase(0, pos + delimiter.length());
+	}
+	return result;
+}
 void StringToCharArray(string source, char dest[])
 {
 	strcpy(dest, source.c_str());
 }
 string Trim(string text)
 {
-	while (text[0] == ' ')
+	if (text[0] == ' ')
 	{
-		text.erase(text.begin(), text.end() - text.size() + 1);
+		text.erase(text.begin(), text.begin() + text.find_first_not_of(' '));
 	}
-	while (text[text.size() - 1] == ' ')
+	if (text[text.size() - 1] == ' ')
 	{
-		text.erase(text.begin() + text.size() - 1, text.end());
+		text.erase(text.begin() + text.find_last_not_of(' ') + 1, text.end());
 	}
 	return text;
 }

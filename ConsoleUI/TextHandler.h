@@ -16,8 +16,6 @@ void Split(char**& arrTokens, char* word, const char* separator = " ");
 void MergeTokens(char*& dest, char** arrTokens, int nTokens);
 bool IsCapitalLetter(char c);
 bool IsLowerLetter(char c);
-// format full name ( " tRaN  COng mINH " => "Tran Cong Minh" )
-void FormatWord(char*& fullName, WordType type);
 void FormatWord(string& fullName);
 void FormatName(string& name);
 int NumberLength(unsigned int num);

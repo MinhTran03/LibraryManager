@@ -114,12 +114,11 @@ int* SelectionFuntion(int rootLine, int childLine)
 void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 {
 	string emptyTemplate = "";
-	emptyTemplate = emptyTemplate + char(179) + string(ISBN_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + string(TENSACH_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + string(SOTRANG_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + string(TENTACGIA_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + string(NAMXUATBAN_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + string(TENTHELOAI_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(MADOCGIA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(HODOCGIA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(TENDOCGIA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(GIOITINH_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(TRANGTHAIDG_WIDTH, ' ');
 	emptyTemplate = emptyTemplate + char(179);
 	string selectedMaDocGia;
 	int page = 0;
@@ -159,7 +158,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 			{
 				RemoveMaDG(listDG);
 				Insert(listDG, *newDocGia);
-				tem = PrintAllDocGia(listDG, location, 1, Show_Only);
+				//tem = PrintAllDGWithHL(listDG, location, page, Show_Only);
 			}
 		}
 		// Xoa
@@ -177,30 +176,12 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 				//ClearLine(1);
 				if (selectedMaDocGia == "ESC")
 				{
-					// load lai data
-					int totalLine = 0;
-					string* dsDocGia = NULL;
-					if (listDG != NULL)
-					{
-						dsDocGia = GetAllStringNode(listDG, totalLine);
-					}
-					auto tempLoc = location;
-					tempLoc.y += 3;
-					SetTextColor(TEXT_INPUT_COLOR);
-					for (int i = 0; i < totalLine; i++)
-					{
-						if (i >= (int)MAX_ROW_PER_PAGE * page && i < (page + 1) * (int)MAX_ROW_PER_PAGE)
-						{
-							PrintStringDocGia(dsDocGia[i], tempLoc);
-							tempLoc.y++;
-						}
-					}
 					break;
 				}
 				// ng dung an enter de xoa
 				else
 				{
-					auto confirm = CONFIRMDIALOG({ 30, 7 });
+					auto confirm = CONFIRMDIALOG({ 45, 7 });
 					confirm.Show("Ban chac chan muon xoa?", Yes_No);
 					confirm.Clear();
 					// dong y xoa
@@ -208,21 +189,27 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 					{
 						int MaDG = stoi(selectedMaDocGia);
 						auto temp = Search(listDG, MaDG);
-						// chua kiem tra co duoc xoa hay khong???
-						// ...
-						// D khong duoc phep xoa
+						// DS khong duoc phep xoa
 						if (DeleteNode(listDG, temp->data) == false)
 						{
 							MakeFlickWarning({ locationBtn.x - 5, 0 }, WARNING_CANT_DELETE_DS);
 						}
 						else
 						{
-							//DeleteNode(listDG, temp->data);
-							/*SetBGColor(BG_COLOR);
-							GoToXY(location.x, Size(listDG) + location.y + 3);
-							cout << emptyTemplate;*/
-							// da cap nhat ds the loai trong DeleteDauSach
-							tem = PrintAllDGWithHL(listDG, location, page, Show_Only);
+							int temp = 0;
+							int size = Size(listDG);
+							if (size % MAX_ROW_PER_PAGE != 0) temp = 1;
+							else if (size % MAX_ROW_PER_PAGE == 0 && page == size / MAX_ROW_PER_PAGE)
+							{
+								page--;
+							}
+							if (page == size / MAX_ROW_PER_PAGE + temp - 1)
+							{
+								SetBGColor(BG_COLOR);
+								SetTextColor(TEXT_INPUT_COLOR);
+								GoToXY(location.x, size % MAX_ROW_PER_PAGE + location.y + 3);
+								cout << emptyTemplate;
+							}
 						}
 					}
 				}
@@ -231,33 +218,18 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 		// Sua
 		else if (selected == 2)
 		{
+			int line = 0;
 			while (true)
 			{
 				if (Size(listDG) == 0)
 				{
 					break;
 				}
-				selectedMaDocGia = PrintAllDGWithHL(listDG, location, page, Menu_Mode::Both);
+				selectedMaDocGia = PrintAllDGWithHL(listDG, location, page, Menu_Mode::Both, line);
+				line = WhereY() - location.y - 3;
 				//ClearLine(1);
 				if (selectedMaDocGia == "ESC")
 				{
-					// load lai data
-					int totalLine = 0;
-					string* dsDocGia = NULL;
-					if (listDG != NULL)
-					{
-						dsDocGia = GetAllStringNode(listDG, totalLine);
-					}
-					auto tempLoc = location;
-					tempLoc.y += 3;
-					for (int i = 0; i < totalLine; i++)
-					{
-						if (i >= (int)MAX_ROW_PER_PAGE * page && i < (page + 1) * (int)MAX_ROW_PER_PAGE)
-						{
-							PrintStringDocGia(dsDocGia[i], tempLoc);
-							tempLoc.y++;
-						}
-					}
 					break;
 				}
 				else
@@ -266,8 +238,6 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 					int MaDG = stoi(selectedMaDocGia);
 					auto temp = Search(listDG, MaDG);
 					temp->data = InputFixDocGia({ {DAUSACH_TOTAL_WIDTH + 2, location.y}, {50, 18} }, temp->data);
-					tem = PrintAllDGWithHL(listDG, location, page, Show_Only);
-					//break;
 				}
 			}
 		}
@@ -375,7 +345,6 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 		// Xoa
 		else if (selected == 1)
 		{
-			//menu.ShowDisableModeInHorizontal();
 			while (true)
 			{
 				// Het dau sach
@@ -937,7 +906,7 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 					// tra sach
 					else if (selected == 1)
 					{
-						
+
 						while (true)
 						{
 							maSachSelect = docGiaSearch->data.listMuonTra.Show(listDS, { 20, 23 }, Both);
