@@ -1,4 +1,13 @@
-#include "DauSach.h"
+﻿#include "DauSach.h"
+
+#pragma region ----------------------------------------------------TOPSACH
+void TOPSACH::Print(MYPOINT location, Color backColor, Color textColor)
+{
+	GoToXY(location.x, location.y);
+	SetTextColor(textColor);
+	SetBGColor(backColor);
+	cout << TOPSACH::info;
+}
 
 #pragma region ----------------------------------------------------DAUSACH
 // chuyen vector<string> vo obj DAUSACH
@@ -1018,33 +1027,86 @@ bool LIST_DAUSACH::DeleteDauSach(char isbn[ISBN_MAXSIZE + 1])
 	this->INotifyDSTheLoai();
 	return true;
 }
+// Heap Sort
+void SortTop10(TOPSACH* top10, int q, int r)
+{
+	TOPSACH temp;
+	int i = q;
+	int j = r;
+	//Lấy phần tử giữa của dãy cần sắp thứ tự làm chốt
+	int x = top10[(q + r) / 2].soSachMuon;
+
+	do
+	{  // Phân đoạn dãy con a[q],..., a[r]
+		while (top10[i].soSachMuon > x)
+			i++; //Tìm phần tử đầu tiên có trị nhỏ hơn hay bằng x 
+		while (top10[j].soSachMuon < x)
+			j--; //Tìm phần tử đầu tiên có trị lớn hơn hay bằng x
+
+		if (i <= j)   // Hoan vi
+		{
+			temp = top10[i];
+			top10[i] = top10[j];
+			top10[j] = temp;
+			i++;
+			j--;
+		}
+	} while (i <= j);
+
+	if (q < j) 	// phần thứ nhất có từ 2 phần tử trở lên
+		SortTop10(top10, q, j);
+	if (i < r)   	// phần thứ ba có từ 2 phần tử trở lên
+		SortTop10(top10, i, r);
+}
+
 
 string PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
 {
 	DAUSACH* temp;
 	int totalLine = listDS.size;
-	for (int i = 0; i < totalLine - 1; i++)
+
+
+	// Interchange Sort
+	//for (int i = 0; i < totalLine - 1; i++)
+	//{
+	//	for (int j = i + 1; j < totalLine; j++)
+	//	{
+	//		if (listDS.nodes[i]->soLuotMuon < listDS.nodes[j]->soLuotMuon)
+	//		{
+	//			// Hoan vi 2 so a[i] va a[j]
+	//			temp = listDS.nodes[i];
+	//			listDS.nodes[i] = listDS.nodes[j];
+	//			listDS.nodes[j] = temp;
+	//		}
+	//	}
+	//}
+
+	TOPSACH* top10 = new TOPSACH[listDS.size];
+
+	// nhap thong tin vao mang.
+	for (int i = 0; i < listDS.size; i++)
 	{
-		for (int j = i + 1; j < totalLine; j++)
-		{
-			if (listDS.nodes[i]->soLuotMuon < listDS.nodes[j]->soLuotMuon)
-			{
-				// Hoan vi 2 so a[i] va a[j]
-				temp = listDS.nodes[i];
-				listDS.nodes[i] = listDS.nodes[j];
-				listDS.nodes[j] = temp;
-			}
-		}
+		top10[i].soSachMuon = listDS.nodes[i]->soLuotMuon;
+		top10[i].info = listDS.nodes[i]->ToStringMuonTra();
 	}
+
+	SortTop10(top10, 0, listDS.size);
+
+
 	// Print Label
 	string labels[] = { "ISBN", "TEN SACH", "SO TRANG", "TEN TAC GIA", "NXB", "TEN THE LOAI", "SO LAN MUON" };
 	auto lstBorder = LISTBORDERTEXT(labels, 7);
 	lstBorder.Draw(location, { ISBN_WIDTH, TENSACH_WIDTH, SOTRANG_WIDTH, TENTACGIA_WIDTH, NAMXUATBAN_WIDTH, TENTHELOAI_WIDTH, SOLUOTMUON_WIDTH },
 		10, BORDER_COLOR);
 	location.y += 3;
-	for (int i = 0; i < 10; i++)
+	/*for (int i = 0; i < 10; i++)
 	{
 		listDS.nodes[i]->PrintFull({ location.x, location.y }, BG_COLOR, TEXT_INPUT_COLOR);
+		location.y++;
+	}*/
+	for (int i = 0; i < 10; i++)
+	{
+		top10[i].Print({ location.x, location.y }, BG_COLOR, TEXT_INPUT_COLOR);
 		location.y++;
 	}
 
@@ -1053,8 +1115,10 @@ string PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
 	do
 	{
 		inputKey = _getch();
+		if (inputKey == -32) inputKey = _getch();
 		if (inputKey == Key::ESC)
 		{
+			delete[] top10;
 			return "ESC";
 		}
 	} while (!_kbhit());
