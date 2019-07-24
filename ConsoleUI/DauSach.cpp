@@ -1019,7 +1019,7 @@ bool LIST_DAUSACH::DeleteDauSach(char isbn[ISBN_MAXSIZE + 1])
 	return true;
 }
 
-void PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
+string PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
 {
 	DAUSACH* temp;
 	int totalLine = listDS.size;
@@ -1037,7 +1037,7 @@ void PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
 		}
 	}
 	// Print Label
-	string labels[] = { "ISBN", "TEN SACH", "SO TRANG", "TEN TAC GIA", "NXB", "TEN THE LOAI" , "SO LUOT MUON"};
+	string labels[] = { "ISBN", "TEN SACH", "SO TRANG", "TEN TAC GIA", "NXB", "TEN THE LOAI", "SO LAN MUON" };
 	auto lstBorder = LISTBORDERTEXT(labels, 7);
 	lstBorder.Draw(location, { ISBN_WIDTH, TENSACH_WIDTH, SOTRANG_WIDTH, TENTACGIA_WIDTH, NAMXUATBAN_WIDTH, TENTHELOAI_WIDTH, SOLUOTMUON_WIDTH },
 		10, BORDER_COLOR);
@@ -1047,5 +1047,16 @@ void PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
 		listDS.nodes[i]->PrintFull({ location.x, location.y }, BG_COLOR, TEXT_INPUT_COLOR);
 		location.y++;
 	}
+
+	char inputKey = NULL;
+	HidePointer();
+	do
+	{
+		inputKey = _getch();
+		if (inputKey == Key::ESC)
+		{
+			return "ESC";
+		}
+	} while (!_kbhit());
 }
 #pragma endregion
