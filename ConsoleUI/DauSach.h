@@ -9,7 +9,7 @@ struct DAUSACH
 	string tenTacGia;
 	int namXuatBan = NULL;
 	string tenTheLoai;
-	int soLuotMuon;
+	int soLuotMuon = 0;
 
 	LIST_SACH dsSach;
 

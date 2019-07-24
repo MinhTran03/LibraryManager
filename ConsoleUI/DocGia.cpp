@@ -10,7 +10,9 @@ DOCGIA ParseVectorStringFile(string* data)
 	DOCGIA docGia;// = new DOCGIA;
 	docGia.maDocGia = atoi(StringToCharArray(data[0]));
 	docGia.ho = data[1];
+	FormatName(docGia.ho);
 	docGia.ten = data[2];
+	FormatName(docGia.ten);
 	if (ToLowerString(data[3]) == "nam")
 	{
 		docGia.gioiTinh = Nam;
@@ -35,7 +37,9 @@ DOCGIA ParseVectorString(string* data)
 	DOCGIA docGia;// = new DOCGIA;
 	docGia.maDocGia = atoi(StringToCharArray(data[0]));
 	docGia.ho = data[1];
+	FormatName(docGia.ho);
 	docGia.ten = data[2];
+	FormatName(docGia.ten);
 	if (data[3] == "0")
 	{
 		docGia.gioiTinh = Nam;
@@ -1065,8 +1069,8 @@ void DuyetLuuFile(LIST_DOCGIA lstDG)
 	{
 		if (lstDG->data.listMuonTra.IsEmpty() == false)
 		{
-			string maAsString = "";
-			MergeWordWithNumber(maAsString, lstDG->data.maDocGia, 4);
+			string maAsString = to_string(lstDG->data.maDocGia);
+			//MergeWordWithNumber(maAsString, lstDG->data.maDocGia, 4);
 			WriteMuonTraToFile(lstDG->data.listMuonTra, maAsString);
 		}
 		DuyetLuuFile(lstDG->pLeft);
@@ -1085,8 +1089,8 @@ void DuyetDocFile(LIST_DOCGIA& lstDG, string path)
 	if (lstDG != NULL)
 	{
 		DuyetDocFile(lstDG->pLeft, path);
-		string maAsString = "";
-		MergeWordWithNumber(maAsString, lstDG->data.maDocGia, 4);
+		string maAsString = to_string(lstDG->data.maDocGia);
+		//MergeWordWithNumber(maAsString, lstDG->data.maDocGia, 4);
 		ReadMuonTraFromFile(lstDG->data.listMuonTra, maAsString, path);
 		DuyetDocFile(lstDG->pRight, path);
 	}

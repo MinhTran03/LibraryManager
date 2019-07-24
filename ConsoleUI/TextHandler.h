@@ -19,6 +19,7 @@ bool IsLowerLetter(char c);
 // format full name ( " tRaN  COng mINH " => "Tran Cong Minh" )
 void FormatWord(char*& fullName, WordType type);
 void FormatWord(string& fullName);
+void FormatName(string& name);
 int NumberLength(unsigned int num);
 // merge number vào sau word
 void MergeWordWithNumber(char*& word, unsigned int number, unsigned int maxLengthWord);

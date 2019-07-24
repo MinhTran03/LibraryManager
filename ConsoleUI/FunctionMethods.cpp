@@ -725,6 +725,7 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 					// chuyen trang thai sach => da muon
 					auto sach = dauSach->dsSach.Search(p->data.maSach);
 					sach->data.trangThai = DaMuon;
+					dauSach->soLuotMuon++;
 				}
 			}
 
@@ -838,8 +839,6 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 		}
 	}
 }
-
-// Func 2 0
 void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 {
 	MYPOINT point = { 66, 2 };
@@ -1012,4 +1011,5 @@ void InDSDauSachMuonNhieuNhat(LIST_DAUSACH& listDS, MYPOINT location)
 {
 	MYPOINT locationTab = { location.x + 20, location.y };
 	PrintTopDauSach(listDS, location);
+	_getch();
 }

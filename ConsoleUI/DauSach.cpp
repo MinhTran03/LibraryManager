@@ -2,16 +2,20 @@
 
 #pragma region ----------------------------------------------------DAUSACH
 // chuyen vector<string> vo obj DAUSACH
-DAUSACH ParseVectorString(string* data)
+DAUSACH ParseVectorString(string* data, int mode = 0)
 {
 	DAUSACH dauSach;// = new DAUSACH;
 	StringToCharArray(data[0], dauSach.isbn);
 	dauSach.tenSach = data[1];
+	FormatWord(dauSach.tenSach);
 	dauSach.soTrang = stoi(data[2]);
 	dauSach.tenTacGia = data[3];
+	FormatName(dauSach.tenTacGia);
 	dauSach.namXuatBan = stoi(data[4]);
 	dauSach.tenTheLoai = data[5];
 	FormatWord(dauSach.tenTheLoai);
+	if(mode == 1)
+		dauSach.soLuotMuon = stoi(data[6]);
 	return dauSach;
 }
 // hien form nhap DAUSACH / truyen listDS de kiem tra du lieu co trung khong
@@ -178,8 +182,9 @@ string DAUSACH::ToStringMuonTra()
 	result += string(temp, ' ');
 	// SOLANMUON
 	result += char(179);
-	result += this->soLuotMuon;
+	result += to_string(this->soLuotMuon);
 	temp = SOLUOTMUON_WIDTH - NumberLength(this->soLuotMuon);
+	result += string(temp, ' ');
 	result += char(179);
 
 	return result;
@@ -194,7 +199,8 @@ string DAUSACH::ToStringFile()
 	result += to_string(this->soTrang) + '-';
 	result += this->tenTacGia + '-';
 	result += to_string(this->namXuatBan) + '-';
-	result += this->tenTheLoai;
+	result += this->tenTheLoai + '-';
+	result += to_string(this->soLuotMuon);
 	//result += '\n';
 	return result;
 }
@@ -707,7 +713,7 @@ bool LIST_DAUSACH::ReadFromFile(string path)
 		for (int i = 0; i < size; i++)
 		{
 			DAUSACH* dauSach = new DAUSACH;
-			*dauSach = ParseVectorString(lstDauSachVector[i]);
+			*dauSach = ParseVectorString(lstDauSachVector[i], 1);
 			Insert(*dauSach, this->size);
 		}
 		delete[] lstDauSachVector;
@@ -1015,17 +1021,6 @@ bool LIST_DAUSACH::DeleteDauSach(char isbn[ISBN_MAXSIZE + 1])
 
 void PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
 {
-	string emptyTemplate = "";
-	emptyTemplate = emptyTemplate + char(179) + string(3, ' ');
-	emptyTemplate = emptyTemplate + char(179) + string(ISBN_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + string(TENSACH_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + string(SOTRANG_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + string(TENTACGIA_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + string(NAMXUATBAN_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + string(TENTHELOAI_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + string(SOLUOTMUON_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179);
-
 	DAUSACH* temp;
 	int totalLine = listDS.size;
 	for (int i = 0; i < totalLine - 1; i++)
@@ -1042,9 +1037,9 @@ void PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
 		}
 	}
 	// Print Label
-	string labels[] = { "ISBN", "TEN SACH", "SO TRANG", "TEN TAC GIA", "NXB", "TEN THE LOAI" };
-	auto lstBorder = LISTBORDERTEXT(labels, 6);
-	lstBorder.Draw(location, { ISBN_WIDTH, TENSACH_WIDTH, SOTRANG_WIDTH, TENTACGIA_WIDTH, NAMXUATBAN_WIDTH, TENTHELOAI_WIDTH },
+	string labels[] = { "ISBN", "TEN SACH", "SO TRANG", "TEN TAC GIA", "NXB", "TEN THE LOAI" , "SO LUOT MUON"};
+	auto lstBorder = LISTBORDERTEXT(labels, 7);
+	lstBorder.Draw(location, { ISBN_WIDTH, TENSACH_WIDTH, SOTRANG_WIDTH, TENTACGIA_WIDTH, NAMXUATBAN_WIDTH, TENTHELOAI_WIDTH, SOLUOTMUON_WIDTH },
 		10, BORDER_COLOR);
 	location.y += 3;
 	for (int i = 0; i < 10; i++)

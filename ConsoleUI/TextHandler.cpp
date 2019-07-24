@@ -82,6 +82,16 @@ void FormatName(char*& name)
 		if (IsCapitalLetter(name[i]))
 			name[i] += 32;
 }
+void FormatName(string& name)
+{
+	name = Trim(name);
+	int doDaiChuoi = name.size();
+	if (IsLowerLetter(name[0]))
+		name[0] -= 32;
+	for (int i = 1; i < doDaiChuoi; i++)
+		if (IsCapitalLetter(name[i]))
+			name[i] += 32;
+}
 void FormatWord(char*& fullName, WordType type)
 {
 	int nTokens = WordCount(fullName);
@@ -107,6 +117,7 @@ void FormatWord(char*& fullName, WordType type)
 }
 void FormatWord(string& fullName)
 {
+	fullName = Trim(fullName);
 	for (char& c : fullName)
 	{
 		c = tolower(c);
