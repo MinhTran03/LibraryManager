@@ -1,6 +1,13 @@
 #pragma once
 #include "Sach.h"
 
+struct  TOPSACH
+{
+	string info;
+	int soSachMuon;
+	void Print(MYPOINT location, Color bgSelectColor, Color textColor);
+};
+
 struct DAUSACH
 {
 	char isbn[ISBN_MAXSIZE + 1];
