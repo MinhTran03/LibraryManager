@@ -1027,7 +1027,7 @@ bool LIST_DAUSACH::DeleteDauSach(char isbn[ISBN_MAXSIZE + 1])
 	this->INotifyDSTheLoai();
 	return true;
 }
-// Heap Sort
+// Quick Sort
 void SortTop10(TOPSACH* top10, int q, int r)
 {
 	TOPSACH temp;
@@ -1058,6 +1058,53 @@ void SortTop10(TOPSACH* top10, int q, int r)
 	if (i < r)   	// phần thứ ba có từ 2 phần tử trở lên
 		SortTop10(top10, i, r);
 }
+// Heap Sort
+void Heapify(TOPSACH* top10, int r, int n)
+{
+	int j = 2 * r + 1;	// vi tri nut ben trai
+	int x = top10[r].soSachMuon;
+	int cont = TRUE;
+
+	while (j <= n - 1 && cont)
+	{
+		if (j < n - 1)
+		{
+			if (top10[j].soSachMuon < top10[j + 1].soSachMuon)
+			{
+				j++;
+			}
+		}
+		if (top10[j].soSachMuon <= x)
+		{
+			cont = FALSE;
+		}
+		else
+		{
+			top10[r].soSachMuon = top10[j].soSachMuon;
+			r = j;
+			j = 2 * r + 1;
+		}
+	}
+	top10[r].soSachMuon = x;
+}
+
+void HeapSort(TOPSACH* top10, int n)
+{
+	int i;
+	TOPSACH	temp;
+	//Tao Heap
+	for (i = n/2 - 1; i >= 0; i--)
+	{
+		Heapify(top10, i, n);
+	}
+	for (i = n - 2; i >= 0; i--)
+	{
+		temp = top10[0];	// cho ve cuoi Heap
+		top10[0] = top10[i + 1];
+		top10[i + 1] = temp;
+		Heapify(top10, 0, i + 1);	//Dieu chinh laij Heap tai vi tri 0, vi tri 1 2 da la Heap
+	}
+}
 
 
 string PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
@@ -1081,17 +1128,17 @@ string PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
 	//	}
 	//}
 
-	TOPSACH* top10 = new TOPSACH[listDS.size];
+	TOPSACH* top10 = new TOPSACH[totalLine];
 
 	// nhap thong tin vao mang.
-	for (int i = 0; i < listDS.size; i++)
+	for (int i = 0; i < totalLine; i++)
 	{
 		top10[i].soSachMuon = listDS.nodes[i]->soLuotMuon;
 		top10[i].info = listDS.nodes[i]->ToStringMuonTra();
 	}
 
-	SortTop10(top10, 0, listDS.size);
-
+	SortTop10(top10, 0, listDS.size - 1);
+	//HeapSort(top10, totalLine);
 
 	// Print Label
 	string labels[] = { "ISBN", "TEN SACH", "SO TRANG", "TEN TAC GIA", "NXB", "TEN THE LOAI", "SO LAN MUON" };

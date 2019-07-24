@@ -1008,7 +1008,7 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 // Func 2 1
 void InDSDauSachMuonNhieuNhat(LIST_DAUSACH& listDS, MYPOINT location)
 {
-	MYPOINT locationTab = { location.x + 20, location.y };
+	MYPOINT locationTab = { location.x + 20, location.y + 3};
 	string leaderBroad = PrintTopDauSach(listDS, location);
 
 	while (true)

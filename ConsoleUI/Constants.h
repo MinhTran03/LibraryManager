@@ -46,6 +46,8 @@ const unsigned int NAMXUATBAN_WIDTH = 4;
 const unsigned int SOLUOTMUON_WIDTH = 15;
 
 const unsigned int DAUSACH_TOTAL_WIDTH = ISBN_WIDTH + TENSACH_WIDTH + TENTACGIA_WIDTH + TENTHELOAI_WIDTH + SOTRANG_WIDTH + NAMXUATBAN_WIDTH + 7;
+
+const unsigned int TOPDAUSACH_MAX = 10;
 #pragma endregion
 
 #pragma region -----------------------------------------------------Danh muc sach
