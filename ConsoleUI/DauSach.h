@@ -76,4 +76,4 @@ struct LIST_DAUSACH
 
 DAUSACH InputDauSach(LIST_DAUSACH listDS, RECTANGLE rect);
 DAUSACH InputFixDauSach(LIST_DAUSACH listDS, RECTANGLE rect, DAUSACH dauSach);
-void PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location);
+string PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location);

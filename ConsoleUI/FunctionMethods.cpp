@@ -1009,6 +1009,15 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 void InDSDauSachMuonNhieuNhat(LIST_DAUSACH& listDS, MYPOINT location)
 {
 	MYPOINT locationTab = { location.x + 20, location.y };
-	PrintTopDauSach(listDS, location);
-	_getch();
+	string leaderBroad = PrintTopDauSach(listDS, location);
+
+	while (true)
+	{
+		if (leaderBroad == "ESC")
+		{
+			ClearScreen(BG_COLOR);
+			break;
+		}
+	}
+	//_getch();
 }
