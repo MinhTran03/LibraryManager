@@ -182,19 +182,25 @@ string* Split(string text, string delimiter)
 	}
 	return result;
 }
-string* SplitReal(string text, string delimiter)
+string* SplitReal(string text, const char* separator)
 {
 	string* result = NULL;
 	size_t pos = 0;
-	string token;
-	text += delimiter;
+	char* txtAsChar = new char[text.size() + 1];
+	strcpy(txtAsChar, text.c_str());
 	int count = 0;
-	while ((pos = text.find(delimiter)) != string::npos)
+	/*while ((pos = text.find(delimiter)) != string::npos)
 	{
 		token = text.substr(0, pos);
 		if (token != "")
 			PushBack(result, token, count);
 		text.erase(0, pos + delimiter.length());
+	}*/
+	char* token = strtok(txtAsChar, separator);
+	while (token != NULL)
+	{
+		PushBack(result, string(token), count);
+		token = strtok(NULL, separator);
 	}
 	return result;
 }

@@ -23,6 +23,7 @@ int NumberLength(unsigned int num);
 void MergeWordWithNumber(char*& word, unsigned int number, unsigned int maxLengthWord);
 void MergeWordWithNumber(string& word, unsigned int number, unsigned int maxLengthWord);
 string* Split(string, string delimiter = " ");
+string* SplitReal(string text, const char* delimiter);
 void StringToCharArray(string source, char dest[]);
 string ToLowerString(string text);
 string ToUpperString(string text);

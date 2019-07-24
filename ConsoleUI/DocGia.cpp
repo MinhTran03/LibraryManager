@@ -699,6 +699,7 @@ string PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode m)
 	{
 		if (i >= (int)MAX_ROW_PER_PAGE * currentPage && i < (currentPage + 1) * (int)MAX_ROW_PER_PAGE)
 		{
+			Sleep(3);
 			GoToXY(location.x, location.y + i);
 			cout << listData[i];
 		}
@@ -719,6 +720,7 @@ string PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode m)
 			SetTextColor(TEXT_INPUT_COLOR);
 			for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
 			{
+				Sleep(3);
 				// in trang not cuoi cung
 				if (currentPage < totalPage - 1 || (currentPage == totalPage - 1 && size % MAX_ROW_PER_PAGE == 0))
 				{
@@ -749,6 +751,7 @@ string PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode m)
 			SetTextColor(TEXT_INPUT_COLOR);
 			for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
 			{
+				Sleep(3);
 				GoToXY(location.x, location.y + (int)i);
 				cout << listData[i + MAX_ROW_PER_PAGE * currentPage];
 			}
@@ -759,6 +762,34 @@ string PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode m)
 		}
 	} while (!_kbhit());
 	return "";
+}
+// dung quick sort de sort string doc gia
+void SortStringDocGiaTheoTen(string*& listDG, string*& listName, int q, int r)
+{
+	int i = q;
+	int j = r;
+	//Lấy phần tử giữa của dãy cần sắp thứ tự làm chốt
+	string x = listName[(q + r) / 2];
+	do
+	{  // Phân đoạn dãy con a[q],..., a[r]
+		while (listName[i].compare(x) < 0)
+			i++; //Tìm phần tử đầu tiên có trị nhỏ hơn hay bằng x
+		while (listName[j].compare(x) > 0)
+			j--;   //Tìm phần tử đầu tiên có trị lớn hơn hay bằng x
+
+		if (i <= j)   // Hoan vi
+		{
+			Swap(listName[i], listName[j]);
+			Swap(listDG[i], listDG[j]);
+			i++;
+			j--;
+		}
+	} while (i <= j);
+
+	if (q < j) 	// phần thứ nhất có từ 2 phần tử trở lên
+		SortStringDocGiaTheoTen(listDG, listName, q, j);
+	if (i < r)   	// phần thứ ba có từ 2 phần tử trở lên
+		SortStringDocGiaTheoTen(listDG, listName, i, r);
 }
 // In ds doc gia theo ten
 string PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location, Menu_Mode m)
@@ -777,45 +808,25 @@ string PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location, Menu_Mode m)
 
 	int totalPage = size / MAX_ROW_PER_PAGE;
 	if (size % MAX_ROW_PER_PAGE != 0) totalPage++;
-	string deli = "";
-	deli += char(179);
 
 	// sort
-	string minHT;
-	string min;
-	int posMin;
-	for (int i = 0; i < size - 1; i++)
+	string deli = ""; deli += char(179);
+	string* listName = new string[size];
+	for (int i = 0; i < size; i++)
 	{
-		if (i == 6)
-		{
-			GoToXY(0, 0);
-		}
-		min = listData[i];
-		auto temp = Split(listData[i], deli);
-		minHT = Trim(temp[3]) + Trim(temp[2]);
-		posMin = i;
-		for (int j = i + 1; j < size; j++)
-		{
-			temp = Split(listData[j], deli);
-			auto t = (Trim(temp[3]) + Trim(temp[2]));
-			if (t.compare(minHT) < 0)
-			{
-				min = listData[j];
-				posMin = j;
-
-				temp = Split(listData[j], deli);
-				minHT = Trim(temp[3]) + Trim(temp[2]);
-			}
-		}
-		listData[posMin] = listData[i];
-		listData[i] = min;
+		auto tokens = Split(listData[i], deli);
+		listName[i] = Trim(tokens[3]) + Trim(tokens[2]);
 	}
-	ShowPageNumber(currentPage, totalPage, location.x, location.y + (int)MAX_ROW_PER_PAGE + 1);
+	SortStringDocGiaTheoTen(listData, listName, 0, size - 1);
+	delete[] listName;
+
 	// In ra mh
+	ShowPageNumber(currentPage, totalPage, location.x, location.y + (int)MAX_ROW_PER_PAGE + 1);
 	for (int i = 0; i < size; i++)
 	{
 		if (i >= (int)MAX_ROW_PER_PAGE * currentPage && i < (currentPage + 1) * (int)MAX_ROW_PER_PAGE)
 		{
+			Sleep(3);
 			GoToXY(location.x, location.y + i);
 			cout << listData[i];
 		}
@@ -836,6 +847,7 @@ string PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location, Menu_Mode m)
 			SetTextColor(TEXT_INPUT_COLOR);
 			for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
 			{
+				Sleep(3);
 				// in trang not cuoi cung
 				if (currentPage < totalPage - 1 || (currentPage == totalPage - 1 && size % MAX_ROW_PER_PAGE == 0))
 				{
@@ -866,6 +878,7 @@ string PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location, Menu_Mode m)
 			SetTextColor(TEXT_INPUT_COLOR);
 			for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
 			{
+				Sleep(3);
 				GoToXY(location.x, location.y + (int)i);
 				cout << listData[i + MAX_ROW_PER_PAGE * currentPage];
 			}
@@ -1170,9 +1183,6 @@ void PrintLabelQuaHan(MYPOINT location, int row)
 // sort qua han string
 void SortQuaHanString(int*& soNgayQH, string*& quaHanString, int q, int r)
 {
-	int temp;
-	string tempStr;
-
 	int i = q;
 	int j = r;
 	//Lấy phần tử giữa của dãy cần sắp thứ tự làm chốt
@@ -1254,6 +1264,7 @@ void ShowListQuaHan(LIST_DAUSACH listDS, LIST_DOCGIA lstDG)
 	{
 		if (i >= (int)MAX_ROW_PER_PAGE * currentPage && i < (currentPage + 1) * (int)MAX_ROW_PER_PAGE)
 		{
+			Sleep(3);
 			GoToXY(location.x, location.y + i + 3);
 			cout << quaHanString[i];
 		}
@@ -1273,6 +1284,7 @@ void ShowListQuaHan(LIST_DAUSACH listDS, LIST_DOCGIA lstDG)
 			SetTextColor(TEXT_INPUT_COLOR);
 			for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
 			{
+				Sleep(3);
 				// in trang not cuoi cung
 				if (currentPage < totalPage - 1 || (currentPage == totalPage - 1 && size % MAX_ROW_PER_PAGE == 0))
 				{
@@ -1303,6 +1315,7 @@ void ShowListQuaHan(LIST_DAUSACH listDS, LIST_DOCGIA lstDG)
 			SetTextColor(TEXT_INPUT_COLOR);
 			for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
 			{
+				Sleep(3);
 				GoToXY(location.x, location.y + (int)i);
 				cout << quaHanString[i + MAX_ROW_PER_PAGE * currentPage];
 			}
