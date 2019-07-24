@@ -188,10 +188,14 @@ void StringToCharArray(string source, char dest[])
 }
 string Trim(string text)
 {
-	auto at = text.find_first_of(' ');
-	if (at > text.size())
-		return text;
-	text.erase(text.begin() + at, text.end());
+	while (text[0] == ' ')
+	{
+		text.erase(text.begin(), text.end() - text.size() + 1);
+	}
+	while (text[text.size() - 1] == ' ')
+	{
+		text.erase(text.begin() + text.size() - 1, text.end());
+	}
 	return text;
 }
 char* StringToCharArray(string source)

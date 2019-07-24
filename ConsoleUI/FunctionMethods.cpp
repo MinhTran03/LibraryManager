@@ -7,7 +7,6 @@ void SaveAll(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
 	GoToXY(0, 0);
 	cout << "Saving...";
 
-
 	// luu dau sach
 	WriteDauSach(listDS);
 	// luu sach
@@ -20,7 +19,7 @@ void SaveAll(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
 	// luu doc gia
 	WriteDocGia(listDG);
 	// luu ma doc gia arr
-	WriteMaDGToFile(MADOCGIA_FILE_PATH, listDG);
+	WriteMaDGToFile(GetPath() + MADOCGIA_FILE_PATH, listDG);
 	// luu muon tra
 	DuyetLuuFile(listDG);
 
@@ -859,7 +858,7 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 		if (isEnter)
 		{
 			// chua kiem tra searchKey
-			if (!IsNumber(searchKey))
+			if (!IsNumber(searchKey) || searchKey == "")
 			{
 				MakeFlickWarning({ point.x + 21 - (((int)searchKey.size() + 25) / 2), point.y - 2 }, "MA DOC GIA KHONG HOP LE");
 				continue;
