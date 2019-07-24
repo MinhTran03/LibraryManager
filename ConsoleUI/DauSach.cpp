@@ -14,7 +14,7 @@ DAUSACH ParseVectorString(string* data, int mode = 0)
 	dauSach.namXuatBan = stoi(data[4]);
 	dauSach.tenTheLoai = data[5];
 	FormatWord(dauSach.tenTheLoai);
-	if(mode == 1)
+	if (mode == 1)
 		dauSach.soLuotMuon = stoi(data[6]);
 	return dauSach;
 }
@@ -260,18 +260,22 @@ string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, string theLoai)
 	int totalPage = 0;
 	totalPage = totalLine / MAX_ROW_PER_PAGE;
 	if (totalLine % MAX_ROW_PER_PAGE != 0)totalPage++;
-	// print label
-	PrintLabelDauSach(location, MAX_ROW_PER_PAGE);
+	
 	location.y += 3;
 	backUpLocation = location;
 	// print data
-	for (int i = 0; i < totalLine; i++)
+	ShowPageNumber(currentPage, totalPage, location.x, location.y + MAX_ROW_PER_PAGE + 1);
+	for (int i = 0; i < MAX_ROW_PER_PAGE; i++)
 	{
 		//Sleep(10);
-		ShowPageNumber(currentPage, totalPage, location.x, location.y + MAX_ROW_PER_PAGE + 1);
-		if (i >= (int)MAX_ROW_PER_PAGE * currentPage && i < (currentPage + 1) * (int)MAX_ROW_PER_PAGE)
+		if (i < totalLine && i >= (int)MAX_ROW_PER_PAGE * currentPage && i < (currentPage + 1) * (int)MAX_ROW_PER_PAGE)
 		{
 			listISBN[i].Print({ location.x, location.y + (int)(i % MAX_ROW_PER_PAGE) }, BG_COLOR, TEXT_INPUT_COLOR);
+		}
+		else
+		{
+			GoToXY(location.x, location.y + (int)(i % MAX_ROW_PER_PAGE));
+			cout << emptyTemplate;
 		}
 	}
 
@@ -287,13 +291,13 @@ string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, string theLoai)
 			inputKey = _getch();
 			if (inputKey == Key::RIGHT)
 			{
-				ClearArea(location.x, backUpLocation.y - 3, DAUSACH_TOTAL_WIDTH, totalLine + 4);
+				//ClearArea(location.x, backUpLocation.y - 3, DAUSACH_TOTAL_WIDTH, totalLine + 4);
 				delete[] listISBN;
 				return "RIGHT";
 			}
 			else if (inputKey == Key::LEFT)
 			{
-				ClearArea(location.x, backUpLocation.y - 3, DAUSACH_TOTAL_WIDTH, totalLine + 4);
+				//ClearArea(location.x, backUpLocation.y - 3, DAUSACH_TOTAL_WIDTH, totalLine + 4);
 				delete[] listISBN;
 				return "LEFT";
 			}
@@ -356,6 +360,8 @@ string LIST_DAUSACH::PrintAllTheLoai(MYPOINT location)
 	SetTextColor(Color::Bright_White);
 	GoToXY(location.x + DAUSACH_TOTAL_WIDTH + 1, location.y + MAX_ROW_PER_PAGE / 2);
 	cout << char(62);
+	// print label
+	PrintLabelDauSach(location, MAX_ROW_PER_PAGE);
 	while (true)
 	{
 		string outPut = PrintByTheLoai(location, this->dsTheLoai[currentPage]);
@@ -812,7 +818,9 @@ DAUSACH* LIST_DAUSACH::FindBooks(string tenSach, int& count)
 				PushBack(result, *this->nodes[i], count);
 			}
 		}
-		int wordCount = WordCount(StringToCharArray(tenSach));
+		auto tenSachAsChar = StringToCharArray(tenSach);
+		int wordCount = WordCount(tenSachAsChar);
+		delete[] tenSachAsChar;
 		for (int j = 0; j < wordCount; j++)
 		{
 			for (int i = 0; i < this->size; i++)

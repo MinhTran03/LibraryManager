@@ -145,6 +145,7 @@ struct LISTBORDERTEXT
 		auto temp = location;
 		for (int i = 0; i < this->totalLine; i++)
 		{
+			Sleep(5);
 			auto b = BORDER(location, { widths[i] + 2, 3 + row + 1 });
 			b.Draw1Line(borderColor);
 			auto b1 = BORDERTEXT({ location, {widths[i] + 2, 3} });

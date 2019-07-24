@@ -130,7 +130,7 @@ void DrawLine(int x, int y, int width, char c, WORD color)
 
 	SetConsoleCursorPosition(h, coord);
 }
-void ClearArea(int x, int y, int width, int height, WORD color)
+void ClearArea(int x, int y, int width, int height, WORD color, int s)
 {
 	SetBGColor(color);
 	DWORD n;
@@ -143,7 +143,8 @@ void ClearArea(int x, int y, int width, int height, WORD color)
 
 	for (short i = 0; i < height; i++)
 	{
-		//Sleep(8);
+		if (s != 0)
+			Sleep(s);
 		coord = { (short)x,(short)y + i };
 		FillConsoleOutputCharacter(h, ' ', size, coord, &n);
 		GetConsoleScreenBufferInfo(h, &csbi);

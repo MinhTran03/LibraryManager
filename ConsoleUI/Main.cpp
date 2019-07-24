@@ -1,4 +1,4 @@
-#include "FunctionMethods.h"
+﻿#include "FunctionMethods.h"
 
 int main()
 {
@@ -10,7 +10,7 @@ int main()
 	LoadMaDG(listDG);
 	LoadDocGia(listDG);
 	DuyetDocFile(listDG, GetPath());
-	
+
 	// load dau sach
 	auto listDS = LIST_DAUSACH();
 	LoadDauSach(listDS);
@@ -54,7 +54,7 @@ int main()
 				CapNhatDauSach(listDS, locationDS);
 			}
 			// CAP NHAT DANH MUC SACH
-			else if(func[1] == 2)
+			else if (func[1] == 2)
 			{
 				CapNhatDanhMucSach(listDS);
 			}

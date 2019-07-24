@@ -124,7 +124,6 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 	string selectedMaDocGia;
 	int page = 0;
 	string tem = PrintAllDGWithHL(listDG, location, page, Show_Only);
-	string MaDocGia = StringToCharArray(selectedMaDocGia);
 
 	//int maThe;
 	auto locationBtn = location;
@@ -176,7 +175,6 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 				}
 				selectedMaDocGia = PrintAllDGWithHL(listDG, location, page, Menu_Mode::Both);
 				//ClearLine(1);
-				MaDocGia = StringToCharArray(selectedMaDocGia);
 				if (selectedMaDocGia == "ESC")
 				{
 					// load lai data
@@ -208,7 +206,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 					// dong y xoa
 					if (confirm.result == Yes)
 					{
-						int MaDG = stoi(MaDocGia);
+						int MaDG = stoi(selectedMaDocGia);
 						auto temp = Search(listDG, MaDG);
 						// chua kiem tra co duoc xoa hay khong???
 						// ...
@@ -241,7 +239,6 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 				}
 				selectedMaDocGia = PrintAllDGWithHL(listDG, location, page, Menu_Mode::Both);
 				//ClearLine(1);
-				MaDocGia = StringToCharArray(selectedMaDocGia);
 				if (selectedMaDocGia == "ESC")
 				{
 					// load lai data
@@ -266,7 +263,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 				else
 				{
 					// cap nhat dsDocGia
-					int MaDG = stoi(MaDocGia);
+					int MaDG = stoi(selectedMaDocGia);
 					auto temp = Search(listDG, MaDG);
 					temp->data = InputFixDocGia({ {DAUSACH_TOTAL_WIDTH + 2, location.y}, {50, 18} }, temp->data);
 					tem = PrintAllDGWithHL(listDG, location, page, Show_Only);

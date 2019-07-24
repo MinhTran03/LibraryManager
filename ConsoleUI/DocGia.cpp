@@ -8,7 +8,9 @@ int newPos;
 DOCGIA ParseVectorStringFile(string* data)
 {
 	DOCGIA docGia;// = new DOCGIA;
-	docGia.maDocGia = atoi(StringToCharArray(data[0]));
+	auto maAsChar = StringToCharArray(data[0]);
+	docGia.maDocGia = atoi(maAsChar);
+	delete[] maAsChar;
 	docGia.ho = data[1];
 	FormatName(docGia.ho);
 	docGia.ten = data[2];
@@ -35,7 +37,9 @@ DOCGIA ParseVectorStringFile(string* data)
 DOCGIA ParseVectorString(string* data)
 {
 	DOCGIA docGia;// = new DOCGIA;
-	docGia.maDocGia = atoi(StringToCharArray(data[0]));
+	auto maAsChar = StringToCharArray(data[0]);
+	docGia.maDocGia = atoi(maAsChar);
+	delete[] maAsChar;
 	docGia.ho = data[1];
 	FormatName(docGia.ho);
 	docGia.ten = data[2];
@@ -210,7 +214,7 @@ ExeptionMuonSach DOCGIA::IsMuonSach()
 		{
 			return SachBiMat;
 		}
-		if (toDay.SubDate(p->data.ngayMuon) > 7)
+		if (toDay.SubDate(p->data.ngayMuon) > SONGAYMUON_TOIDA)
 		{
 			return GiuQua7Ngay;
 		}
@@ -229,7 +233,9 @@ string* DOCGIA::ToStringQuaHan(LIST_DAUSACH listSach, int& count)
 		if (p->data.IsQuaHan())
 		{
 			string* isbn = Split(p->data.maSach, "_");
-			string tenSach = listSach.GetDauSach(StringToCharArray(isbn[0]))->tenSach;
+			auto isbnAsChar = StringToCharArray(isbn[0]);
+			string tenSach = listSach.GetDauSach(isbnAsChar)->tenSach;
+			delete[] isbnAsChar;
 			string tempStr = "";
 			MergeWordWithNumber(tempStr, this->maDocGia, 4);
 			int temp;

@@ -151,7 +151,7 @@ int MUONTRA::GetSoNgayQuaHan()
 {
 	auto today = DATETIME();
 	today.SetDateTimeNow();
-	return today.SubDate(this->ngayMuon) - 7;
+	return today.SubDate(this->ngayMuon) - SONGAYMUON_TOIDA;
 }
 
 MUONTRA ParseVectorStringFile(string* data)
@@ -478,7 +478,9 @@ string* LIST_MUONTRA::GetAllNodeStringMuonSach(LIST_DAUSACH listDS, int& count)
 		if (p->data.trangThai != SachDaTra)
 		{
 			auto isbn = Split(p->data.maSach, "_");
-			auto dauSach = listDS.GetDauSach(StringToCharArray(isbn[0]));
+			auto isbnAsChar = StringToCharArray(isbn[0]);
+			auto dauSach = listDS.GetDauSach(isbnAsChar);
+			delete[] isbnAsChar;
 			PushBack(result, p->data.ToStringMuonSach(*dauSach), count);
 			//result.push_back(p->data.ToStringMuonSach(*dauSach));
 		}
@@ -495,7 +497,8 @@ string* LIST_MUONTRA::GetAllNodeString(LIST_DAUSACH listDS, int& count)
 		if (p->data.trangThai != SachDaTra)
 		{
 			auto isbn = Split(p->data.maSach, "_");
-			auto dauSach = listDS.GetDauSach(StringToCharArray(isbn[0]));
+			auto isbnAsChar = StringToCharArray(isbn[0]);
+			auto dauSach = listDS.GetDauSach(isbnAsChar);
 			PushBack(result, p->data.ToString(*dauSach), count);
 			//result.push_back(p->data.ToString(*dauSach));
 		}

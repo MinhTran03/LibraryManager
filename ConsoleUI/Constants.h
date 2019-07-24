@@ -36,7 +36,6 @@ const unsigned int TENTHELOAI_MAXSIZE = 20;
 const unsigned int SOTRANG_MAXKYTU = 6; // 6 SO
 const unsigned int SODAUSACH_MAX = 50;
 
-
 const unsigned int ISBN_WIDTH = ISBN_MAXSIZE;
 const unsigned int TENSACH_WIDTH = 36;
 const unsigned int TENTACGIA_WIDTH = 21;
@@ -62,8 +61,7 @@ const unsigned int DMS_TOTAL_WIDTH = MASACH_WIDTH + VITRI_WIDTH + TRANGTHAISACH_
 #pragma region Doc Gia
 #define MADOCGIA_FILE_PATH "\\MaDocGiaArray.txt"
 
-
-const unsigned int MAX_DOCGIA = 30;
+const unsigned int MAX_DOCGIA = 1000;
 
 const unsigned int MADOCGIA_WIDTH = 10;
 const unsigned int HODOCGIA_WIDTH = 20;
@@ -76,6 +74,9 @@ const unsigned int DOCGIA_TOTAL_WIDTH = MADOCGIA_WIDTH + HODOCGIA_WIDTH + TENDOC
 
 #pragma region -----------------------------------------------------Muon tra
 #define MUONTRA_FILE_PATH "\\MuonTra\\"
+
+const unsigned int SONGAYMUON_TOIDA = 7;
+
 const unsigned int NGAY_WIDTH = 14;
 const unsigned int TRANGTHAI_MUONTRA_WIDTH = 20;
 const unsigned int SONGAYMUON_WIDTH = 16;
