@@ -168,7 +168,7 @@ void MergeWordWithNumber(string& word, unsigned int number, unsigned int maxLeng
 }
 string* Split(string text, string delimiter)
 {
-	string* result;
+	string* result = NULL;
 	size_t pos = 0;
 	string token;
 	text += delimiter;

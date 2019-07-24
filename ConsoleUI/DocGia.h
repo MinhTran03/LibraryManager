@@ -44,6 +44,8 @@ struct DOCGIA
 	// 2> the doc gia dang hoat dong
 	// 3> muon toi da 3 sach
 	ExeptionMuonSach IsMuonSach();
+	// ...
+	string* ToStringQuaHan(LIST_DAUSACH listSach, int& count);
 };
 
 struct NODE_DOCGIA
@@ -110,3 +112,5 @@ string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Menu_Mo
 // luu list muon tra vo file
 void DuyetLuuFile(LIST_DOCGIA lstDG);
 void DuyetDocFile(LIST_DOCGIA& lstDG, string path);
+// Show ds qua han
+void ShowListQuaHan(LIST_DAUSACH listDS, LIST_DOCGIA lstDG);

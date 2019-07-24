@@ -38,7 +38,7 @@ int main()
 			}
 			else
 			{
-
+				InDanhSachQuaHan(listDS, listDG);
 			}
 		}
 		else if (func[0] == 1)

@@ -24,6 +24,10 @@ struct MUONTRA
 	string ToStringMuonSach(DAUSACH dauSach);
 	// tao line string de ghi ra file
 	string ToStringFile();
+	// ...
+	bool IsQuaHan();
+	// ...
+	int GetSoNgayQuaHan();
 };
 
 struct NODE_MUONTRA

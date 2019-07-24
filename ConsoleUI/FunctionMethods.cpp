@@ -311,6 +311,11 @@ void InDanhSachDG(LIST_DOCGIA listDG, MYPOINT location)
 		}
 	}
 }
+// Func 0 2
+void InDanhSachQuaHan(LIST_DAUSACH listDS, LIST_DOCGIA lstDG)
+{
+	ShowListQuaHan(listDS, lstDG);
+}
 // Func 1 0
 void HienThiDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 {

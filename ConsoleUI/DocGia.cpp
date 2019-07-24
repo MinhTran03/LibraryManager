@@ -1,4 +1,4 @@
-#include "DocGia.h"
+﻿#include "DocGia.h"
 
 int* maDocGiaArr = NULL;
 int newPos;
@@ -204,7 +204,7 @@ ExeptionMuonSach DOCGIA::IsMuonSach()
 	toDay.SetDateTimeNow();
 	//1 > khong muon sach qua 7 ngay
 	int soSachChuaTra = 0;
-	for (auto p = this->listMuonTra.pHead; p != NULL && p->data.trangThai != SachDaTra; p = p ->pNext)
+	for (auto p = this->listMuonTra.pHead; p != NULL && p->data.trangThai != SachDaTra; p = p->pNext)
 	{
 		if (p->data.trangThai == LamMatSach)
 		{
@@ -219,6 +219,63 @@ ExeptionMuonSach DOCGIA::IsMuonSach()
 	// 3> muon toi da 3 sach
 	if (soSachChuaTra >= 3) return MuonDuSach;
 	return Accept;
+}
+// ...
+string* DOCGIA::ToStringQuaHan(LIST_DAUSACH listSach, int& count)
+{
+	string* output = NULL;
+	for (auto p = this->listMuonTra.pHead; p != NULL; p = p->pNext)
+	{
+		if (p->data.IsQuaHan())
+		{
+			string* isbn = Split(p->data.maSach, "_");
+			string tenSach = listSach.GetDauSach(StringToCharArray(isbn[0]))->tenSach;
+			string tempStr = "";
+			MergeWordWithNumber(tempStr, this->maDocGia, 4);
+			int temp;
+			// ma doc gia
+			string result = "";
+			result += char(179);
+			result += tempStr;
+			temp = MADOCGIA_WIDTH - tempStr.size();
+			result += string(temp, ' ');
+			// ho
+			result += char(179);
+			result += this->ho;
+			temp = HODOCGIA_WIDTH - this->ho.size();
+			result += string(temp, ' ');
+			// ten
+			result += char(179);
+			result += this->ten;
+			temp = TENDOCGIA_WIDTH - this->ten.size();
+			result += string(temp, ' ');
+			// ma sach
+			result += char(179);
+			result += p->data.maSach;
+			temp = MASACH_WIDTH - p->data.maSach.size();
+			result += string(temp, ' ');
+			// ten sach
+			result += char(179);
+			result += tenSach;
+			temp = TENSACH_WIDTH - tenSach.size();
+			result += string(temp, ' ');
+			// NGAY MUON
+			result += char(179);
+			result += p->data.ngayMuon.ToStringDate();
+			temp = NGAY_WIDTH - 10;
+			result += string(temp, ' ');
+			// so ngay qua han
+			result += char(179);
+			result += string(7, ' ');
+			int nqh = p->data.GetSoNgayQuaHan();
+			result += to_string(nqh);
+			result += string(10 - NumberLength(nqh), ' ');
+			result += char(179);
+			PushBack(output, result, count);
+			delete[] isbn;
+		}
+	}
+	return output;
 }
 #pragma endregion
 
@@ -399,7 +456,7 @@ bool WriteMaDGToFile(string path, LIST_DOCGIA listDG)
 	{
 		int c = 0;
 		int size = MAX_DOCGIA - Size(listDG);
- 		string* data = NULL;
+		string* data = NULL;
 		for (auto i = 0; i < size; i++)
 		{
 			string temp = "";
@@ -555,7 +612,7 @@ bool DeleteNode(LIST_DOCGIA& lstDG, DOCGIA docGia)
 			{
 				// cach 1 tim phan tu trai nhat cay con phai 
 				//timphantuthemangtrainhatcayconphai(p, t->pright);
-				//cach 2 t�m phan tu tha mang phai nhat cay con trai
+				//cach 2 tìm phan tu tha mang phai nhat cay con trai
 				TimpPhanTuTheMangPhaiNhatCayConTrai(p, lstDG->pLeft);
 			}
 			delete p;
@@ -988,7 +1045,7 @@ string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Menu_Mo
 			}
 			if (inputKey == Key::ENTER)
 			{
-				string deli = ""; 
+				string deli = "";
 				deli += char(179);
 				auto temp = Split(datas[currentPage][currentLine], deli);
 				temp[1] = Trim(temp[1]);
@@ -1095,5 +1152,162 @@ void DuyetDocFile(LIST_DOCGIA& lstDG, string path)
 		DuyetDocFile(lstDG->pRight, path);
 	}
 }
-
 #pragma endregion
+
+// print label qua han
+void PrintLabelQuaHan(MYPOINT location, int row)
+{
+	string labels[] = { "MA DOC GIA", "HO", "TEN", "MA SACH", "TEN SACH", "NGAY MUON", "SO NGAY QUA HAN" };
+	auto lstBorder = LISTBORDERTEXT(labels, 7);
+	lstBorder.Draw(location, { MADOCGIA_WIDTH, HODOCGIA_WIDTH, TENDOCGIA_WIDTH, MASACH_WIDTH, TENSACH_WIDTH, NGAY_WIDTH, 17 },
+		row, BORDER_COLOR);
+}
+// sort qua han string
+void SortQuaHanString(int*& soNgayQH, string*& quaHanString, int q, int r)
+{
+	int temp;
+	string tempStr;
+
+	int i = q;
+	int j = r;
+	//Lấy phần tử giữa của dãy cần sắp thứ tự làm chốt
+	int x = soNgayQH[(q + r) / 2];
+	do
+	{  // Phân đoạn dãy con a[q],..., a[r]
+		while (soNgayQH[i] > x)
+			i++; //Tìm phần tử đầu tiên có trị nhỏ hơn hay bằng x
+		while (soNgayQH[j] < x)
+			j--;   //Tìm phần tử đầu tiên có trị lớn hơn hay bằng x
+
+		if (i <= j)   // Hoan vi
+		{
+			Swap(soNgayQH[i], soNgayQH[j]);
+			Swap(quaHanString[i], quaHanString[j]);
+			i++;
+			j--;
+		}
+	} while (i <= j);
+
+	if (q < j) 	// phần thứ nhất có từ 2 phần tử trở lên
+		SortQuaHanString(soNgayQH, quaHanString, q, j);
+	if (i < r)   	// phần thứ ba có từ 2 phần tử trở lên
+		SortQuaHanString(soNgayQH, quaHanString, i, r);
+}
+// get tostring qua han
+void InorderGetStringQuaHan(LIST_DAUSACH listDS, LIST_DOCGIA lstDG, string*& result, int& count)
+{
+	if (lstDG != NULL)
+	{
+		InorderGetStringQuaHan(listDS, lstDG->pLeft, result, count);
+		int c = 0;
+		string* temp = lstDG->data.ToStringQuaHan(listDS, c);
+		for (int i = 0; i < c; i++)
+		{
+			PushBack(result, temp[i], count);
+		}
+		InorderGetStringQuaHan(listDS, lstDG->pRight, result, count);
+	}
+}
+// Show ds qua han
+void ShowListQuaHan(LIST_DAUSACH listDS, LIST_DOCGIA lstDG)
+{
+	MYPOINT location = { 20, 3 };
+	string* quaHanString = NULL;
+	int size = 0;
+	InorderGetStringQuaHan(listDS, lstDG, quaHanString, size);
+
+	string emptyTemplate = "";
+	emptyTemplate = emptyTemplate + char(179) + string(MADOCGIA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(HODOCGIA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(TENDOCGIA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(MASACH_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(TENSACH_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(NGAY_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(17, ' ');
+	emptyTemplate = emptyTemplate + char(179);
+	int currentPage = 0;
+
+	int totalPage = size / MAX_ROW_PER_PAGE;
+	if (size % MAX_ROW_PER_PAGE != 0) totalPage++;
+
+	// sap xep
+	int* soNgayQH = new int[size];
+	string deli = ""; deli += char(179);
+	for (int i = 0; i < size; i++)
+	{
+		auto temp = Split(quaHanString[i], deli);
+		temp[7] = Trim(temp[7]);
+		soNgayQH[i] = stoi(temp[7]);
+	}
+	SortQuaHanString(soNgayQH, quaHanString, 0, size - 1);
+	delete[] soNgayQH;
+	
+	PrintLabelQuaHan(location, MAX_ROW_PER_PAGE);
+	ShowPageNumber(currentPage, totalPage, location.x, location.y + (int)MAX_ROW_PER_PAGE + 4);
+	// In ra mh
+	for (int i = 0; i < size; i++)
+	{
+		if (i >= (int)MAX_ROW_PER_PAGE * currentPage && i < (currentPage + 1) * (int)MAX_ROW_PER_PAGE)
+		{
+			GoToXY(location.x, location.y + i + 3);
+			cout << quaHanString[i];
+		}
+	}
+	
+	// bat phim
+	char inputKey = NULL;
+	do
+	{
+		inputKey = _getch();
+		if (inputKey == Key::_NULL || inputKey == -32) inputKey = _getch();
+		if (inputKey == Key::PAGE_DOWN && currentPage < totalPage - 1)
+		{
+			currentPage++;
+			ShowPageNumber(currentPage, totalPage, location.x, location.y + (int)MAX_ROW_PER_PAGE + 1);
+			SetBGColor(BG_COLOR);
+			SetTextColor(TEXT_INPUT_COLOR);
+			for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
+			{
+				// in trang not cuoi cung
+				if (currentPage < totalPage - 1 || (currentPage == totalPage - 1 && size % MAX_ROW_PER_PAGE == 0))
+				{
+					GoToXY(location.x, location.y + (int)i);
+					cout << quaHanString[i + MAX_ROW_PER_PAGE * currentPage];
+					continue;
+				}
+				// in trang cuoi cung
+				if (currentPage == totalPage - 1 && size % MAX_ROW_PER_PAGE != 0
+					&& i < size % MAX_ROW_PER_PAGE)
+				{
+					GoToXY(location.x, location.y + (int)i);
+					cout << quaHanString[i + MAX_ROW_PER_PAGE * currentPage];
+				}
+				else
+				{
+					GoToXY(location.x, location.y + i);
+					cout << emptyTemplate;
+				}
+			}
+		}
+		else if (inputKey == Key::PAGE_UP && currentPage > 0)
+		{
+			// in prev page
+			currentPage--;
+			ShowPageNumber(currentPage, totalPage, location.x, location.y + (int)MAX_ROW_PER_PAGE + 1);
+			SetBGColor(BG_COLOR);
+			SetTextColor(TEXT_INPUT_COLOR);
+			for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
+			{
+				GoToXY(location.x, location.y + (int)i);
+				cout << quaHanString[i + MAX_ROW_PER_PAGE * currentPage];
+			}
+		}
+		else if (inputKey == Key::ESC)
+		{
+			delete[] quaHanString;
+			ClearScreen(BG_COLOR);
+			return;
+		}
+	} while (!_kbhit());
+	return;
+}
