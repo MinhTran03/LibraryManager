@@ -251,7 +251,11 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 						int MaDG = stoi(selectedMaDocGia);
 						auto temp = Search(listDG, MaDG);
 						// DS khong duoc phep xoa
-						if (DeleteNode(listDG, temp->data) == false)
+						if (temp->data.listMuonTra.IsEmpty() == false)
+						{
+							MakeFlickWarning({ locationBtn.x - 5, 0 }, WARNING_CANT_DELETE_DS);
+						}
+						else if (DeleteNode(listDG, temp->data) == false)
 						{
 							MakeFlickWarning({ locationBtn.x - 5, 0 }, WARNING_CANT_DELETE_DS);
 						}
