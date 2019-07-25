@@ -152,10 +152,6 @@ void ClearArea(int x, int y, int width, int height, WORD color, int s)
 	}
 	SetConsoleCursorPosition(h, coord);
 }
-//void ClearArea(MYPOINT location, MYSIZE size)
-//{
-//
-//}
 void ClearLine(int lineNumber, int begin, int end, WORD color)
 {
 	SetBGColor(color);

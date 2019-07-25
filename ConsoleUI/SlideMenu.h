@@ -58,28 +58,7 @@ struct SLIDEMENUS
 			if (childLine == Key::ESC)
 			{
 				childMenus[rootLine].ClearInVertical();
-				//if (row == -1) //left
-				//{
-				//	if (rootMenu.currentLine > 0)
-				//	{
-				//		rootMenu.currentLine -= 1;
-				//	}
-				//	else
-				//	{
-				//		rootMenu.currentLine = rootMenu.totalLine - 1;
-				//	}
-				//}
-				//else if (row == -2) //right
-				//{
-				//	if (rootMenu.currentLine < rootMenu.totalLine - 1)
-				//	{
-				//		rootMenu.currentLine += 1;
-				//	}
-				//	else
-				//	{
-				//		rootMenu.currentLine = 0;
-				//	}
-				//}
+				childMenus[rootLine].currentLine = 0;
 			}
 			else
 			{

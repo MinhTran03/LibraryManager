@@ -1,14 +1,69 @@
-﻿#include "FunctionMethods.h"
+﻿#include <thread>
+#include "FunctionMethods.h"
 #include "Displays.h"
 #include "FormInfo.h"
 
-void SaveAll(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
+static bool isSaving = true;
+
+void ShowLogoText()
+{
+	HidePointer();
+	MaximizeWindow();
+	ClearScreen(BG_COLOR, SCREEN_HEIGHT);
+	SetTextColor(TEXT_INPUT_COLOR);
+
+	cout << string(2, char(219)) << char(187) << "     " << string(2, char(219)) << char(187) << string(6, char(219)) << char(187) << " " << string(6, char(219)) << char(187) << "  " << string(5, char(219)) << char(187) << " " << string(6, char(219)) << char(187) << " " << string(2, char(219)) << char(187) << "   " << string(2, char(219)) << char(187) << '\n';
+	cout << string(2, char(219)) << char(186) << "     " << string(2, char(219)) << char(186) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(187) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(187) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(187) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(187) << char(200) << string(2, char(219)) << char(187) << " " << string(2, char(219)) << char(201) << char(188) << '\n';
+	cout << string(2, char(219)) << char(186) << "     " << string(2, char(219)) << char(186) << string(6, char(219)) << char(201) << char(188) << string(6, char(219)) << char(201) << char(188) << string(7, char(219)) << char(186) << string(6, char(219)) << char(201) << char(188) << " " << char(200) << string(4, char(219)) << char(201) << char(188) << '\n';
+	cout << string(2, char(219)) << char(186) << "     " << string(2, char(219)) << char(186) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(187) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(187) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(186) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(187) << "  " << char(200) << string(2, char(219)) << char(201) << char(188) << '\n';
+	cout << string(7, char(219)) << char(187) << string(2, char(219)) << char(186) << string(6, char(219)) << char(201) << char(188) << string(2, char(219)) << char(186) << "  " << string(2, char(219)) << char(186) << string(2, char(219)) << char(186) << "  " << string(2, char(219)) << char(186) << string(2, char(219)) << char(186) << "  " << string(2, char(219)) << char(186) << "   " << string(2, char(219)) << char(186) << '\n';
+	cout << char(200) << string(6, char(205)) << char(188) << char(200) << char(205) << char(188) << char(200) << string(5, char(205)) << char(188) << " " << char(200) << char(205) << char(188) << "  " << char(200) << char(205) << char(188) << char(200) << char(205) << char(188) << "  " << char(200) << char(205) << char(188) << char(200) << char(205) << char(188) << "  " << char(200) << char(205) << char(188) << "   " << char(200) << char(205) << char(188) << '\n';
+	cout << '\n';
+	cout << string(3, char(219)) << char(187) << "   " << string(3, char(219)) << char(187) << " " << string(5, char(219)) << char(187) << " " << string(3, char(219)) << char(187) << "   " << string(2, char(219)) << char(187) << " " << string(5, char(219)) << char(187) << "  " << string(6, char(219)) << char(187) << " " << string(7, char(219)) << char(187) << string(3, char(219)) << char(187) << "   " << string(3, char(219)) << char(187) << string(7, char(219)) << char(187) << string(3, char(219)) << char(187) << "   " << string(2, char(219)) << char(187) << string(8, char(219)) << char(187) << '\n';
+	cout << string(4, char(219)) << char(187) << " " << string(4, char(219)) << char(186) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(187) << string(4, char(219)) << char(187) << "  " << string(2, char(219)) << char(186) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(187) << string(2, char(219)) << char(201) << string(4, char(205)) << char(188) << " " << string(2, char(219)) << char(201) << string(4, char(205)) << char(188) << string(4, char(219)) << char(187) << " " << string(4, char(219)) << char(186) << string(2, char(219)) << char(201) << string(4, char(205)) << char(188) << string(4, char(219)) << char(187) << "  " << string(2, char(219)) << char(186) << char(200) << string(2, char(205)) << string(2, char(219)) << char(201) << string(2, char(205)) << char(188) << '\n';
+	cout << string(2, char(219)) << char(201) << string(4, char(219)) << char(201) << string(2, char(219)) << char(186) << string(7, char(219)) << char(186) << string(2, char(219)) << char(201) << string(2, char(219)) << char(187) << " " << string(2, char(219)) << char(186) << string(7, char(219)) << char(186) << string(2, char(219)) << char(186) << "  " << string(3, char(219)) << char(187) << string(5, char(219)) << char(187) << "  " << string(2, char(219)) << char(201) << string(4, char(219)) << char(201) << string(2, char(219)) << char(186) << string(5, char(219)) << char(187) << "  " << string(2, char(219)) << char(201) << string(2, char(219)) << char(187) << " " << string(2, char(219)) << char(186) << "   " << string(2, char(219)) << char(186) << '\n';
+	cout << string(2, char(219)) << char(186) << char(200) << string(2, char(219)) << char(201) << char(188) << string(2, char(219)) << char(186) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(186) << string(2, char(219)) << char(186) << char(200) << string(2, char(219)) << char(187) << string(2, char(219)) << char(186) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(186) << string(2, char(219)) << char(186) << "   " << string(2, char(219)) << char(186) << string(2, char(219)) << char(201) << string(2, char(205)) << char(188) << "  " << string(2, char(219)) << char(186) << char(200) << string(2, char(219)) << char(201) << char(188) << string(2, char(219)) << char(186) << string(2, char(219)) << char(201) << string(2, char(205)) << char(188) << "  " << string(2, char(219)) << char(186) << char(200) << string(2, char(219)) << char(187) << string(2, char(219)) << char(186) << "   " << string(2, char(219)) << char(186) << '\n';
+	cout << string(2, char(219)) << char(186) << " " << char(200) << char(205) << char(188) << " " << string(2, char(219)) << char(186) << string(2, char(219)) << char(186) << "  " << string(2, char(219)) << char(186) << string(2, char(219)) << char(186) << " " << char(200) << string(4, char(219)) << char(186) << string(2, char(219)) << char(186) << "  " << string(2, char(219)) << char(186) << char(200) << string(6, char(219)) << char(201) << char(188) << string(7, char(219)) << char(187) << string(2, char(219)) << char(186) << " " << char(200) << char(205) << char(188) << " " << string(2, char(219)) << char(186) << string(7, char(219)) << char(187) << string(2, char(219)) << char(186) << " " << char(200) << string(4, char(219)) << char(186) << "   " << string(2, char(219)) << char(186) << '\n';
+	cout << char(200) << char(205) << char(188) << "     " << char(200) << char(205) << char(188) << char(200) << char(205) << char(188) << "  " << char(200) << char(205) << char(188) << char(200) << char(205) << char(188) << "  " << char(200) << string(3, char(205)) << char(188) << char(200) << char(205) << char(188) << "  " << char(200) << char(205) << char(188) << " " << char(200) << string(5, char(205)) << char(188) << " " << char(200) << string(6, char(205)) << char(188) << char(200) << char(205) << char(188) << "     " << char(200) << char(205) << char(188) << char(200) << string(6, char(205)) << char(188) << char(200) << char(205) << char(188) << "  " << char(200) << string(3, char(205)) << char(188) << "   " << char(200) << char(205) << char(188) << '\n';
+}
+
+void ShowMainScreen()
+{
+	ShowLogoText();
+
+	cin.get();
+}
+
+void WaitingAnimation(void)
 {
 	GoToXY(0, 0);
-	cout << "Saving...";
+	SetTextColor(TEXT_INPUT_COLOR);
+	while (isSaving)
+	{
+		GoToXY(0, 0);
+		cout << "Saving   ";
+		Sleep(300);
+		GoToXY(0, 0);
+		cout << "Saving.  ";
+		Sleep(300);
+		GoToXY(0, 0);
+		cout << "Saving.. ";
+		Sleep(300);
+		GoToXY(0, 0);
+		cout << "Saving...";
+		Sleep(300);
+	}
+	GoToXY(0, 0);
+	cout << "Done       ";
+}
+
+void SaveAll(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
+{
+	thread saving(WaitingAnimation);
 
 	// luu dau sach
 	WriteDauSach(listDS);
+	Sleep(500);
 	// luu sach
 	for (int i = 0; i < listDS.size; i++)
 	{
@@ -16,21 +71,27 @@ void SaveAll(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
 			continue;
 		WriteSach(listDS.nodes[i]->dsSach, listDS.nodes[i]->isbn);
 	}
+	Sleep(500);
 	// luu doc gia
 	WriteDocGia(listDG);
+	Sleep(500);
 	// luu ma doc gia arr
 	WriteMaDGToFile(GetPath() + MADOCGIA_FILE_PATH, listDG);
+	Sleep(500);
 	// luu muon tra
 	DuyetLuuFile(listDG);
+	Sleep(500);
 
-	GoToXY(0, 0);
-	cout << "Done       ";
+	isSaving = false;
+	saving.join();
 }
 
-void FormClosing(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
+void FormClosing(LIST_DOCGIA listDG, LIST_DAUSACH listDS, bool isSaveFile)
 {
-	//SaveAll(listDG, listDS);
-	//Sleep(1000);
+	if (isSaveFile)
+	{
+		SaveAll(listDG, listDS);
+	}
 	// Huy
 	for (int i = 0; i < listDS.size; i++)
 	{

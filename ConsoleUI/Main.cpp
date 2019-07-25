@@ -2,6 +2,8 @@
 
 int main()
 {
+	//ShowMainScreen();
+
 	SetupConsole();
 	MYPOINT locationDS = { 2, 2 };
 
@@ -20,7 +22,7 @@ int main()
 		LoadSach(listDS.nodes[i]->dsSach, listDS.nodes[i]->isbn);
 	}
 	ClearLine(0);
-
+	bool isSave = false;
 	int t1 = -1;
 	int t2 = -1;
 	while (true)
@@ -79,13 +81,21 @@ int main()
 		}
 		else
 		{
+			// hoi luu file
+			auto confirmSaveFile = CONFIRMDIALOG({ 65, 10 });
+			confirmSaveFile.Show("LUU DU LIEU THAY DOI VO FILE?", DialogResult::Yes_No, Cyan, Green, Bright_White);
+			if (confirmSaveFile.result == Yes)
+			{
+				isSave = true;
+			}
+			confirmSaveFile.Clear();
 			break;
 		}
 		t1 = func[0];
 		t2 = func[1];
 	}
 
-	FormClosing(listDG, listDS);
+	FormClosing(listDG, listDS, isSave);
 
 	SetTextColor(TEXT_INPUT_COLOR);
 	SetBGColor(BG_COLOR);
