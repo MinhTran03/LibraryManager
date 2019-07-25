@@ -703,10 +703,21 @@ void TimSach(LIST_DAUSACH& listDS, MYPOINT location)
 // Func 2 0
 void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 {
+	ClearScreen(BG_COLOR);
 	MYPOINT locationDS = { 0,3 };
 	MYPOINT locationMuon = { locationDS.x + (int)DAUSACH_TOTAL_WIDTH, locationDS.y + 1 };
+
+	// Show footer
+	{
+		MYPOINT locTab = {70, SCREEN_HEIGHT - FOOTER_HEIGHT - 2};
+		FOOTER_CHILD footerTab = FOOTER_CHILD(locTab, "TAB", "CHUYEN QUA TAB SACH MUON THEM");
+		footerTab.Draw(Color::Blue, Color::Light_Blue);
+
+		FOOTER_CHILD footerEnter = FOOTER_CHILD({ locationMuon.x + 25, locationMuon.y + 12 }, "ENTER", "HUY MUON SACH");
+		footerEnter.Draw(Color::Red, Color::Light_Red);
+	}
+
 	LIST_MUONTRA tempMT = LIST_MUONTRA();
-	ClearScreen(BG_COLOR);
 	// add isbn da muon chua tra
 	string* isbnDaMuon = NULL;
 	int daMuon = 0;
