@@ -1117,7 +1117,7 @@ void HeapSort(TOPSACH* top10, int n)
 string PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
 {
 	DAUSACH* temp;
-	int totalLine = listDS.size;
+	int soDauSach = listDS.size;
 
 	// Interchange Sort
 	//for (int i = 0; i < totalLine - 1; i++)
@@ -1134,16 +1134,23 @@ string PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
 	//	}
 	//}
 
-	TOPSACH* top10 = new TOPSACH[totalLine];
+	TOPSACH* top10 = nullptr;
 
 	// nhap thong tin vao mang.
-	for (int i = 0; i < totalLine; i++)
+	int count = 0;
+	for (int i = 0; i < soDauSach; i++)
 	{
-		top10[i].soSachMuon = listDS.nodes[i]->soLuotMuon;
-		top10[i].info = listDS.nodes[i]->ToStringMuonTra();
+		if (listDS.nodes[i]->soLuotMuon != 0)
+		{
+			TOPSACH top = TOPSACH();
+			top.soSachMuon = listDS.nodes[i]->soLuotMuon;
+			top.info = listDS.nodes[i]->ToStringMuonTra();
+			PushBack(top10, top, count);
+		}
 	}
 
-	SortTop10(top10, 0, listDS.size - 1);
+	if(count != 0)
+		SortTop10(top10, 0, count - 1);
 	//HeapSort(top10, totalLine);
 
 	// Print Label
@@ -1153,7 +1160,7 @@ string PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
 		10, BORDER_COLOR);
 	location.y += 3;
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < count; i++)
 	{
 		top10[i].Print({ location.x, location.y }, BG_COLOR, TEXT_INPUT_COLOR);
 		location.y++;

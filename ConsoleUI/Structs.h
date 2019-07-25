@@ -434,15 +434,15 @@ struct CONFIRMMODEVERSION
 		SetTextColor(Color::Blue);
 		ShowPointer();
 		GoToXY(location.x, location.y);
-		cout << question << " (y = yes, n = no, c = cancel): ";
+		cout << question << " (y: yes, n: no, v: cancel): ";
 		//char key = NULL;
 		string key = "";
 		getline(cin, key);
 		key[0] = tolower(key[0]);
 		if (key == "y")
-			result = true;
+			result = 1;
 		else if (key == "n")
-			result = false;
+			result = 0;
 		else
 			result = -1;
 		HidePointer();
@@ -454,11 +454,11 @@ struct CONFIRMMODEVERSION
 		SetTextColor(Color::Blue);
 		ShowPointer();
 		GoToXY(location.x, location.y);
-		cout << question << "An ENTER de xac nhan: ";
+		cout << question << " An ENTER de xac nhan: ";
 		char key = NULL;
 		key = _getch();
 		if (key == Key::ENTER)
-			result = true;
+			result = 1;
 		HidePointer();
 		Clear();
 	}

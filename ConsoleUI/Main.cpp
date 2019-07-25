@@ -76,7 +76,7 @@ int main()
 			// TOP 10 DAU SACH
 			else if (func[1] == 1)
 			{
-				InDSDauSachMuonNhieuNhat(listDS, locationDS);
+				InDSDauSachMuonNhieuNhat(listDS, {26, 2});
 			}
 		}
 		else

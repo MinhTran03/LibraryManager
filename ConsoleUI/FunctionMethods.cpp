@@ -742,14 +742,14 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 				return;
 			}
 			// hoi truoc khi luu
-			auto confirm = CONFIRMMODEVERSION("LUU SACH DA CHON?", { 55, 1 });
-			confirm.Show3Option();
+			auto confirm = CONFIRMMODEVERSION("LUU SACH DA CHON?", { 65, 1 });
+			confirm.ShowEnterConfirm();
 			// cancel
 			if (confirm.result == -1)
 			{
 				continue;
 			}
-			else if (confirm.result == true)
+			else if (confirm.result == 1)
 			{
 				// luu thay doi
 				for (auto p = tempMT.pHead; p != NULL; p = p->pNext)
@@ -983,18 +983,18 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 								// xac nhan truoc khi thay doi
 								auto confirm = CONFIRMMODEVERSION("", { 72, 31 });
 								confirm.ShowEnterConfirm();
-								if (confirm.result == true)
+								if (confirm.result == 1)
 								{
 									string temp = GetMaDauSach(maSachSelect);
 									auto dauSach = StringToCharArray(temp);
-									DAUSACH* ListSach = listDS.GetDauSach(dauSach);
+									DAUSACH* listDauSach = listDS.GetDauSach(dauSach);
 									DATETIME time = DATETIME();
 									time.SetDateTimeNow();
 									MUONTRA muonTra = MUONTRA();
-									auto t = docGiaSearch->data.listMuonTra.Search(maSachSelect);
-									t->data.ngayTra = time;
-									t->data.trangThai = SachDaTra;
-									ListSach->dsSach.Search(maSachSelect)->data.trangThai = ChoMuonDuoc;
+									auto sachTra = docGiaSearch->data.listMuonTra.Search(maSachSelect);
+									sachTra->data.ngayTra = time;
+									sachTra->data.trangThai = SachDaTra;
+									listDauSach->dsSach.Search(maSachSelect)->data.trangThai = ChoMuonDuoc;
 								}
 							}
 						}
@@ -1014,7 +1014,7 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 								// xac nhan truoc khi thay doi
 								auto confirm = CONFIRMMODEVERSION("", { 72, 31 });
 								confirm.ShowEnterConfirm();
-								if (confirm.result == true)
+								if (confirm.result == 1)
 								{
 									DATETIME time = DATETIME();
 									time.SetDateTimeNow();
@@ -1043,7 +1043,6 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 // Func 2 1
 void InDSDauSachMuonNhieuNhat(LIST_DAUSACH& listDS, MYPOINT location)
 {
-	MYPOINT locationTab = { location.x + 20, location.y + 3};
 	string leaderBroad = PrintTopDauSach(listDS, location);
 
 	while (true)
@@ -1054,5 +1053,4 @@ void InDSDauSachMuonNhieuNhat(LIST_DAUSACH& listDS, MYPOINT location)
 			break;
 		}
 	}
-	//_getch();
 }
