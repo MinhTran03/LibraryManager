@@ -1114,12 +1114,10 @@ void HeapSort(TOPSACH* top10, int n)
 	}
 }
 
-
 string PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
 {
 	DAUSACH* temp;
 	int totalLine = listDS.size;
-
 
 	// Interchange Sort
 	//for (int i = 0; i < totalLine - 1; i++)
@@ -1154,11 +1152,7 @@ string PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
 	lstBorder.Draw(location, { ISBN_WIDTH, TENSACH_WIDTH, SOTRANG_WIDTH, TENTACGIA_WIDTH, NAMXUATBAN_WIDTH, TENTHELOAI_WIDTH, SOLUOTMUON_WIDTH },
 		10, BORDER_COLOR);
 	location.y += 3;
-	/*for (int i = 0; i < 10; i++)
-	{
-		listDS.nodes[i]->PrintFull({ location.x, location.y }, BG_COLOR, TEXT_INPUT_COLOR);
-		location.y++;
-	}*/
+
 	for (int i = 0; i < 10; i++)
 	{
 		top10[i].Print({ location.x, location.y }, BG_COLOR, TEXT_INPUT_COLOR);

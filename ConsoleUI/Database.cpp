@@ -8,7 +8,7 @@ string GetPath()
 	string str(ws.begin(), ws.end());
 	auto at = str.find_last_of('\\');
 	str.erase(str.begin() + at, str.end());
-
+	str += "\\Data";
 	return str;
 }
 

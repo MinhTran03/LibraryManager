@@ -971,7 +971,6 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 					// tra sach
 					else if (selected == 1)
 					{
-
 						while (true)
 						{
 							maSachSelect = docGiaSearch->data.listMuonTra.Show(listDS, { 20, 23 }, Both);

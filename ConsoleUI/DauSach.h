@@ -1,7 +1,7 @@
 #pragma once
 #include "Sach.h"
 
-struct  TOPSACH
+struct TOPSACH
 {
 	string info;
 	int soSachMuon;
