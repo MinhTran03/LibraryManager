@@ -69,11 +69,18 @@ bool WriteMuonTra(LIST_MUONTRA& listMT, string maDG)
 	path += ".txt";
 	return listMT.WriteToFile(path);
 }
-bool WriteLog(string* log)
+bool WriteLog(string* log, int totalLine)
 {
 	string path = GetPath();
 	path += "\\Log.txt";
+	for (int i = 0; i < totalLine; i++)
+	{
+		log[i] += '\n';
+		if (i == totalLine - 1)
+		{
+			log[i] += '\n';
+		}
+	}
 	auto fileHandler = FILEHANDLER(path);
-	int count = 0;
-	return fileHandler.WriteToFile(log, IosMode::WriteNext, count);
+	return fileHandler.WriteToFile(log, IosMode::WriteNext, totalLine);
 }

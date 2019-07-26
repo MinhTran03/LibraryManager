@@ -3,6 +3,19 @@
 #include "FormInfo.h"
 
 static bool isSaving = true;
+string* logData;
+static int countLog = 0;
+
+void AddLog(string message)
+{
+	string line = "";
+	auto now = DATETIME();
+	now.SetDateTimeNow();
+	line += now.ToStringTime() + "---";
+	line += now.ToStringDate() + "---";
+	line += message;
+	PushBack(logData, line, countLog);
+}
 
 void ShowLogoText()
 {
@@ -80,6 +93,9 @@ void SaveAll(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
 	// luu muon tra
 	DuyetLuuFile(listDG, GetPath());
 	Sleep(500);
+	// luu log
+	WriteLog(logData, countLog);
+	Sleep(500);
 
 	isSaving = false;
 	saving.join();
@@ -91,6 +107,7 @@ void FormClosing(LIST_DOCGIA listDG, LIST_DAUSACH listDS, bool isSaveFile)
 	{
 		SaveAll(listDG, listDS);
 	}
+	
 	// Huy
 	for (int i = 0; i < listDS.size; i++)
 	{
@@ -218,7 +235,6 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 			{
 				RemoveMaDG(listDG);
 				Insert(listDG, *newDocGia);
-				//tem = PrintAllDGWithHL(listDG, location, page, Show_Only);
 			}
 		}
 		// Xoa
@@ -403,6 +419,10 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 				if (listDS.Insert(*newDauSach, listDS.size))
 				{
 					selectedISBN = listDS.PrintAll(location, page);
+					string lineLog = "Them dau sach---";
+					lineLog += newDauSach->isbn;
+					lineLog += "---" + newDauSach->tenSach;
+					AddLog(lineLog);
 				}
 			}
 		}
@@ -468,6 +488,9 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 								GoToXY(location.x, listDS.size % MAX_ROW_PER_PAGE + location.y + 3);
 								cout << emptyTemplate;
 							}
+							string lineLog = "Xoa dau sach---";
+							lineLog += isbnAsArr;
+							AddLog(lineLog);
 						}
 					}
 				}
@@ -497,7 +520,6 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 							listDS.nodes[i]->Print(tempLoc, BG_COLOR, TEXT_INPUT_COLOR);
 							tempLoc.y++;
 						}
-
 					}
 					break;
 				}
@@ -505,7 +527,23 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 				{
 					auto fixDauSach = listDS.GetDauSach(isbnAsArr);
 
+					string lineLog = "Sua dau sach---[";
+					lineLog += fixDauSach->isbn;
+					lineLog += ", " + fixDauSach->tenSach + ", ";
+					lineLog += to_string(fixDauSach->soTrang) + ", ";
+					lineLog += to_string(fixDauSach->namXuatBan) + ", ";
+					lineLog += fixDauSach->tenTacGia + ", ";
+					lineLog += fixDauSach->tenTheLoai + "]==>[";
+
 					*fixDauSach = InputFixDauSach(listDS, { {DAUSACH_TOTAL_WIDTH + 2, location.y}, {50, 18} }, *fixDauSach);
+
+					lineLog += fixDauSach->isbn;
+					lineLog += ", " + fixDauSach->tenSach + ", ";
+					lineLog += to_string(fixDauSach->soTrang) + ", ";
+					lineLog += to_string(fixDauSach->namXuatBan) + ", ";
+					lineLog += fixDauSach->tenTacGia + ", ";
+					lineLog += fixDauSach->tenTheLoai + "]";
+					AddLog(lineLog);
 
 					// cap nhat dsDauSach
 					listDS.INotifyDSTheLoai();
