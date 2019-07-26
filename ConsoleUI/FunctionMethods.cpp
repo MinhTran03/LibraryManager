@@ -1,5 +1,4 @@
-﻿#include <thread>
-#include "FunctionMethods.h"
+﻿#include "FunctionMethods.h"
 #include "Displays.h"
 #include "FormInfo.h"
 
@@ -34,7 +33,7 @@ void ShowMainScreen()
 	cin.get();
 }
 
-void WaitingAnimation(void)
+void SavingAnimation(void)
 {
 	GoToXY(0, 0);
 	SetTextColor(TEXT_INPUT_COLOR);
@@ -59,7 +58,7 @@ void WaitingAnimation(void)
 
 void SaveAll(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
 {
-	thread saving(WaitingAnimation);
+	thread saving(SavingAnimation);
 
 	// luu dau sach
 	WriteDauSach(listDS);

@@ -1,20 +1,57 @@
 ﻿#include "FunctionMethods.h"
 
+static bool isLoading = true;
+
+void LoadingAnimation(void)
+{
+	GoToXY(0, 1);
+	SetTextColor(TEXT_INPUT_COLOR);
+	while (isLoading)
+	{
+		GoToXY(0, 1);
+		cout << "Loading   ";
+		Sleep(200);
+		GoToXY(0, 1);
+		cout << "Loading.  ";
+		Sleep(200);
+		GoToXY(0, 1);
+		cout << "Loading.. ";
+		Sleep(200);
+		GoToXY(0, 1);
+		cout << "Loading...";
+		Sleep(200);
+	}
+	GoToXY(0, 1);
+	cout << "Done           ";
+}
+
 void LoadDataAll(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS)
 {
+	HidePointer();
+	thread loading(LoadingAnimation);
+
 	// Load Doc gia
 	LoadMaDG(listDG);
+	Sleep(100);
 	LoadDocGia(listDG);
+	Sleep(100);
 	DuyetDocFile(listDG, GetPath());
+	Sleep(100);
 
 	// load dau sach
 	LoadDauSach(listDS);
+	Sleep(100);
 	// load sach
 	for (int i = 0; i < listDS.size; i++)
 	{
 		LoadSach(listDS.nodes[i]->dsSach, listDS.nodes[i]->isbn);
+		Sleep(100);
 	}
+
+	isLoading = false;
+	loading.join();
 	ClearLine(0);
+	ClearLine(1);
 }
 
 bool Working(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS)
