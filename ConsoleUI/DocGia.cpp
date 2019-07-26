@@ -508,7 +508,6 @@ void FreeMemory(NODE_DOCGIA* root)
 	FreeMemory(root->pRight);
 	delete root;
 	root = NULL;
-	delete[] maDocGiaArr;
 }
 // khoi toa cay
 void Init(LIST_DOCGIA& lstDG)

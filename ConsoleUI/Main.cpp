@@ -21,8 +21,6 @@ void LoadingAnimation(void)
 		cout << "Loading...";
 		Sleep(200);
 	}
-	GoToXY(0, 1);
-	cout << "Done           ";
 }
 
 void LoadDataAll(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS)
@@ -134,10 +132,10 @@ bool Working(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS)
 
 int main()
 {
+	//ShowMainScreen();
+
 	LIST_DOCGIA listDG = LIST_DOCGIA();
 	LIST_DAUSACH listDS = LIST_DAUSACH();
-
-	//ShowMainScreen();
 
 	SetupConsole();
 
