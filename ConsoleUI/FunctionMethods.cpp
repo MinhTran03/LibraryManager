@@ -569,11 +569,19 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 		}
 
 		auto isbnAsChar = StringToCharArray(isbn);
-		auto listSach = &listDS.GetDauSach(isbnAsChar)->dsSach;
+		auto dauSach = listDS.GetDauSach(isbnAsChar);
+		auto listSach = &dauSach->dsSach;
 
 		menu.location.y = locationBtn.y + listSach->Size() + 4;
 		while (true)
 		{
+			// Hien thi ten sach
+			SetTextColor(TEXT_INPUT_COLOR);
+			string t = "CAP NHAT DANH MUC SACH CHO DAU SACH: " + dauSach->tenSach;
+			int distance = ((int)DMS_TOTAL_WIDTH - (int)t.size()) / 2;
+			GoToXY(locationDS.x + distance + 2, locationBtn.y - 1);
+			cout << t;
+
 			// List danh muc sach
 			string maSach = listSach->PrintAll(locationListSach, Show_Only);
 
