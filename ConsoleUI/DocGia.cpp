@@ -1131,14 +1131,14 @@ string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Menu_Mo
 	return "Empty";
 }
 // luu list muontra vo file
-bool WriteMuonTraToFile(LIST_MUONTRA& listMT, string maDG)
+bool WriteMuonTraToFile(LIST_MUONTRA& listMT, string maDG, string defaultPath)
 {
-	string path = MUONTRA_FILE_PATH;
-	path += maDG;
-	path += ".txt";
-	return listMT.WriteToFile(path);
+	defaultPath += MUONTRA_FILE_PATH;
+	defaultPath += maDG;
+	defaultPath += ".txt";
+	return listMT.WriteToFile(defaultPath);
 }
-void DuyetLuuFile(LIST_DOCGIA lstDG)
+void DuyetLuuFile(LIST_DOCGIA lstDG, string defaultPath)
 {
 	if (lstDG != NULL)
 	{
@@ -1146,10 +1146,10 @@ void DuyetLuuFile(LIST_DOCGIA lstDG)
 		{
 			string maAsString = to_string(lstDG->data.maDocGia);
 			//MergeWordWithNumber(maAsString, lstDG->data.maDocGia, 4);
-			WriteMuonTraToFile(lstDG->data.listMuonTra, maAsString);
+			WriteMuonTraToFile(lstDG->data.listMuonTra, maAsString, defaultPath);
 		}
-		DuyetLuuFile(lstDG->pLeft);
-		DuyetLuuFile(lstDG->pRight);
+		DuyetLuuFile(lstDG->pLeft, defaultPath);
+		DuyetLuuFile(lstDG->pRight, defaultPath);
 	}
 }
 bool ReadMuonTraFromFile(LIST_MUONTRA& listMT, string maDG, string path)

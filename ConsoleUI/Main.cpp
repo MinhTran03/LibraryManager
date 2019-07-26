@@ -1,20 +1,13 @@
 ﻿#include "FunctionMethods.h"
 
-int main()
+void LoadDataAll(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS)
 {
-	//ShowMainScreen();
-
-	SetupConsole();
-	MYPOINT locationDS = { 2, 2 };
-
 	// Load Doc gia
-	LIST_DOCGIA listDG = LIST_DOCGIA();
 	LoadMaDG(listDG);
 	LoadDocGia(listDG);
 	DuyetDocFile(listDG, GetPath());
 
 	// load dau sach
-	auto listDS = LIST_DAUSACH();
 	LoadDauSach(listDS);
 	// load sach
 	for (int i = 0; i < listDS.size; i++)
@@ -22,6 +15,11 @@ int main()
 		LoadSach(listDS.nodes[i]->dsSach, listDS.nodes[i]->isbn);
 	}
 	ClearLine(0);
+}
+
+bool Working(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS)
+{
+	MYPOINT locationDS = { 2, 2 };
 	bool isSave = false;
 	int t1 = -1;
 	int t2 = -1;
@@ -76,7 +74,7 @@ int main()
 			// TOP 10 DAU SACH
 			else if (func[1] == 1)
 			{
-				InDSDauSachMuonNhieuNhat(listDS, {26, 2});
+				InDSDauSachMuonNhieuNhat(listDS, { 26, 2 });
 			}
 		}
 		else
@@ -94,6 +92,21 @@ int main()
 		t1 = func[0];
 		t2 = func[1];
 	}
+	return isSave;
+}
+
+int main()
+{
+	LIST_DOCGIA listDG = LIST_DOCGIA();
+	LIST_DAUSACH listDS = LIST_DAUSACH();
+
+	//ShowMainScreen();
+
+	SetupConsole();
+
+	LoadDataAll(listDG, listDS);
+
+	bool isSave = Working(listDG, listDS);
 
 	FormClosing(listDG, listDS, isSave);
 

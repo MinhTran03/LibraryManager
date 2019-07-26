@@ -110,7 +110,7 @@ void PrintStringDocGia(string data, MYPOINT location);
 // ...
 string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Menu_Mode mode, int line = 0);
 // luu list muon tra vo file
-void DuyetLuuFile(LIST_DOCGIA lstDG);
+void DuyetLuuFile(LIST_DOCGIA lstDG, string defaultPath);
 void DuyetDocFile(LIST_DOCGIA& lstDG, string path);
 // Show ds qua han
 void ShowListQuaHan(LIST_DAUSACH listDS, LIST_DOCGIA lstDG);

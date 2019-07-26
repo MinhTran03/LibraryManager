@@ -1,5 +1,5 @@
 000001-Tren duong bang-265-Tony Buoi Sang-2017-Ky nang song-0
-000002-Starter Toeic-320-Anne Taylor-2016-Sach hoc ngoai ngu-0
+000002-Starter toeic-320-Anne Taylor-2016-Sach hoc ngoai ngu-0
 000003-Dac nhan tam-352-Dale Carnegie-2019-Ky nang song-0
 000004-Cafe cung tony-576-Tony Buoi Sang-2017-Ky nang song-0
 000005-Bo gia-2150-Mario Puzzo-2012-Tieu thuyet-0
@@ -37,3 +37,4 @@
 000038-Mau ban-373-John Carreyrou-2019-Ky nang song-0
 000040-Toi tai gioi, ban cung the-251-Null-2014-Ky nang song-0
 000041-Cach nghi de thanh cong-411-Napoleon Hill-2008-Ky nang song-0
+000042-Ngu van lop 6-215-Null-2018-Sach giao khoa-0

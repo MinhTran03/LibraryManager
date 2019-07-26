@@ -79,7 +79,7 @@ void SaveAll(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
 	WriteMaDGToFile(GetPath() + MADOCGIA_FILE_PATH, listDG);
 	Sleep(500);
 	// luu muon tra
-	DuyetLuuFile(listDG);
+	DuyetLuuFile(listDG, GetPath());
 	Sleep(500);
 
 	isSaving = false;
