@@ -291,6 +291,16 @@ NODE_DOCGIA::NODE_DOCGIA(DOCGIA& data)
 }
 
 #pragma region -------------------------------------------LIST_DOCGIA
+// kiem tra xem doc gia co duoc phep xoa hay khong
+bool IsDelete(DOCGIA& docGia)
+{
+	for (auto p = docGia.listMuonTra.pHead; p != NULL; p = p->pNext)
+	{
+		if (p->data.trangThai == SachChuaTra)
+			return false;
+	}
+	return true;
+}
 // so node cua cay
 int Size(LIST_DOCGIA listDG)
 {
@@ -344,33 +354,26 @@ string* GetDGtoVector(DOCGIA docGia)
 	PushBack(docGiaInfo, to_string(docGia.maDocGia), c);
 	PushBack(docGiaInfo, docGia.ho, c);
 	PushBack(docGiaInfo, docGia.ten, c);
-	//docGiaInfo.push_back(to_string(docGia.maDocGia));
-	//docGiaInfo.push_back(docGia.ho);
-	//docGiaInfo.push_back(docGia.ten);
 
 	if (docGia.gioiTinh == Nam)
 	{
 		string temp = "Nam";
 		PushBack(docGiaInfo, temp, c);
-		//docGiaInfo.push_back("Nam");
 	}
 	else
 	{
 		string temp = "Nu";
 		PushBack(docGiaInfo, temp, c);
-		//docGiaInfo.push_back("Nu");
 	}
 	if (docGia.trangThai == DangHoatDong)
 	{
 		string temp = "Dang hoat dong";
 		PushBack(docGiaInfo, temp, c);
-		//docGiaInfo.push_back("Dang hoat dong");
 	}
 	else
 	{
 		string temp = "The bi khoa";
 		PushBack(docGiaInfo, temp, c);
-		//docGiaInfo.push_back("The bi khoa");
 	}
 
 	return docGiaInfo;

@@ -272,14 +272,16 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 					if (confirm.result == Yes)
 					{
 						int MaDG = stoi(selectedMaDocGia);
-						auto temp = Search(listDG, MaDG);
+						auto docGiaDelete = Search(listDG, MaDG);
 						// DS khong duoc phep xoa
-						if (DeleteNode(listDG, temp->data) == false)
+						if (IsDelete(docGiaDelete->data) == false)
 						{
-							MakeFlickWarning({ locationBtn.x - 5, 0 }, WARNING_CANT_DELETE_DS);
+							selectedMaDocGia = PrintAllDGWithHL(listDG, location, page, Menu_Mode::Show_Only);
+							MakeFlickWarning({ locationBtn.x - 5, 0 }, "DOC GIA DANG MUON SACH. KHONG DUOC PHEP XOA");
 						}
 						else
 						{
+							DeleteNode(listDG, docGiaDelete->data);
 							int temp = 0;
 							int size = Size(listDG);
 							if (size % MAX_ROW_PER_PAGE != 0) temp = 1;
@@ -465,11 +467,10 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 					// dong y xoa
 					if (confirm.result == Yes)
 					{
-						// chua kiem tra co duoc xoa hay khong???
-						// ...
-						// Dau sach khong duoc phep xoa
+						// dau sach khong duoc phep xoa
 						if (listDS.GetDauSach(isbnAsArr)->dsSach.CanDelete() == false)
 						{
+							selectedISBN = listDS.PrintAll(location, page, Menu_Mode::Show_Only);
 							MakeFlickWarning({ locationBtn.x - 5, 0 }, WARNING_CANT_DELETE_DS);
 						}
 						else

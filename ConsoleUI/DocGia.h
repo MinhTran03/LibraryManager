@@ -60,6 +60,8 @@ struct NODE_DOCGIA
 
 typedef NODE_DOCGIA* LIST_DOCGIA;
 
+// kiem tra xem doc gia co duoc phep xoa hay khong
+bool IsDelete(DOCGIA& docGia);
 // Ghi du lieu ma doc gia ra file text
 bool WriteMaDGToFile(string path, LIST_DOCGIA listDG);
 // Ghi du lieu doc gia ra file text
