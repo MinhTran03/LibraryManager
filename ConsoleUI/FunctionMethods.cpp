@@ -86,7 +86,7 @@ void SaveAll(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
 
 	// luu dau sach
 	WriteDauSach(listDS);
-	Sleep(500);
+	Sleep(400);
 	// luu sach
 	for (int i = 0; i < listDS.size; i++)
 	{
@@ -94,16 +94,16 @@ void SaveAll(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
 			continue;
 		WriteSach(listDS.nodes[i]->dsSach, listDS.nodes[i]->isbn);
 	}
-	Sleep(500);
+	Sleep(400);
 	// luu doc gia
 	WriteDocGia(listDG);
-	Sleep(500);
+	Sleep(400);
 	// luu ma doc gia arr
 	WriteMaDGToFile(GetPath() + MADOCGIA_FILE_PATH, listDG);
-	Sleep(500);
+	Sleep(400);
 	// luu muon tra
 	DuyetLuuFile(listDG, GetPath());
-	Sleep(500);
+	Sleep(400);
 
 	isSaving = false;
 	saving.join();
@@ -274,11 +274,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 						int MaDG = stoi(selectedMaDocGia);
 						auto temp = Search(listDG, MaDG);
 						// DS khong duoc phep xoa
-						if (temp->data.listMuonTra.IsEmpty() == false)
-						{
-							MakeFlickWarning({ locationBtn.x - 5, 0 }, WARNING_CANT_DELETE_DS);
-						}
-						else if (DeleteNode(listDG, temp->data) == false)
+						if (DeleteNode(listDG, temp->data) == false)
 						{
 							MakeFlickWarning({ locationBtn.x - 5, 0 }, WARNING_CANT_DELETE_DS);
 						}

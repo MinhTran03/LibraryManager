@@ -56,7 +56,9 @@ struct FILEHANDLER
 	{
 		if (IsValidFile(this->filePath) == Not_Exist)
 		{
-			throw runtime_error("Failed to open this file!");
+			string temp = this->filePath;
+			temp.erase(temp.begin(), temp.begin() + temp.find_last_of('\\') + 1);
+			throw runtime_error("Failed to open " + temp + "!!!");
 		}
 		else
 		{

@@ -132,7 +132,7 @@ bool Working(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS)
 
 int main()
 {
-	//ShowMainScreen();
+	ShowMainScreen();
 
 	LIST_DOCGIA listDG = LIST_DOCGIA();
 	LIST_DAUSACH listDS = LIST_DAUSACH();
