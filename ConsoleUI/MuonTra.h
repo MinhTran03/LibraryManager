@@ -13,8 +13,8 @@ enum TrangThaiMuonTra
 
 struct MUONTRA
 {
-	string maSach;
-	DATETIME ngayMuon;
+	string maSach; // key
+	DATETIME ngayMuon; // key
 	DATETIME ngayTra;
 	TrangThaiMuonTra trangThai;
 
@@ -43,6 +43,8 @@ struct LIST_MUONTRA
 	NODE_MUONTRA* pTail;
 
 	LIST_MUONTRA();
+	// kiem tra trung key [maSach, ngayMuon] co trung khong
+	bool IsLoopKey(string maSach);
 	// kiem tra rong
 	bool IsEmpty();
 	// hien form muon sach

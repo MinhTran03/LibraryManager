@@ -179,6 +179,19 @@ MUONTRA ParseVectorStringFile(string* data)
 	return mt;
 }
 
+// kiem tra trung key [maSach, ngayMuon] co trung khong
+bool LIST_MUONTRA::IsLoopKey(string maSach)
+{
+	DATETIME now = DATETIME();
+	now.SetDateTimeNow();
+	string nowAsString = now.ToStringDate();
+	for (auto p = this->pHead; p != NULL; p = p->pNext)
+	{
+		if (p->data.maSach == maSach && nowAsString == p->data.ngayMuon.ToStringDate())
+			return true;
+	}
+	return false;
+}
 // ...
 LIST_MUONTRA::LIST_MUONTRA()
 {
@@ -554,7 +567,7 @@ void LIST_MUONTRA::InsertAtTail(MUONTRA muonTra)
 // Tim muon tra theo ma sach
 NODE_MUONTRA* LIST_MUONTRA::Search(string maSach)
 {
-	for (auto node = this->pHead; node != NULL; node = node->pNext)
+	for (auto node = this->pTail; node != NULL; node = node->pPrev)
 	{
 		if (node->data.maSach == maSach)
 		{
@@ -696,7 +709,7 @@ bool LIST_MUONTRA::ReadFromFile(string path)
 	}
 	return true;
 }
-
+// dem so sach doc gia muon
 int LIST_MUONTRA::DuyetDSSachChuaTra()
 {
 	int count = 0;

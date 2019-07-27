@@ -30,20 +30,20 @@ void LoadDataAll(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS)
 
 	// Load Doc gia
 	LoadMaDG(listDG);
-	Sleep(100);
+	Sleep(70);
 	LoadDocGia(listDG);
-	Sleep(100);
+	Sleep(70);
 	DuyetDocFile(listDG, GetPath());
-	Sleep(100);
+	Sleep(70);
 
 	// load dau sach
 	LoadDauSach(listDS);
-	Sleep(100);
+	Sleep(70);
 	// load sach
 	for (int i = 0; i < listDS.size; i++)
 	{
 		LoadSach(listDS.nodes[i]->dsSach, listDS.nodes[i]->isbn);
-		Sleep(100);
+		Sleep(40);
 	}
 
 	isLoading = false;

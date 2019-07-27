@@ -19,7 +19,8 @@ enum ExeptionMuonSach
 	BiKhoaThe,
 	SachBiMat,
 	GiuQua7Ngay,
-	MuonDuSach
+	MuonDuSach,
+	KeyLoop
 };
 
 struct DOCGIA
@@ -43,6 +44,7 @@ struct DOCGIA
 	// 1> khong muon sach qua 7 ngay
 	// 2> the doc gia dang hoat dong
 	// 3> muon toi da 3 sach
+	// 4> ma sach vs ngay muon la Key => khong duoc trung
 	ExeptionMuonSach IsMuonSach();
 	// ...
 	string* ToStringQuaHan(LIST_DAUSACH listSach, int& count);

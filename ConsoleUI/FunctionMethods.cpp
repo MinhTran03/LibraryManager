@@ -870,7 +870,6 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 			// isbn chua duoc muon
 			if (viTri == MAGIC_NUMBER)
 			{
-
 				// Show ds Sach thuoc dau sach
 				auto dauSach = listDS.GetDauSach(StringToCharArray(selectDS));
 				// kiem tra dau sach con sach hay khong
@@ -879,26 +878,38 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 					// clear dau sach
 					ClearArea(locationDS.x, locationDS.y, DAUSACH_TOTAL_WIDTH, MAX_ROW_PER_PAGE + 5);
 
-					auto maSach = dauSach->dsSach.PrintAllChoMuonDuoc(locationDS, Both);
-					if (maSach == "ESC")
+					while (true)
 					{
-						// clear sach
-						ClearArea(locationDS.x, locationDS.y, DMS_TOTAL_WIDTH, MAX_ROW_PER_PAGE);
-						continue;
+						auto maSach = dauSach->dsSach.PrintAllChoMuonDuoc(locationDS, Both);
+						if (maSach == "ESC")
+						{
+							// clear sach
+							ClearArea(locationDS.x, locationDS.y, DMS_TOTAL_WIDTH, MAX_ROW_PER_PAGE);
+							break;
+						}
+						// kiem tra trung key [maSach, ngayMuon]
+						if (nodeDocGia.data.listMuonTra.IsLoopKey(maSach) == false)
+						{
+							// them sach vao list muon tra cua doc gia
+							DATETIME d = DATETIME();
+							d.SetDateTimeNow();
+							MUONTRA muonTra = MUONTRA();
+							muonTra.maSach = maSach;
+							muonTra.ngayMuon = d;
+							muonTra.trangThai = TrangThaiMuonTra::SachChuaTra;
+							tempMT.InsertAtTail(muonTra);
+							PushBack(isbnDaMuon, selectDS, tongMuon);
+
+							// clear sach
+							ClearArea(locationDS.x, locationDS.y, DMS_TOTAL_WIDTH, MAX_ROW_PER_PAGE);
+
+							break;
+						}
+						else
+						{
+							MakeFlickWarning({ locationDS.x, locationDS.y - 2 }, "MA SACH BI TRUNG. VUI LONG CHON SACH KHAC");
+						}
 					}
-
-					// them sach vao list muon tra cua doc gia
-					DATETIME d = DATETIME();
-					d.SetDateTimeNow();
-					MUONTRA muonTra = MUONTRA();
-					muonTra.maSach = maSach;
-					muonTra.ngayMuon = d;
-					muonTra.trangThai = TrangThaiMuonTra::SachChuaTra;
-					tempMT.InsertAtTail(muonTra);
-					PushBack(isbnDaMuon, selectDS, tongMuon);
-
-					// clear sach
-					ClearArea(locationDS.x, locationDS.y, DMS_TOTAL_WIDTH, MAX_ROW_PER_PAGE);
 				}
 				else
 				{
