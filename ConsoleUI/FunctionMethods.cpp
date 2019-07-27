@@ -411,7 +411,6 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 		// Them
 		else if (selected == 0)
 		{
-			//menu.ShowDisableModeInHorizontal();
 			auto newDauSach = new DAUSACH();
 			*newDauSach = InputDauSach(listDS, { {(int)DAUSACH_TOTAL_WIDTH + 2 + location.x, location.y}, {60, 18} });
 			// nguoi dung an CANCEL
@@ -569,19 +568,11 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 		}
 
 		auto isbnAsChar = StringToCharArray(isbn);
-		auto dauSach = listDS.GetDauSach(isbnAsChar);
-		auto listSach = &dauSach->dsSach;
+		auto listSach = &listDS.GetDauSach(isbnAsChar)->dsSach;
 
 		menu.location.y = locationBtn.y + listSach->Size() + 4;
 		while (true)
 		{
-			// Hien thi ten sach
-			SetTextColor(TEXT_INPUT_COLOR);
-			string t = "CAP NHAT DANH MUC SACH CHO DAU SACH: " + dauSach->tenSach;
-			int distance = ((int)DMS_TOTAL_WIDTH - (int)t.size()) / 2;
-			GoToXY(locationDS.x + distance + 2, locationBtn.y - 1);
-			cout << t;
-
 			// List danh muc sach
 			string maSach = listSach->PrintAll(locationListSach, Show_Only);
 
@@ -870,6 +861,7 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 			// isbn chua duoc muon
 			if (viTri == MAGIC_NUMBER)
 			{
+
 				// Show ds Sach thuoc dau sach
 				auto dauSach = listDS.GetDauSach(StringToCharArray(selectDS));
 				// kiem tra dau sach con sach hay khong
@@ -878,38 +870,26 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 					// clear dau sach
 					ClearArea(locationDS.x, locationDS.y, DAUSACH_TOTAL_WIDTH, MAX_ROW_PER_PAGE + 5);
 
-					while (true)
+					auto maSach = dauSach->dsSach.PrintAllChoMuonDuoc(locationDS, Both);
+					if (maSach == "ESC")
 					{
-						auto maSach = dauSach->dsSach.PrintAllChoMuonDuoc(locationDS, Both);
-						if (maSach == "ESC")
-						{
-							// clear sach
-							ClearArea(locationDS.x, locationDS.y, DMS_TOTAL_WIDTH, MAX_ROW_PER_PAGE);
-							break;
-						}
-						// kiem tra trung key [maSach, ngayMuon]
-						if (nodeDocGia.data.listMuonTra.IsLoopKey(maSach) == false)
-						{
-							// them sach vao list muon tra cua doc gia
-							DATETIME d = DATETIME();
-							d.SetDateTimeNow();
-							MUONTRA muonTra = MUONTRA();
-							muonTra.maSach = maSach;
-							muonTra.ngayMuon = d;
-							muonTra.trangThai = TrangThaiMuonTra::SachChuaTra;
-							tempMT.InsertAtTail(muonTra);
-							PushBack(isbnDaMuon, selectDS, tongMuon);
-
-							// clear sach
-							ClearArea(locationDS.x, locationDS.y, DMS_TOTAL_WIDTH, MAX_ROW_PER_PAGE);
-
-							break;
-						}
-						else
-						{
-							MakeFlickWarning({ locationDS.x, locationDS.y - 2 }, "MA SACH BI TRUNG. VUI LONG CHON SACH KHAC");
-						}
+						// clear sach
+						ClearArea(locationDS.x, locationDS.y, DMS_TOTAL_WIDTH, MAX_ROW_PER_PAGE);
+						continue;
 					}
+
+					// them sach vao list muon tra cua doc gia
+					DATETIME d = DATETIME();
+					d.SetDateTimeNow();
+					MUONTRA muonTra = MUONTRA();
+					muonTra.maSach = maSach;
+					muonTra.ngayMuon = d;
+					muonTra.trangThai = TrangThaiMuonTra::SachChuaTra;
+					tempMT.InsertAtTail(muonTra);
+					PushBack(isbnDaMuon, selectDS, tongMuon);
+
+					// clear sach
+					ClearArea(locationDS.x, locationDS.y, DMS_TOTAL_WIDTH, MAX_ROW_PER_PAGE);
 				}
 				else
 				{
