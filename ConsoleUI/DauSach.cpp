@@ -35,7 +35,7 @@ DAUSACH InputDauSach(LIST_DAUSACH listDS, RECTANGLE rect)
 	CONDITION conditions[] = { {Number_Only, ISBN_MAXSIZE, ISBN_MAXSIZE}, {All, 1, TENSACH_MAXSIZE},{Number_Only, 1, SOTRANG_MAXKYTU},
 													{Name, 1, TENTACGIA_MAXSIZE},{Year, 4, 4},{Word_Only, 1, TENTHELOAI_MAXSIZE} };
 	auto form = FORMINPUT(labels, conditions, rect, inputTitle, 6);
-	string guilds[] = { "DAY SO CO 5 CHU SO", "TAT CA KY TU", "SO TRANG TU [1, 999999]", "CHI NHAP CHU CAI",
+	string guilds[] = { "DAY SO CO 6 CHU SO", "TAT CA KY TU", "SO TRANG TU [1, 999999]", "CHI NHAP CHU CAI",
 													"PHAI NHO HON NAM HIEN TAI", "CHI NHAP CHU CAI" };
 	form.Guilds = guilds;
 	DAUSACH dauSach = DAUSACH();
@@ -80,7 +80,7 @@ DAUSACH InputFixDauSach(LIST_DAUSACH listDS, RECTANGLE rect, DAUSACH dauSach)
 													{Name, 1, TENTACGIA_MAXSIZE},{Year, 4, 4},{Word_Only, 1, TENTHELOAI_MAXSIZE} };
 	auto form = FORMINPUT(labels, conditions, rect, inputTitle, 6);
 	//DAUSACH dauSach = DAUSACH();
-	string guilds[] = { "DAY SO CO 5 CHU SO", "TAT CA KY TU", "SO TRANG TU [1, 999999]", "CHI NHAP CHU CAI",
+	string guilds[] = { "DAY SO CO 6 CHU SO", "TAT CA KY TU", "SO TRANG TU [1, 999999]", "CHI NHAP CHU CAI",
 													"PHAI NHO HON NAM HIEN TAI", "CHI NHAP CHU CAI" };
 	form.Guilds = guilds;
 	string datas[] = { string(dauSach.isbn), dauSach.tenSach, to_string(dauSach.soTrang),
