@@ -104,9 +104,9 @@ SACH SACH::Input(RECTANGLE rect, string maSach)
 {
 	string title = "NHAP THONG TIN SACH";
 	string labels[] = { "Ma sach", "Trang thai:", "Vi tri:" };
-	CONDITION conditions[] = { {All, 6, 6, Default}, {Enum, 1, 3, Default}, {Mix, VITRI_MAXSIZE, VITRI_MAXSIZE} };
+	CONDITION conditions[] = { {All, 6, 6, Default}, {Enum, 1, 2, Default}, {Mix, VITRI_MAXSIZE, VITRI_MAXSIZE} };
 	auto form = FORMINPUT(labels, conditions, rect, title, 3);
-	string guilds[] = { "MA SACH LA TU DONG", "0: CHO MUON DUOC\n1: DA MUON\n2: DA THANH LY", "BAO GOM CHU VA SO" };
+	string guilds[] = { "MA SACH LA TU DONG", "0: CHO MUON DUOC\n1: DA THANH LY", "BAO GOM CHU VA SO" };
 	form.Guilds = guilds;
 	string datas[3] = { maSach, "0", "" };
 	form.ParseData(datas);
@@ -125,13 +125,13 @@ SACH SACH::InputFix(RECTANGLE rect)
 {
 	string title = "CAP NHAT THONG TIN SACH";
 	string labels[] = { "Ma sach", "Trang thai:", "Vi tri:" };
-	CONDITION conditions[] = { {All, 6, 6, Default}, {Enum, 1, 3}, {Mix, VITRI_MAXSIZE, VITRI_MAXSIZE} };
+	CONDITION conditions[] = { {All, 6, 6, Default}, {Enum, 1, 2}, {Mix, VITRI_MAXSIZE, VITRI_MAXSIZE} };
 
 	auto form = FORMINPUT(labels, conditions, rect, title, 3);
 	string datas[3] = { this->maSach, to_string(this->trangThai), this->viTri };
 	form.ParseData(datas);
 	form.currentLine = 1;
-	string guilds[] = { "MA SACH LA TU DONG", "0: CHO MUON DUOC\n1: DA MUON\n2: DA THANH LY", "BAO GOM CHU VA SO" };
+	string guilds[] = { "MA SACH LA TU DONG", "0: CHO MUON DUOC\n1: DA THANH LY", "BAO GOM CHU VA SO" };
 	form.Guilds = guilds;
 	if (form.Show(2))
 	{

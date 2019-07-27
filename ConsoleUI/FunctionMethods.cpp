@@ -666,10 +666,10 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 					else
 					{
 						auto nodeFix = listSach->Search(maSach);
-						// khong duoc xoa
+						// khong duoc sua
 						if (nodeFix->data.CanDelete() == false)
 						{
-							MakeFlickWarning({ locationBtn.x, 0 }, WARNING_CANT_FIX_SACH);
+							MakeFlickWarning({ locationListSach.x + (int)DMS_TOTAL_WIDTH / 2 - 20, locationListSach.y - 2 }, WARNING_CANT_FIX_SACH);
 						}
 						else
 						{

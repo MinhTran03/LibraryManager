@@ -420,6 +420,19 @@ struct FORMINPUT
 						if (errorsLength.size() == 0)
 						{
 							ClearForm();
+							for (int i = 0; i < totalLine; i++)
+							{
+								if (conditions[i].type == Enum || conditions[i].type == Enum2)
+								{
+									if (mode == 2 || mode2 == 2)
+									{
+										if (OutputResults[i] == "1")
+										{
+											OutputResults[i] = "2";
+										}
+									}
+								}
+							}
 							return true;
 						}
 						// error
@@ -532,10 +545,6 @@ struct FORMINPUT
 							}
 							else if (num == 1)
 							{
-								cout << "Da muon";
-							}
-							else if (num == 2)
-							{
 								cout << "Da thanh ly";
 							}
 						}
@@ -593,10 +602,6 @@ struct FORMINPUT
 								cout << "Cho muon duoc";
 							}
 							else if (num == 1)
-							{
-								cout << "Da muon";
-							}
-							else if (num == 2)
 							{
 								cout << "Da thanh ly";
 							}
