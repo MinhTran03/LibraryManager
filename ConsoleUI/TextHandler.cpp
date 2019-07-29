@@ -182,6 +182,22 @@ string* Split(string text, string delimiter)
 	}
 	return result;
 }
+vector<string> Split1(string text, string delimiter)
+{
+	vector<string> result;
+	size_t pos = 0;
+	string token;
+	text += delimiter;
+	int count = 0;
+	while ((pos = text.find(delimiter)) != string::npos)
+	{
+		token = text.substr(0, pos);
+		//PushBack(result, token, count);
+		result.push_back(token);
+		text.erase(0, pos + delimiter.length());
+	}
+	return result;
+}
 string* SplitReal(string text, const char* separator)
 {
 	string* result = NULL;

@@ -838,16 +838,17 @@ DAUSACH* LIST_DAUSACH::FindBooks(string tenSach, int& count)
 				size_t found = toLowerTenSach.find(listKey[j]);
 				if (found != string::npos || toLowerTenSach == listKey[j])
 				{
-					int dem = 0;
+					bool isTrue = false;
 					for (int k = 0; k < count; k++)
 					{
 						string temp = this->nodes[i]->isbn;
 						if (result[k].isbn == temp)
 						{
-							dem++;
+							isTrue = true;
+							break;
 						}
 					}
-					if (dem == 0)
+					if (isTrue == false)
 					{
 						PushBack(result, *this->nodes[i], count);
 					}
@@ -858,6 +859,97 @@ DAUSACH* LIST_DAUSACH::FindBooks(string tenSach, int& count)
 	}
 	return result;
 }
+
+//size_t LevensteinDistance(string& source, string& target)
+//{
+//	if (source.size() > target.size())
+//	{
+//		return LevensteinDistance(target, source);
+//	}
+//
+//	size_t min_size = source.size(), max_size = target.size();
+//	size_t* lev_dist = new size_t[min_size + 1];
+//
+//	for (size_t i = 0; i <= min_size; ++i)
+//	{
+//		lev_dist[i] = i;
+//	}
+//
+//	for (size_t j = 1; j <= max_size; ++j)
+//	{
+//		size_t previous_diagonal = lev_dist[0], previous_diagonal_save;
+//		++lev_dist[0];
+//
+//		for (size_t i = 1; i <= min_size; ++i)
+//		{
+//			previous_diagonal_save = lev_dist[i];
+//			if (source[i - 1] == target[j - 1])
+//			{
+//				lev_dist[i] = previous_diagonal;
+//			}
+//			else
+//			{
+//				lev_dist[i] = min(min(lev_dist[i - 1], lev_dist[i]), previous_diagonal) + 1;
+//			}
+//			previous_diagonal = previous_diagonal_save;
+//		}
+//	}
+//	size_t result = lev_dist[min_size];
+//	delete[] lev_dist;
+//	return result;
+//}
+//
+//DAUSACH* LIST_DAUSACH::FindBooks(string searchKey, int& count)
+//{
+//	DAUSACH* result = NULL;
+//
+//	if (searchKey != "")
+//	{
+//		string toLowerName = ToLowerString(searchKey);
+//		vector<string> listKey = Split1(toLowerName, " ");
+//		int count = 0;
+//		for (int i = 0; i < this->size; i++)
+//		{
+//			string toLowerTenSach = ToLowerString(this->nodes[i]->tenSach);
+//			size_t found = toLowerTenSach.find(toLowerName);
+//			if (found != std::string::npos)
+//			{
+//				PushBack(result, *this->nodes[i], count);
+//				//result.push_back(*this->nodes[i]);
+//			}
+//		}
+//		for (int i = 0; i < this->size; i++)
+//		{
+//			string toLowerBookName = ToLowerString(this->nodes[i]->tenSach);
+//			vector<string> listWord = Split1(toLowerName, " ");
+//
+//			for (size_t j = 0; j < listKey.size(); j++)
+//			{
+//				for (size_t k = 0; k < listWord.size(); k++)
+//				{
+//					auto distance = LevensteinDistance(listKey[j], listWord[k]);
+//					bool isTrue = false;
+//					for (size_t l = 0; l < count; l++)
+//					{
+//						string temp = this->nodes[i]->isbn;
+//						if (result[k].isbn == temp)
+//						{
+//							isTrue = true;
+//							break;
+//						}
+//					}
+//					if (distance < 2 && isTrue == false)
+//					{
+//						PushBack(result, *this->nodes[i], count);
+//						//result.push_back(*this->nodes[i]);
+//					}
+//				}
+//			}
+//		}
+//	}
+//
+//	return result;
+//}
 // In tat ca Dau sach tim dc ra mh
 string LIST_DAUSACH::PrintAllSearch(MYPOINT location, string tenSach, Menu_Mode mode)
 {
@@ -1352,11 +1444,35 @@ string PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
 		10, BORDER_COLOR);
 	location.y += 3;
 
-	for (int i = 0; i < count; i++)
+	int index = 0;
+	int counterTop10 = 0;
+	int* tempArr;
+
+	do
+	{
+		PushBack(tempArr, top10[counterTop10].soSachMuon, index);
+		if (index > 0) 
+		{
+			if (top10[counterTop10].soSachMuon != top10[counterTop10 - 1].soSachMuon)
+			{
+				index++;
+			}
+		}
+		else
+		{
+			index++;
+		}
+		top10[counterTop10].Print({ location.x, location.y }, BG_COLOR, TEXT_INPUT_COLOR);
+		location.y++;
+		counterTop10++;
+	} while (index < 10);
+
+
+	/*for (int i = 0; i < count; i++)
 	{
 		top10[i].Print({ location.x, location.y }, BG_COLOR, TEXT_INPUT_COLOR);
 		location.y++;
-	}
+	}*/
 
 	char inputKey = NULL;
 	HidePointer();
@@ -1367,6 +1483,7 @@ string PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
 		if (inputKey == Key::ESC)
 		{
 			delete[] top10;
+			delete[] tempArr;
 			return "ESC";
 		}
 	} while (!_kbhit());
