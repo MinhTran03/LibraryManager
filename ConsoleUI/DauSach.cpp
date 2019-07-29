@@ -532,7 +532,6 @@ string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 	// bat phim
 	if (mode == Menu_Mode::Both)
 	{
-
 		currentLine = 0;
 
 		char inputKey = NULL;
@@ -565,7 +564,7 @@ string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 				}
 				else if (inputKey == Key::DOWN)
 				{
-					if (currentLine < (rowsOfPage[currentPage]) - 1)
+					if (rowsOfPage != NULL && currentLine < (rowsOfPage[currentPage]) - 1)
 					{
 						GoToXY(location.x, rows[currentPage][currentLine]);
 						HightLight(datas[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
@@ -585,7 +584,9 @@ string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 			if (inputKey == Key::ENTER)
 			{
 				page = currentPage;
-				string temp = listISBN[currentLine + MAX_ROW_PER_PAGE * currentPage].isbn;
+				string temp = "";
+				if (listISBN != NULL)
+					temp = listISBN[currentLine + MAX_ROW_PER_PAGE * currentPage].isbn;
 				delete[] listISBN;
 				return temp;
 			}
@@ -599,7 +600,7 @@ string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 				SetTextColor(TEXT_INPUT_COLOR);
 				for (int i = 0; i < (int)MAX_ROW_PER_PAGE; i++)
 				{
-					if (i < (rowsOfPage[currentPage]))
+					if (rowsOfPage != NULL && i < (rowsOfPage[currentPage]))
 					{
 						GoToXY(backUpLocation.x, backUpLocation.y + i);
 						cout << datas[currentPage][i];
@@ -610,7 +611,8 @@ string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 						cout << emptyTemplate;
 					}
 				}
-				listISBN[MAX_ROW_PER_PAGE * currentPage].Print(backUpLocation, hlBGColor, hlTextColor);
+				if (listISBN != NULL)
+					listISBN[MAX_ROW_PER_PAGE * currentPage].Print(backUpLocation, hlBGColor, hlTextColor);
 			}
 			else if (inputKey == Key::PAGE_UP && currentPage > 0)
 			{
@@ -1258,57 +1260,51 @@ void SortTop10(TOPSACH* top10, int q, int r)
 	if (i < r)   	// phần thứ ba có từ 2 phần tử trở lên
 		SortTop10(top10, i, r);
 }
-// Heap Sort
-void Heapify(TOPSACH* top10, int r, int n)
+int RemoveDuplicatesInSortedArray(TOPSACH* sortedArr, int sizeOfArr)
 {
-	int j = 2 * r + 1;	// vi tri nut ben trai
-	int x = top10[r].soSachMuon;
-	int cont = TRUE;
+	// Return, if array is empty
+	// or contains a single element
+	if (sizeOfArr == 0 || sizeOfArr == 1)
+		return sizeOfArr;
 
-	while (j <= n - 1 && cont)
+	TOPSACH* newArr = new TOPSACH[sizeOfArr];
+
+	// Start traversing elements
+	int newSize = 0;
+	for (int i = 0; i < sizeOfArr - 1; i++)
 	{
-		if (j < n - 1)
+		// If current element is not equal
+		// to next element then store that
+		// current element
+		if (sortedArr[i].soSachMuon != sortedArr[i + 1].soSachMuon)
 		{
-			if (top10[j].soSachMuon < top10[j + 1].soSachMuon)
-			{
-				j++;
-			}
-		}
-		if (top10[j].soSachMuon <= x)
-		{
-			cont = FALSE;
-		}
-		else
-		{
-			top10[r].soSachMuon = top10[j].soSachMuon;
-			r = j;
-			j = 2 * r + 1;
+			newArr[newSize++] = sortedArr[i];
 		}
 	}
-	top10[r].soSachMuon = x;
+	// Store the last element as whether
+	// it is unique or repeated, it hasn't
+	// stored previously
+	newArr[newSize++] = sortedArr[sizeOfArr - 1];
+
+	int result;
+	if (newSize > 9)
+		result = newArr[9].soSachMuon;
+	else
+		result = newArr[newSize - 1].soSachMuon;
+	delete[] newArr;
+	return result;
 }
-
-void HeapSort(TOPSACH* top10, int n)
-{
-	int i;
-	TOPSACH	temp;
-	//Tao Heap
-	for (i = n / 2 - 1; i >= 0; i--)
-	{
-		Heapify(top10, i, n);
-	}
-	for (i = n - 2; i >= 0; i--)
-	{
-		temp = top10[0];	// cho ve cuoi Heap
-		top10[0] = top10[i + 1];
-		top10[i + 1] = temp;
-		Heapify(top10, 0, i + 1);	//Dieu chinh laij Heap tai vi tri 0, vi tri 1 2 da la Heap
-	}
-}
-
 string PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
 {
-	DAUSACH* temp;
+	string emptyTemplate = "";
+	emptyTemplate = emptyTemplate + char(179) + string(ISBN_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(TENSACH_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(SOTRANG_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(TENTACGIA_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(NAMXUATBAN_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(TENTHELOAI_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179) + string(SOLUOTMUON_WIDTH, ' ');
+	emptyTemplate = emptyTemplate + char(179);
 	int soDauSach = listDS.size;
 
 	// Interchange Sort
@@ -1332,30 +1328,45 @@ string PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
 	int count = 0;
 	for (int i = 0; i < soDauSach; i++)
 	{
-		if (listDS.nodes[i]->soLuotMuon != 0)
-		{
-			TOPSACH top = TOPSACH();
-			top.soSachMuon = listDS.nodes[i]->soLuotMuon;
-			top.info = listDS.nodes[i]->ToStringMuonTra();
-			PushBack(top10, top, count);
-		}
+		TOPSACH top = TOPSACH();
+		top.soSachMuon = listDS.nodes[i]->soLuotMuon;
+		top.info = listDS.nodes[i]->ToStringMuonTra();
+		PushBack(top10, top, count);
 	}
 
 	if (count != 0)
 		SortTop10(top10, 0, count - 1);
-	//HeapSort(top10, totalLine);
+	int minOfTop10 = RemoveDuplicatesInSortedArray(top10, count);
+	int sizeOfTop10 = 0;
+	for (int i = 0; i < count; i++)
+	{
+		if (minOfTop10 <= top10[i].soSachMuon) sizeOfTop10++;
+	}
 
 	// Print Label
 	string labels[] = { "ISBN", "TEN SACH", "SO TRANG", "TEN TAC GIA", "NXB", "TEN THE LOAI", "SO LAN MUON" };
 	auto lstBorder = LISTBORDERTEXT(labels, 7);
 	lstBorder.Draw(location, { ISBN_WIDTH, TENSACH_WIDTH, SOTRANG_WIDTH, TENTACGIA_WIDTH, NAMXUATBAN_WIDTH, TENTHELOAI_WIDTH, SOLUOTMUON_WIDTH },
-		10, BORDER_COLOR);
+		MAX_ROW_PER_PAGE, BORDER_COLOR);
 	location.y += 3;
-
-	for (int i = 0; i < count; i++)
+	int totalLine = sizeOfTop10;
+	int currentPage = 0;
+	int totalPage = 0;
+	totalPage = totalLine / MAX_ROW_PER_PAGE;
+	if (totalLine % MAX_ROW_PER_PAGE != 0)totalPage++;
+	ShowPageNumber(currentPage, totalPage, location.x, location.y + MAX_ROW_PER_PAGE + 1);
+	for (int i = 0; i < MAX_ROW_PER_PAGE; i++)
 	{
-		top10[i].Print({ location.x, location.y }, BG_COLOR, TEXT_INPUT_COLOR);
-		location.y++;
+		//Sleep(10);
+		if (i < totalLine && i >= (int)MAX_ROW_PER_PAGE * currentPage && i < (currentPage + 1) * (int)MAX_ROW_PER_PAGE)
+		{
+			top10[i].Print({ location.x, location.y + (int)(i % MAX_ROW_PER_PAGE) }, BG_COLOR, TEXT_INPUT_COLOR);
+		}
+		else
+		{
+			GoToXY(location.x, location.y + (int)(i % MAX_ROW_PER_PAGE));
+			cout << emptyTemplate;
+		}
 	}
 
 	char inputKey = NULL;
@@ -1364,11 +1375,52 @@ string PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
 	{
 		inputKey = _getch();
 		if (inputKey == -32) inputKey = _getch();
+		if (inputKey == Key::PAGE_DOWN && currentPage < totalPage - 1)
+		{
+			// in next page
+			currentPage++;
+			ShowPageNumber(currentPage, totalPage, location.x, location.y + MAX_ROW_PER_PAGE + 1);
+			SetBGColor(BG_COLOR);
+			SetTextColor(TEXT_INPUT_COLOR);
+			for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
+			{
+				// in trang not cuoi cung
+				if (currentPage < totalPage - 1 || (currentPage == totalPage - 1 && totalLine % MAX_ROW_PER_PAGE == 0))
+				{
+					top10[i + MAX_ROW_PER_PAGE * currentPage].Print({ location.x, location.y + (int)i }, BG_COLOR, TEXT_INPUT_COLOR);
+					continue;
+				}
+				// in trang cuoi cung
+				if (currentPage == totalPage - 1 && totalLine % MAX_ROW_PER_PAGE != 0
+					&& i < totalLine % MAX_ROW_PER_PAGE)
+				{
+					top10[i + MAX_ROW_PER_PAGE * currentPage].Print({ location.x, location.y + (int)i }, BG_COLOR, TEXT_INPUT_COLOR);
+				}
+				else
+				{
+					GoToXY(location.x, location.y + i);
+					cout << emptyTemplate;
+				}
+			}
+		}
+		else if (inputKey == Key::PAGE_UP && currentPage > 0)
+		{
+			// in prev page
+			currentPage--;
+			ShowPageNumber(currentPage, totalPage, location.x, location.y + MAX_ROW_PER_PAGE + 1);
+			SetBGColor(BG_COLOR);
+			SetTextColor(TEXT_INPUT_COLOR);
+			for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
+			{
+				top10[i + MAX_ROW_PER_PAGE * currentPage].Print({ location.x, location.y + (int)i }, BG_COLOR, TEXT_INPUT_COLOR);
+			}
+		}
 		if (inputKey == Key::ESC)
 		{
 			delete[] top10;
 			return "ESC";
 		}
 	} while (!_kbhit());
+	return "";
 }
 #pragma endregion

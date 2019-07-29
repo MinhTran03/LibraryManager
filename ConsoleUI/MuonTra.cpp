@@ -715,7 +715,7 @@ int LIST_MUONTRA::DuyetDSSachChuaTra()
 	int count = 0;
 	for (auto p = this->pHead;  p != NULL; p = p->pNext)
 	{
-		p->data.trangThai == SachChuaTra;
+		p->data.trangThai = SachChuaTra;
 		count++;
 	}
 	return count;
