@@ -1445,20 +1445,21 @@ string PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
 	location.y += 3;
 
 	int index = 0;
+	int counterArr = 0;
 	int counterTop10 = 0;
 	int* tempArr;
 
 	do
 	{
-		PushBack(tempArr, top10[counterTop10].soSachMuon, index);
-		if (index > 0) 
+		PushBack(tempArr, top10[counterTop10].soSachMuon, counterArr);
+		if (counterArr > 0)
 		{
 			if (top10[counterTop10].soSachMuon != top10[counterTop10 - 1].soSachMuon)
 			{
 				index++;
 			}
 		}
-		else
+		else if (counterArr == 0)
 		{
 			index++;
 		}
