@@ -89,56 +89,66 @@ typedef NODE_DOCGIA* LIST_DOCGIA;
 
 #pragma region LIST_DOCGIA
 
-// kiem tra xem doc gia co duoc phep xoa hay khong
+/// <summary>
+/// Kiểm tra DOCGIA được phép xóa không
+/// </summary>
+/// <param name="docGia">DOCGIA cần kiểm tra</param>
+/// <returns>true nếu được xóa</returns>
 bool IsDelete(DOCGIA& docGia);
 
-// Ghi du lieu ma doc gia ra file text
-bool WriteMaDGToFile(string path, LIST_DOCGIA listDG);
-
-// Ghi du lieu doc gia ra file text
-bool WriteToFile(LIST_DOCGIA lstDG, string path);
-
-// Remove ma doc gia from array khi them moi doc gia
-void RemoveMaDG(LIST_DOCGIA listDG);
-
-// Doc mang MADOCGIA tu file
-bool ReadMaDGFromFile(string path);
-
-// so node cua cay
+/// <summary>
+/// Tính số DOCGIA có trong LIST_DOCGIA
+/// </summary>
+/// <param name="listDG">LIST_DOCGIA cần tính size</param>
+/// <returns>Số DOCGIA</returns>
 int Size(LIST_DOCGIA listDG);
 
-
-string* GetAllStringFileNodeLRN(LIST_DOCGIA listDG);
-
-// Doc tu file txt
-bool ReadFromFile(LIST_DOCGIA& listDG,string path);
-
-// sinh madocgia ngau nhien tu dong
-int GetRandomMaDG(LIST_DOCGIA listDG);
-
-// Chuyen vector string thanh doc gia
-DOCGIA ParseVectorStringDG(string* data);
-
-// ...
+/// <summary>
+/// Lấy info DOCGIA lưu vô list String
+/// </summary>
+/// <param name="docGia">DOCGIA cần lưu</param>
+/// <returns>List string</returns>
 string* GetDGToListString(DOCGIA docGia);
 
-// Giai phong vung nho
+/// <summary>
+/// <para>Sinh mã độc giả ngẫu nhiên</para>
+/// </summary>
+/// <param name="lstDG">LIST_DOCGIA để lấy Size</param>
+/// <returns>Mã độc giả</returns>
+int GetRandomMaDG(LIST_DOCGIA listDG);
+
+/// <summary>
+/// <para>Remove msDocGia vừa random khỏi maDocGiaArr khi thêm DOCGIA</para>
+/// </summary>
+/// <param name="lstDG">LIST_DOCGIA để lấy Size</param>
+/// <returns>void</returns>
+void RemoveMaDG(LIST_DOCGIA listDG);
+
+/// <summary>
+/// Hàm hủy toàn bộ DOCGIA khỏi RAM
+/// </summary>
 void FreeMemory(NODE_DOCGIA* root);
 
-// form nhap doc gia moi
-DOCGIA InputDocGia(int maThe, RECTANGLE rect);
-
-// khoi toa cay
+/// <summary>
+/// Khởi tạo Cây Nhị Phân DOCGIA
+/// </summary>
+/// <param name="lstDG">LIST_DOCGIA cần khởi tạo</param>
 void Init(LIST_DOCGIA& listDG);
 
-// them node
+/// <summary>
+/// Thêm DOCGIA vào LIST_DOCGIA
+/// </summary>
+/// <param name="lstDG">LIST_DOCGIA cần thêm Node</param>
+/// <param name="input">DOCGIA cần thêm</param>
 void Insert(LIST_DOCGIA& listDG, DOCGIA docGia);
 
-// tim doc gia dua vao maDocGia
+/// <summary>
+/// Tìm DOCGIA dựa vào maDocGia
+/// </summary>
+/// <param name="lstDG">LIST_DOCGIA cần thêm Node</param>
+/// <param name="maDocGia">mã DOCGIA cần tìm</param>
+/// <returns>NULL nếu không tìm thấy</returns>
 NODE_DOCGIA* Search(LIST_DOCGIA listDG, int maDocGia);
-
-// ...
-string* GetAllStringNode(LIST_DOCGIA listDG, int& count);
 
 // ...
 void TimPhanTuTheMangTraiNhatCayConPhai(LIST_DOCGIA& p, LIST_DOCGIA& q);
@@ -146,27 +156,143 @@ void TimPhanTuTheMangTraiNhatCayConPhai(LIST_DOCGIA& p, LIST_DOCGIA& q);
 // ...
 void TimpPhanTuTheMangPhaiNhatCayConTrai(LIST_DOCGIA& p, LIST_DOCGIA& q);
 
-// xoa 1 doc gia
+/// <summary>
+/// Xóa 1 DOCGIA khỏi cây LIST_DOCGIA
+/// </summary>
+/// <param name="lstDG">LIST_DOCGIA chứa DOCGIA cần xóa</param>
+/// <param name="docGia">DOCGIA cần xóa</param>
+/// <returns>false xóa thất bại</returns>
 bool DeleteNode(LIST_DOCGIA& listDG, DOCGIA docGia);
 
-// In ds doc gia: mode = 1 (Sort theo maDG)
-//                mode = 2 (Sort theo hoTen)
+/// <summary>
+/// <para>Chuyển LIST_DOCGIA thành list string để in ra màn hình</para>
+/// </summary>
+/// <param name="lstDG">LIST_DOCGIA cần convert</param>
+/// <param name="count">Số độc giả đếm được (ban đầu = 0)</param>
+/// <returns>List string sau khi convert</returns>
+string* GetAllStringNode(LIST_DOCGIA listDG, int& count);
+
+/// <summary>
+/// In LIST_DOCGIA ra màn hình
+/// </summary>
+/// <param name="listDG">LIST_DOCGIA cần in</param>
+/// <param name="location">Location</param>
+/// <param name="mode">
+///	<para>Show_Only: Chỉ hiện</para>
+///	<para>Both: Hiện và bắt phím</para>
+/// </param>
+/// <param name = "sortMode">
+///	<para>1: Sort theo mã độc giả</para>
+///	<para>0: Sort theo tên độc giả</para>
+/// </param>
+/// <returns>Phím được nhấn As String</returns>
 string PrintAllDocGia(LIST_DOCGIA lstDG, MYPOINT location, int mode = 1, Menu_Mode m = Both);
 
-// ...
+/// <summary>
+/// In string tại vị trí truyền vào
+/// </summary>
+/// <param name="data">string cần in</param>
+/// <param name="location">Location</param>
+/// <returns>void</returns>
 void PrintStringDocGia(string data, MYPOINT location);
 
-// ...
+/// <summary>
+/// In LIST_DOCGIA ra màn hình
+/// </summary>
+/// <param name="listDG">LIST_DOCGIA cần in</param>
+/// <param name="location">Location</param>
+/// <param name="page">Lưu lại vị trí page đang đứng</param>
+/// <param name="line">Dòng cần highLight</param>
+/// <param name="mode">
+///	<para>Show_Only: Chỉ hiện</para>
+///	<para>Both: Hiện và bắt phím</para>
+/// </param>
+/// <returns>Phím được nhấn As String</returns>
 string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Menu_Mode mode, int line = 0);
 
-// luu list muon tra vo file
-void DuyetLuuFile(LIST_DOCGIA lstDG, string defaultPath);
-void DuyetDocFile(LIST_DOCGIA& lstDG, string path);
+/// <summary>
+/// In LIST_DOCGIA quá hạn ra màn hình
+/// </summary>
+/// <param name="listDS">LIST_DAUSACH để tính số ngày quá hạn</param>
+/// <param name="listDG">LIST_DOCGIA cần in</param>
+/// <returns>void</returns>
+void PrintListQuaHan(LIST_DAUSACH listDS, LIST_DOCGIA lstDG);
 
-// Show ds qua han
-void ShowListQuaHan(LIST_DAUSACH listDS, LIST_DOCGIA lstDG);
+#pragma region --------------------DOC GHI FILE
+
+/// <summary>
+/// <para>Chuyển LIST_DOCGIA thành list string để lưu vô file text</para>
+/// Duyệt LRN
+/// </summary>
+/// <param name="lstDG">LIST_DOCGIA cần convert</param>
+/// <returns>List string sau khi convert</returns>
+string* GetAllStringFileNodeLRN(LIST_DOCGIA listDG);
+
+/// <summary>
+/// Đọc LIST_DOCGIA từ file text
+/// </summary>
+/// <param name="path">Đường dẫn tới file</param>
+/// <param name="listDG">LIST_DOCGIA để lưu data</param>
+/// <returns>true nếu file tồn tại</returns>
+bool ReadFromFile(LIST_DOCGIA& listDG, string path);
+
+/// <summary>
+/// Đọc maDocGia từ file text
+/// </summary>
+/// <param name="path">Đường dẫn tới file</param>
+/// <returns>true nếu file tồn tại</returns>
+bool ReadMaDGFromFile(string path);
+
+/// <summary>
+/// Ghi LIST_DOCGIA ra file text
+/// </summary>
+/// <param name="lstDG">LIST_DOCGIA cần lưu</param>
+/// <param name="path">Đường dẫn tới file</param>
+/// <returns>true nếu ghi file thành công</returns>
+bool WriteToFile(LIST_DOCGIA lstDG, string path);
+
+/// <summary>
+/// Ghi maDocGia ra file text
+/// </summary>
+/// <param name="lstDG">LIST_DOCGIA cần lưu mã</param>
+/// <param name="path">Đường dẫn tới file</param>
+/// <returns>true nếu ghi file thành công</returns>
+bool WriteMaDGToFile(string path, LIST_DOCGIA listDG);
+
+/// <summary>
+/// Duyệt cây DOCGIA ghi LIST_MUONTRA của từng DOCGIA ra file text
+/// </summary>
+/// <param name="lstDG">LIST_DOCGIA chứa LIST_MUONTRA cần lưu</param>
+/// <param name="defaultPath">Đường dẫn mặc định file debug</param>
+/// <returns>void</returns>
+void DuyetLuuFileMuonTra(LIST_DOCGIA lstDG, string defaultPath);
+
+/// <summary>
+/// Duyệt cây DOCGIA đọc LIST_MUONTRA của từng DOCGIA trong file text
+/// </summary>
+/// <param name="lstDG">LIST_DOCGIA chứa LIST_MUONTRA cần đọc</param>
+/// <param name="defaultPath">Đường dẫn mặc định file debug</param>
+/// <returns>void</returns>
+void DuyetDocFileMuonTra(LIST_DOCGIA& lstDG, string path);
 
 #pragma endregion
+
+#pragma endregion
+
+/// <summary>
+/// Chuyển list string từ form thành obj DOCGIA
+/// </summary>
+/// <param name="data">List string người dùng nhập</param>
+/// <returns>DOCGIA</returns>
+DOCGIA ParseVectorStringDG(string* data);
+
+/// <summary>
+///  Hiện form nhập thông tin DOCGIA
+/// </summary>
+/// <param name="maThe">mã DOCGIA đã được random</param>
+/// <param name="rect">Khung nhập DOCGIA</param>
+/// <returns>DOCGIA</returns>
+DOCGIA InputDocGia(int maThe, RECTANGLE rect);
 
 /// <summary>
 ///  Hiện form sửa thông tin DOCGIA

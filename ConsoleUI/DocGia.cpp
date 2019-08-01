@@ -40,38 +40,6 @@ DOCGIA ParseVectorStringFileDG(string* data)
 }
 
 /// <summary>
-/// Chuyển list string từ form thành obj DOCGIA
-/// </summary>
-/// <param name="data">List string người dùng nhập</param>
-/// <returns>DOCGIA</returns>
-DOCGIA ParseVectorStringDG(string* data)
-{
-	DOCGIA docGia;// = new DOCGIA;
-	auto maAsChar = StringToCharArray(data[0]);
-	docGia.maDocGia = atoi(maAsChar);
-	delete[] maAsChar;
-	docGia.ho = Trim(data[1]);
-	docGia.ten = Trim(data[2]);
-	if (data[3] == "0")
-	{
-		docGia.gioiTinh = Nam;
-	}
-	else
-	{
-		docGia.gioiTinh = Nu;
-	}
-	if (data[4] == "1")
-	{
-		docGia.trangThai = DangHoatDong;
-	}
-	else
-	{
-		docGia.trangThai = TrangThaiTheDG::TheBiKhoa;
-	}
-	return docGia;
-}
-
-/// <summary>
 /// Lấy ToString của DOCGIA và in ra màn hình
 /// </summary>
 /// <param name="location">Vị trí in</param>
@@ -285,131 +253,6 @@ NODE_DOCGIA::NODE_DOCGIA(DOCGIA& data)
 
 #pragma region -------------------------------------------LIST_DOCGIA
 
-#pragma region --------------------PRINT
-
-
-
-#pragma endregion
-
-#pragma region --------------------DOC GHI FILE
-
-/// <summary>
-/// Đọc LIST_DOCGIA từ file text
-/// </summary>
-/// <param name="path">Đường dẫn tới file</param>
-/// <param name="listDG">LIST_DOCGIA để lưu data</param>
-/// <returns>true nếu file tồn tại</returns>
-bool ReadFromFile(LIST_DOCGIA& listDG, string path)
-{
-	auto fileHandler = FILEHANDLER(path);
-	try
-	{
-		int size = 0;
-		auto lstDocGia = fileHandler.GetTokens(size);
-		for (int i = 0; i < size; i++)
-		{
-			DOCGIA* docGia = new DOCGIA;
-			*docGia = ParseVectorStringFileDG(lstDocGia[i]);
-			Insert(listDG, *docGia);
-		}
-		delete[] lstDocGia;
-	}
-	catch (const exception& ex)
-	{
-		GoToXY(0, 0);
-		cout << ex.what();
-		return false;
-	}
-	return true;
-}
-
-/// <summary>
-/// Đọc maDocGia từ file text
-/// </summary>
-/// <param name="path">Đường dẫn tới file</param>
-/// <returns>true nếu file tồn tại</returns>
-bool ReadMaDGFromFile(string path)
-{
-	auto fileHandler = FILEHANDLER(path);
-	try
-	{
-		maDocGiaArr = fileHandler.GetLinesInt();
-	}
-	catch (const exception& ex)
-	{
-		GoToXY(0, 0);
-		cout << ex.what();
-		return false;
-	}
-	return true;
-}
-
-/// <summary>
-/// Ghi LIST_DOCGIA ra file text
-/// </summary>
-/// <param name="lstDG">LIST_DOCGIA cần lưu</param>
-/// <param name="path">Đường dẫn tới file</param>
-/// <returns>true nếu ghi file thành công</returns>
-bool WriteToFile(LIST_DOCGIA lstDG, string path)
-{
-	auto fileHandler = FILEHANDLER(path);
-	try
-	{
-		int size = Size(lstDG);
-		string* data = GetAllStringFileNodeLRN(lstDG);
-		for (auto i = 0; i < size; i++)
-		{
-			if (i < size - 1)
-				data[i] += '\n';
-		}
-		fileHandler.WriteToFile(data, Replace, size);
-		delete[] data;
-	}
-	catch (const exception& ex)
-	{
-		GoToXY(0, 0);
-		cout << ex.what();
-		return false;
-	}
-	return true;
-}
-
-/// <summary>
-/// Ghi maDocGia ra file text
-/// </summary>
-/// <param name="lstDG">LIST_DOCGIA cần lưu mã</param>
-/// <param name="path">Đường dẫn tới file</param>
-/// <returns>true nếu ghi file thành công</returns>
-bool WriteMaDGToFile(string path, LIST_DOCGIA listDG)
-{
-	auto fileHandler = FILEHANDLER(path);
-	try
-	{
-		int c = 0;
-		int size = MAX_DOCGIA - Size(listDG);
-		string* data = NULL;
-		for (auto i = 0; i < size; i++)
-		{
-			string temp = "";
-			temp += to_string(maDocGiaArr[i]);
-			if (i < size - 1)
-				temp += '\n';
-			PushBack(data, temp, c);
-		}
-		fileHandler.WriteToFile(data, Replace, c);
-		delete[] data;
-	}
-	catch (const exception& ex)
-	{
-		GoToXY(0, 0);
-		cout << ex.what();
-		return false;
-	}
-	return true;
-}
-
-#pragma endregion
-
 /// <summary>
 /// Kiểm tra DOCGIA được phép xóa không
 /// </summary>
@@ -439,7 +282,7 @@ int Size(LIST_DOCGIA listDG)
 }
 
 /// <summary>
-/// Dùng đệ quy lấy danh sách maDocGia
+/// Duyệt LNR lấy danh sách maDocGia
 /// </summary>
 /// <param name="listDG">LIST_DOCGIA cần tính size</param>
 /// <param name="dsMaDocGia">dsMaDocGia để lưu</param>
@@ -491,70 +334,6 @@ string* GetDGToListString(DOCGIA docGia)
 	}
 
 	return docGiaInfo;
-}
-
-/// <summary>
-/// <para>Chuyển LIST_DOCGIA thành list string để lưu vô file text</para>
-/// Duyệt LRN
-/// </summary>
-/// <param name="lstDG">LIST_DOCGIA cần lưu</param>
-/// <param name="result">List string sau khi convert</param>
-/// <param name="count">Số DOCGIA sau khi lưu (ban đầu gán = 0)</param>
-/// <returns>void</returns>
-void PosorderGetStringFile(LIST_DOCGIA lstDG, string*& result, int& count)
-{
-	if (lstDG != NULL)
-	{
-		PosorderGetStringFile(lstDG->pLeft, result, count);
-		PosorderGetStringFile(lstDG->pRight, result, count);
-		PushBack(result, lstDG->data.ToStringFile(), count);
-	}
-}
-
-/// <summary>
-/// <para>Chuyển LIST_DOCGIA thành list string để lưu vô file text</para>
-/// Duyệt LRN
-/// </summary>
-/// <param name="lstDG">LIST_DOCGIA cần convert</param>
-/// <returns>List string sau khi convert</returns>
-string* GetAllStringFileNodeLRN(LIST_DOCGIA listDG)
-{
-	string* result = NULL;
-	int count = 0;
-	PosorderGetStringFile(listDG, result, count);
-	return result;
-}
-
-/// <summary>
-/// <para>Chuyển LIST_DOCGIA thành list string để lưu vô file text</para>
-/// Duyệt LNR
-/// </summary>
-/// <param name="lstDG">LIST_DOCGIA cần lưu</param>
-/// <param name="result">List string sau khi convert</param>
-/// <param name="count">Số DOCGIA sau khi lưu (ban đầu gán = 0)</param>
-/// <returns>void</returns>
-void InorderGetStringFile(LIST_DOCGIA lstDG, string*& result, int& count)
-{
-	if (lstDG != NULL)
-	{
-		InorderGetStringFile(lstDG->pLeft, result, count);
-		PushBack(result, lstDG->data.ToStringFile(), count);
-		InorderGetStringFile(lstDG->pRight, result, count);
-	}
-}
-
-/// <summary>
-/// <para>Chuyển LIST_DOCGIA thành list string để lưu vô file text</para>
-/// Duyệt LNR
-/// </summary>
-/// <param name="lstDG">LIST_DOCGIA cần convert</param>
-/// <returns>List string sau khi convert</returns>
-string* GetAllStringFileNodeLNR(LIST_DOCGIA listDG)
-{
-	string* result = NULL;
-	int count = 0;
-	InorderGetStringFile(listDG, result, count);
-	return result;
 }
 
 /// <summary>
@@ -726,7 +505,7 @@ bool DeleteNode(LIST_DOCGIA& lstDG, DOCGIA docGia)
 /// <para>Chuyển LIST_DOCGIA thành list string để in ra màn hình</para>
 /// Duyệt LNR
 /// </summary>
-/// <param name="lstDG">LIST_DOCGIA cần lưu</param>
+/// <param name="lstDG">LIST_DOCGIA cần chuyển</param>
 /// <param name="result">List string sau khi convert</param>
 /// <param name="count">Số DOCGIA sau khi lưu (ban đầu gán = 0)</param>
 /// <returns>void</returns>
@@ -744,6 +523,7 @@ void InorderGetString(LIST_DOCGIA lstDG, string*& result, int& count)
 /// <para>Chuyển LIST_DOCGIA thành list string để in ra màn hình</para>
 /// </summary>
 /// <param name="lstDG">LIST_DOCGIA cần convert</param>
+/// <param name="count">Số độc giả đếm được (ban đầu = 0)</param>
 /// <returns>List string sau khi convert</returns>
 string* GetAllStringNode(LIST_DOCGIA listDG, int& count)
 {
@@ -767,8 +547,14 @@ void PrintLabelDocGia(MYPOINT location, int row)
 		row, BORDER_COLOR);
 }
 
-// in content theo maDG
-string PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode m)
+/// <summary>
+/// In DOCGIA sắp xếp theo mã độc giả
+/// </summary>
+/// <param name="listDG">LIST_DOCGIA cần in</param>
+/// <param name="location">Location</param>
+/// <param name="mode"><para>Show_Only: Chỉ hiện</para><para>Both: Hiện và bắt phím</para></param>
+/// <returns>Phím được nhấn As String</returns>
+string PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode mode)
 {
 	string emptyTemplate = "";
 	emptyTemplate = emptyTemplate + char(179) + string(MADOCGIA_WIDTH, ' ');
@@ -798,7 +584,7 @@ string PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode m)
 		}
 	}
 	ShowPageNumber(currentPage, totalPage, location.x, location.y + (int)MAX_ROW_PER_PAGE + 1);
-	if (m == Show_Only) return "";
+	if (mode == Show_Only) return "";
 	// bat phim
 	char inputKey = NULL;
 	do
@@ -857,7 +643,14 @@ string PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode m)
 	return "";
 }
 
-// dung quick sort de sort string doc gia
+/// <summary>
+/// Quick Sort ToString của LIST_DOCGIA theo tên
+/// </summary>
+/// <param name="listDG">LIST_DOCGIA as String cần sắp xếp</param>
+/// <param name="listName">List name tách ra từ ToString</param>
+/// <param name="q">Index đầu mảng</param>
+/// <param name="r">Index cuối mảng</param>
+/// <returns>void</returns>
 void SortStringDocGiaTheoTen(string*& listDG, string*& listName, int q, int r)
 {
 	int i = q;
@@ -886,8 +679,14 @@ void SortStringDocGiaTheoTen(string*& listDG, string*& listName, int q, int r)
 		SortStringDocGiaTheoTen(listDG, listName, i, r);
 }
 
-// In ds doc gia theo ten
-string PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location, Menu_Mode m)
+/// <summary>
+/// In DOCGIA sắp xếp theo tên độc giả
+/// </summary>
+/// <param name="listDG">LIST_DOCGIA cần in</param>
+/// <param name="location">Location</param>
+/// <param name="mode"><para>Show_Only: Chỉ hiện</para><para>Both: Hiện và bắt phím</para></param>
+/// <returns>Phím được nhấn As String</returns>
+string PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location, Menu_Mode mode)
 {
 	string emptyTemplate = "";
 	emptyTemplate = emptyTemplate + char(179) + string(MADOCGIA_WIDTH, ' ');
@@ -927,7 +726,7 @@ string PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location, Menu_Mode m)
 		}
 	}
 
-	if (m == Show_Only) return "";
+	if (mode == Show_Only) return "";
 	// bat phim
 	char inputKey = NULL;
 	do
@@ -986,31 +785,59 @@ string PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location, Menu_Mode m)
 	return "";
 }
 
-// In ds doc gia: mode = 1 (Sort theo maDG)
-//                mode = 2 (Sort theo hoTen)
-string PrintAllDocGia(LIST_DOCGIA lstDG, MYPOINT location, int mode, Menu_Mode m)
+/// <summary>
+/// In LIST_DOCGIA ra màn hình
+/// </summary>
+/// <param name="listDG">LIST_DOCGIA cần in</param>
+/// <param name="location">Location</param>
+/// <param name="mode">
+///	<para>Show_Only: Chỉ hiện</para>
+///	<para>Both: Hiện và bắt phím</para>
+/// </param>
+/// <param name = "sortMode">
+///	<para>1: Sort theo mã độc giả</para>
+///	<para>0: Sort theo tên độc giả</para>
+/// </param>
+/// <returns>Phím được nhấn As String</returns>
+string PrintAllDocGia(LIST_DOCGIA lstDG, MYPOINT location, int sortMode, Menu_Mode mode)
 {
 	PrintLabelDocGia(location, MAX_ROW_PER_PAGE);
 	auto loc = location;
 	loc.y += 3;
-	if (mode == 1)
+	if (sortMode == 1)
 	{
-		return PrintContentSortMaDG(lstDG, loc, m);
+		return PrintContentSortMaDG(lstDG, loc, mode);
 	}
 	else
 	{
-		return PrintContentSortTen(lstDG, loc, m);
+		return PrintContentSortTen(lstDG, loc, mode);
 	}
 }
 
-// ...
+/// <summary>
+/// In string tại vị trí truyền vào
+/// </summary>
+/// <param name="data">string cần in</param>
+/// <param name="location">Location</param>
+/// <returns>void</returns>
 void PrintStringDocGia(string data, MYPOINT location)
 {
 	GoToXY(location.x, location.y);
 	cout << data;
 }
 
-// in danh sach de quan ly doc gia co highLight
+/// <summary>
+/// In LIST_DOCGIA ra màn hình
+/// </summary>
+/// <param name="listDG">LIST_DOCGIA cần in</param>
+/// <param name="location">Location</param>
+/// <param name="page">Lưu lại vị trí page đang đứng</param>
+/// <param name="line">Dòng cần highLight</param>
+/// <param name="mode">
+///	<para>Show_Only: Chỉ hiện</para>
+///	<para>Both: Hiện và bắt phím</para>
+/// </param>
+/// <returns>Phím được nhấn As String</returns>
 string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Menu_Mode mode, int line)
 {
 	string emptyTemplate = "";
@@ -1054,6 +881,7 @@ string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Menu_Mo
 	if (mode == Menu_Mode::Show_Only || mode == Menu_Mode::Both)
 	{
 		PrintLabelDocGia(location, MAX_ROW_PER_PAGE);
+		if (totalPages == 0) return "";
 		ShowPageNumber(currentPage, totalPages, location.x, location.y + (int)MAX_ROW_PER_PAGE + 4);
 		location.y += 3;
 		backUpLocation = location;
@@ -1228,51 +1056,13 @@ string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Menu_Mo
 	}
 	return "Empty";
 }
-// luu list muontra vo file
-bool WriteMuonTraToFile(LIST_MUONTRA& listMT, string maDG, string defaultPath)
-{
-	defaultPath += MUONTRA_FILE_PATH;
-	defaultPath += maDG;
-	defaultPath += ".txt";
-	return listMT.WriteToFile(defaultPath);
-}
-void DuyetLuuFile(LIST_DOCGIA lstDG, string defaultPath)
-{
-	if (lstDG != NULL)
-	{
-		if (lstDG->data.listMuonTra.IsEmpty() == false)
-		{
-			string maAsString = to_string(lstDG->data.maDocGia);
-			//MergeWordWithNumber(maAsString, lstDG->data.maDocGia, 4);
-			WriteMuonTraToFile(lstDG->data.listMuonTra, maAsString, defaultPath);
-		}
-		DuyetLuuFile(lstDG->pLeft, defaultPath);
-		DuyetLuuFile(lstDG->pRight, defaultPath);
-	}
-}
 
-bool ReadMuonTraFromFile(LIST_MUONTRA& listMT, string maDG, string path)
-{
-	path += MUONTRA_FILE_PATH;
-	path += maDG;
-	path += ".txt";
-	return listMT.ReadFromFile(path);
-}
-void DuyetDocFile(LIST_DOCGIA& lstDG, string path)
-{
-	if (lstDG != NULL)
-	{
-		DuyetDocFile(lstDG->pLeft, path);
-		string maAsString = to_string(lstDG->data.maDocGia);
-		//MergeWordWithNumber(maAsString, lstDG->data.maDocGia, 4);
-		ReadMuonTraFromFile(lstDG->data.listMuonTra, maAsString, path);
-		DuyetDocFile(lstDG->pRight, path);
-	}
-}
-
-#pragma endregion
-
-// print label qua han
+/// <summary>
+/// In labels cho danh sách Độc giả mượn sách quá hạn
+/// </summary>
+/// <param name="location">Location</param>
+/// <param name="row">Số độc giả có trong danh sách</param>
+/// <returns>void</returns>
 void PrintLabelQuaHan(MYPOINT location, int row)
 {
 	string labels[] = { "MA DOC GIA", "HO", "TEN", "MA SACH", "TEN SACH", "NGAY MUON", "SO NGAY QUA HAN" };
@@ -1281,7 +1071,14 @@ void PrintLabelQuaHan(MYPOINT location, int row)
 		row, BORDER_COLOR);
 }
 
-// sort qua han string
+/// <summary>
+/// Quick Sort Số ngày quá hạn của LIST_DOCGIA
+/// </summary>
+/// <param name="soNgayQH">List Số ngày quá hạn tách ra từ string quá hạn</param>
+/// <param name="quaHanString">List string DOCGIA quá hạn</param>
+/// <param name="q">Index đầu mảng</param>
+/// <param name="r">Index cuối mảng</param>
+/// <returns>void</returns>
 void SortQuaHanString(int*& soNgayQH, string*& quaHanString, int q, int r)
 {
 	int i = q;
@@ -1309,7 +1106,16 @@ void SortQuaHanString(int*& soNgayQH, string*& quaHanString, int q, int r)
 	if (i < r)   	// phần thứ ba có từ 2 phần tử trở lên
 		SortQuaHanString(soNgayQH, quaHanString, i, r);
 }
-// get tostring qua han
+
+/// <summary>
+/// <para>Chuyển LIST_DOCGIA quá hạn thành list string để in ra màn hình</para>
+/// Duyệt LNR
+/// </summary>
+/// <param name="listDS">LIST_DAUSACH để tính số ngày quá hạn</param>
+/// <param name="lstDG">LIST_DOCGIA cần chuyển</param>
+/// <param name="result">List string sau khi convert</param>
+/// <param name="count">Số DOCGIA sau khi lưu (ban đầu gán = 0)</param>
+/// <returns>void</returns>
 void InorderGetStringQuaHan(LIST_DAUSACH listDS, LIST_DOCGIA lstDG, string*& result, int& count)
 {
 	if (lstDG != NULL)
@@ -1324,8 +1130,14 @@ void InorderGetStringQuaHan(LIST_DAUSACH listDS, LIST_DOCGIA lstDG, string*& res
 		InorderGetStringQuaHan(listDS, lstDG->pRight, result, count);
 	}
 }
-// Show ds qua han
-void ShowListQuaHan(LIST_DAUSACH listDS, LIST_DOCGIA lstDG)
+
+/// <summary>
+/// In LIST_DOCGIA quá hạn ra màn hình
+/// </summary>
+/// <param name="listDS">LIST_DAUSACH để tính số ngày quá hạn</param>
+/// <param name="listDG">LIST_DOCGIA cần in</param>
+/// <returns>void</returns>
+void PrintListQuaHan(LIST_DAUSACH listDS, LIST_DOCGIA lstDG)
 {
 	MYPOINT location = { 20, 3 };
 	string* quaHanString = NULL;
@@ -1429,6 +1241,268 @@ void ShowListQuaHan(LIST_DAUSACH listDS, LIST_DOCGIA lstDG)
 		}
 	} while (!_kbhit());
 	return;
+}
+
+#pragma region --------------------DOC GHI FILE
+
+/// <summary>
+/// <para>Chuyển LIST_DOCGIA thành list string để lưu vô file text</para>
+/// Duyệt LRN
+/// </summary>
+/// <param name="lstDG">LIST_DOCGIA cần lưu</param>
+/// <param name="result">List string sau khi convert</param>
+/// <param name="count">Số DOCGIA sau khi lưu (ban đầu gán = 0)</param>
+/// <returns>void</returns>
+void PosorderGetStringFile(LIST_DOCGIA lstDG, string*& result, int& count)
+{
+	if (lstDG != NULL)
+	{
+		PosorderGetStringFile(lstDG->pLeft, result, count);
+		PosorderGetStringFile(lstDG->pRight, result, count);
+		PushBack(result, lstDG->data.ToStringFile(), count);
+	}
+}
+
+/// <summary>
+/// <para>Chuyển LIST_DOCGIA thành list string để lưu vô file text</para>
+/// Duyệt LRN
+/// </summary>
+/// <param name="lstDG">LIST_DOCGIA cần convert</param>
+/// <returns>List string sau khi convert</returns>
+string* GetAllStringFileNodeLRN(LIST_DOCGIA listDG)
+{
+	string* result = NULL;
+	int count = 0;
+	PosorderGetStringFile(listDG, result, count);
+	return result;
+}
+
+/// <summary>
+/// <para>Chuyển LIST_DOCGIA thành list string để lưu vô file text</para>
+/// Duyệt LNR
+/// </summary>
+/// <param name="lstDG">LIST_DOCGIA cần lưu</param>
+/// <param name="result">List string sau khi convert</param>
+/// <param name="count">Số DOCGIA sau khi lưu (ban đầu gán = 0)</param>
+/// <returns>void</returns>
+void InorderGetStringFile(LIST_DOCGIA lstDG, string*& result, int& count)
+{
+	if (lstDG != NULL)
+	{
+		InorderGetStringFile(lstDG->pLeft, result, count);
+		PushBack(result, lstDG->data.ToStringFile(), count);
+		InorderGetStringFile(lstDG->pRight, result, count);
+	}
+}
+
+/// <summary>
+/// <para>Chuyển LIST_DOCGIA thành list string để lưu vô file text</para>
+/// Duyệt LNR
+/// </summary>
+/// <param name="lstDG">LIST_DOCGIA cần convert</param>
+/// <returns>List string sau khi convert</returns>
+string* GetAllStringFileNodeLNR(LIST_DOCGIA listDG)
+{
+	string* result = NULL;
+	int count = 0;
+	InorderGetStringFile(listDG, result, count);
+	return result;
+}
+
+/// <summary>
+/// Đọc LIST_DOCGIA từ file text
+/// </summary>
+/// <param name="path">Đường dẫn tới file</param>
+/// <param name="listDG">LIST_DOCGIA để lưu data</param>
+/// <returns>true nếu file tồn tại</returns>
+bool ReadFromFile(LIST_DOCGIA& listDG, string path)
+{
+	auto fileHandler = FILEHANDLER(path);
+	try
+	{
+		int size = 0;
+		auto lstDocGia = fileHandler.GetTokens(size);
+		for (int i = 0; i < size; i++)
+		{
+			DOCGIA* docGia = new DOCGIA;
+			*docGia = ParseVectorStringFileDG(lstDocGia[i]);
+			Insert(listDG, *docGia);
+		}
+		delete[] lstDocGia;
+	}
+	catch (const exception& ex)
+	{
+		GoToXY(0, 0);
+		cout << ex.what();
+		return false;
+	}
+	return true;
+}
+
+/// <summary>
+/// Đọc maDocGia từ file text
+/// </summary>
+/// <param name="path">Đường dẫn tới file</param>
+/// <returns>true nếu file tồn tại</returns>
+bool ReadMaDGFromFile(string path)
+{
+	auto fileHandler = FILEHANDLER(path);
+	try
+	{
+		maDocGiaArr = fileHandler.GetLinesInt();
+	}
+	catch (const exception& ex)
+	{
+		GoToXY(0, 0);
+		cout << ex.what();
+		return false;
+	}
+	return true;
+}
+
+/// <summary>
+/// Ghi LIST_DOCGIA ra file text
+/// </summary>
+/// <param name="lstDG">LIST_DOCGIA cần lưu</param>
+/// <param name="path">Đường dẫn tới file</param>
+/// <returns>true nếu ghi file thành công</returns>
+bool WriteToFile(LIST_DOCGIA lstDG, string path)
+{
+	auto fileHandler = FILEHANDLER(path);
+	try
+	{
+		int size = Size(lstDG);
+		string* data = GetAllStringFileNodeLRN(lstDG);
+		for (auto i = 0; i < size; i++)
+		{
+			if (i < size - 1)
+				data[i] += '\n';
+		}
+		fileHandler.WriteToFile(data, Replace, size);
+		delete[] data;
+	}
+	catch (const exception& ex)
+	{
+		GoToXY(0, 0);
+		cout << ex.what();
+		return false;
+	}
+	return true;
+}
+
+/// <summary>
+/// Ghi maDocGia ra file text
+/// </summary>
+/// <param name="lstDG">LIST_DOCGIA cần lưu mã</param>
+/// <param name="path">Đường dẫn tới file</param>
+/// <returns>true nếu ghi file thành công</returns>
+bool WriteMaDGToFile(string path, LIST_DOCGIA listDG)
+{
+	auto fileHandler = FILEHANDLER(path);
+	try
+	{
+		int c = 0;
+		int size = MAX_DOCGIA - Size(listDG);
+		string* data = NULL;
+		for (auto i = 0; i < size; i++)
+		{
+			string temp = "";
+			temp += to_string(maDocGiaArr[i]);
+			if (i < size - 1)
+				temp += '\n';
+			PushBack(data, temp, c);
+		}
+		fileHandler.WriteToFile(data, Replace, c);
+		delete[] data;
+	}
+	catch (const exception& ex)
+	{
+		GoToXY(0, 0);
+		cout << ex.what();
+		return false;
+	}
+	return true;
+}
+
+/// <summary>
+/// Duyệt cây DOCGIA ghi LIST_MUONTRA của từng DOCGIA ra file text
+/// </summary>
+/// <param name="lstDG">LIST_DOCGIA chứa LIST_MUONTRA cần lưu</param>
+/// <param name="defaultPath">Đường dẫn mặc định file debug</param>
+/// <returns>void</returns>
+void DuyetLuuFileMuonTra(LIST_DOCGIA lstDG, string defaultPath)
+{
+	if (lstDG != NULL)
+	{
+		if (lstDG->data.listMuonTra.IsEmpty() == false)
+		{
+			string maAsString = to_string(lstDG->data.maDocGia);
+			defaultPath += MUONTRA_FILE_PATH;
+			defaultPath += maAsString;
+			defaultPath += ".txt";
+			lstDG->data.listMuonTra.WriteToFile(defaultPath);
+		}
+		DuyetLuuFileMuonTra(lstDG->pLeft, defaultPath);
+		DuyetLuuFileMuonTra(lstDG->pRight, defaultPath);
+	}
+}
+
+/// <summary>
+/// Duyệt cây DOCGIA đọc LIST_MUONTRA của từng DOCGIA trong file text
+/// </summary>
+/// <param name="lstDG">LIST_DOCGIA chứa LIST_MUONTRA cần đọc</param>
+/// <param name="defaultPath">Đường dẫn mặc định file debug</param>
+/// <returns>void</returns>
+void DuyetDocFileMuonTra(LIST_DOCGIA& lstDG, string path)
+{
+	if (lstDG != NULL)
+	{
+		DuyetDocFileMuonTra(lstDG->pLeft, path);
+
+		string maAsString = to_string(lstDG->data.maDocGia);
+		path += MUONTRA_FILE_PATH;
+		path += maAsString;
+		path += ".txt";
+		lstDG->data.listMuonTra.ReadFromFile(path);
+
+		DuyetDocFileMuonTra(lstDG->pRight, path);
+	}
+}
+
+#pragma endregion
+
+#pragma endregion
+
+/// <summary>
+/// Chuyển list string từ form thành obj DOCGIA
+/// </summary>
+/// <param name="data">List string người dùng nhập</param>
+/// <returns>DOCGIA</returns>
+DOCGIA ParseVectorStringDG(string* data)
+{
+	DOCGIA docGia;// = new DOCGIA;
+	auto maAsChar = StringToCharArray(data[0]);
+	docGia.maDocGia = atoi(maAsChar);
+	delete[] maAsChar;
+	docGia.ho = Trim(data[1]);
+	docGia.ten = Trim(data[2]);
+	if (data[3] == "0")
+	{
+		docGia.gioiTinh = Nam;
+	}
+	else
+	{
+		docGia.gioiTinh = Nu;
+	}
+	if (data[4] == "1")
+	{
+		docGia.trangThai = DangHoatDong;
+	}
+	else
+	{
+		docGia.trangThai = TrangThaiTheDG::TheBiKhoa;
+	}
+	return docGia;
 }
 
 /// <summary>

@@ -102,7 +102,7 @@ void SaveAll(LIST_DOCGIA listDG, LIST_DAUSACH listDS)
 	WriteMaDGToFile(GetPath() + MADOCGIA_FILE_PATH, listDG);
 	Sleep(400);
 	// luu muon tra
-	DuyetLuuFile(listDG, GetPath());
+	DuyetLuuFileMuonTra(listDG, GetPath());
 	Sleep(400);
 
 	isSaving = false;
@@ -242,7 +242,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 			{
 				RemoveMaDG(listDG);
 				Insert(listDG, *newDocGia);
-				//tem = PrintAllDGWithHL(listDG, location, page, Show_Only);
+				tem = PrintAllDGWithHL(listDG, location, page, Show_Only);
 			}
 		}
 		// Xoa
@@ -324,6 +324,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 					int MaDG = stoi(selectedMaDocGia);
 					auto temp = Search(listDG, MaDG);
 					temp->data = InputFixDocGia({ {DAUSACH_TOTAL_WIDTH + 2, location.y}, {50, 18} }, temp->data);
+					tem = PrintAllDGWithHL(listDG, location, page, Show_Only);
 				}
 			}
 		}
@@ -367,7 +368,7 @@ void InDanhSachDG(LIST_DOCGIA listDG, MYPOINT location)
 // Func 0 2
 void InDanhSachQuaHan(LIST_DAUSACH listDS, LIST_DOCGIA lstDG)
 {
-	ShowListQuaHan(listDS, lstDG);
+	PrintListQuaHan(listDS, lstDG);
 }
 // Func 1 0
 void HienThiDauSach(LIST_DAUSACH& listDS, MYPOINT location)
