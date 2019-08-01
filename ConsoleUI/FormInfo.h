@@ -10,7 +10,7 @@ void DocGiaInfo(RECTANGLE rect, DOCGIA docGia)
 	SetBGColor(BG_COLOR);
 	SetTextColor(TEXT_INPUT_COLOR);
 	string title = "THONG TIN DOC GIA";
-	auto docGiaInfo = GetDGtoVector(docGia);
+	auto docGiaInfo = GetDGToListString(docGia);
 	//int size = SizeOfT(docGiaInfo);
 	string labels[] = { "Ma doc gia", "Ho", "Ten", "Gioi tinh", "Trang thai the" };
 	DrawRectangleBoder(rect);
