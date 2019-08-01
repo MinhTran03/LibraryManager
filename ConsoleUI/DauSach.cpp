@@ -1,6 +1,12 @@
 ﻿#include "DauSach.h"
 
 #pragma region ----------------------------------------------------TOPSACH
+
+/// <summary>
+/// 
+/// </summary>
+/// <param name=""></param>
+/// <returns>void</returns>
 void TOPSACH::Print(MYPOINT location, Color backColor, Color textColor)
 {
 	GoToXY(location.x, location.y);
@@ -9,67 +15,93 @@ void TOPSACH::Print(MYPOINT location, Color backColor, Color textColor)
 	cout << TOPSACH::info;
 }
 
-#pragma region ----------------------------------------------------DAUSACH
-// chuyen vector<string> vo obj DAUSACH
-DAUSACH ParseVectorString(string* data, int mode = 0)
+/// <summary>
+/// 
+/// </summary>
+/// <param name=""></param>
+/// <returns>void</returns>
+void SortTop10(TOPSACH* top10, int q, int r)
 {
-	DAUSACH dauSach;// = new DAUSACH;
-	StringToCharArray(data[0], dauSach.isbn);
-	dauSach.tenSach = data[1];
-	FormatWord(dauSach.tenSach);
-	dauSach.soTrang = stoi(data[2]);
-	dauSach.tenTacGia = data[3];
-	FormatName(dauSach.tenTacGia);
-	dauSach.namXuatBan = stoi(data[4]);
-	dauSach.tenTheLoai = data[5];
-	FormatWord(dauSach.tenTheLoai);
-	if (mode == 1)
-		dauSach.soLuotMuon = stoi(data[6]);
-	return dauSach;
-}
-// hien form nhap DAUSACH / truyen listDS de kiem tra du lieu co trung khong
-DAUSACH InputDauSach(LIST_DAUSACH listDS, RECTANGLE rect)
-{
-	string labels[] = { "ISBN:","Ten sach:","So trang:","Tac gia:", "Nam xuat ban:","The loai:" };
-	string inputTitle = "NHAP THONG TIN DAU SACH";
-	CONDITION conditions[] = { {Number_Only, ISBN_MAXSIZE, ISBN_MAXSIZE}, {All, 1, TENSACH_MAXSIZE},{Number_Only, 1, SOTRANG_MAXKYTU},
-													{Name, 1, TENTACGIA_MAXSIZE},{Year, 4, 4},{Word_Only, 1, TENTHELOAI_MAXSIZE} };
-	auto form = FORMINPUT(labels, conditions, rect, inputTitle, 6);
-	string guilds[] = { "DAY SO CO 6 CHU SO", "TAT CA KY TU", "SO TRANG TU [1, 999999]", "CHI NHAP CHU CAI",
-													"PHAI NHO HON NAM HIEN TAI", "CHI NHAP CHU CAI" };
-	form.Guilds = guilds;
-	DAUSACH dauSach = DAUSACH();
-	string* tempData = form.OutputResults;
+	TOPSACH temp;
+	int i = q;
+	int j = r;
+	//Lấy phần tử giữa của dãy cần sắp thứ tự làm chốt
+	int x = top10[(q + r) / 2].soSachMuon;
 
-	while (true)
-	{
-		form.OutputResults = tempData;
-		if (form.Show())
+	do
+	{  // Phân đoạn dãy con a[q],..., a[r]
+		while (top10[i].soSachMuon > x)
+			i++; //Tìm phần tử đầu tiên có trị nhỏ hơn hay bằng x 
+		while (top10[j].soSachMuon < x)
+			j--; //Tìm phần tử đầu tiên có trị lớn hơn hay bằng x
+
+		if (i <= j)   // Hoan vi
 		{
-			dauSach = ParseVectorString(form.OutputResults);
-			if (listDS.IsContainISBN(dauSach.isbn))
-			{
-				GoToXY(form.cols[0] - 6, form.rows[0] + 1);
-				SetTextColor(WARNING_TEXT_COLOR);
-				cout << "ISBN da bi trung";
-				form.currentLine = 0;
-				tempData = form.OutputResults;
-			}
-			else
-			{
-				delete[] tempData;
-				return dauSach;
-			}
+			temp = top10[i];
+			top10[i] = top10[j];
+			top10[j] = temp;
+			i++;
+			j--;
 		}
-		else
+	} while (i <= j);
+
+	if (q < j) 	// phần thứ nhất có từ 2 phần tử trở lên
+		SortTop10(top10, q, j);
+	if (i < r)   	// phần thứ ba có từ 2 phần tử trở lên
+		SortTop10(top10, i, r);
+}
+
+/// <summary>
+/// 
+/// </summary>
+/// <param name=""></param>
+/// <returns>void</returns>
+int RemoveDuplicatesInSortedTopSach(TOPSACH* sortedArr, int sizeOfArr)
+{
+	// Return, if array is empty
+	// or contains a single element
+	if (sizeOfArr == 0 || sizeOfArr == 1)
+		return sizeOfArr;
+
+	TOPSACH* newArr = new TOPSACH[sizeOfArr];
+
+	// Start traversing elements
+	int newSize = 0;
+	for (int i = 0; i < sizeOfArr - 1; i++)
+	{
+		// If current element is not equal
+		// to next element then store that
+		// current element
+		if (sortedArr[i].soSachMuon != sortedArr[i + 1].soSachMuon)
 		{
-			form.ResetOutput();
-			delete[] tempData;
-			break;
+			newArr[newSize++] = sortedArr[i];
 		}
 	}
-	return dauSach;
+	// Store the last element as whether
+	// it is unique or repeated, it hasn't
+	// stored previously
+	newArr[newSize++] = sortedArr[sizeOfArr - 1];
+
+	int result;
+	if (newSize > 9)
+		result = newArr[9].soSachMuon;
+	else
+		result = newArr[newSize - 1].soSachMuon;
+	delete[] newArr;
+	return result;
 }
+
+#pragma endregion
+
+#pragma region ----------------------------------------------------DAUSACH
+
+/// <summary>
+///  Hiện form sửa thông tin DAUSACH
+/// </summary>
+/// <param name="listDS">Kiểm tra ISBN xem có trùng không</param>
+/// <param name="dauSach">DAUSACH cần chỉnh sửa</param>
+/// <param name="rect">Khung nhập sách</param>
+/// <returns>DAUSACH</returns>
 DAUSACH InputFixDauSach(LIST_DAUSACH listDS, RECTANGLE rect, DAUSACH dauSach)
 {
 	auto tempDSSach = dauSach.dsSach;
@@ -103,7 +135,14 @@ DAUSACH InputFixDauSach(LIST_DAUSACH listDS, RECTANGLE rect, DAUSACH dauSach)
 	}
 	return dauSach;
 }
-// in ra node
+
+/// <summary>
+/// Lấy ToString của đầu sách và in ra màn hình
+/// </summary>
+/// <param name="location">Vị trí in</param>
+/// <param name="backColor">Màu nền</param>
+/// <param name="textColor">Màu chữ</param>
+/// <returns>void</returns>
 void DAUSACH::Print(MYPOINT location, Color backColor, Color textColor)
 {
 	GoToXY(location.x, location.y);
@@ -111,14 +150,26 @@ void DAUSACH::Print(MYPOINT location, Color backColor, Color textColor)
 	SetBGColor(backColor);
 	cout << DAUSACH::ToString();
 }
-void DAUSACH::PrintFull(MYPOINT location, Color backColor, Color textColor)
+
+/// <summary>
+/// Lấy ToString của đầu sách cùng số lần mượn và in ra màn hình
+/// </summary>
+/// <param name="location">Vị trí in</param>
+/// <param name="backColor">Màu nền</param>
+/// <param name="textColor">Màu chữ</param>
+/// <returns>void</returns>
+void DAUSACH::PrintMuonTra(MYPOINT location, Color backColor, Color textColor)
 {
 	GoToXY(location.x, location.y);
 	SetTextColor(textColor);
 	SetBGColor(backColor);
 	cout << DAUSACH::ToStringMuonTra();
 }
-// chen | giua cac field
+
+/// <summary>
+/// In ra DAUSACH dưới dạng list
+/// </summary>
+/// <returns>DAUSACH as string in List</returns>
 string DAUSACH::ToString()
 {
 	int temp;
@@ -156,6 +207,10 @@ string DAUSACH::ToString()
 	return result;
 }
 
+/// <summary>
+/// In ra DAUSACH cùng số lượt mượn dưới dạng list
+/// </summary>
+/// <returns>DAUSACH as string in List</returns>
 string DAUSACH::ToStringMuonTra()
 {
 	int temp;
@@ -198,7 +253,11 @@ string DAUSACH::ToStringMuonTra()
 
 	return result;
 }
-// chuyen object dau sach thanh string luu file
+
+/// <summary>
+/// Chuyển obj DAUSACH thành line string để lưu vơ file text
+/// </summary>
+/// <returns>DAUSACH as string in File</returns>
 string DAUSACH::ToStringFile()
 {
 	string result = "";
@@ -213,11 +272,19 @@ string DAUSACH::ToStringFile()
 	//result += '\n';
 	return result;
 }
+
 #pragma endregion
 
 #pragma region ----------------------------------------------------LIST_DAUSACH
-#pragma region Graphics
-// selection sort dua vao ten sach
+
+#pragma region --------------------PRINT
+
+/// <summary>
+/// Selection sort danh sách DAUSACH dựa vào tên sách
+/// </summary>
+/// <param name="listDauSach">List string</param>
+/// <param name="size">Kích cỡ của danh sách</param>
+/// <returns>void</returns>
 void SortByTenSach(DAUSACH*& listDauSach, int size)
 {
 	DAUSACH min;
@@ -239,7 +306,13 @@ void SortByTenSach(DAUSACH*& listDauSach, int size)
 		listDauSach[i] = min;
 	}
 }
-// row la so dong data
+
+/// <summary>
+/// In labels cho danh sách đầu sách
+/// </summary>
+/// <param name="location">Location</param>
+/// <param name="row">Số đầu sách có trong danh sách</param>
+/// <returns>void</returns>
 void PrintLabelDauSach(MYPOINT location, int row)
 {
 	string labels[] = { "ISBN", "TEN SACH", "SO TRANG", "TEN TAC GIA", "NXB", "TEN THE LOAI" };
@@ -247,7 +320,13 @@ void PrintLabelDauSach(MYPOINT location, int row)
 	lstBorder.Draw(location, { ISBN_WIDTH, TENSACH_WIDTH, SOTRANG_WIDTH, TENTACGIA_WIDTH, NAMXUATBAN_WIDTH, TENTHELOAI_WIDTH },
 		row, BORDER_COLOR);
 }
-// Print list DAUSACH theo the loai (Sap xep theo ten)
+
+/// <summary>
+/// In danh sách DAUSACH của thể loại và sắp xếp theo tên
+/// </summary>
+/// <param name="location">Location</param>
+/// <param name="theLoai">Tên thể loại cần in</param>
+/// <returns>Phím người dùng ấn as string</returns>
 string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, string theLoai)
 {
 	string emptyTemplate = "";
@@ -261,7 +340,7 @@ string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, string theLoai)
 
 	int totalLine = 0;
 	// tim ISBN theo the loai
-	auto listISBN = GetTheLoai(theLoai, totalLine);
+	auto listISBN = GetDauSachByTheLoai(theLoai, totalLine);
 	// sap xep theo ten sach
 	SortByTenSach(listISBN, totalLine);
 	MYPOINT backUpLocation = MYPOINT(0, 0);
@@ -360,7 +439,12 @@ string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, string theLoai)
 	} while (!_kbhit());
 	return "";
 }
-// In tat ca the loai thanh nhieu page
+
+/// <summary>
+/// In danh sách DAUSACH của tất cả thể loại chia thánh nhiều trang
+/// </summary>
+/// <param name="location">Location</param>
+/// <returns>Phím người dùng ấn as string</returns>
 string LIST_DAUSACH::PrintAllTheLoai(MYPOINT location)
 {
 	int currentPage = 0;
@@ -430,8 +514,14 @@ string LIST_DAUSACH::PrintAllTheLoai(MYPOINT location)
 		}
 	}
 }
-// In tat ca dau sach
-// DO NOT CHANGE ANYTHINGS IN THIS FUNC. IT'S WORKING
+
+/// <summary>
+/// In danh sách DAUSACH của toàn bộ DAUSACH
+/// </summary>
+/// <param name="location">Location</param>
+/// <param name="page">Trang</param>
+/// <param name="mode">Show_Only: Chỉ hiện \n Both: Hiện và bắt phím</param>
+/// <returns>Phím người dùng ấn as string</returns>
 string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 {
 	string emptyTemplate = "";
@@ -651,6 +741,7 @@ string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 	}
 	return "Empty";
 }
+
 // ...
 void LIST_DAUSACH::PrintFindBooks(MYPOINT location, string tenSach)
 {
@@ -675,192 +766,8 @@ void LIST_DAUSACH::PrintFindBooks(MYPOINT location, string tenSach)
 	}
 	delete[] listISBN;
 }
-#pragma endregion
 
-// Huy
-void LIST_DAUSACH::Deconstructor()
-{
-	for (int i = 0; i < this->size; i++)
-	{
-		delete this->nodes[i];
-		this->nodes[i] = NULL;
-	}
-}
-// kiem tra theLoai sach da ton tai hay chua
-bool LIST_DAUSACH::IsContainTheLoai(string theLoai)
-{
-	string theLoaiAsLower = ToLowerString(theLoai);
-	for (int i = 0; i < this->size; i++)
-	{
-		if (ToLowerString(this->nodes[i]->tenTheLoai) == theLoaiAsLower) return true;
-	}
-	return false;
-}
-// Lay dau sach dua vao ten the loai
-DAUSACH* LIST_DAUSACH::GetTheLoai(string tenTheLoai, int& count)
-{
-	DAUSACH* result = NULL;
-	for (int i = 0; i < this->size; i++)
-	{
-		if (this->nodes[i]->tenTheLoai == tenTheLoai)
-		{
-			PushBack(result, *this->nodes[i], count);
-		}
-	}
-	return result;
-}
-// get dau sach theo isbn
-DAUSACH* LIST_DAUSACH::GetDauSach(char isbn[ISBN_MAXSIZE + 1])
-{
-	for (auto dauSach : this->nodes)
-	{
-		if (strcmp(dauSach->isbn, isbn) == 0)
-			return dauSach;
-	}
-	return NULL;
-}
-// Doc obj DAUSACH tu file
-bool LIST_DAUSACH::ReadFromFile(string path)
-{
-	auto fileHandler = FILEHANDLER(path);
-	try
-	{
-		int size = 0;
-		auto lstDauSachVector = fileHandler.GetTokens(size);
-		for (int i = 0; i < size; i++)
-		{
-			DAUSACH* dauSach = new DAUSACH;
-			*dauSach = ParseVectorString(lstDauSachVector[i], 1);
-			Insert(*dauSach, this->size);
-		}
-		delete[] lstDauSachVector;
-	}
-	catch (const exception& ex)
-	{
-		GoToXY(0, 0);
-		cout << ex.what();
-		return false;
-	}
-	return true;
-}
-// Ghi du lieu dau sach ra file text
-bool LIST_DAUSACH::WriteToFile(string path)
-{
-	auto fileHandler = FILEHANDLER(path);
-	try
-	{
-		int c = 0;
-		string* data = NULL;
-		for (auto i = 0; i < this->size; i++)
-		{
-			auto temp = this->nodes[i]->ToStringFile();
-			if (i < this->size - 1)
-				temp += '\n';
-			//data.push_back(temp);
-			PushBack(data, temp, c);
-		}
-		fileHandler.WriteToFile(data, Replace, c);
-		delete[] data;
-	}
-	catch (const exception& ex)
-	{
-		GoToXY(0, 0);
-		cout << ex.what();
-		return false;
-	}
-	return true;
-}
-// Return true if list full (1000)
-bool LIST_DAUSACH::IsFull()
-{
-	return this->size == SODAUSACH_MAX;
-}
-// Return true if list empty
-bool LIST_DAUSACH::IsEmpty()
-{
-	return this->size == 0;
-}
-// kiem tra dau sach da ton tai isbn hay chua
-bool LIST_DAUSACH::IsContainISBN(char isbn[ISBN_MAXSIZE + 1])
-{
-	for (int i = 0; i < this->size; i++)
-	{
-		if (strcmp(this->nodes[i]->isbn, isbn) == 0)
-			return true;
-	}
-	return false;
-}
-// DAUSACH phai dung tham bien (&) vi neu dung tham tri thi node se mat sau khi ra khoi ham
-// Do dac tinh cua tham tri la copy vo node
-bool LIST_DAUSACH::Insert(DAUSACH& node, int index)
-{
-	if (index < 0 || index > SODAUSACH_MAX || IsFull() || IsContainISBN(node.isbn))
-	{
-		return false;
-	}
-	for (int pos = size - 1; pos >= index; pos--)
-	{
-		nodes[pos + 1] = nodes[pos];
-	}
-	if (!IsContainTheLoai(node.tenTheLoai))
-	{
-		//dsTheLoai.push_back(node.tenTheLoai);
-		PushBack(this->dsTheLoai, node.tenTheLoai, this->soTheLoai);
-	}
-	nodes[index] = &node;
-	size++;
-	return true;
-}
-// tim theo ten sach
-DAUSACH* LIST_DAUSACH::FindBooks(string tenSach, int& count)
-{
-	DAUSACH* result = NULL;
-	if (tenSach != "")
-	{
-		string toLowerName = ToLowerString(tenSach);
-		string* listKey = Split(toLowerName, " ");
-
-		for (int i = 0; i < this->size; i++)
-		{
-			string toLowerTenSach = ToLowerString(this->nodes[i]->tenSach);
-			size_t found = toLowerTenSach.find(toLowerName);
-			if (found != string::npos)
-			{
-				PushBack(result, *this->nodes[i], count);
-			}
-		}
-		auto tenSachAsChar = StringToCharArray(tenSach);
-		int wordCount = WordCount(tenSachAsChar);
-		delete[] tenSachAsChar;
-		for (int j = 0; j < wordCount; j++)
-		{
-			for (int i = 0; i < this->size; i++)
-			{
-				string toLowerTenSach = ToLowerString(this->nodes[i]->tenSach);
-				size_t found = toLowerTenSach.find(listKey[j]);
-				if (found != string::npos || toLowerTenSach == listKey[j])
-				{
-					int dem = 0;
-					for (int k = 0; k < count; k++)
-					{
-						string temp = this->nodes[i]->isbn;
-						if (result[k].isbn == temp)
-						{
-							dem++;
-						}
-					}
-					if (dem == 0)
-					{
-						PushBack(result, *this->nodes[i], count);
-					}
-				}
-			}
-		}
-		delete[] listKey;
-	}
-	return result;
-}
-// In tat ca Dau sach tim dc ra mh
+// ...
 string LIST_DAUSACH::PrintAllSearch(MYPOINT location, string tenSach, Menu_Mode mode)
 {
 	int page = 0;
@@ -1064,115 +971,250 @@ string LIST_DAUSACH::PrintAllSearch(MYPOINT location, string tenSach, Menu_Mode 
 		} while (!_kbhit());
 	}
 	return "Empty";
-	//string* datas = NULL;
-	//int* rows = NULL;
-	//MYPOINT backUpLocation = MYPOINT(0, 0);
-
-	//// print label
-	//if (tenSach == "")
-	//{
-	//	PrintLabelDauSach(location, totalLine);
-	//	location.y += 3;
-	//	backUpLocation = location;
-	//}
-	//else
-	//{
-	//	if (mode == Menu_Mode::Show_Only || mode == Menu_Mode::Both)
-	//	{
-	//		if (totalLine == 0) return "Empty";
-
-	//		PrintLabelDauSach(location, totalLine);
-	//		location.y += 3;
-	//		backUpLocation = location;
-	//		// print data
-	//		int c1 = 0;
-	//		int c2 = 0;
-	//		for (int i = 0; i < totalLine; i++)
-	//		{
-	//			listISBN[i].Print(location, BG_COLOR, TEXT_INPUT_COLOR);
-	//			// neu la dong dau tien thi hight light len
-	//			if (location.y == backUpLocation.y && mode == Menu_Mode::Both)
-	//			{
-	//				listISBN[i].Print(location, hlBGColor, hlTextColor);
-	//			}
-	//			// luu lai vi tri dong
-	//			//rows.push_back(location.y++);
-	//			//datas.push_back(listISBN[i].ToString());
-	//			PushBack(rows, location.y++, c1);
-	//			PushBack(datas, listISBN[i].ToString(), c2);
-	//		}
-
-	//	}
-	//	// bat phim
-	//	if (mode == Menu_Mode::Both)
-	//	{
-	//		currentLine = 0;
-	//		char inputKey = NULL;
-	//		HidePointer();
-	//		do
-	//		{
-	//			inputKey = _getch();
-	//			if (inputKey == Key::_NULL) inputKey = _getch();
-	//			if (inputKey == -32)
-	//			{
-	//				inputKey = _getch();
-	//				if (inputKey == Key::UP)
-	//				{
-	//					if (currentLine > 0)
-	//					{
-	//						GoToXY(location.x, rows[currentLine]);
-	//						HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
-	//						GoToXY(location.x, rows[--currentLine]);
-	//						HightLight(datas[currentLine], hlBGColor, hlTextColor);
-	//					}
-	//					else
-	//					{
-	//						GoToXY(location.x, rows[currentLine]);
-	//						HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
-	//						currentLine = totalLine - 1;
-	//						GoToXY(location.x, rows[currentLine]);
-	//						HightLight(datas[currentLine], hlBGColor, hlTextColor);
-	//					}
-	//				}
-	//				else if (inputKey == Key::DOWN)
-	//				{
-	//					if (currentLine < totalLine - 1)
-	//					{
-	//						GoToXY(location.x, rows[currentLine]);
-	//						HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
-	//						GoToXY(location.x, rows[++currentLine]);
-	//						HightLight(datas[currentLine], hlBGColor, hlTextColor);
-	//					}
-	//					else
-	//					{
-	//						GoToXY(location.x, rows[currentLine]);
-	//						HightLight(datas[currentLine], BG_COLOR, TEXT_INPUT_COLOR);
-	//						currentLine = 0;
-	//						GoToXY(location.x, rows[currentLine]);
-	//						HightLight(datas[currentLine], hlBGColor, hlTextColor);
-	//					}
-	//				}
-	//			}
-	//			if (inputKey == Key::ENTER)
-	//			{
-	//				RECTANGLE rect = { { location.x + (int)DAUSACH_TOTAL_WIDTH + 1, y } , {DMS_TOTAL_WIDTH, 20} };
-	//				ClearArea(rect.location.x, rect.location.y, rect.size.width, rect.size.height);
-
-	//				string temp = listISBN[currentLine].dsSach.PrintAll({ location.x + (int)DAUSACH_TOTAL_WIDTH + 1, y }, Menu_Mode::Show_Only);
-	//			}
-	//			else if (inputKey == Key::ESC)
-	//			{
-	//				delete[] listISBN;
-	//				delete[] rows;
-	//				delete[] datas;
-	//				return "ESC";
-	//			}
-	//		} while (!_kbhit());
-	//	}
-	//}
-	//return "";
 }
-// tim vi tri cua dau sach theo ISBN
+
+#pragma endregion
+
+#pragma region --------------------DOC GHI FILE
+
+/// <summary>
+/// Đọc LIST_DAUSACH từ file text
+/// </summary>
+/// <param name="path">Đường dẫn tới file</param>
+/// <returns>true nếu file tồn tại</returns>
+bool LIST_DAUSACH::ReadFromFile(string path)
+{
+	auto fileHandler = FILEHANDLER(path);
+	try
+	{
+		int size = 0;
+		auto lstDauSachVector = fileHandler.GetTokens(size);
+		for (int i = 0; i < size; i++)
+		{
+			DAUSACH* dauSach = new DAUSACH;
+			*dauSach = ParseVectorString(lstDauSachVector[i], 1);
+			Insert(*dauSach, this->size);
+		}
+		delete[] lstDauSachVector;
+	}
+	catch (const exception& ex)
+	{
+		GoToXY(0, 0);
+		cout << ex.what();
+		return false;
+	}
+	return true;
+}
+
+/// <summary>
+/// Ghi LIST_DAUSACH ra file text
+/// </summary>
+/// <param name="path">Đường dẫn tới file</param>
+/// <returns>true nếu ghi file thành công</returns>
+bool LIST_DAUSACH::WriteToFile(string path)
+{
+	auto fileHandler = FILEHANDLER(path);
+	try
+	{
+		int c = 0;
+		string* data = NULL;
+		for (auto i = 0; i < this->size; i++)
+		{
+			auto temp = this->nodes[i]->ToStringFile();
+			if (i < this->size - 1)
+				temp += '\n';
+			//data.push_back(temp);
+			PushBack(data, temp, c);
+		}
+		fileHandler.WriteToFile(data, Replace, c);
+		delete[] data;
+	}
+	catch (const exception& ex)
+	{
+		GoToXY(0, 0);
+		cout << ex.what();
+		return false;
+	}
+	return true;
+}
+
+#pragma endregion
+
+/// <summary>
+/// Hàm hủy toàn bộ DAUSACH khỏi RAM
+/// </summary>
+void LIST_DAUSACH::Deconstructor()
+{
+	for (int i = 0; i < this->size; i++)
+	{
+		delete this->nodes[i];
+		this->nodes[i] = NULL;
+	}
+}
+
+/// <summary>
+/// In danh sách DAUSACH của toàn bộ DAUSACH
+/// </summary>
+/// <param name="location">Location</param>
+/// <returns>true nếu Thể loại đó tồn tại</returns>
+bool LIST_DAUSACH::IsContainTheLoai(string theLoai)
+{
+	string theLoaiAsLower = ToLowerString(theLoai);
+	for (int i = 0; i < this->size; i++)
+	{
+		if (ToLowerString(this->nodes[i]->tenTheLoai) == theLoaiAsLower) return true;
+	}
+	return false;
+}
+
+/// <summary>
+/// Lấy danh sách DAUSACH dựa vào Thể Loại
+/// </summary>
+/// <param name="tenTheLoai">Tên thể loại cần lấy</param>
+/// <param name="count">Tham trị đếm số DAUSACH lấy được</param>
+/// <returns>Danh sách DAUSACH</returns>
+DAUSACH* LIST_DAUSACH::GetDauSachByTheLoai(string tenTheLoai, int& count)
+{
+	DAUSACH* result = NULL;
+	for (int i = 0; i < this->size; i++)
+	{
+		if (this->nodes[i]->tenTheLoai == tenTheLoai)
+		{
+			PushBack(result, *this->nodes[i], count);
+		}
+	}
+	return result;
+}
+
+/// <summary>
+/// Lấy DAUSACH dựa vào ISBN
+/// </summary>
+/// <param name="isbn">ISBN cần lấy</param>
+/// <returns>NULL nếu không có DAUSACH thuộc ISBN</returns>
+DAUSACH* LIST_DAUSACH::GetDauSach(char isbn[ISBN_MAXSIZE + 1])
+{
+	for (DAUSACH* dauSach : this->nodes)
+	{
+		if (strcmp(dauSach->isbn, isbn) == 0)
+			return dauSach;
+	}
+	return NULL;
+}
+
+/// <summary>
+/// Kiểm tra LIST_DAUSACH đầy chưa (1000)
+/// </summary>
+/// <returns>true nếu đầy</returns>
+bool LIST_DAUSACH::IsFull()
+{
+	return this->size == SODAUSACH_MAX;
+}
+
+/// <summary>
+/// Kiểm tra LIST_DAUSACH rỗng
+/// </summary>
+/// <returns>true nếu rỗng</returns>
+bool LIST_DAUSACH::IsEmpty()
+{
+	return this->size == 0;
+}
+
+/// <summary>
+/// Kiểm tra LIST_DAUSACH đã tồn tại ISBN hay chưa
+/// </summary>
+/// <param name="isbn">ISBN cần kiểm tra</param>
+/// <returns>true nếu tồn tại</returns>
+bool LIST_DAUSACH::IsContainISBN(char isbn[ISBN_MAXSIZE + 1])
+{
+	for (int i = 0; i < this->size; i++)
+	{
+		if (strcmp(this->nodes[i]->isbn, isbn) == 0)
+			return true;
+	}
+	return false;
+}
+
+/// <summary>
+/// Thêm DAUSACH vào LIST_DAUSACH
+/// DAUSACH phải dùng tham biến (&) vì nếu dùng tham trị thì node sẽ mất sau khi ra khỏi hàm
+/// </summary>
+/// <param name="node">DAUSACH cần thêm</param>
+/// <param name="index">Vị trí cần thêm</param>
+/// <returns>true nếu Insert thành công</returns>
+bool LIST_DAUSACH::Insert(DAUSACH& node, int index)
+{
+	if (index < 0 || index > SODAUSACH_MAX || IsFull() || IsContainISBN(node.isbn))
+	{
+		return false;
+	}
+	for (int pos = size - 1; pos >= index; pos--)
+	{
+		nodes[pos + 1] = nodes[pos];
+	}
+	if (!IsContainTheLoai(node.tenTheLoai))
+	{
+		PushBack(this->dsTheLoai, node.tenTheLoai, this->soTheLoai);
+	}
+	nodes[index] = &node;
+	size++;
+	return true;
+}
+
+// ...
+DAUSACH* LIST_DAUSACH::FindBooks(string tenSach, int& count)
+{
+	DAUSACH* result = NULL;
+	if (tenSach != "")
+	{
+		string toLowerName = ToLowerString(tenSach);
+		string* listKey = Split(toLowerName, " ");
+
+		for (int i = 0; i < this->size; i++)
+		{
+			string toLowerTenSach = ToLowerString(this->nodes[i]->tenSach);
+			size_t found = toLowerTenSach.find(toLowerName);
+			if (found != string::npos)
+			{
+				PushBack(result, *this->nodes[i], count);
+			}
+		}
+		auto tenSachAsChar = StringToCharArray(tenSach);
+		int wordCount = WordCount(tenSachAsChar);
+		delete[] tenSachAsChar;
+		for (int j = 0; j < wordCount; j++)
+		{
+			for (int i = 0; i < this->size; i++)
+			{
+				string toLowerTenSach = ToLowerString(this->nodes[i]->tenSach);
+				size_t found = toLowerTenSach.find(listKey[j]);
+				if (found != string::npos || toLowerTenSach == listKey[j])
+				{
+					int dem = 0;
+					for (int k = 0; k < count; k++)
+					{
+						string temp = this->nodes[i]->isbn;
+						if (result[k].isbn == temp)
+						{
+							dem++;
+						}
+					}
+					if (dem == 0)
+					{
+						PushBack(result, *this->nodes[i], count);
+					}
+				}
+			}
+		}
+		delete[] listKey;
+	}
+	return result;
+}
+
+/// <summary>
+/// Tìm index của DAUSACH theo ISBN
+/// </summary>
+/// <param name="isbn">ISBN cần tìm</param>
+/// <returns>-1 nếu ISBN không tồn tại</returns>
 int LIST_DAUSACH::GetLocateDauSach(char isbn[ISBN_MAXSIZE + 1])
 {
 	for (int i = 0; i < this->size; i++)
@@ -1184,7 +1226,10 @@ int LIST_DAUSACH::GetLocateDauSach(char isbn[ISBN_MAXSIZE + 1])
 	}
 	return -1;
 }
-// cap nhat dsTheLoai moi khi xoa 1 dau sach
+
+/// <summary>
+/// Cập nhật danh sách thể loại khi Thêm, Xóa và Sửa DAUSACH
+/// </summary>
 void LIST_DAUSACH::INotifyDSTheLoai()
 {
 	int c = this->soTheLoai;
@@ -1199,7 +1244,12 @@ void LIST_DAUSACH::INotifyDSTheLoai()
 		}
 	}
 }
-// xoa dau sach theo isbn
+
+/// <summary>
+/// Xóa DAUSACH dựa vào ISBN
+/// </summary>
+/// <param name="isbn">ISBN của DAUSACH cần xóa</param>
+/// <returns>true nếu xóa thành công</returns>
 bool LIST_DAUSACH::DeleteDauSach(char isbn[ISBN_MAXSIZE + 1])
 {
 	int position = this->GetLocateDauSach(isbn);
@@ -1229,71 +1279,86 @@ bool LIST_DAUSACH::DeleteDauSach(char isbn[ISBN_MAXSIZE + 1])
 	this->INotifyDSTheLoai();
 	return true;
 }
-// Quick Sort
-void SortTop10(TOPSACH* top10, int q, int r)
+
+#pragma endregion
+
+/// <summary>
+/// Chuyển list string thành object DAUSACH
+/// </summary>
+/// <param name="data">List string</param>
+/// <param name="mode">Mode = 1: Thêm field SoLuotMuon</param>
+/// <returns>DAUSACH</returns>
+DAUSACH ParseVectorString(string* data, int mode = 0)
 {
-	TOPSACH temp;
-	int i = q;
-	int j = r;
-	//Lấy phần tử giữa của dãy cần sắp thứ tự làm chốt
-	int x = top10[(q + r) / 2].soSachMuon;
-
-	do
-	{  // Phân đoạn dãy con a[q],..., a[r]
-		while (top10[i].soSachMuon > x)
-			i++; //Tìm phần tử đầu tiên có trị nhỏ hơn hay bằng x 
-		while (top10[j].soSachMuon < x)
-			j--; //Tìm phần tử đầu tiên có trị lớn hơn hay bằng x
-
-		if (i <= j)   // Hoan vi
-		{
-			temp = top10[i];
-			top10[i] = top10[j];
-			top10[j] = temp;
-			i++;
-			j--;
-		}
-	} while (i <= j);
-
-	if (q < j) 	// phần thứ nhất có từ 2 phần tử trở lên
-		SortTop10(top10, q, j);
-	if (i < r)   	// phần thứ ba có từ 2 phần tử trở lên
-		SortTop10(top10, i, r);
+	DAUSACH dauSach;
+	StringToCharArray(data[0], dauSach.isbn);
+	dauSach.tenSach = data[1];
+	FormatWord(dauSach.tenSach);
+	dauSach.soTrang = stoi(data[2]);
+	dauSach.tenTacGia = data[3];
+	FormatName(dauSach.tenTacGia);
+	dauSach.namXuatBan = stoi(data[4]);
+	dauSach.tenTheLoai = data[5];
+	FormatWord(dauSach.tenTheLoai);
+	if (mode == 1)
+		dauSach.soLuotMuon = stoi(data[6]);
+	return dauSach;
 }
-int RemoveDuplicatesInSortedArray(TOPSACH* sortedArr, int sizeOfArr)
+
+/// <summary>
+/// Hiện form nhập DAUSACH
+/// </summary>
+/// <param name="listDS">Kiểm tra ISBN xem có trùng không</param>
+/// <param name="rect">Khung nhập sách</param>
+/// <returns>DAUSACH</returns>
+DAUSACH InputDauSach(LIST_DAUSACH listDS, RECTANGLE rect)
 {
-	// Return, if array is empty
-	// or contains a single element
-	if (sizeOfArr == 0 || sizeOfArr == 1)
-		return sizeOfArr;
+	string labels[] = { "ISBN:","Ten sach:","So trang:","Tac gia:", "Nam xuat ban:","The loai:" };
+	string inputTitle = "NHAP THONG TIN DAU SACH";
+	CONDITION conditions[] = { {Number_Only, ISBN_MAXSIZE, ISBN_MAXSIZE}, {All, 1, TENSACH_MAXSIZE},{Number_Only, 1, SOTRANG_MAXKYTU},
+													{Name, 1, TENTACGIA_MAXSIZE},{Year, 4, 4},{Word_Only, 1, TENTHELOAI_MAXSIZE} };
+	auto form = FORMINPUT(labels, conditions, rect, inputTitle, 6);
+	string guilds[] = { "DAY SO CO 6 CHU SO", "TAT CA KY TU", "SO TRANG TU [1, 999999]", "CHI NHAP CHU CAI",
+													"PHAI NHO HON NAM HIEN TAI", "CHI NHAP CHU CAI" };
+	form.Guilds = guilds;
+	DAUSACH dauSach = DAUSACH();
+	string* tempData = form.OutputResults;
 
-	TOPSACH* newArr = new TOPSACH[sizeOfArr];
-
-	// Start traversing elements
-	int newSize = 0;
-	for (int i = 0; i < sizeOfArr - 1; i++)
+	while (true)
 	{
-		// If current element is not equal
-		// to next element then store that
-		// current element
-		if (sortedArr[i].soSachMuon != sortedArr[i + 1].soSachMuon)
+		form.OutputResults = tempData;
+		if (form.Show())
 		{
-			newArr[newSize++] = sortedArr[i];
+			dauSach = ParseVectorString(form.OutputResults);
+			if (listDS.IsContainISBN(dauSach.isbn))
+			{
+				GoToXY(form.cols[0] - 6, form.rows[0] + 1);
+				SetTextColor(WARNING_TEXT_COLOR);
+				cout << "ISBN da bi trung";
+				form.currentLine = 0;
+				tempData = form.OutputResults;
+			}
+			else
+			{
+				delete[] tempData;
+				return dauSach;
+			}
+		}
+		else
+		{
+			form.ResetOutput();
+			delete[] tempData;
+			break;
 		}
 	}
-	// Store the last element as whether
-	// it is unique or repeated, it hasn't
-	// stored previously
-	newArr[newSize++] = sortedArr[sizeOfArr - 1];
-
-	int result;
-	if (newSize > 9)
-		result = newArr[9].soSachMuon;
-	else
-		result = newArr[newSize - 1].soSachMuon;
-	delete[] newArr;
-	return result;
+	return dauSach;
 }
+
+/// <summary>
+/// 
+/// </summary>
+/// <param name=""></param>
+/// <returns>void</returns>
 string PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
 {
 	string emptyTemplate = "";
@@ -1336,7 +1401,7 @@ string PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
 
 	if (count != 0)
 		SortTop10(top10, 0, count - 1);
-	int minOfTop10 = RemoveDuplicatesInSortedArray(top10, count);
+	int minOfTop10 = RemoveDuplicatesInSortedTopSach(top10, count);
 	int sizeOfTop10 = 0;
 	for (int i = 0; i < count; i++)
 	{
@@ -1423,4 +1488,3 @@ string PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
 	} while (!_kbhit());
 	return "";
 }
-#pragma endregion
