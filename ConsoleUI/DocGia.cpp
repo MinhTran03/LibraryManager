@@ -1425,6 +1425,21 @@ bool WriteMaDGToFile(string path, LIST_DOCGIA listDG)
 }
 
 /// <summary>
+/// Thực hiện ghi LIST_MUONTRA của từng DOCGIA ra file text
+/// </summary>
+/// <param name="listMT">LIST_MUONTRA cần lưu</param>
+/// <param name="maDG">Mã DOCGIA làm tên file</param>
+/// <param name="defaultPath">Đường dẫn mặc định file debug</param>
+/// <returns>true nếu ghi thành công</returns>
+bool WriteMuonTraToFile(LIST_MUONTRA& listMT, string maDG, string defaultPath)
+{
+	defaultPath += MUONTRA_FILE_PATH;
+	defaultPath += maDG;
+	defaultPath += ".txt";
+	return listMT.WriteToFile(defaultPath);
+}
+
+/// <summary>
 /// Duyệt cây DOCGIA ghi LIST_MUONTRA của từng DOCGIA ra file text
 /// </summary>
 /// <param name="lstDG">LIST_DOCGIA chứa LIST_MUONTRA cần lưu</param>
@@ -1437,14 +1452,27 @@ void DuyetLuuFileMuonTra(LIST_DOCGIA lstDG, string defaultPath)
 		if (lstDG->data.listMuonTra.IsEmpty() == false)
 		{
 			string maAsString = to_string(lstDG->data.maDocGia);
-			defaultPath += MUONTRA_FILE_PATH;
-			defaultPath += maAsString;
-			defaultPath += ".txt";
-			lstDG->data.listMuonTra.WriteToFile(defaultPath);
+			//MergeWordWithNumber(maAsString, lstDG->data.maDocGia, 4);
+			WriteMuonTraToFile(lstDG->data.listMuonTra, maAsString, defaultPath);
 		}
 		DuyetLuuFileMuonTra(lstDG->pLeft, defaultPath);
 		DuyetLuuFileMuonTra(lstDG->pRight, defaultPath);
 	}
+}
+
+/// <summary>
+/// Thực hiện đọc LIST_MUONTRA của từng DOCGIA trong file text
+/// </summary>
+/// <param name="listMT">LIST_MUONTRA cần lưu</param>
+/// <param name="maDG">Mã DOCGIA để lấy tên file</param>
+/// <param name="defaultPath">Đường dẫn mặc định file debug</param>
+/// <returns>true nếu đọc thành công</returns>
+bool ReadMuonTraFromFile(LIST_MUONTRA& listMT, string maDG, string path)
+{
+	path += MUONTRA_FILE_PATH;
+	path += maDG;
+	path += ".txt";
+	return listMT.ReadFromFile(path);
 }
 
 /// <summary>
@@ -1458,13 +1486,9 @@ void DuyetDocFileMuonTra(LIST_DOCGIA& lstDG, string path)
 	if (lstDG != NULL)
 	{
 		DuyetDocFileMuonTra(lstDG->pLeft, path);
-
 		string maAsString = to_string(lstDG->data.maDocGia);
-		path += MUONTRA_FILE_PATH;
-		path += maAsString;
-		path += ".txt";
-		lstDG->data.listMuonTra.ReadFromFile(path);
-
+		//MergeWordWithNumber(maAsString, lstDG->data.maDocGia, 4);
+		ReadMuonTraFromFile(lstDG->data.listMuonTra, maAsString, path);
 		DuyetDocFileMuonTra(lstDG->pRight, path);
 	}
 }
