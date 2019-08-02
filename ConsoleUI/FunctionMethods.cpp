@@ -387,6 +387,7 @@ void HienThiDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 // Func 1 1
 void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 {
+	// Create Empty Line
 	string emptyTemplate = "";
 	emptyTemplate = emptyTemplate + char(179) + string(ISBN_WIDTH, ' ');
 	emptyTemplate = emptyTemplate + char(179) + string(TENSACH_WIDTH, ' ');
@@ -395,40 +396,50 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 	emptyTemplate = emptyTemplate + char(179) + string(NAMXUATBAN_WIDTH, ' ');
 	emptyTemplate = emptyTemplate + char(179) + string(TENTHELOAI_WIDTH, ' ');
 	emptyTemplate = emptyTemplate + char(179);
+
 	int page = 0;
+	MYPOINT locationBtn = location;
+
+	// In tất cả đầu sách, trả về ISBN người dùng chọn
 	string selectedISBN = listDS.PrintAll(location, page, Show_Only);
 	char* isbnAsArr = StringToCharArray(selectedISBN);
-	auto locationBtn = location;
-	// xem = mat
+
+	// Tinh chỉnh vị trí button = mắt
 	locationBtn.x += 30;
 	locationBtn.y += 25;
 	MENU menu = MENU({ "THEM", "XOA", "SUA" }, locationBtn);
 	menu.btnSize = { 10,3 };
+
 	while (true)
 	{
-		int selected = menu.ShowInHorizontal(Menu_Mode::Both);
+		// Hiện menu button
+		int selectedButton = menu.ShowInHorizontal(Menu_Mode::Both);
 
-		if (selected == Key::PAGE_UP && page > 0)
+		if (selectedButton == Key::PAGE_UP && page > 0)
 		{
 			page--;
 			selectedISBN = listDS.PrintAll(location, page, Show_Only);
 		}
-		else if (selected == Key::PAGE_DOWN)
+		else if (selectedButton == Key::PAGE_DOWN)
 		{
 			page++;
 			selectedISBN = listDS.PrintAll(location, page, Show_Only);
 		}
-		// Them
-		else if (selected == 0)
+
+		// Thêm
+		else if (selectedButton == 0)
 		{
 			auto newDauSach = new DAUSACH();
+
+			// Hiện form tạo đầu sách mới
 			*newDauSach = InputDauSach(listDS, { {(int)DAUSACH_TOTAL_WIDTH + 2 + location.x, location.y}, {60, 18} });
-			// nguoi dung an CANCEL
+
+			// CANCEL nhập DAUSACH
 			if (newDauSach->isbn[0] == '\0')
 			{
 				delete newDauSach;
 			}
-			// ng dung Luu dau sach
+			// SAVE DAUSACH
 			else
 			{
 				if (listDS.Insert(*newDauSach, listDS.size))
@@ -437,25 +448,26 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 				}
 			}
 		}
-		// Xoa
-		else if (selected == 1)
+		// Xóa
+		else if (selectedButton == 1)
 		{
 			while (true)
 			{
-				// Het dau sach
-				if (listDS.size == 0)
+				// Kiểm tra nếu LIST_DAUSACH rỗng => chỉ Show
+				if (listDS.IsEmpty())
 				{
 					selectedISBN = listDS.PrintAll(location, page, Show_Only);
 					break;
 				}
 
+				// Hiện toàn bộ DAUSACH và bắt phím trả về ISBN người dùng chọn
 				selectedISBN = listDS.PrintAll(location, page, Menu_Mode::Both);
-				//ClearLine(1);
 				isbnAsArr = StringToCharArray(selectedISBN);
+
 				if (selectedISBN == "ESC")
 				{
-					// load lai data
-					auto tempLoc = location;
+					// In lại danh sách để xóa HighLight
+					MYPOINT tempLoc = location;
 					tempLoc.y += 3;
 					for (int i = 0; i < listDS.size; i++)
 					{
@@ -467,25 +479,27 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 					}
 					break;
 				}
-				// ng dung an enter de xoa
-				else
+				// Người dùng ấn Enter để xóa
+				else if(selectedISBN != "TAB")
 				{
 					auto confirm = CONFIRMDIALOG({ 30, 7 });
 					confirm.Show("Ban chac chan muon xoa?", Yes_No);
 					confirm.Clear();
-					// dong y xoa
+
+					// Đồng ý xóa
 					if (confirm.result == Yes)
 					{
-						// dau sach khong duoc phep xoa
+						// Đầu sách không được phép xóa
 						if (listDS.GetDauSach(isbnAsArr)->dsSach.CanDelete() == false)
 						{
 							selectedISBN = listDS.PrintAll(location, page, Menu_Mode::Show_Only);
 							MakeFlickWarning({ locationBtn.x - 5, 0 }, WARNING_CANT_DELETE_DS);
 						}
+						// Đầu sách được phép xóa
 						else
 						{
-							// da cap nhat ds the loai trong DeleteDauSach
 							listDS.DeleteDauSach(isbnAsArr);
+
 							int temp = 0;
 							if (listDS.size % MAX_ROW_PER_PAGE != 0) temp = 1;
 							else if (listDS.size % MAX_ROW_PER_PAGE == 0 && page == listDS.size / MAX_ROW_PER_PAGE)
@@ -503,21 +517,24 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 				}
 			}
 		}
-		// Sua
-		else if (selected == 2)
+		// Sửa
+		else if (selectedButton == 2)
 		{
-			//menu.ShowDisableModeInHorizontal();
 			while (true)
 			{
-				if (listDS.size == 0)
+				// Kiểm tra nếu LIST_DAUSACH rỗng => chỉ Show
+				if (listDS.IsEmpty())
 				{
 					break;
 				}
+
+				// Hiện toàn bộ DAUSACH và bắt phím trả về ISBN người dùng chọn
 				selectedISBN = listDS.PrintAll(location, page, Menu_Mode::Both);
 				isbnAsArr = StringToCharArray(selectedISBN);
+
 				if (selectedISBN == "ESC")
 				{
-					// load lai data
+					// In lại danh sách để xóa HighLight
 					auto tempLoc = location;
 					tempLoc.y += 3;
 					for (int i = 0; i < listDS.size; i++)
@@ -531,10 +548,13 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 					}
 					break;
 				}
+				// Người dùng ấn Enter để xóa
 				else
 				{
-					auto fixDauSach = listDS.GetDauSach(isbnAsArr);
+					// Lấy ra DAUSACH cần sửa
+					DAUSACH* fixDauSach = listDS.GetDauSach(isbnAsArr);
 
+					// Hiện form sửa DAUSACH
 					*fixDauSach = InputFixDauSach(listDS, { {DAUSACH_TOTAL_WIDTH + 2, location.y}, {50, 18} }, *fixDauSach);
 
 					// cap nhat dsDauSach
@@ -542,7 +562,8 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 				}
 			}
 		}
-		else if (selected == Key::ESC)
+		// Thoát
+		else if (selectedButton == Key::ESC)
 		{
 			ClearScreen(BG_COLOR);
 			break;
@@ -934,46 +955,52 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 	bool isTrue = false;
 	bool isReload = false;
 	string searchKey = "";
-	//DrawMessageBox(point, "NHAP MA DOC GIA", searchKey, isEnter, isCancel, char(219), Show_Only);
 	while (true)
 	{
 		isEnter = false;
 		isCancel = false;
 		isTrue = false;
+
+		// Xóa thông tin DOCGIA trước đó
 		ClearArea(0, point.y + 8, 170, SCREEN_HEIGHT - FOOTER_HEIGHT - point.y - 8);
-		//ClearLine(1);
+		// Form nhập mã DOCGIA
 		DrawMessageBox(point, "NHAP MA DOC GIA", searchKey, isEnter, isCancel, char(219), Both, 4);
+
 		if (isEnter)
 		{
-			// chua kiem tra searchKey
+			// Kiểm tra maDocGia truyền vô là số và không được để trống
 			if (!IsNumber(searchKey) || searchKey == "")
 			{
 				MakeFlickWarning({ point.x + 21 - (((int)searchKey.size() + 25) / 2), point.y - 2 }, "MA DOC GIA KHONG HOP LE");
 				continue;
 			}
-			auto docGiaSearch = Search(listDG, stoi(searchKey));
-			// khong tim thay
+
+			NODE_DOCGIA* docGiaSearch = Search(listDG, stoi(searchKey));
+
+			// Không tìm thấy
 			if (docGiaSearch == NULL)
 			{
 				MakeFlickWarning({ point.x + 21 - (((int)searchKey.size() + 25) / 2), point.y - 2 }, "KHONG TIM THAY DOC GIA: " + searchKey);
 			}
-			// tiim thay
+			// Tìm thấy
 			else
 			{
 				DrawMessageBox(point, "NHAP MA DOC GIA", searchKey, isEnter, isCancel, char(219), Show_Only, 4);
-				// hien thi thong tin doc gia
+
+				// Hiển thị thông tin DOCGIA
 				RECTANGLE rect = { {location.x + 61, location.y + 8}, {45, 11} };
 				DocGiaInfo(rect, docGiaSearch->data);
 
-				// hien thi cac sach doc gia muon
+				// Hiển thị các sách DOCGIA mượn
 				string maSachSelect = docGiaSearch->data.listMuonTra.Show(listDS, { 20, 23 }, Show_Only);
 
-				// menu
-				auto locationBtn = location;
+				// Setup menu
+				MYPOINT locationBtn = location;
 				locationBtn.x = point.x - 12;
 				locationBtn.y += 31;
 				MENU menu = MENU({ "MUON SACH", "TRA SACH", "BAO MAT SACH" }, locationBtn);
 				menu.btnSize = { 20, 3 };
+
 				while (true)
 				{
 					if (isReload)
@@ -987,18 +1014,23 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 
 						isReload = false;
 					}
-					int selected = menu.ShowInHorizontal(Menu_Mode::Both);
-					//ClearLine(22);
 
-					// muon sach
+					// Hiện menu và bắt phím
+					int selected = menu.ShowInHorizontal(Menu_Mode::Both);
+
+					// Mượn sách
 					if (selected == 0)
 					{
+						// Kiểm tra DOCGIA có được mượn sách
 						auto result = docGiaSearch->data.IsMuonSach();
+
+						// Được mượn
 						if (result == Accept)
 						{
 							MuonSach(*docGiaSearch, listDS);
 							isReload = true;
 						}
+						// Báo lỗi cụ thể không được mượn
 						else
 						{
 							switch (result)
@@ -1020,7 +1052,7 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 							}
 						}
 					}
-					// tra sach
+					// Trả sách
 					else if (selected == 1)
 					{
 						while (true)
@@ -1051,7 +1083,7 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 							}
 						}
 					}
-					// bao mat sach
+					// Báo mất sách
 					else if (selected == 2)
 					{
 						while (true)

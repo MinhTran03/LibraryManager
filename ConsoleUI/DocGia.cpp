@@ -555,7 +555,7 @@ void PrintLabelDocGia(MYPOINT location, int row)
 /// <returns>Phím được nhấn As String</returns>
 void PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode mode)
 {
-	// In Empty Line
+	// Create Empty Line
 	string emptyTemplate = "";
 	emptyTemplate = emptyTemplate + char(179) + string(MADOCGIA_WIDTH, ' ');
 	emptyTemplate = emptyTemplate + char(179) + string(HODOCGIA_WIDTH, ' ');
@@ -697,6 +697,7 @@ void SortStringDocGiaTheoTen(string*& listDG, string*& listName, int q, int r)
 /// <returns>Phím được nhấn As String</returns>
 void PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location, Menu_Mode mode)
 {
+	// Create Empty Line
 	string emptyTemplate = "";
 	emptyTemplate = emptyTemplate + char(179) + string(MADOCGIA_WIDTH, ' ');
 	emptyTemplate = emptyTemplate + char(179) + string(HODOCGIA_WIDTH, ' ');
