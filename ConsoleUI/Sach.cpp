@@ -1,7 +1,13 @@
-#include "Sach.h"
+﻿#include "Sach.h"
 
 #pragma region -------------------------------------------SACH
-// in ra node
+/// <summary>
+	/// Lấy ToString của đầu sách và in ra màn hình
+	/// </summary>
+	/// <param name="location">Vị trí in</param>
+	/// <param name="backColor">Màu nền</param>
+	/// <param name="textColor">Màu chữ</param>
+	/// <returns>void</returns>
 void SACH::Print(MYPOINT location, Color bgSelectColor, Color textColor)
 {
 	GoToXY(location.x, location.y);
@@ -9,7 +15,10 @@ void SACH::Print(MYPOINT location, Color bgSelectColor, Color textColor)
 	SetBGColor(bgSelectColor);
 	cout << SACH::ToString();
 }
-// chen | giua cac field
+/// <summary>
+/// In ra SACH dưới dạng list bang cach chen | giua cac field
+/// </summary>
+/// <returns>SACH as string in List</returns>
 string SACH::ToString()
 {
 	int temp;
@@ -47,7 +56,10 @@ string SACH::ToString()
 	result += char(179);
 	return result;
 }
-// chuyen object sach sach thanh string luu file
+/// <summary>
+/// Chuyển obj SACH thành line string để lưu vơ file text
+/// </summary>
+/// <returns>SACH as string in File</returns>
 string SACH::ToStringFile()
 {
 	string result = "";
@@ -72,7 +84,11 @@ string SACH::ToStringFile()
 	result += this->viTri;
 	return result;
 }
-//c chuyen vector<string> vo obj Sach
+/// <summary>
+/// Chuyen con tro Data string obj Sach
+/// </summary>
+/// <param name="data">Data SACH can chuyen</param>
+/// <returns>SACH</returns>
 SACH ParseVectorString(string* data)
 {
 	SACH sach;
@@ -86,6 +102,11 @@ SACH ParseVectorString(string* data)
 	sach.viTri = ToUpperString(data[2]);
 	return sach;
 }
+/// <summary>
+/// Chuyen con tro Data string obj Sach cho file
+/// </summary>
+/// <param name="data">Data SACH can chuyen</param>
+/// <returns>SACH</returns>
 SACH ParseVectorStringFile(string* data)
 {
 	SACH sach;
@@ -99,7 +120,12 @@ SACH ParseVectorStringFile(string* data)
 	sach.viTri = data[2];
 	return sach;
 }
-// hien form nhap SACH
+/// <summary>
+/// Hien form nhap SACH
+/// </summary>
+/// <param name="rect">kích thước hình chữ nhật dựa trên tọa độ x, y và width height</param>
+/// <param name="maSach">Mã sách truyền vào</param>
+/// <returns>SACH</returns>
 SACH SACH::Input(RECTANGLE rect, string maSach)
 {
 	string title = "NHAP THONG TIN SACH";
@@ -121,6 +147,11 @@ SACH SACH::Input(RECTANGLE rect, string maSach)
 	}
 	return *this;
 }
+/// <summary>
+/// Hien form sua sach SACH
+/// </summary>
+/// <param name="rect">kích thước hình chữ nhật dựa trên tọa độ x, y và width height</param>
+/// <returns>SACH</returns>
 SACH SACH::InputFix(RECTANGLE rect)
 {
 	string title = "CAP NHAT THONG TIN SACH";
@@ -143,7 +174,10 @@ SACH SACH::InputFix(RECTANGLE rect)
 	}
 	return *this;
 }
-// kiem tra sach co xoa duoc khong
+/// <summary>
+/// Kiem tra SACH co xoa duoc khong 
+/// </summary>
+/// <returns>bool</returns>
 bool SACH::CanDelete()
 {
 	return this->trangThai != DaMuon;
@@ -161,18 +195,28 @@ NODE_SACH::NODE_SACH(SACH& data)
 #pragma endregion
 
 #pragma region -------------------------------------------LIST_SACH
+/// <summary>
+/// Kiem tra LIST SACH co rong khong
+/// </summary>
+/// <returns>bool</returns>
 bool LIST_SACH::IsEmpty()
 {
 	return this->pHead == NULL;
 }
-// row la so dong data
+/// <summary>
+/// Dung ham Draw ve khung va Menu
+/// </summary>
+/// <returns>void</returns>
 void PrintLabelSach(MYPOINT location, int row)
 {
 	string labels[] = { "MA SACH", "TRANG THAI", "VI TRI" };
 	auto lstBorder = LISTBORDERTEXT(labels, 3);
 	lstBorder.Draw(location, { MASACH_WIDTH, TRANGTHAISACH_WIDTH, VITRI_WIDTH }, row, BORDER_COLOR);
 }
-// tinh kich co cua dslk
+/// <summary>
+/// Duyet lay kich co cua ds Sach
+/// </summary>
+/// <returns>int</returns>
 int LIST_SACH::Size()
 {
 	int count = 0;
@@ -182,7 +226,12 @@ int LIST_SACH::Size()
 	}
 	return count;
 }
-// In ra mh
+/// <summary>
+/// In danh sách SACH của toàn bộ LIST SACH
+/// </summary>
+/// <param name="location">Location</param>
+/// <param name="mode"> Lua chon giua cac che do hien thi</param>
+/// <returns>Phím người dùng ấn as string</returns>
 string LIST_SACH::PrintAll(MYPOINT location, Menu_Mode mode)
 {
 	Color hlBGColor = Color::Cyan;
@@ -298,7 +347,12 @@ string LIST_SACH::PrintAll(MYPOINT location, Menu_Mode mode)
 	}
 	return "NULL";
 }
-// In ra mh
+/// <summary>
+/// In ra man hinh SACH cho muon duoc
+/// </summary>
+/// <param name="location">Location</param>
+/// <param name="mode"> Lua chon giua cac che do hien thi </param>
+/// <returns>Phím người dùng ấn as string</returns>
 string LIST_SACH::PrintAllChoMuonDuoc(MYPOINT location, Menu_Mode mode)
 {
 	Color hlBGColor = Color::Cyan;
@@ -417,7 +471,10 @@ string LIST_SACH::PrintAllChoMuonDuoc(MYPOINT location, Menu_Mode mode)
 	}
 	return "NULL";
 }
-// Delete sach
+/// <summary>
+/// Delete SACH
+/// </summary>
+/// <returns>void</returns>
 void LIST_SACH::Deconstructor()
 {
 	while (this->pHead != NULL && this->pHead->pNext != NULL)
@@ -428,13 +485,19 @@ void LIST_SACH::Deconstructor()
 	}
 	this->pHead = this->pTail = NULL;
 }
-// constructor Init ds moi
+/// <summary>
+/// Constructor Init ds moi
+/// </summary>
 LIST_SACH::LIST_SACH()
 {
 	this->pHead = NULL;
 	this->pTail = NULL;
 }
-// Doc ds danh muc sach tu file. Moi file chua 1 dms cua 1 dau sach
+/// <summary>
+/// Doc ds danh muc sach tu file. Moi file chua 1 dms cua 1 dau sach
+/// </summary>
+/// <param name="path"> Duong dan file </param>
+/// <returns>bool</returns>
 bool LIST_SACH::ReadFromFile(string path)
 {
 	auto fileHandler = FILEHANDLER(path);
@@ -459,7 +522,11 @@ bool LIST_SACH::ReadFromFile(string path)
 	}
 	return true;
 }
-// Doc obj SACH tu file
+/// <summary>
+/// Doc obj SACH tu file
+/// </summary>
+/// <param name="path"> Duong dan file </param>
+/// <returns>bool</returns>
 bool LIST_SACH::WriteToFile(string path)
 {
 	auto fileHandler = FILEHANDLER(path);
@@ -486,7 +553,11 @@ bool LIST_SACH::WriteToFile(string path)
 	}
 	return true;
 }
-// Thuat toan tu sinh ma sach
+/// <summary>
+/// Thuat toan tu sinh ma sach
+/// </summary>
+/// <param name="isbn"> Ma ISBN dua tren ma dang co + them  </param>
+/// <returns>string</returns>
 string LIST_SACH::AutoGenerateMaSach(char isbn[ISBN_MAXSIZE + 1])
 {
 	string maSach = isbn;
@@ -504,7 +575,11 @@ string LIST_SACH::AutoGenerateMaSach(char isbn[ISBN_MAXSIZE + 1])
 	}
 	return maSach;
 }
-// Them vao cuoi ds sach
+/// <summary>
+/// Them vao cuoi ds sach
+/// </summary>
+/// <param name="node"> Node SACH chua </param>
+/// <returns>void</returns>
 void LIST_SACH::AddTail(NODE_SACH& node)
 {
 	if (this->pHead == NULL)
@@ -517,7 +592,11 @@ void LIST_SACH::AddTail(NODE_SACH& node)
 		this->pTail = &node;
 	}
 }
-// Tim sach theo ma
+/// <summary>
+/// Tim sach theo Ma SACH
+/// </summary>
+/// <param name="maSach"> Ma SACH can tim </param>
+/// <returns>NODE_SACH*</returns>
 NODE_SACH* LIST_SACH::Search(string maSach)
 {
 	for (auto node = this->pHead; node != NULL; node = node->pNext)
@@ -529,7 +608,10 @@ NODE_SACH* LIST_SACH::Search(string maSach)
 	}
 	return NULL;
 }
-// Xoa ptu dau tien trong dslk
+/// <summary>
+/// Xoa Node dau tien trong dslk
+/// </summary>
+/// <returns>bool</returns>
 bool LIST_SACH::DeleteFirst()
 {
 	if (this->IsEmpty()) return false;
@@ -539,7 +621,10 @@ bool LIST_SACH::DeleteFirst()
 	delete pNode;
 	return true;
 }
-// Xoa node sau 1 node p
+/// <summary>
+/// Xoa Node sau 1 Node p
+/// </summary>
+/// <returns>bool</returns>
 bool LIST_SACH::DeleteAfter(NODE_SACH* beforeNode)
 {
 	NODE_SACH* deleteNode;
@@ -554,7 +639,10 @@ bool LIST_SACH::DeleteAfter(NODE_SACH* beforeNode)
 
 	return true;
 }
-// Delete sach dua vao ma sach
+/// <summary>
+/// Xoa 1 sach dua vao Ma SACH
+/// </summary>
+/// <returns>bool</returns>
 bool LIST_SACH::Delete(string maSach)
 {
 	if (this->IsEmpty())
@@ -589,7 +677,10 @@ bool LIST_SACH::Delete(string maSach)
 	}
 	return true;
 }
-// Kiem tra LIST_SACH co xoa duoc hay khong
+/// <summary>
+/// Kiem tra LIST_SACH co xoa duoc hay khong
+/// </summary>
+/// <returns>bool</returns>
 bool LIST_SACH::CanDelete()
 {
 	for (auto node = this->pHead; node != NULL; node = node->pNext)
@@ -601,13 +692,20 @@ bool LIST_SACH::CanDelete()
 	}
 	return true;
 }
-// ...
+/// <summary>
+/// Su dung ham Split de loc bo phan duoi Ma SACH de lay Ma DAUSACH
+/// </summary>
+/// <param name="maSach"> Ma SACH can de lay MADAUSACH</param>
+/// <returns>string</returns>
 string GetMaDauSach(string maSach)
 {
 	auto temp = Split(maSach, "_");
 	return temp[0];
 }
-// kiem tra sach cho muon duoc
+/// <summary>
+/// Kiem tra SACH cho muon duoc
+/// </summary>
+/// <returns>bool</returns>
 bool LIST_SACH::IsChoMuonDuoc()
 {
 	for (auto p = this->pHead; p != NULL; p = p->pNext)

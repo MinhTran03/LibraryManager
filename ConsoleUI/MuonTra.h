@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Constants.h"
 #include "DateTime.h"
 #include "Structs.h"
@@ -17,16 +17,41 @@ struct MUONTRA
 	DATETIME ngayMuon; // key
 	DATETIME ngayTra;
 	TrangThaiMuonTra trangThai;
-
+	/// <summary>
+	/// Lấy ToString của đầu sách và in ra màn hình
+	/// </summary>
+	/// <param name="dauSach">Data DAUSACH can in</param>
+	/// <param name="location">Vị trí in</param>
+	/// <param name="backColor">Màu nền</param>
+	/// <param name="textColor">Màu chữ</param>
+	/// <returns>void</returns>
 	void Print(DAUSACH dauSach, MYPOINT location, Color bgColor = BG_COLOR, Color textColor = TEXT_INPUT_COLOR);
-	// can dau sach de tim ten sach
+	/// <summary>
+	/// In ra DAUSACH bang cach chen | giua cac field, can DAUSACH de tim ten sach
+	/// </summary>
+	/// <param name="dauSach">Data DAUSACH can in</param>
+	/// <returns>SACH as string in List</returns>
 	string ToString(DAUSACH dauSach);
+	/// <summary>
+	/// In ra DAUSACH bang cach chen | giua cac field bao gom ca MUONTRA, can DAUSACH de tim ten sach 
+	/// </summary>
+	/// <param name="dauSach">Data DAUSACH can in</param>
+	/// <returns>SACH as string in List</returns>
 	string ToStringMuonSach(DAUSACH dauSach);
-	// tao line string de ghi ra file
+	/// <summary>
+	/// Tao line string de ghi ra file
+	/// </summary>
+	/// <returns>string</returns>
 	string ToStringFile();
-	// ...
+	/// <summary>
+	/// Kiem tra SACH qua han hay khong
+	/// </summary>
+	/// <returns>bool</returns>
 	bool IsQuaHan();
-	// ...
+	/// <summary>
+	/// Lay so ngay qua han cua sach
+	/// </summary>
+	/// <returns>int</returns>
 	int GetSoNgayQuaHan();
 };
 
@@ -42,41 +67,111 @@ struct LIST_MUONTRA
 	NODE_MUONTRA* pHead;
 	NODE_MUONTRA* pTail;
 
+	/// <summary>
+	/// Constructor Init ds moi
+	/// </summary>
 	LIST_MUONTRA();
-	// kiem tra trung key [maSach, ngayMuon] co trung khong
+	/// <summary>
+	/// Kiem tra trung key [maSach, ngayMuon] co trung khong
+	/// </summary>
+	/// <param name="maSach"> Ma SACH de truy cap node </param>
+	/// <returns>bool</returns>
 	bool IsLoopKey(string maSach);
-	// kiem tra rong
+	/// <summary>
+	/// Kiem tra co rong kohng
+	/// </summary>
+	/// <returns>bool</returns>
 	bool IsEmpty();
-	// hien form muon sach
-	string ShowFormMuonSach(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode, int totalLine = SOSACHMUON_TOIDA);
-	// kiem tra rong
-	// tao moi 1 node
+	/// <summary>
+	/// Hien form muon sach
+	/// </summary>
+	/// <param name="listDS"> List DAUSACH chua data can in </param>
+	/// <param name="location"> Location </param>
+	/// <param name="mode"> Lua chon giua cac che do hien thi </param>
+	/// <param name="totalLine"> tong so hang can de in data </param>
+	/// <returns>string</returns>
+	string ShowFormMuonSach(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode, int totalLine = 3);
+	/// <summary>
+	/// Tao moi mot Node
+	/// </summary>
+	/// <returns>NODE_MUONTRA*</returns>
 	NODE_MUONTRA* MakeNode(MUONTRA muonTra);
-	// them o dau
+	/// <summary>
+	/// Them o dau
+	/// </summary>
+	/// <returns>void</returns>
 	void InsertAtHead(MUONTRA muonTra);
-	// them o cuoi
+	/// <summary>
+	/// Them o cuoi
+	/// </summary>
+	/// <returns>void</returns>
 	void InsertAtTail(MUONTRA muonTra);
-	// xoa o dau
+	/// <summary>
+	/// Xoa o dau
+	/// </summary>
+	/// <returns>void</returns>
 	void DeleteAtHead();
-	// xoa o cuoi
+	/// <summary>
+	/// Xoa o cuoi
+	/// </summary>
+	/// <returns>void</returns>
 	void DeleteAtTail();
-	// Tim muon tra theo ma sach
+	/// <summary>
+	/// Tim muon tra theo Ma SACH
+	/// </summary>
+	/// <param name="maSach"> Ma SACH can tim </param>
+	/// <returns>NODE_MUONTRA*</returns>
 	NODE_MUONTRA* Search(string maSach);
-	// hien thi cac sach doc gia dang muon
+	/// <summary>
+	/// Hien thi cac SACH ma DOC GIA dang muon
+	/// </summary>
+	/// <param name="listDS"> List DAUSACH chua data can in </param>
+	/// <param name="location"> Location </param>
+	/// <param name="mode"> Both bao gom ca hai che do Show va Bat phim </param>
+	/// <returns>string</returns>
 	string Show(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode = Both);
-	// duyet list lay data, can dau sach de tim ten sach
+	/// <summary>
+	/// Duyet List lay Data, can DAU SACH de tim ten sach
+	/// </summary>
+	/// <param name="listDS"> List DAUSACH chua data can in </param>
+	/// <param name="count"> Bo dem kich thuoc cua du lieu </param>
+	/// <returns>string*</returns>
 	string* GetAllNodeString(LIST_DAUSACH listDS, int& count);
-	// duyet list lay data
+	/// <summary>
+	/// Duyet List lay Data kieu String, can DAU SACH de tim ten sach
+	/// </summary>
+	/// <param name="listDS"> List DAUSACH chua data can in </param>
+	/// <param name="count"> Bo dem kich thuoc cua du lieu </param>
+	/// <returns>string*</returns>
 	string* GetAllNodeStringMuonSach(LIST_DAUSACH listDS, int& count);
-	// xoa dua vao maSach
+	/// <summary>
+	/// Xoa dua vao maSach
+	/// </summary>
+	/// <param name="maSach"> Ma SACH can tim </param>
+	/// <returns>bool</returns>
 	bool Delete(string maSach);
-	// xoa sau node before
+	/// <summary>
+	/// Xoa sau node before
+	/// </summary>
+	/// <param name="beforeNode"> Node phia truoc </param>
+	/// <returns>bool</returns>
 	bool DeleteAfter(NODE_MUONTRA* beforeNode);
-	// ghi ra filr text
+	/// <summary>
+	/// Ghi ra filr text
+	/// </summary>
+	/// <param name="path"> Duong dan file </param>
+	/// <returns>bool</returns>
 	bool WriteToFile(string path);
-	// doc tu file
+	/// <summary>
+	/// Doc tu file
+	/// </summary>
+	/// <param name="path"> Duong dan file </param>
+	/// <returns>bool</returns>
 	bool ReadFromFile(string path);
-
+	/// <summary>
+	/// Dem so Sach doc gia muon
+	/// </summary>
+	/// <returns>int</returns>
 	int DuyetDSSachChuaTra();
 
 };
