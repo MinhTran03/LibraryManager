@@ -212,8 +212,10 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 	auto locationBtn = location;
 	locationBtn.x += 20;
 	locationBtn.y += 25;
+	// Menu button
 	MENU menu = MENU({ "THEM", "XOA", "SUA" }, locationBtn);
 	menu.btnSize = { 10,3 };
+	// in Data Doc Gia voi Hightlight
 	tem = PrintAllDGWithHL(listDG, location, page, Show_Only);
 	while (true)
 	{
@@ -232,15 +234,20 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 		if (selected == 0)
 		{
 			auto newDocGia = new DOCGIA();
+			//Random Ma Doc Gia
 			int newMaDG = GetRandomMaDG(listDG);
+			// Show Input tao moi Doc Gia
 			*newDocGia = InputDocGia(newMaDG, { {location.x + (int)DOCGIA_TOTAL_WIDTH + 2, location.y}, {50, 18} });
+			// Xoa newDocGia neu ho de trong
 			if (newDocGia->ho == "")
 			{
 				delete newDocGia;
 			}
 			else
 			{
+				// Xoa MaDG vua lay ra khoi mang
 				RemoveMaDG(listDG);
+				// Them Doc Gia vao ListDG
 				Insert(listDG, *newDocGia);
 				tem = PrintAllDGWithHL(listDG, location, page, Show_Only);
 			}
@@ -265,15 +272,18 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 				// ng dung an enter de xoa
 				else
 				{
+					// Show dialog button select
 					auto confirm = CONFIRMDIALOG({ 45, 7 });
 					confirm.Show("Ban chac chan muon xoa?", Yes_No);
 					confirm.Clear();
 					// dong y xoa
 					if (confirm.result == Yes)
 					{
+
 						int MaDG = stoi(selectedMaDocGia);
+						// Tim Doc Gia dua tren MaDG
 						auto docGiaDelete = Search(listDG, MaDG);
-						// DS khong duoc phep xoa
+						// DS khong duoc phep xoa neu dang muon Sach
 						if (IsDelete(docGiaDelete->data) == false)
 						{
 							selectedMaDocGia = PrintAllDGWithHL(listDG, location, page, Menu_Mode::Show_Only);
@@ -281,6 +291,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 						}
 						else
 						{
+							// Xoa Node
 							DeleteNode(listDG, docGiaDelete->data);
 							int temp = 0;
 							int size = Size(listDG);
