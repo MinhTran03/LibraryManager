@@ -1,15 +1,15 @@
-000001-Tren duong bang-265-Tony Buoi Sang-2017-Ky nang song-10
-000002-Starter toeic-320-Anne Taylor-2016-Sach hoc ngoai ngu-12
-000003-Dac nhan tam-352-Dale Carnegie-2019-Ky nang song-11
-000004-Cafe cung tony-576-Tony Buoi Sang-2017-Ky nang song-9
-000005-Bo gia-2150-Mario Puzzo-2012-Tieu thuyet-2
-000006-Toi la ai-120-Khoa Ngao-2019-Nhat ky-1
-000007-Hanh trinh ve phuong dong-256-Baird T. Spalding-2015-Ky nang song-1
-000008-Nha gia kim-228-Paulo Coelho-2013-Van hoc-1
-000009-Thep da toi the day-580-Nhicalai Axtoropxki-2016-Van hoc-3
+000001-Tren duong bang-265-Tony Buoi Sang-2017-Ky nang song-0
+000002-Starter toeic-320-Anne Taylor-2016-Sach hoc ngoai ngu-0
+000003-Dac nhan tam-352-Dale Carnegie-2019-Ky nang song-0
+000004-Cafe cung tony-576-Tony Buoi Sang-2017-Ky nang song-0
+000005-Bo gia-2150-Mario Puzzo-2012-Tieu thuyet-0
+000006-Toi la ai-120-Khoa Ngao-2019-Nhat ky-0
+000007-Hanh trinh ve phuong dong-256-Baird T. Spalding-2015-Ky nang song-0
+000008-Nha gia kim-228-Paulo Coelho-2013-Van hoc-0
+000009-Thep da toi the day-580-Nhicalai Axtoropxki-2016-Van hoc-0
 000010-Suoi nguon-1210-Ayn Rand-2014-Van hoc-0
 000011-Toi va em-201-Minh Tran-2015-Van hoc-0
-000012-Thang ngu-122-Khoa-2019-Nhat ky-2
+000012-Thang ngu-122-Khoa-2019-Nhat ky-0
 000013-Tuoi tre-352-Tony Sang-2011-Nhat ky-0
 000014-Chuyen tau mot chieu khong tro lai-264-Kien Tran-2019-Ky nang song-0
 000015-Ban dat gia bao nhieu-320-Van Tinh-2018-Ky nang song-0
@@ -35,6 +35,6 @@
 000036-That tich khong mua-319-Lau Vu Tinh-2013-Van hoc-0
 000037-Toi tu hoc-262-Thu Giang-2017-Ky nang song-0
 000038-Mau ban-373-John Carreyrou-2019-Ky nang song-0
-000040-Toi tai gioi, ban cung the-251-Null-2014-Ky nang song-6
-000041-Cach nghi de thanh cong-411-Napoleon Hill-2008-Ky nang song-7
-000042-Ngu van lop 6-215-Null-2018-Sach giao khoa-8
+000040-Toi tai gioi, ban cung the-251-Null-2014-Ky nang song-0
+000041-Cach nghi de thanh cong-411-Napoleon Hill-2008-Ky nang song-0
+000042-Ngu van lop 6-215-Null-2018-Sach giao khoa-0

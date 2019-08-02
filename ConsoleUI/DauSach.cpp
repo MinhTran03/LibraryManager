@@ -96,47 +96,6 @@ int RemoveDuplicatesInSortedTopSach(TOPSACH* sortedArr, int sizeOfArr)
 #pragma region ----------------------------------------------------DAUSACH
 
 /// <summary>
-///  Hiện form sửa thông tin DAUSACH
-/// </summary>
-/// <param name="listDS">Kiểm tra ISBN xem có trùng không</param>
-/// <param name="dauSach">DAUSACH cần chỉnh sửa</param>
-/// <param name="rect">Khung nhập sách</param>
-/// <returns>DAUSACH</returns>
-DAUSACH InputFixDauSach(LIST_DAUSACH listDS, RECTANGLE rect, DAUSACH dauSach)
-{
-	auto tempDSSach = dauSach.dsSach;
-
-	string labels[] = { "ISBN:","Ten sach:","So trang:","Tac gia:", "Nam xuat ban:","The loai:" };
-	string inputTitle = "NHAP THONG TIN DAU SACH";
-	CONDITION conditions[] = { {Number_Only, ISBN_MAXSIZE, ISBN_MAXSIZE, Default}, {All, 1, TENSACH_MAXSIZE},{Number_Only, 1, SOTRANG_MAXKYTU},
-													{Name, 1, TENTACGIA_MAXSIZE},{Year, 4, 4},{Word_Only, 1, TENTHELOAI_MAXSIZE} };
-	auto form = FORMINPUT(labels, conditions, rect, inputTitle, 6);
-	//DAUSACH dauSach = DAUSACH();
-	string guilds[] = { "DAY SO CO 6 CHU SO", "TAT CA KY TU", "SO TRANG TU [1, 999999]", "CHI NHAP CHU CAI",
-													"PHAI NHO HON NAM HIEN TAI", "CHI NHAP CHU CAI" };
-	form.Guilds = guilds;
-	string datas[] = { string(dauSach.isbn), dauSach.tenSach, to_string(dauSach.soTrang),
-				dauSach.tenTacGia, to_string(dauSach.namXuatBan), dauSach.tenTheLoai };
-	form.ParseData(datas);
-	form.currentLine = 1;
-	while (true)
-	{
-		if (form.Show())
-		{
-			auto newSach = ParseVectorString(form.OutputResults);
-			newSach.dsSach = tempDSSach;
-			return newSach;
-		}
-		else
-		{
-			form.ResetOutput();
-			break;
-		}
-	}
-	return dauSach;
-}
-
-/// <summary>
 /// Lấy ToString của đầu sách và in ra màn hình
 /// </summary>
 /// <param name="location">Vị trí in</param>
@@ -167,7 +126,7 @@ void DAUSACH::PrintMuonTra(MYPOINT location, Color backColor, Color textColor)
 }
 
 /// <summary>
-/// In ra DAUSACH dưới dạng list
+/// Chuyển obj DAUSACH thành line string để in dưới dạng List
 /// </summary>
 /// <returns>DAUSACH as string in List</returns>
 string DAUSACH::ToString()
@@ -208,7 +167,7 @@ string DAUSACH::ToString()
 }
 
 /// <summary>
-/// In ra DAUSACH cùng số lượt mượn dưới dạng list
+/// Chuyển obj DAUSACH và SOLUOTMUON thành line string để in dưới dạng List
 /// </summary>
 /// <returns>DAUSACH as string in List</returns>
 string DAUSACH::ToStringMuonTra()
@@ -255,7 +214,7 @@ string DAUSACH::ToStringMuonTra()
 }
 
 /// <summary>
-/// Chuyển obj DAUSACH thành line string để lưu vơ file text
+/// Chuyển obj DAUSACH thành line string để lưu vô file text
 /// </summary>
 /// <returns>DAUSACH as string in File</returns>
 string DAUSACH::ToStringFile()
@@ -841,7 +800,7 @@ string LIST_DAUSACH::PrintAllSearch(MYPOINT location, string tenSach, Menu_Mode 
 			// luu lai vi tri dong
 			currentPage = i / MAX_ROW_PER_PAGE;
 			rows[currentPage][i % MAX_ROW_PER_PAGE] = (i % MAX_ROW_PER_PAGE + location.y);
-			datas[currentPage][i % MAX_ROW_PER_PAGE] = (this->nodes[i]->ToString());
+			datas[currentPage][i % MAX_ROW_PER_PAGE] = (listISBN[i].ToString());
 		}
 		// xoa nhung line du cua trang truoc do
 		if (page == totalPages - 1 && totalLine % MAX_ROW_PER_PAGE != 0 && page != 0)
@@ -992,7 +951,7 @@ bool LIST_DAUSACH::ReadFromFile(string path)
 		for (int i = 0; i < size; i++)
 		{
 			DAUSACH* dauSach = new DAUSACH;
-			*dauSach = ParseVectorString(lstDauSachVector[i], 1);
+			*dauSach = ParseVectorStringDS(lstDauSachVector[i], 1);
 			Insert(*dauSach, this->size);
 		}
 		delete[] lstDauSachVector;
@@ -1288,7 +1247,7 @@ bool LIST_DAUSACH::DeleteDauSach(char isbn[ISBN_MAXSIZE + 1])
 /// <param name="data">List string</param>
 /// <param name="mode">Mode = 1: Thêm field SoLuotMuon</param>
 /// <returns>DAUSACH</returns>
-DAUSACH ParseVectorString(string* data, int mode = 0)
+DAUSACH ParseVectorStringDS(string* data, int mode)
 {
 	DAUSACH dauSach;
 	StringToCharArray(data[0], dauSach.isbn);
@@ -1329,7 +1288,7 @@ DAUSACH InputDauSach(LIST_DAUSACH listDS, RECTANGLE rect)
 		form.OutputResults = tempData;
 		if (form.Show())
 		{
-			dauSach = ParseVectorString(form.OutputResults);
+			dauSach = ParseVectorStringDS(form.OutputResults);
 			if (listDS.IsContainISBN(dauSach.isbn))
 			{
 				GoToXY(form.cols[0] - 6, form.rows[0] + 1);
@@ -1348,6 +1307,47 @@ DAUSACH InputDauSach(LIST_DAUSACH listDS, RECTANGLE rect)
 		{
 			form.ResetOutput();
 			delete[] tempData;
+			break;
+		}
+	}
+	return dauSach;
+}
+
+/// <summary>
+///  Hiện form sửa thông tin DAUSACH
+/// </summary>
+/// <param name="listDS">Kiểm tra ISBN xem có trùng không</param>
+/// <param name="dauSach">DAUSACH cần chỉnh sửa</param>
+/// <param name="rect">Khung nhập sách</param>
+/// <returns>DAUSACH</returns>
+DAUSACH InputFixDauSach(LIST_DAUSACH listDS, RECTANGLE rect, DAUSACH dauSach)
+{
+	auto tempDSSach = dauSach.dsSach;
+
+	string labels[] = { "ISBN:","Ten sach:","So trang:","Tac gia:", "Nam xuat ban:","The loai:" };
+	string inputTitle = "NHAP THONG TIN DAU SACH";
+	CONDITION conditions[] = { {Number_Only, ISBN_MAXSIZE, ISBN_MAXSIZE, Default}, {All, 1, TENSACH_MAXSIZE},{Number_Only, 1, SOTRANG_MAXKYTU},
+													{Name, 1, TENTACGIA_MAXSIZE},{Year, 4, 4},{Word_Only, 1, TENTHELOAI_MAXSIZE} };
+	auto form = FORMINPUT(labels, conditions, rect, inputTitle, 6);
+	//DAUSACH dauSach = DAUSACH();
+	string guilds[] = { "DAY SO CO 6 CHU SO", "TAT CA KY TU", "SO TRANG TU [1, 999999]", "CHI NHAP CHU CAI",
+													"PHAI NHO HON NAM HIEN TAI", "CHI NHAP CHU CAI" };
+	form.Guilds = guilds;
+	string datas[] = { string(dauSach.isbn), dauSach.tenSach, to_string(dauSach.soTrang),
+				dauSach.tenTacGia, to_string(dauSach.namXuatBan), dauSach.tenTheLoai };
+	form.ParseData(datas);
+	form.currentLine = 1;
+	while (true)
+	{
+		if (form.Show())
+		{
+			auto newSach = ParseVectorStringDS(form.OutputResults);
+			newSach.dsSach = tempDSSach;
+			return newSach;
+		}
+		else
+		{
+			form.ResetOutput();
 			break;
 		}
 	}

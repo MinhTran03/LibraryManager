@@ -33,7 +33,7 @@ void LoadDataAll(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS)
 	Sleep(70);
 	LoadDocGia(listDG);
 	Sleep(70);
-	DuyetDocFile(listDG, GetPath());
+	DuyetDocFileMuonTra(listDG, GetPath());
 	Sleep(70);
 
 	// load dau sach

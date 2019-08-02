@@ -45,19 +45,19 @@ struct DAUSACH
 	void PrintMuonTra(MYPOINT location, Color backColor, Color textColor);
 	
 	/// <summary>
-	/// In ra DAUSACH dưới dạng list
+	/// Chuyển obj DAUSACH thành line string để in dưới dạng List
 	/// </summary>
 	/// <returns>DAUSACH as string in List</returns>
 	string ToString();
 
 	/// <summary>
-	/// In ra DAUSACH cùng số lượt mượn dưới dạng list
+	/// Chuyển obj DAUSACH và SOLUOTMUON thành line string để in dưới dạng List
 	/// </summary>
 	/// <returns>DAUSACH as string in List</returns>
 	string ToStringMuonTra();
 
 	/// <summary>
-	/// Chuyển obj DAUSACH thành line string để lưu vơ file text
+	/// Chuyển obj DAUSACH thành line string để lưu vô file text
 	/// </summary>
 	/// <returns>DAUSACH as string in File</returns>
 	string ToStringFile();
@@ -200,6 +200,14 @@ struct LIST_DAUSACH
 	bool DeleteDauSach(char isbn[ISBN_MAXSIZE + 1]);
 
 };
+
+/// <summary>
+/// Chuyển list string thành object DAUSACH
+/// </summary>
+/// <param name="data">List string</param>
+/// <param name="mode">Mode = 1: Thêm field SoLuotMuon</param>
+/// <returns>DAUSACH</returns>
+DAUSACH ParseVectorStringDS(string* data, int mode = 0);
 
 /// <summary>
 /// Hiện form nhập DAUSACH
