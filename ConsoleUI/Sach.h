@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "FormInput.h"
 #include "FileHandler.h"
 using namespace std;
@@ -16,16 +16,41 @@ struct SACH
 	TrangThaiSach trangThai = ChoMuonDuoc;
 	string viTri;
 
-	// hien form nhap SACH
+	/// <summary>
+	/// Hien form nhap SACH
+	/// </summary>
+	/// <param name="rect">kích thước hình chữ nhật dựa trên tọa độ x, y và width height</param>
+	/// <param name="maSach">Mã sách truyền vào</param>
+	/// <returns>SACH</returns>
 	SACH Input(RECTANGLE rect, string maSach);
+	/// <summary>
+	/// Hien form sua sach SACH
+	/// </summary>
+	/// <param name="rect">kích thước hình chữ nhật dựa trên tọa độ x, y và width height</param>
+	/// <returns>SACH</returns>
 	SACH InputFix(RECTANGLE rect);
-	// in ra node
+	/// <summary>
+	/// Lấy ToString của đầu sách và in ra màn hình
+	/// </summary>
+	/// <param name="location">Vị trí in</param>
+	/// <param name="backColor">Màu nền</param>
+	/// <param name="textColor">Màu chữ</param>
+	/// <returns>void</returns>
 	void Print(MYPOINT location, Color bgSelectColor, Color textColor);
-	// chen | giua cac field
+	/// <summary>
+	/// In ra SACH dưới dạng list
+	/// </summary>
+	/// <returns>SACH as string in List</returns>
 	string ToString();
-	// chuyen object sach sach thanh string luu file
+	/// <summary>
+	/// Chuyển obj SACH thành line string để lưu vơ file text
+	/// </summary>
+	/// <returns>SACH as string in File</returns>
 	string ToStringFile();
-	// kiem tra sach co xoa duoc khong
+	/// <summary>
+	/// Kiem tra SACH co xoa duoc khong 
+	/// </summary>
+	/// <returns>bool</returns>
 	bool CanDelete();
 	
 };
@@ -44,17 +69,38 @@ struct LIST_SACH
 	NODE_SACH* pHead;
 	NODE_SACH* pTail;
 
-	// kiem tra rong
+	/// <summary>
+	/// Kiem tra LIST SACH co rong khong
+	/// </summary>
+	/// <returns>bool</returns>
 	bool IsEmpty();
 	// Duyet lay kich co cua ds Sach
+	/// <summary>
+	/// Duyet lay kich co cua ds Sach
+	/// </summary>
+	/// <returns>int</returns>
 	int Size();
-	// in ra mh
+	/// <summary>
+	/// In danh sách SACH của toàn bộ LIST SACH
+	/// </summary>
+	/// <param name="location">Location</param>
+	/// <param name="mode"> Lua chon giua cac che do hien thi</param>
+	/// <returns>Phím người dùng ấn as string</returns>
 	string PrintAll(MYPOINT location, Menu_Mode mode);
-	// in ra mh sach cho muoc duoc
+	/// <summary>
+	/// In ra man hinh SACH cho muon duoc
+	/// </summary>
+	/// <param name="location">Location</param>
+	/// <param name="mode"> Lua chon giua cac che do hien thi </param>
+	/// <returns>Phím người dùng ấn as string</returns>
 	string PrintAllChoMuonDuoc(MYPOINT location, Menu_Mode mode);
-	// Delete
+	/// <summary>
+	/// Delete SACH
+	/// </summary>
+	/// <returns>void</returns>
 	void Deconstructor();
 	// constructor Init ds moi
+
 	LIST_SACH();
 	// Doc ds danh muc sach tu file. Moi file chua 1 dms cua 1 dau sach
 	bool ReadFromFile(string path);

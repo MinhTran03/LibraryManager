@@ -161,6 +161,10 @@ NODE_SACH::NODE_SACH(SACH& data)
 #pragma endregion
 
 #pragma region -------------------------------------------LIST_SACH
+/// <summary>
+	/// Kiem tra LIST SACH co rong khong
+	/// </summary>
+	/// <returns>bool</returns>
 bool LIST_SACH::IsEmpty()
 {
 	return this->pHead == NULL;

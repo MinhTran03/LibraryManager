@@ -1088,6 +1088,7 @@ void InDSDauSachMuonNhieuNhat(LIST_DAUSACH& listDS, MYPOINT location)
 	{
 		if (leaderBroad == "ESC")
 		{
+
 			ClearScreen(BG_COLOR);
 			break;
 		}
