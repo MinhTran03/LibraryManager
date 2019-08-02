@@ -1,5 +1,7 @@
 ﻿#include "MuonTra.h"
 
+#pragma region ----------------------------------MUON TRA
+
 /// <summary>
 	/// Lấy ToString của đầu sách và in ra màn hình
 	/// </summary>
@@ -15,6 +17,7 @@ void MUONTRA::Print(DAUSACH dauSach, MYPOINT location, Color bgColor, Color text
 	GoToXY(location.x, location.y);
 	cout << this->ToString(dauSach);
 }
+
 /// <summary>
 /// In ra DAUSACH bang cach chen | giua cac field, can DAUSACH de tim ten sach
 /// </summary>
@@ -89,6 +92,7 @@ string MUONTRA::ToString(DAUSACH dauSach)
 	result += char(179);
 	return result;
 }
+
 /// <summary>
 /// In ra DAUSACH bang cach chen | giua cac field bao gom ca MUONTRA, can DAUSACH de tim ten sach 
 /// </summary>
@@ -116,6 +120,7 @@ string MUONTRA::ToStringMuonSach(DAUSACH dauSach)
 	result += char(179);
 	return result;
 }
+
 /// <summary>
 /// Tao line string de ghi ra file
 /// </summary>
@@ -153,6 +158,7 @@ string MUONTRA::ToStringFile()
 	}
 	return result;
 }
+
 /// <summary>
 /// Kiem tra SACH qua han hay khong
 /// </summary>
@@ -168,6 +174,7 @@ bool MUONTRA::IsQuaHan()
 	}
 	return false;
 }
+
 /// <summary>
 /// Lay so ngay qua han cua sach
 /// </summary>
@@ -178,6 +185,7 @@ int MUONTRA::GetSoNgayQuaHan()
 	today.SetDateTimeNow();
 	return today.SubDate(this->ngayMuon) - SONGAYMUON_TOIDA;
 }
+
 /// <summary>
 /// Chuyen con tro Data string obj MUONTRA
 /// </summary>
@@ -208,6 +216,19 @@ MUONTRA ParseVectorStringFile(string* data)
 	return mt;
 }
 
+#pragma endregion
+
+#pragma region ---------------------------------LIST_MUONTRA
+
+/// <summary>
+/// Constructor Init ds moi
+/// </summary>
+LIST_MUONTRA::LIST_MUONTRA()
+{
+	this->pHead = NULL;
+	this->pTail = NULL;
+}
+
 /// <summary>
 /// Kiem tra trung key [maSach, ngayMuon] co trung khong
 /// </summary>
@@ -225,14 +246,20 @@ bool LIST_MUONTRA::IsLoopKey(string maSach)
 	}
 	return false;
 }
+
 /// <summary>
-/// Constructor Init ds moi
+/// Kiem tra co rong kohng
 /// </summary>
-LIST_MUONTRA::LIST_MUONTRA()
+/// <returns>bool</returns>
+bool LIST_MUONTRA::IsEmpty()
 {
-	this->pHead = NULL;
-	this->pTail = NULL;
+	if (pHead == NULL)
+	{
+		return true;
+	}
+	return false;
 }
+
 /// <summary>
 /// In khung Muon Sach
 /// </summary>
@@ -246,6 +273,7 @@ void PrintLabelMuonSach(MYPOINT location, int row)
 	lstBorder.Draw(location, { MASACH_WIDTH, TENSACH_WIDTH, NGAY_WIDTH },
 		row, BORDER_COLOR);
 }
+
 /// <summary>
 /// In khung Muon Tra
 /// </summary>
@@ -260,6 +288,7 @@ void PrintLabelMuonTra(MYPOINT location, int row)
 		SONGAYMUON_WIDTH, VITRI_WIDTH, TRANGTHAI_MUONTRA_WIDTH },
 		row, BORDER_COLOR);
 }
+
 /// <summary>
 /// Hien form muon sach
 /// </summary>
@@ -402,6 +431,21 @@ string LIST_MUONTRA::ShowFormMuonSach(LIST_DAUSACH listDS, MYPOINT location, Men
 	}
 	return "";
 }
+
+/// <summary>
+/// Tao moi mot Node
+/// </summary>
+/// <returns>NODE_MUONTRA*</returns>
+NODE_MUONTRA* LIST_MUONTRA::MakeNode(MUONTRA muonTra) //tao 1 Node P chua thong tin la x 
+{
+	//Cap phat vung nho cho temp
+	NODE_MUONTRA* temp = new NODE_MUONTRA;
+	temp->data = muonTra; //Ghi du lieu vao Data
+	temp->pNext = NULL;
+	temp->pPrev = NULL;
+	return temp;
+}
+
 /// <summary>
 /// Hien thi cac SACH ma DOC GIA dang muon
 /// </summary>
@@ -542,6 +586,7 @@ string LIST_MUONTRA::Show(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode)
 	}
 	return "";
 }
+
 /// <summary>
 /// Duyet List lay Data kieu String, can DAU SACH de tim ten sach
 /// </summary>
@@ -566,6 +611,7 @@ string* LIST_MUONTRA::GetAllNodeStringMuonSach(LIST_DAUSACH listDS, int& count)
 	}
 	return result;
 }
+
 /// <summary>
 /// Duyet List lay Data, can DAU SACH de tim ten sach
 /// </summary>
@@ -589,31 +635,7 @@ string* LIST_MUONTRA::GetAllNodeString(LIST_DAUSACH listDS, int& count)
 	}
 	return result;
 }
-/// <summary>
-/// Kiem tra co rong kohng
-/// </summary>
-/// <returns>bool</returns>
-bool LIST_MUONTRA::IsEmpty()
-{
-	if (pHead == NULL)
-	{
-		return true;
-	}
-	return false;
-}
-/// <summary>
-/// Tao moi mot Node
-/// </summary>
-/// <returns>NODE_MUONTRA*</returns>
-NODE_MUONTRA* LIST_MUONTRA::MakeNode(MUONTRA muonTra) //tao 1 Node P chua thong tin la x 
-{
-	//Cap phat vung nho cho temp
-	NODE_MUONTRA* temp = new NODE_MUONTRA;
-	temp->data = muonTra; //Ghi du lieu vao Data
-	temp->pNext = NULL;
-	temp->pPrev = NULL;
-	return temp;
-}
+
 /// <summary>
 /// Them o dau
 /// </summary>
@@ -630,6 +652,7 @@ void LIST_MUONTRA::InsertAtHead(MUONTRA muonTra)
 	newNode->pNext = pHead;
 	pHead = newNode;
 }
+
 /// <summary>
 /// Them o cuoi
 /// </summary>
@@ -647,23 +670,11 @@ void LIST_MUONTRA::InsertAtTail(MUONTRA muonTra)
 	newNode->pPrev = pTail;
 	pTail = newNode;
 }
+
 /// <summary>
-/// Tim muon tra theo Ma SACH
+/// Xoa o dau
 /// </summary>
-/// <param name="maSach"> Ma SACH can tim </param>
-/// <returns>NODE_MUONTRA*</returns>
-NODE_MUONTRA* LIST_MUONTRA::Search(string maSach)
-{
-	for (auto node = this->pTail; node != NULL; node = node->pPrev)
-	{
-		if (node->data.maSach == maSach)
-		{
-			return node;
-		}
-	}
-	return NULL;
-}
-// xoa o dau
+/// <returns>void</returns>
 void LIST_MUONTRA::DeleteAtHead()
 {
 	if (pHead == NULL)
@@ -680,7 +691,11 @@ void LIST_MUONTRA::DeleteAtHead()
 	pHead = pHead->pNext;
 	pHead->pPrev = NULL;
 }
-// xoa o cuoi
+
+/// <summary>
+/// Xoa o cuoi
+/// </summary>
+/// <returns>void</returns>
 void LIST_MUONTRA::DeleteAtTail()
 {
 	if (pHead == NULL)
@@ -690,6 +705,24 @@ void LIST_MUONTRA::DeleteAtTail()
 	pTail = pTail->pPrev;
 	pTail->pNext = NULL;
 }
+
+/// <summary>
+/// Tim muon tra theo Ma SACH
+/// </summary>
+/// <param name="maSach"> Ma SACH can tim </param>
+/// <returns>NODE_MUONTRA*</returns>
+NODE_MUONTRA* LIST_MUONTRA::Search(string maSach)
+{
+	for (auto node = this->pTail; node != NULL; node = node->pPrev)
+	{
+		if (node->data.maSach == maSach)
+		{
+			return node;
+		}
+	}
+	return NULL;
+}
+
 /// <summary>
 /// Xoa dua vao maSach
 /// </summary>
@@ -732,6 +765,7 @@ bool LIST_MUONTRA::Delete(string maSach)
 	}
 	return true;
 }
+
 /// <summary>
 /// Xoa sau node before
 /// </summary>
@@ -754,6 +788,7 @@ bool LIST_MUONTRA::DeleteAfter(NODE_MUONTRA* beforeNode)
 
 	return true;
 }
+
 /// <summary>
 /// Ghi ra filr text
 /// </summary>
@@ -785,6 +820,7 @@ bool LIST_MUONTRA::WriteToFile(string path)
 	}
 	return true;
 }
+
 /// <summary>
 /// Doc tu file
 /// </summary>
@@ -812,6 +848,7 @@ bool LIST_MUONTRA::ReadFromFile(string path)
 	}
 	return true;
 }
+
 /// <summary>
 /// Dem so Sach doc gia muon
 /// </summary>
@@ -826,3 +863,5 @@ int LIST_MUONTRA::DuyetDSSachChuaTra()
 	}
 	return count;
 }
+
+#pragma endregion

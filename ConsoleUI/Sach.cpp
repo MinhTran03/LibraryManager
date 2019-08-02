@@ -1,6 +1,7 @@
 ﻿#include "Sach.h"
 
 #pragma region -------------------------------------------SACH
+
 /// <summary>
 	/// Lấy ToString của đầu sách và in ra màn hình
 	/// </summary>
@@ -15,6 +16,7 @@ void SACH::Print(MYPOINT location, Color bgSelectColor, Color textColor)
 	SetBGColor(bgSelectColor);
 	cout << SACH::ToString();
 }
+
 /// <summary>
 /// In ra SACH dưới dạng list bang cach chen | giua cac field
 /// </summary>
@@ -56,6 +58,7 @@ string SACH::ToString()
 	result += char(179);
 	return result;
 }
+
 /// <summary>
 /// Chuyển obj SACH thành line string để lưu vơ file text
 /// </summary>
@@ -84,6 +87,7 @@ string SACH::ToStringFile()
 	result += this->viTri;
 	return result;
 }
+
 /// <summary>
 /// Chuyen con tro Data string obj Sach
 /// </summary>
@@ -102,6 +106,7 @@ SACH ParseVectorString(string* data)
 	sach.viTri = ToUpperString(data[2]);
 	return sach;
 }
+
 /// <summary>
 /// Chuyen con tro Data string obj Sach cho file
 /// </summary>
@@ -120,6 +125,7 @@ SACH ParseVectorStringFile(string* data)
 	sach.viTri = data[2];
 	return sach;
 }
+
 /// <summary>
 /// Hien form nhap SACH
 /// </summary>
@@ -147,6 +153,7 @@ SACH SACH::Input(RECTANGLE rect, string maSach)
 	}
 	return *this;
 }
+
 /// <summary>
 /// Hien form sua sach SACH
 /// </summary>
@@ -174,6 +181,7 @@ SACH SACH::InputFix(RECTANGLE rect)
 	}
 	return *this;
 }
+
 /// <summary>
 /// Kiem tra SACH co xoa duoc khong 
 /// </summary>
@@ -186,15 +194,18 @@ bool SACH::CanDelete()
 #pragma endregion
 
 #pragma region -------------------------------------------NODE_SACH
+
 // Khoi tao 1 node sach moi
 NODE_SACH::NODE_SACH(SACH& data)
 {
 	this->data = data;
 	this->pNext = NULL;
 }
+
 #pragma endregion
 
 #pragma region -------------------------------------------LIST_SACH
+
 /// <summary>
 /// Kiem tra LIST SACH co rong khong
 /// </summary>
@@ -203,16 +214,7 @@ bool LIST_SACH::IsEmpty()
 {
 	return this->pHead == NULL;
 }
-/// <summary>
-/// Dung ham Draw ve khung va Menu
-/// </summary>
-/// <returns>void</returns>
-void PrintLabelSach(MYPOINT location, int row)
-{
-	string labels[] = { "MA SACH", "TRANG THAI", "VI TRI" };
-	auto lstBorder = LISTBORDERTEXT(labels, 3);
-	lstBorder.Draw(location, { MASACH_WIDTH, TRANGTHAISACH_WIDTH, VITRI_WIDTH }, row, BORDER_COLOR);
-}
+
 /// <summary>
 /// Duyet lay kich co cua ds Sach
 /// </summary>
@@ -226,6 +228,18 @@ int LIST_SACH::Size()
 	}
 	return count;
 }
+
+/// <summary>
+/// Dung ham Draw ve khung va Menu
+/// </summary>
+/// <returns>void</returns>
+void PrintLabelSach(MYPOINT location, int row)
+{
+	string labels[] = { "MA SACH", "TRANG THAI", "VI TRI" };
+	auto lstBorder = LISTBORDERTEXT(labels, 3);
+	lstBorder.Draw(location, { MASACH_WIDTH, TRANGTHAISACH_WIDTH, VITRI_WIDTH }, row, BORDER_COLOR);
+}
+
 /// <summary>
 /// In danh sách SACH của toàn bộ LIST SACH
 /// </summary>
@@ -347,6 +361,7 @@ string LIST_SACH::PrintAll(MYPOINT location, Menu_Mode mode)
 	}
 	return "NULL";
 }
+
 /// <summary>
 /// In ra man hinh SACH cho muon duoc
 /// </summary>
@@ -471,6 +486,7 @@ string LIST_SACH::PrintAllChoMuonDuoc(MYPOINT location, Menu_Mode mode)
 	}
 	return "NULL";
 }
+
 /// <summary>
 /// Delete SACH
 /// </summary>
@@ -485,6 +501,7 @@ void LIST_SACH::Deconstructor()
 	}
 	this->pHead = this->pTail = NULL;
 }
+
 /// <summary>
 /// Constructor Init ds moi
 /// </summary>
@@ -493,6 +510,7 @@ LIST_SACH::LIST_SACH()
 	this->pHead = NULL;
 	this->pTail = NULL;
 }
+
 /// <summary>
 /// Doc ds danh muc sach tu file. Moi file chua 1 dms cua 1 dau sach
 /// </summary>
@@ -522,6 +540,7 @@ bool LIST_SACH::ReadFromFile(string path)
 	}
 	return true;
 }
+
 /// <summary>
 /// Doc obj SACH tu file
 /// </summary>
@@ -553,6 +572,7 @@ bool LIST_SACH::WriteToFile(string path)
 	}
 	return true;
 }
+
 /// <summary>
 /// Thuat toan tu sinh ma sach
 /// </summary>
@@ -575,6 +595,7 @@ string LIST_SACH::AutoGenerateMaSach(char isbn[ISBN_MAXSIZE + 1])
 	}
 	return maSach;
 }
+
 /// <summary>
 /// Them vao cuoi ds sach
 /// </summary>
@@ -592,6 +613,7 @@ void LIST_SACH::AddTail(NODE_SACH& node)
 		this->pTail = &node;
 	}
 }
+
 /// <summary>
 /// Tim sach theo Ma SACH
 /// </summary>
@@ -608,6 +630,7 @@ NODE_SACH* LIST_SACH::Search(string maSach)
 	}
 	return NULL;
 }
+
 /// <summary>
 /// Xoa Node dau tien trong dslk
 /// </summary>
@@ -621,6 +644,7 @@ bool LIST_SACH::DeleteFirst()
 	delete pNode;
 	return true;
 }
+
 /// <summary>
 /// Xoa Node sau 1 Node p
 /// </summary>
@@ -639,6 +663,7 @@ bool LIST_SACH::DeleteAfter(NODE_SACH* beforeNode)
 
 	return true;
 }
+
 /// <summary>
 /// Xoa 1 sach dua vao Ma SACH
 /// </summary>
@@ -677,6 +702,7 @@ bool LIST_SACH::Delete(string maSach)
 	}
 	return true;
 }
+
 /// <summary>
 /// Kiem tra LIST_SACH co xoa duoc hay khong
 /// </summary>
@@ -692,16 +718,7 @@ bool LIST_SACH::CanDelete()
 	}
 	return true;
 }
-/// <summary>
-/// Su dung ham Split de loc bo phan duoi Ma SACH de lay Ma DAUSACH
-/// </summary>
-/// <param name="maSach"> Ma SACH can de lay MADAUSACH</param>
-/// <returns>string</returns>
-string GetMaDauSach(string maSach)
-{
-	auto temp = Split(maSach, "_");
-	return temp[0];
-}
+
 /// <summary>
 /// Kiem tra SACH cho muon duoc
 /// </summary>
@@ -715,4 +732,16 @@ bool LIST_SACH::IsChoMuonDuoc()
 	}
 	return false;
 }
+
 #pragma endregion
+
+/// <summary>
+/// Su dung ham Split de loc bo phan duoi Ma SACH de lay Ma DAUSACH
+/// </summary>
+/// <param name="maSach"> Ma SACH can de lay MADAUSACH</param>
+/// <returns>string</returns>
+string GetMaDauSach(string maSach)
+{
+	auto temp = Split(maSach, "_");
+	return temp[0];
+}
