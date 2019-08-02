@@ -528,7 +528,6 @@ void InorderGetString(LIST_DOCGIA lstDG, string*& result, int& count)
 string* GetAllStringNode(LIST_DOCGIA listDG, int& count)
 {
 	string* result = NULL;
-	//int count = 0;
 	InorderGetString(listDG, result, count);
 	return result;
 }
@@ -554,8 +553,9 @@ void PrintLabelDocGia(MYPOINT location, int row)
 /// <param name="location">Location</param>
 /// <param name="mode"><para>Show_Only: Chỉ hiện</para><para>Both: Hiện và bắt phím</para></param>
 /// <returns>Phím được nhấn As String</returns>
-string PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode mode)
+void PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode mode)
 {
+	// In Empty Line
 	string emptyTemplate = "";
 	emptyTemplate = emptyTemplate + char(179) + string(MADOCGIA_WIDTH, ' ');
 	emptyTemplate = emptyTemplate + char(179) + string(HODOCGIA_WIDTH, ' ');
@@ -563,29 +563,37 @@ string PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode mode
 	emptyTemplate = emptyTemplate + char(179) + string(GIOITINH_WIDTH, ' ');
 	emptyTemplate = emptyTemplate + char(179) + string(TRANGTHAIDG_WIDTH, ' ');
 	emptyTemplate = emptyTemplate + char(179);
+
 	int currentPage = 0;
+	int totalPage = 0;
+	int soDocGia = 0;
 
-	int size = 0;
-	string* listData = GetAllStringNode(listDG, size);
+	// Lấy ra List độc giả dưới dạng String để in ra màn hình
+	// Get theo NLR => mã độc giả tự tăng => không cần sort
+	string* listData = GetAllStringNode(listDG, soDocGia);
 
-	int totalPage = size / MAX_ROW_PER_PAGE;
-	if (size % MAX_ROW_PER_PAGE != 0) totalPage++;
-	string deli = "";
-	deli += char(179);
+	// Tính tổng page dựa vào MAX_ROW_PER_PAGE
+	totalPage = soDocGia / MAX_ROW_PER_PAGE;
+	if (soDocGia % MAX_ROW_PER_PAGE != 0) totalPage++;
 
-	// In ra mh
-	for (int i = 0; i < size; i++)
+	// Ký tự phân cách '|' as string
+	string deli = ""; deli += char(179);
+
+	// In danh sách độc giả ra màn hình
+	ShowPageNumber(currentPage, totalPage, location.x, location.y + (int)MAX_ROW_PER_PAGE + 1);
+	for (int i = 0; i < soDocGia; i++)
 	{
 		if (i >= (int)MAX_ROW_PER_PAGE * currentPage && i < (currentPage + 1) * (int)MAX_ROW_PER_PAGE)
 		{
-			Sleep(3);
+			Sleep(2);
 			GoToXY(location.x, location.y + i);
 			cout << listData[i];
 		}
 	}
-	ShowPageNumber(currentPage, totalPage, location.x, location.y + (int)MAX_ROW_PER_PAGE + 1);
-	if (mode == Show_Only) return "";
-	// bat phim
+
+	if (mode == Show_Only) return;
+
+	// Bắt phím
 	char inputKey = NULL;
 	do
 	{
@@ -599,21 +607,22 @@ string PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode mode
 			SetTextColor(TEXT_INPUT_COLOR);
 			for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
 			{
-				Sleep(3);
-				// in trang not cuoi cung
-				if (currentPage < totalPage - 1 || (currentPage == totalPage - 1 && size % MAX_ROW_PER_PAGE == 0))
+				Sleep(2);
+				// In trang không phải cuối cùng
+				if (currentPage < totalPage - 1 || (currentPage == totalPage - 1 && soDocGia % MAX_ROW_PER_PAGE == 0))
 				{
 					GoToXY(location.x, location.y + (int)i);
 					cout << listData[i + MAX_ROW_PER_PAGE * currentPage];
 					continue;
 				}
-				// in trang cuoi cung
-				if (currentPage == totalPage - 1 && size % MAX_ROW_PER_PAGE != 0
-					&& i < size % MAX_ROW_PER_PAGE)
+				// In data trang cuối cùng
+				if (currentPage == totalPage - 1 && soDocGia % MAX_ROW_PER_PAGE != 0
+					&& i < soDocGia % MAX_ROW_PER_PAGE)
 				{
 					GoToXY(location.x, location.y + (int)i);
 					cout << listData[i + MAX_ROW_PER_PAGE * currentPage];
 				}
+				// In empty line xóa line dư của page trước đó
 				else
 				{
 					GoToXY(location.x, location.y + i);
@@ -623,24 +632,24 @@ string PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode mode
 		}
 		else if (inputKey == Key::PAGE_UP && currentPage > 0)
 		{
-			// in prev page
 			currentPage--;
 			ShowPageNumber(currentPage, totalPage, location.x, location.y + (int)MAX_ROW_PER_PAGE + 1);
 			SetBGColor(BG_COLOR);
 			SetTextColor(TEXT_INPUT_COLOR);
+			// In data ra màn hình
 			for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
 			{
-				Sleep(3);
+				Sleep(2);
 				GoToXY(location.x, location.y + (int)i);
 				cout << listData[i + MAX_ROW_PER_PAGE * currentPage];
 			}
 		}
 		else if (inputKey == Key::ESC)
 		{
-			return "ESC";
+			return;
 		}
 	} while (!_kbhit());
-	return "";
+	return;
 }
 
 /// <summary>
@@ -686,7 +695,7 @@ void SortStringDocGiaTheoTen(string*& listDG, string*& listName, int q, int r)
 /// <param name="location">Location</param>
 /// <param name="mode"><para>Show_Only: Chỉ hiện</para><para>Both: Hiện và bắt phím</para></param>
 /// <returns>Phím được nhấn As String</returns>
-string PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location, Menu_Mode mode)
+void PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location, Menu_Mode mode)
 {
 	string emptyTemplate = "";
 	emptyTemplate = emptyTemplate + char(179) + string(MADOCGIA_WIDTH, ' ');
@@ -695,38 +704,47 @@ string PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location, Menu_Mode mode)
 	emptyTemplate = emptyTemplate + char(179) + string(GIOITINH_WIDTH, ' ');
 	emptyTemplate = emptyTemplate + char(179) + string(TRANGTHAIDG_WIDTH, ' ');
 	emptyTemplate = emptyTemplate + char(179);
+
 	int currentPage = 0;
+	int totalPage = 0;
+	int soDocGia = 0;
 
-	int size = 0;
-	string* listData = GetAllStringNode(lstDG, size);
+	// Lấy ra List độc giả dưới dạng String để in ra màn hình
+	string* listData = GetAllStringNode(lstDG, soDocGia);
 
-	int totalPage = size / MAX_ROW_PER_PAGE;
-	if (size % MAX_ROW_PER_PAGE != 0) totalPage++;
+	// Tính tổng page dựa vào MAX_ROW_PER_PAGE
+	totalPage = soDocGia / MAX_ROW_PER_PAGE;
+	if (soDocGia % MAX_ROW_PER_PAGE != 0) totalPage++;
 
-	// sort
+	// Ký tự phân cách '|' as string
 	string deli = ""; deli += char(179);
-	string* listName = new string[size];
-	for (int i = 0; i < size; i++)
+
+	// Tách list name từ ToString của độc giả
+	string* listName = new string[soDocGia];
+	for (int i = 0; i < soDocGia; i++)
 	{
 		auto tokens = Split(listData[i], deli);
 		listName[i] = Trim(tokens[3]) + Trim(tokens[2]);
 	}
-	SortStringDocGiaTheoTen(listData, listName, 0, size - 1);
+
+	// Sort listData theo listName được tách sẵn
+	SortStringDocGiaTheoTen(listData, listName, 0, soDocGia - 1);
 	delete[] listName;
 
-	// In ra mh
+	// In danh sách độc giả ra màn hình
 	ShowPageNumber(currentPage, totalPage, location.x, location.y + (int)MAX_ROW_PER_PAGE + 1);
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < soDocGia; i++)
 	{
 		if (i >= (int)MAX_ROW_PER_PAGE * currentPage && i < (currentPage + 1) * (int)MAX_ROW_PER_PAGE)
 		{
-			Sleep(3);
+			Sleep(2);
 			GoToXY(location.x, location.y + i);
 			cout << listData[i];
 		}
 	}
 
-	if (mode == Show_Only) return "";
+	if (mode == Show_Only) return;
+
 	// bat phim
 	char inputKey = NULL;
 	do
@@ -741,21 +759,22 @@ string PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location, Menu_Mode mode)
 			SetTextColor(TEXT_INPUT_COLOR);
 			for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
 			{
-				Sleep(3);
-				// in trang not cuoi cung
-				if (currentPage < totalPage - 1 || (currentPage == totalPage - 1 && size % MAX_ROW_PER_PAGE == 0))
+				Sleep(2);
+				// In trang không phải cuối cùng
+				if (currentPage < totalPage - 1 || (currentPage == totalPage - 1 && soDocGia % MAX_ROW_PER_PAGE == 0))
 				{
 					GoToXY(location.x, location.y + (int)i);
 					cout << listData[i + MAX_ROW_PER_PAGE * currentPage];
 					continue;
 				}
-				// in trang cuoi cung
-				if (currentPage == totalPage - 1 && size % MAX_ROW_PER_PAGE != 0
-					&& i < size % MAX_ROW_PER_PAGE)
+				// In data trang cuối cùng
+				if (currentPage == totalPage - 1 && soDocGia % MAX_ROW_PER_PAGE != 0
+					&& i < soDocGia % MAX_ROW_PER_PAGE)
 				{
 					GoToXY(location.x, location.y + (int)i);
 					cout << listData[i + MAX_ROW_PER_PAGE * currentPage];
 				}
+				// In empty line xóa line dư của page trước đó
 				else
 				{
 					GoToXY(location.x, location.y + i);
@@ -765,24 +784,24 @@ string PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location, Menu_Mode mode)
 		}
 		else if (inputKey == Key::PAGE_UP && currentPage > 0)
 		{
-			// in prev page
 			currentPage--;
 			ShowPageNumber(currentPage, totalPage, location.x, location.y + (int)MAX_ROW_PER_PAGE + 1);
 			SetBGColor(BG_COLOR);
 			SetTextColor(TEXT_INPUT_COLOR);
+			// In data ra màn hình
 			for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
 			{
-				Sleep(3);
+				Sleep(2);
 				GoToXY(location.x, location.y + (int)i);
 				cout << listData[i + MAX_ROW_PER_PAGE * currentPage];
 			}
 		}
 		else if (inputKey == Key::ESC)
 		{
-			return "ESC";
+			return;
 		}
 	} while (!_kbhit());
-	return "";
+	return;
 }
 
 /// <summary>
@@ -799,18 +818,20 @@ string PrintContentSortTen(LIST_DOCGIA lstDG, MYPOINT location, Menu_Mode mode)
 ///	<para>0: Sort theo tên độc giả</para>
 /// </param>
 /// <returns>Phím được nhấn As String</returns>
-string PrintAllDocGia(LIST_DOCGIA lstDG, MYPOINT location, int sortMode, Menu_Mode mode)
+void PrintAllDocGia(LIST_DOCGIA lstDG, MYPOINT location, int sortMode, Menu_Mode mode)
 {
 	PrintLabelDocGia(location, MAX_ROW_PER_PAGE);
-	auto loc = location;
-	loc.y += 3;
+	location.y += 3;
+
+	// Độc giả sắp theo Mã
 	if (sortMode == 1)
 	{
-		return PrintContentSortMaDG(lstDG, loc, mode);
+		PrintContentSortMaDG(lstDG, location, mode);
 	}
+	// Độc giả sắp theo Họ Tên
 	else
 	{
-		return PrintContentSortTen(lstDG, loc, mode);
+		PrintContentSortTen(lstDG, location, mode);
 	}
 }
 

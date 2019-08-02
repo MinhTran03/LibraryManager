@@ -335,28 +335,34 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 		}
 	}
 }
+
 // Func 0 1
-void InDanhSachDG(LIST_DOCGIA listDG, MYPOINT location)
+void InDanhSachDG(LIST_DOCGIA listDG)
 {
-	auto locationMenu = location;
-	string temp;
-	locationMenu.x = 62;
-	location.y += 3;
+	// Location của Menu
+	MYPOINT locationMenu = {62, 2};
+
+	// Location của Danh sách độc giả
+	MYPOINT locationList = {52, locationMenu.y + 3 };
+
+	// Tạo Menu Select
 	MENU menu = MENU({ "SAP XEP THEO HO TEN", "SAP XEP THEO MA" }, locationMenu);
 	menu.btnSize = { 25, 3 };
 	while (true)
 	{
-		auto result = menu.ShowInHorizontal(Menu_Mode::Both);
-		//menu.ShowDisableModeInHorizontal();
+		int result = menu.ShowInHorizontal(Menu_Mode::Both);
+
+		// Độc giả sắp theo Họ Tên
 		if (result == 0)
 		{
-			temp = PrintAllDocGia(listDG, location, 2);
-			ClearScreen(BG_COLOR);
+			PrintAllDocGia(listDG, locationList, 2);
+			ClearArea(locationList.x, locationList.y, DOCGIA_TOTAL_WIDTH, MAX_ROW_PER_PAGE + 5);
 		}
+		// Độc giả sắp theo Mã
 		else if (result == 1)
 		{
-			temp = PrintAllDocGia(listDG, location, 1);
-			ClearScreen(BG_COLOR);
+			PrintAllDocGia(listDG, locationList, 1);
+			ClearArea(locationList.x, locationList.y, DOCGIA_TOTAL_WIDTH, MAX_ROW_PER_PAGE + 5);
 		}
 		else
 		{
@@ -365,16 +371,19 @@ void InDanhSachDG(LIST_DOCGIA listDG, MYPOINT location)
 		}
 	}
 }
+
 // Func 0 2
 void InDanhSachQuaHan(LIST_DAUSACH listDS, LIST_DOCGIA lstDG)
 {
 	PrintListQuaHan(listDS, lstDG);
 }
+
 // Func 1 0
 void HienThiDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 {
 	string result = listDS.PrintAllTheLoai(location);
 }
+
 // Func 1 1
 void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 {
@@ -540,6 +549,7 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 		}
 	}
 }
+
 // Func 1 2
 void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 {
@@ -548,12 +558,12 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 
 	MYPOINT locationDS = { 38,2 };
 	auto locationBtn = locationDS;
-	locationBtn.x = 46;
+	locationBtn.x = 57;
 	//locationBtn.y += 37;
 
 	auto locationListSach = locationDS;
 	locationListSach.x = 40;
-	MENU menu = MENU({ "THEM", "XOA", "SUA" }, locationBtn);
+	MENU menu = MENU({ "THEM" }, locationBtn);
 	menu.btnSize = { 10,3 };
 
 	int page = 0;
@@ -604,81 +614,81 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 				}
 			}
 			// Xoa
-			else if (selectionMenu == 1)
-			{
-				while (true)
-				{
-					// Het sach
-					if (listSach->Size() == 0)
-						break;
-					menu.ShowDisableModeInHorizontal();
-					maSach = listSach->PrintAll(locationListSach, Both);
-					//ClearLine(1);
-					if (maSach == "ESC")
-					{
-						break;
-					}
-					auto confirm = CONFIRMDIALOG({ locationListSach.x + 30, locationListSach.y + 13 });
-					confirm.Show("Ban chac chan muon xoa?", Yes_No);
-					confirm.Clear();
-					// dong y xoa
-					if (confirm.result == Yes)
-					{
-						// chua kiem tra dieu kien xoa sach
-						// ...
-						// khong duoc xoa
-						if (listSach->Search(maSach)->data.CanDelete() == false)
-						{
-							MakeFlickWarning({ locationListSach.x + (int)DMS_TOTAL_WIDTH / 2 - 20, locationListSach.y - 2 }, WARNING_CANT_DELETE_SACH);
-						}
-						else
-						{
-							if (listSach->Delete(maSach))
-							{
-								// xoa dong cuoi
-								SetTextColor(BG_COLOR);
-								SetBGColor(BG_COLOR);
-								//GoToXY(locationListSach.x, menu.location.y - 1);
-								//cout << emptyTemplate;
-								ClearArea(locationListSach.x, menu.location.y - 1, DMS_TOTAL_WIDTH, 1);
-								// xoa menu
-								menu.ClearInHorizontal();
-								// show menu
-								menu.location.y--;
-							}
-						}
-					}
-				}
-			}
-			// Sua
-			else if (selectionMenu == 2)
-			{
-				while (true)
-				{
-					// Het sach
-					if (listSach->Size() == 0)
-						break;
-					//menu.ShowDisableModeInHorizontal();
-					maSach = listSach->PrintAll(locationListSach, Both);
-					if (maSach == "ESC")
-					{
-						break;
-					}
-					else
-					{
-						auto nodeFix = listSach->Search(maSach);
-						// khong duoc sua
-						if (nodeFix->data.CanDelete() == false)
-						{
-							MakeFlickWarning({ locationListSach.x + (int)DMS_TOTAL_WIDTH / 2 - 20, locationListSach.y - 2 }, WARNING_CANT_FIX_SACH);
-						}
-						else
-						{
-							nodeFix->data = nodeFix->data.InputFix({ {90, locationDS.y},{44,13} });
-						}
-					}
-				}
-			}
+			//else if (selectionMenu == 1)
+			//{
+			//	while (true)
+			//	{
+			//		// Het sach
+			//		if (listSach->Size() == 0)
+			//			break;
+			//		menu.ShowDisableModeInHorizontal();
+			//		maSach = listSach->PrintAll(locationListSach, Both);
+			//		//ClearLine(1);
+			//		if (maSach == "ESC")
+			//		{
+			//			break;
+			//		}
+			//		auto confirm = CONFIRMDIALOG({ locationListSach.x + 30, locationListSach.y + 13 });
+			//		confirm.Show("Ban chac chan muon xoa?", Yes_No);
+			//		confirm.Clear();
+			//		// dong y xoa
+			//		if (confirm.result == Yes)
+			//		{
+			//			// chua kiem tra dieu kien xoa sach
+			//			// ...
+			//			// khong duoc xoa
+			//			if (listSach->Search(maSach)->data.CanDelete() == false)
+			//			{
+			//				MakeFlickWarning({ locationListSach.x + (int)DMS_TOTAL_WIDTH / 2 - 20, locationListSach.y - 2 }, WARNING_CANT_DELETE_SACH);
+			//			}
+			//			else
+			//			{
+			//				if (listSach->Delete(maSach))
+			//				{
+			//					// xoa dong cuoi
+			//					SetTextColor(BG_COLOR);
+			//					SetBGColor(BG_COLOR);
+			//					//GoToXY(locationListSach.x, menu.location.y - 1);
+			//					//cout << emptyTemplate;
+			//					ClearArea(locationListSach.x, menu.location.y - 1, DMS_TOTAL_WIDTH, 1);
+			//					// xoa menu
+			//					menu.ClearInHorizontal();
+			//					// show menu
+			//					menu.location.y--;
+			//				}
+			//			}
+			//		}
+			//	}
+			//}
+			//// Sua
+			//else if (selectionMenu == 2)
+			//{
+			//	while (true)
+			//	{
+			//		// Het sach
+			//		if (listSach->Size() == 0)
+			//			break;
+			//		//menu.ShowDisableModeInHorizontal();
+			//		maSach = listSach->PrintAll(locationListSach, Both);
+			//		if (maSach == "ESC")
+			//		{
+			//			break;
+			//		}
+			//		else
+			//		{
+			//			auto nodeFix = listSach->Search(maSach);
+			//			// khong duoc sua
+			//			if (nodeFix->data.CanDelete() == false)
+			//			{
+			//				MakeFlickWarning({ locationListSach.x + (int)DMS_TOTAL_WIDTH / 2 - 20, locationListSach.y - 2 }, WARNING_CANT_FIX_SACH);
+			//			}
+			//			else
+			//			{
+			//				nodeFix->data = nodeFix->data.InputFix({ {90, locationDS.y},{44,13} });
+			//			}
+			//		}
+			//	}
+			//}
 			// thoat
 			else if (selectionMenu == Key::ESC)
 			{
@@ -688,6 +698,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 		}
 	}
 }
+
 // Func 1 3
 void TimSach(LIST_DAUSACH& listDS, MYPOINT location)
 {
@@ -720,6 +731,7 @@ void TimSach(LIST_DAUSACH& listDS, MYPOINT location)
 		}
 	}
 }
+
 // Func 2 0
 void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 {
@@ -1080,6 +1092,7 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 		}
 	}
 }
+
 // Func 2 1
 void InDSDauSachMuonNhieuNhat(LIST_DAUSACH& listDS, MYPOINT location)
 {
