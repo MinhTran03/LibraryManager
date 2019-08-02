@@ -77,6 +77,7 @@ const unsigned int DOCGIA_TOTAL_WIDTH = MADOCGIA_WIDTH + HODOCGIA_WIDTH + TENDOC
 #define MUONTRA_FILE_PATH "\\MuonTra\\"
 
 const unsigned int SONGAYMUON_TOIDA = 7;
+const unsigned int SOSACHMUON_TOIDA = 3;
 
 const unsigned int NGAY_WIDTH = 14;
 const unsigned int TRANGTHAI_MUONTRA_WIDTH = 20;

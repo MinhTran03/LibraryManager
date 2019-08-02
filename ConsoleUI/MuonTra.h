@@ -48,7 +48,7 @@ struct LIST_MUONTRA
 	// kiem tra rong
 	bool IsEmpty();
 	// hien form muon sach
-	string ShowFormMuonSach(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode, int totalLine = 3);
+	string ShowFormMuonSach(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode, int totalLine = SOSACHMUON_TOIDA);
 	// kiem tra rong
 	// tao moi 1 node
 	NODE_MUONTRA* MakeNode(MUONTRA muonTra);

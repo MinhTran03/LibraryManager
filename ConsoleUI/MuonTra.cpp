@@ -327,9 +327,12 @@ string LIST_MUONTRA::ShowFormMuonSach(LIST_DAUSACH listDS, MYPOINT location, Men
 				string d = "";
 				d += char(179);
 				auto data = Split(datas[currentLine], d);
+				string t = data[1];
+				t = Trim(t);
 				delete[] datas;
 				delete[] rows;
-				return data[1];
+				delete[] data;
+				return t;
 			}
 			else if (inputKey == Key::TAB)
 			{

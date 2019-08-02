@@ -140,13 +140,13 @@ string DOCGIA::ToStringFile()
 }
 
 /// <summary>
-/// Kiểm tra xem DOCGIA đủ điều kiện mượn sách
-/// 0> Không làm mất sách
-/// 1> Không giữ sách quá 7 ngày
-/// 2> Thẻ độc giả đang hoạt động
-/// 3> Mượn tối đa 3 sách
+/// <para>Kiểm tra xem DOCGIA đủ điều kiện mượn sách</para>
+/// <para>0> Không làm mất sách</para>
+/// <para>1> Không giữ sách quá 7 ngày</para>
+/// <para>2> Thẻ độc giả đang hoạt động</para>
+/// <para>3> Mượn tối đa 3 sách</para>
 /// </summary>
-/// <returns>ExeptionMuonSach</returns>
+/// <returns>Accept nếu đủ điều kiện mượn sách</returns>
 ExeptionMuonSach DOCGIA::IsMuonSach()
 {
 	// 2> the doc gia dang hoat dong
