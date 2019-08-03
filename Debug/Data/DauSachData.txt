@@ -1,5 +1,5 @@
 000001-Tren duong bang-265-Tony Buoi Sang-2017-Ky nang song-0
-000002-Starter toeic-320-Anne Taylor-2016-Sach hoc ngoai ngu-0
+000002-Starter toeic-320-Anne Taylor-2016-Sach hoc ngoai ngu-1
 000003-Dac nhan tam-352-Dale Carnegie-2019-Ky nang song-0
 000004-Cafe cung tony-576-Tony Buoi Sang-2017-Ky nang song-0
 000005-Bo gia-2150-Mario Puzzo-2012-Tieu thuyet-0
@@ -13,7 +13,7 @@
 000013-Tuoi tre-352-Tony Sang-2011-Nhat ky-0
 000014-Chuyen tau mot chieu khong tro lai-264-Kien Tran-2019-Ky nang song-0
 000015-Ban dat gia bao nhieu-320-Van Tinh-2018-Ky nang song-0
-000016-Cam nang tu hoc ielts-188-Kien Tran-2017-Sach hoc ngoai ngu-0
+000016-Cam nang tu hoc ielts-188-Kien Tran-2017-Sach hoc ngoai ngu-1
 000017-Tuoi tre dang bao nhieu-285-Rosie Nguyen-2016-Ky nang song-0
 000018-Hanh ly hu vo-164-Nguyen Ngoc Tu-2019-Van hoc-0
 000019-Loi song toi gian cua nguoi nhat-294-Sasaki Fumio-2018-Nghe thuat song dep-0

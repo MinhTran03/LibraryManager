@@ -1388,7 +1388,7 @@ DAUSACH InputFixDauSach(LIST_DAUSACH listDS, RECTANGLE rect, DAUSACH dauSach)
 }
 
 /// <summary>
-/// 
+/// In ra Top 10 
 /// </summary>
 /// <param name=""></param>
 /// <returns>void</returns>
