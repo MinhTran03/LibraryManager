@@ -34,7 +34,7 @@ const unsigned int TENSACH_MAXSIZE = 36;
 const unsigned int TENTACGIA_MAXSIZE = 30;
 const unsigned int TENTHELOAI_MAXSIZE = 20;
 const unsigned int SOTRANG_MAXKYTU = 6; // 6 SO
-const unsigned int SODAUSACH_MAX = 100;
+const unsigned int SODAUSACH_MAX = 200;
 
 const unsigned int ISBN_WIDTH = ISBN_MAXSIZE;
 const unsigned int TENSACH_WIDTH = 36;

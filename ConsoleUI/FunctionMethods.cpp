@@ -588,138 +588,142 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 // Func 1 2
 void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 {
+	// Create Empty Line
 	string emptyTemplate = "";
-	emptyTemplate += string(MASACH_WIDTH + TRANGTHAISACH_WIDTH + VITRI_WIDTH + 4, ' ');
-
-	MYPOINT locationDS = { 38,2 };
-	auto locationBtn = locationDS;
-	locationBtn.x = 37;
-
-	auto locationListSach = locationDS;
-	locationListSach.x = 40;
-	MENU menu = MENU({ "THEM", "XOA", "SUA", "THANH LY" }, locationBtn);
-	menu.btnSize = { 12,3 };
+	emptyTemplate += string(DMS_TOTAL_WIDTH, ' ');
 
 	int page = 0;
+	MYPOINT locationDS = { 38,3 };
+	MYPOINT locationListSach = locationDS;
+	locationListSach.x = 40;
+
+	// Setup menu
+	MYPOINT locationBtn = locationDS;
+	locationBtn.x = 41;
+	MENU menu = MENU({ "THEM", "XOA", "SUA", "THANH LY" }, locationBtn);
+	menu.btnSize = { 10,3 };
 
 	while (true)
 	{
-		// List Dau sach can cap nhat
+		// Print LIST_DAUSACH và bắt phím lấy ISBN ng dùng chọn
 		string isbn = listDS.PrintAll(locationDS, page, Both);
 		ClearScreen(BG_COLOR);
-		if (isbn == "ESC")
-		{
-			return;
-		}
 
-		auto isbnAsChar = StringToCharArray(isbn);
-		auto listSach = &listDS.GetDauSach(isbnAsChar)->dsSach;
+		if (isbn == "ESC") return;
+
+		// Lấy LIST_SACH của đầu sách ng dùng chọn
+		char* isbnAsChar = StringToCharArray(isbn);
+		DAUSACH* dauSach = listDS.GetDauSach(isbnAsChar);
+		LIST_SACH* listSach = &dauSach->dsSach;
 
 		menu.location.y = locationBtn.y + listSach->Size() + 4;
 		while (true)
 		{
-			// List danh muc sach
+			// Print LIST_SACH
 			string maSach = listSach->PrintAll(locationListSach, Show_Only);
 
-			// hien button
+			// Print tên sách
+			{
+				SetTextColor(Color::Blue);
+				string text = "DAU SACH CAN CHINH SUA: " + ToUpperString(dauSach->tenSach);
+				GoToXY(locationDS.x + DMS_TOTAL_WIDTH / 2 - text.size() / 2 + 1, locationDS.y - 1);
+				cout << text;
+			}
+
+			// Show menu và bắt phím lấy button ng dùng ấn
 			int selectionMenu = menu.ShowInHorizontal(Both);
 
-			// them
+			// Thêm sách
 			if (selectionMenu == 0)
 			{
-				//menu.ShowDisableModeInHorizontal();
-				// Form nhap sach moi
+				// Tạo sách mới
 				SACH* newSach = new SACH();
-				StringToCharArray(isbn, isbnAsChar);
+
+				// Tạo mã sách mới tự động (dùng mã lớn nhất + 1)
 				string maSachAuto = listSach->AutoGenerateMaSach(isbnAsChar);
+
+				// Hiện form Input sách mới
 				*newSach = newSach->Input({ {90, locationDS.y},{44,13} }, maSachAuto);
-				// nguoi dung an CANCEL
+
+				// Hủy nhập sách mới
 				if (newSach->viTri[0] == '\0')
 				{
 					delete newSach;
 				}
-				// ng dung Luu dau sach
+				// Lưu thông tin sách mới
 				else
 				{
-					auto node = new NODE_SACH(*newSach);
+					NODE_SACH* node = new NODE_SACH(*newSach);
 					listSach->AddTail(*node);
+
+					// Load lại List sách
 					maSach = listSach->PrintAll(locationListSach, Show_Only);
 					menu.location.y++;
 				}
 			}
-			// Xoa
+			// Xóa sách
 			else if (selectionMenu == 1)
 			{
 				while (true)
 				{
-					// Het sach
-					if (listSach->Size() == 0)
-						break;
-					menu.ShowDisableModeInHorizontal();
+					// Hết sách
+					if (listSach->Size() == 0) break;
+
+					// Print LIST_SACH và bắt phím lấy mã sách ng dùng chọn
 					maSach = listSach->PrintAll(locationListSach, Both);
-					//ClearLine(1);
-					if (maSach == "ESC")
-					{
-						break;
-					}
+					if (maSach == "ESC") break;
+
+					// Xác nhận ng dùng trước khi xóa sách
 					auto confirm = CONFIRMDIALOG({ locationListSach.x + 30, locationListSach.y + 13 });
 					confirm.Show("Ban chac chan muon xoa?", Yes_No);
 					confirm.Clear();
-					// dong y xoa
+
+					// Ng dùng đồng ý xóa
 					if (confirm.result == Yes)
 					{
-						// chua kiem tra dieu kien xoa sach
-						// ...
-						// khong duoc xoa
+						// Nếu sách có độc giả mượn => không được xóa
 						if (listSach->Search(maSach)->data.CanDelete() == false)
 						{
-							MakeFlickWarning({ locationListSach.x + (int)DMS_TOTAL_WIDTH / 2 - 20, locationListSach.y - 2 }, WARNING_CANT_DELETE_SACH);
+							MakeFlickWarning({ locationListSach.x + (int)DMS_TOTAL_WIDTH / 2 - 20, locationListSach.y - 3 }, WARNING_CANT_DELETE_SACH);
 						}
+						// Sách được xóa (Đã thanh lý, Cho mượn được)
 						else
 						{
 							if (listSach->Delete(maSach))
 							{
-								// xoa dong cuoi
-								SetTextColor(BG_COLOR);
-								SetBGColor(BG_COLOR);
-								//GoToXY(locationListSach.x, menu.location.y - 1);
-								//cout << emptyTemplate;
-								ClearArea(locationListSach.x, menu.location.y - 1, DMS_TOTAL_WIDTH, 1);
-								// xoa menu
+								// Xóa trên giao diện
 								menu.ClearInHorizontal();
-								// show menu
 								menu.location.y--;
+								menu.ShowDisableModeInHorizontal();
 							}
 						}
 					}
 				}
 			}
-			// Sua
+			// Sửa sách
 			else if (selectionMenu == 2)
 			{
 				while (true)
 				{
-					// Het sach
-					if (listSach->Size() == 0)
-						break;
-					//menu.ShowDisableModeInHorizontal();
+					// Hết sách
+					if (listSach->Size() == 0) break;
+
+					// Print LIST_SACH và bắt phím lấy mã sách ng dùng chọn
 					maSach = listSach->PrintAll(locationListSach, Both);
-					if (maSach == "ESC")
+					if (maSach == "ESC") break;
+
+					// Lấy sách cần sửa
+					NODE_SACH* nodeFix = listSach->Search(maSach);
+
+					// Sách không được xóa => không được sửa (Có độc giả mượn)
+					if (nodeFix->data.CanDelete() == false)
 					{
-						break;
+						MakeFlickWarning({ locationListSach.x + (int)DMS_TOTAL_WIDTH / 2 - 20, locationListSach.y - 3 }, WARNING_CANT_FIX_SACH);
 					}
+					// Được sửa
 					else
 					{
-						auto nodeFix = listSach->Search(maSach);
-						// khong duoc sua
-						if (nodeFix->data.CanDelete() == false)
-						{
-							MakeFlickWarning({ locationListSach.x + (int)DMS_TOTAL_WIDTH / 2 - 20, locationListSach.y - 2 }, WARNING_CANT_FIX_SACH);
-						}
-						else
-						{
-							nodeFix->data = nodeFix->data.InputFix({ {90, locationDS.y},{44,13} });
-						}
+						nodeFix->data = nodeFix->data.InputFix({ {90, locationDS.y},{44,13} });
 					}
 				}
 			}
@@ -728,30 +732,29 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 			{
 				while (true)
 				{
-					// Het sach
-					if (listSach->Size() == 0)
-						break;
-					menu.ShowDisableModeInHorizontal();
+					// Hết sách
+					if (listSach->Size() == 0) break;
+
+					// Print LIST_SACH và bắt phím lấy mã sách ng dùng chọn
 					maSach = listSach->PrintAll(locationListSach, Both);
-					//ClearLine(1);
-					if (maSach == "ESC")
-					{
-						break;
-					}
+					if (maSach == "ESC") break;
+
+					// Xác nhận ng dùng trước khi thanh lý sách
 					auto confirm = CONFIRMDIALOG({ locationListSach.x + 30, locationListSach.y + 13 });
 					confirm.Show("Ban chac chan muon thanh ly sach?", Yes_No);
 					confirm.Clear();
-					// dong y xoa
+
+					// Ng dùng đồng ý thanh lý
 					if (confirm.result == Yes)
 					{
-						// chua kiem tra dieu kien xoa sach
-						// ...
 						NODE_SACH* sachThanhLy = listSach->Search(maSach);
-						// khong duoc xoa
+						
+						// Nếu sách có độc giả mượn => không được thanh lý
 						if (sachThanhLy->data.CanDelete() == false)
 						{
-							MakeFlickWarning({ locationListSach.x + (int)DMS_TOTAL_WIDTH / 2 - 20, locationListSach.y - 2 }, "SACH DA CO DOC GIA MUON. KHONG DUOC THANH LY");
+							MakeFlickWarning({ locationListSach.x + (int)DMS_TOTAL_WIDTH / 2 - 20, locationListSach.y - 3 }, "SACH DA CO DOC GIA MUON. KHONG DUOC THANH LY");
 						}
+						// Sửa trạng thái => Đã thanh lý
 						else
 						{
 							sachThanhLy->data.trangThai = DaThanhLy;
@@ -763,6 +766,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 			else if (selectionMenu == Key::ESC)
 			{
 				ClearScreen(BG_COLOR);
+				delete[] isbnAsChar;
 				break;
 			}
 		}

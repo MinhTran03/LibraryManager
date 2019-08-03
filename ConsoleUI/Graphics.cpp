@@ -206,7 +206,7 @@ void MaximizeWindow()
 // in trang
 void ShowPageNumber(int currentPage, int totalPages, int x, int y)
 {
-	ClearLine(y);
+	//ClearLine(y);
 	SetBGColor(BG_COLOR);
 	SetTextColor(TEXT_INPUT_COLOR);
 	GoToXY(x, y);
@@ -223,4 +223,5 @@ void ShowPageNumber(int currentPage, int totalPages, int x, int y)
 		}
 		std::cout << i + 1;
 	}
+	std::cout << "  ";
 }

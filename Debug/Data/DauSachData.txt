@@ -26,6 +26,7 @@
 000026-Hack nao 1500-536-Nguyen Van Hiep-2018-Sach hoc ngoai ngu-0
 000027-5 centimet tren giay-202-Shinkai Makoto-2014-Van hoc-0
 000028-Dam bi ghet-336-Koga Fumitake-2018-Tieu thuyet-0
+000029-Hai so phan-768-Jeffey Arver-2018-Kinh dien-0
 000030-Toi tuong lai va the gioi-380-Nguyen Phi Van-2018-Ky nang song-0
 000031-66 ngay thu thach-174-Happy Life-2019-Ky nang song-0
 000032-Ong gia va bien ca-124-Ernest Hemingway-2019-Kinh dien-0
@@ -35,6 +36,7 @@
 000036-That tich khong mua-319-Lau Vu Tinh-2013-Van hoc-0
 000037-Toi tu hoc-262-Thu Giang-2017-Ky nang song-0
 000038-Mau ban-373-John Carreyrou-2019-Ky nang song-0
+000039-Thien than nho cua toi-132-Nguyen Nhat Anh-2018-Tieu thuyet-0
 000040-Toi tai gioi, ban cung the-251-Null-2014-Ky nang song-0
 000041-Cach nghi de thanh cong-411-Napoleon Hill-2008-Ky nang song-0
 000042-Ngu van lop 6-215-Null-2018-Sach giao khoa-0
