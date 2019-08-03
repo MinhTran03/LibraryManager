@@ -784,6 +784,7 @@ void TimSach(LIST_DAUSACH& listDS, MYPOINT location)
 		isCancel = false;
 		isTrue = false;
 		ClearArea(0, point.y + 8, 170, SCREEN_HEIGHT - FOOTER_HEIGHT - point.y - 8);
+		// Tim sach voi Key duoc truyen vao tu MessageBox
 		DrawMessageBox(point, "NHAP TEN SACH CAN TIM", searchKey, isEnter, isCancel, char(219), GetKey_Only);
 		ClearLine(1);
 		if (isEnter)

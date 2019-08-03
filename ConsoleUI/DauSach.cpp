@@ -754,7 +754,7 @@ string LIST_DAUSACH::PrintAllSearch(MYPOINT location, string tenSach, Menu_Mode 
 	Color hlTextColor = Color::White;
 	int currentLine = 0;
 	int totalLine = 0;
-	// dua vao vector
+	// Dua ket qua tim vao mang con tro
 	auto listISBN = FindBooks(tenSach, totalLine);
 	string** datas = NULL;
 	int** rows = NULL;
@@ -1131,9 +1131,12 @@ DAUSACH* LIST_DAUSACH::FindBooks(string tenSach, int& count)
 	DAUSACH* result = NULL;
 	if (tenSach != "")
 	{
+		// Chuyen ve Lower
 		string toLowerName = ToLowerString(tenSach);
+		// Chuyen ve mang con tro dua tren char Space
 		string* listKey = Split(toLowerName, " ");
 
+		// Duyet ket qua dung nghia nhat
 		for (int i = 0; i < this->size; i++)
 		{
 			string toLowerTenSach = ToLowerString(this->nodes[i]->tenSach);
@@ -1143,6 +1146,7 @@ DAUSACH* LIST_DAUSACH::FindBooks(string tenSach, int& count)
 				PushBack(result, *this->nodes[i], count);
 			}
 		}
+
 		auto tenSachAsChar = StringToCharArray(tenSach);
 		int wordCount = WordCount(tenSachAsChar);
 		delete[] tenSachAsChar;
@@ -1154,16 +1158,17 @@ DAUSACH* LIST_DAUSACH::FindBooks(string tenSach, int& count)
 				size_t found = toLowerTenSach.find(listKey[j]);
 				if (found != string::npos || toLowerTenSach == listKey[j])
 				{
-					int dem = 0;
+					bool isTrue = false;
 					for (int k = 0; k < count; k++)
 					{
 						string temp = this->nodes[i]->isbn;
 						if (result[k].isbn == temp)
 						{
-							dem++;
+							isTrue = true;
+							break;
 						}
 					}
-					if (dem == 0)
+					if (isTrue == false)
 					{
 						PushBack(result, *this->nodes[i], count);
 					}

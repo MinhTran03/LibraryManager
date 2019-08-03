@@ -38,3 +38,24 @@
 000040-Toi tai gioi, ban cung the-251-Null-2014-Ky nang song-0
 000041-Cach nghi de thanh cong-411-Napoleon Hill-2008-Ky nang song-0
 000042-Ngu van lop 6-215-Null-2018-Sach giao khoa-0
+000043-Su cuu roi cua thanh nu-382-Higashino Keigo-2019-Tieu thuyet-0
+000044-Su ket thuc cua thoi dai gia kim-368-Mervyn King-2019-Kinh doanh-0
+000045-The gioi ba khong-248-Muhammad Yunus-2019-Kinh doanh-0
+000046-Thanh kinh duong da-162-Chizu Saeki-2019-Suc khoe-0
+000047-Art book dragon ball-220-Akira Toriyama-2016-Truyen tranh-0
+000048-Giai thich ngu phap tieng anh-536-Ha Thanh Uyen-2018-Sach hoc ngoai ngu-0
+000049-Lam ra lam choi ra choi-356-Cal Newport-2019-Ky nang song-0
+000050-Khoi nghiep tinh gon-222-Eric Ries-2019-Sach khoi ghiep-0
+000051-Sua bang tieng cun-169-Minh Tran-2019-Ky nang song-0
+000052-Di tim le song-224-Vikor Emil Frankl-2019-Ky nang song-0
+000053-Neu chi con mot ngay de song-251-Nicola Yoon-2017-Tieu thuyet-0
+000054-Thien nga den-472-Nassim Nicholas Taleb-2018-Sach tam ly-0
+000055-Tri tue xuc cam-416-Daniel Goleman-2018-Ky nang song-0
+000056-Dan than-352-Nell Scovell-2019-Ky nang lam viec-0
+000057-Don con gon tam tri-136-Yuko Hirose-2019-Ky nang song-0
+000058-Cuoc song rat giong cuoc doi-256-Hoang Hai Nguyen-2016-Sach van hoc-0
+000059-Suc manh tiem thuc-336-Joseph Murphyc-2019-Ky nang song-0
+000060-Nha tu nhien kinh te-308-Robert H Frank-2017-Sach kinh te-0
+000061-Bi mat cua may man-144-Alex Rovira-2016-Ky nang song-0
+000062-Thien than nho cua toi-132-Nguyen Nhat Anh-2018-Tieu thuyet-0
+000063-Hai so phan-768-Jeffey Arver-2018-Kinh dien-0
