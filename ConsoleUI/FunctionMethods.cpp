@@ -587,7 +587,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 {
 	// Create Empty Line
 	string emptyTemplate = "";
-	emptyTemplate += string(MASACH_WIDTH + TRANGTHAISACH_WIDTH + VITRI_WIDTH + 4, ' ');
+	emptyTemplate += string(DMS_TOTAL_WIDTH, ' ');
 
 	int page = 0;
 	MYPOINT locationDS = { 38,2 };
@@ -610,13 +610,22 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 
 		// Lấy LIST_SACH của đầu sách ng dùng chọn
 		char* isbnAsChar = StringToCharArray(isbn);
-		LIST_SACH* listSach = &listDS.GetDauSach(isbnAsChar)->dsSach;
+		DAUSACH* dauSach = listDS.GetDauSach(isbnAsChar);
+		LIST_SACH* listSach = &dauSach->dsSach;
 
 		menu.location.y = locationBtn.y + listSach->Size() + 4;
 		while (true)
 		{
 			// Print LIST_SACH
 			string maSach = listSach->PrintAll(locationListSach, Show_Only);
+
+			// Print tên sách
+			{
+				SetTextColor(Color::Blue);
+				string text = "DAU SACH CAN CHINH SUA: " + ToUpperString(dauSach->tenSach);
+				GoToXY(locationDS.x + DMS_TOTAL_WIDTH / 2 - text.size() / 2 + 1, 1);
+				cout << text;
+			}
 
 			// Show menu và bắt phím lấy button ng dùng ấn
 			int selectionMenu = menu.ShowInHorizontal(Both);
