@@ -322,6 +322,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 				{
 					break;
 				}
+				// In Doc Gia co Hightlight
 				selectedMaDocGia = PrintAllDGWithHL(listDG, location, page, Menu_Mode::Both, line);
 				line = WhereY() - location.y - 3;
 				//ClearLine(1);
@@ -333,7 +334,9 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 				{
 					// cap nhat dsDocGia
 					int MaDG = stoi(selectedMaDocGia);
+					// Tim kiem Doc Gia bang Ma Doc Gia
 					auto temp = Search(listDG, MaDG);
+					// ...
 					temp->data = InputFixDocGia({ {DAUSACH_TOTAL_WIDTH + 2, location.y}, {50, 18} }, temp->data);
 					tem = PrintAllDGWithHL(listDG, location, page, Show_Only);
 				}
