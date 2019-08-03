@@ -3,9 +3,12 @@
 #pragma region ----------------------------------------------------TOPSACH
 
 /// <summary>
+/// Lấy ToString của đầu sách và in ra màn hình
 /// 
 /// </summary>
-/// <param name=""></param>
+/// <param name="location">Vị trí in</param>
+/// <param name="backColor">Màu nền</param>
+/// <param name="textColor">Màu chữ</param>
 /// <returns>void</returns>
 void TOPSACH::Print(MYPOINT location, Color backColor, Color textColor)
 {
@@ -16,9 +19,11 @@ void TOPSACH::Print(MYPOINT location, Color backColor, Color textColor)
 }
 
 /// <summary>
-/// 
+/// Thuat toan QuickSort sap xep giam dan
 /// </summary>
-/// <param name=""></param>
+/// <param name="top10"></param>
+/// <param name="q"></param>
+/// <param name="r"></param>
 /// <returns>void</returns>
 void SortTop10(TOPSACH* top10, int q, int r)
 {
@@ -52,7 +57,7 @@ void SortTop10(TOPSACH* top10, int q, int r)
 }
 
 /// <summary>
-/// 
+/// Dem value neu = nhau thi size khong doi du 10 thi thoi
 /// </summary>
 /// <param name=""></param>
 /// <returns>void</returns>
@@ -1388,10 +1393,11 @@ DAUSACH InputFixDauSach(LIST_DAUSACH listDS, RECTANGLE rect, DAUSACH dauSach)
 }
 
 /// <summary>
-/// In ra Top 10 
+/// In ra Top dua tren value soLuotMuon
 /// </summary>
-/// <param name=""></param>
-/// <returns>void</returns>
+/// <param name="listDS"> ListDS co san </param>
+/// <param name="location"> Location co san </param>
+/// <returns> Data DAUSACH la line string </returns>
 string PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
 {
 	string emptyTemplate = "";
@@ -1422,7 +1428,7 @@ string PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
 
 	TOPSACH* top10 = nullptr;
 
-	// nhap thong tin vao mang.
+	// Nhap thong tin vao mang TopSach lay soLuotMuon.
 	int count = 0;
 	for (int i = 0; i < soDauSach; i++)
 	{
@@ -1432,6 +1438,7 @@ string PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
 		PushBack(top10, top, count);
 	}
 
+	// Tien hanh sap xep va dem value voi 10 gia tri khac nhau
 	if (count != 0)
 		SortTop10(top10, 0, count - 1);
 	int minOfTop10 = RemoveDuplicatesInSortedTopSach(top10, count);
@@ -1453,6 +1460,7 @@ string PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
 	totalPage = totalLine / MAX_ROW_PER_PAGE;
 	if (totalLine % MAX_ROW_PER_PAGE != 0)totalPage++;
 	ShowPageNumber(currentPage, totalPage, location.x, location.y + MAX_ROW_PER_PAGE + 1);
+	// In top 10
 	for (int i = 0; i < MAX_ROW_PER_PAGE; i++)
 	{
 		//Sleep(10);
