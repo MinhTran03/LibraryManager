@@ -732,7 +732,13 @@ void LIST_DAUSACH::PrintFindBooks(MYPOINT location, string tenSach)
 	delete[] listISBN;
 }
 
-// ...
+/// <summary>
+/// In danh sách DAUSACH tim được
+/// </summary>
+/// <param name="location">Location</param>
+/// <param name="tenSach">Từ khóa tìm kiếm</param>
+/// <param name="mode">Show_Only: Chỉ hiện \n Both: Hiện và bắt phím</param>
+/// <returns>In ra kiểu string line là data DAUSACH</returns>
 string LIST_DAUSACH::PrintAllSearch(MYPOINT location, string tenSach, Menu_Mode mode)
 {
 	int page = 0;
@@ -1125,7 +1131,12 @@ bool LIST_DAUSACH::Insert(DAUSACH& node, int index)
 	return true;
 }
 
-// ...
+/// <summary>
+/// Tim kiem theo Key co ra ket qua sap xi
+/// </summary>
+/// <param name="tenSach">DAUSACH cần thêm</param>
+/// <param name="count"> Kich thuoc cua mang con tro DAUSACH </param>
+/// <returns>DAUSACH*</returns>
 DAUSACH* LIST_DAUSACH::FindBooks(string tenSach, int& count)
 {
 	DAUSACH* result = NULL;
@@ -1147,6 +1158,7 @@ DAUSACH* LIST_DAUSACH::FindBooks(string tenSach, int& count)
 			}
 		}
 
+		// Tim kiem dua tren cac tu cua Key
 		auto tenSachAsChar = StringToCharArray(tenSach);
 		int wordCount = WordCount(tenSachAsChar);
 		delete[] tenSachAsChar;
@@ -1162,6 +1174,7 @@ DAUSACH* LIST_DAUSACH::FindBooks(string tenSach, int& count)
 					for (int k = 0; k < count; k++)
 					{
 						string temp = this->nodes[i]->isbn;
+						// Kiem tra trung ISBN
 						if (result[k].isbn == temp)
 						{
 							isTrue = true;
