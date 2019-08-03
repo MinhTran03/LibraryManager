@@ -590,13 +590,12 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 
 	MYPOINT locationDS = { 38,2 };
 	auto locationBtn = locationDS;
-	locationBtn.x = 57;
-	//locationBtn.y += 37;
+	locationBtn.x = 37;
 
 	auto locationListSach = locationDS;
 	locationListSach.x = 40;
-	MENU menu = MENU({ "THEM" }, locationBtn);
-	menu.btnSize = { 10,3 };
+	MENU menu = MENU({ "THEM", "XOA", "SUA", "THANH LY" }, locationBtn);
+	menu.btnSize = { 12,3 };
 
 	int page = 0;
 
@@ -646,81 +645,117 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 				}
 			}
 			// Xoa
-			//else if (selectionMenu == 1)
-			//{
-			//	while (true)
-			//	{
-			//		// Het sach
-			//		if (listSach->Size() == 0)
-			//			break;
-			//		menu.ShowDisableModeInHorizontal();
-			//		maSach = listSach->PrintAll(locationListSach, Both);
-			//		//ClearLine(1);
-			//		if (maSach == "ESC")
-			//		{
-			//			break;
-			//		}
-			//		auto confirm = CONFIRMDIALOG({ locationListSach.x + 30, locationListSach.y + 13 });
-			//		confirm.Show("Ban chac chan muon xoa?", Yes_No);
-			//		confirm.Clear();
-			//		// dong y xoa
-			//		if (confirm.result == Yes)
-			//		{
-			//			// chua kiem tra dieu kien xoa sach
-			//			// ...
-			//			// khong duoc xoa
-			//			if (listSach->Search(maSach)->data.CanDelete() == false)
-			//			{
-			//				MakeFlickWarning({ locationListSach.x + (int)DMS_TOTAL_WIDTH / 2 - 20, locationListSach.y - 2 }, WARNING_CANT_DELETE_SACH);
-			//			}
-			//			else
-			//			{
-			//				if (listSach->Delete(maSach))
-			//				{
-			//					// xoa dong cuoi
-			//					SetTextColor(BG_COLOR);
-			//					SetBGColor(BG_COLOR);
-			//					//GoToXY(locationListSach.x, menu.location.y - 1);
-			//					//cout << emptyTemplate;
-			//					ClearArea(locationListSach.x, menu.location.y - 1, DMS_TOTAL_WIDTH, 1);
-			//					// xoa menu
-			//					menu.ClearInHorizontal();
-			//					// show menu
-			//					menu.location.y--;
-			//				}
-			//			}
-			//		}
-			//	}
-			//}
-			//// Sua
-			//else if (selectionMenu == 2)
-			//{
-			//	while (true)
-			//	{
-			//		// Het sach
-			//		if (listSach->Size() == 0)
-			//			break;
-			//		//menu.ShowDisableModeInHorizontal();
-			//		maSach = listSach->PrintAll(locationListSach, Both);
-			//		if (maSach == "ESC")
-			//		{
-			//			break;
-			//		}
-			//		else
-			//		{
-			//			auto nodeFix = listSach->Search(maSach);
-			//			// khong duoc sua
-			//			if (nodeFix->data.CanDelete() == false)
-			//			{
-			//				MakeFlickWarning({ locationListSach.x + (int)DMS_TOTAL_WIDTH / 2 - 20, locationListSach.y - 2 }, WARNING_CANT_FIX_SACH);
-			//			}
-			//			else
-			//			{
-			//				nodeFix->data = nodeFix->data.InputFix({ {90, locationDS.y},{44,13} });
-			//			}
-			//		}
-			//	}
-			//}
+			else if (selectionMenu == 1)
+			{
+				while (true)
+				{
+					// Het sach
+					if (listSach->Size() == 0)
+						break;
+					menu.ShowDisableModeInHorizontal();
+					maSach = listSach->PrintAll(locationListSach, Both);
+					//ClearLine(1);
+					if (maSach == "ESC")
+					{
+						break;
+					}
+					auto confirm = CONFIRMDIALOG({ locationListSach.x + 30, locationListSach.y + 13 });
+					confirm.Show("Ban chac chan muon xoa?", Yes_No);
+					confirm.Clear();
+					// dong y xoa
+					if (confirm.result == Yes)
+					{
+						// chua kiem tra dieu kien xoa sach
+						// ...
+						// khong duoc xoa
+						if (listSach->Search(maSach)->data.CanDelete() == false)
+						{
+							MakeFlickWarning({ locationListSach.x + (int)DMS_TOTAL_WIDTH / 2 - 20, locationListSach.y - 2 }, WARNING_CANT_DELETE_SACH);
+						}
+						else
+						{
+							if (listSach->Delete(maSach))
+							{
+								// xoa dong cuoi
+								SetTextColor(BG_COLOR);
+								SetBGColor(BG_COLOR);
+								//GoToXY(locationListSach.x, menu.location.y - 1);
+								//cout << emptyTemplate;
+								ClearArea(locationListSach.x, menu.location.y - 1, DMS_TOTAL_WIDTH, 1);
+								// xoa menu
+								menu.ClearInHorizontal();
+								// show menu
+								menu.location.y--;
+							}
+						}
+					}
+				}
+			}
+			// Sua
+			else if (selectionMenu == 2)
+			{
+				while (true)
+				{
+					// Het sach
+					if (listSach->Size() == 0)
+						break;
+					//menu.ShowDisableModeInHorizontal();
+					maSach = listSach->PrintAll(locationListSach, Both);
+					if (maSach == "ESC")
+					{
+						break;
+					}
+					else
+					{
+						auto nodeFix = listSach->Search(maSach);
+						// khong duoc sua
+						if (nodeFix->data.CanDelete() == false)
+						{
+							MakeFlickWarning({ locationListSach.x + (int)DMS_TOTAL_WIDTH / 2 - 20, locationListSach.y - 2 }, WARNING_CANT_FIX_SACH);
+						}
+						else
+						{
+							nodeFix->data = nodeFix->data.InputFix({ {90, locationDS.y},{44,13} });
+						}
+					}
+				}
+			}
+			// Thanh lý
+			else if (selectionMenu == 3)
+			{
+				while (true)
+				{
+					// Het sach
+					if (listSach->Size() == 0)
+						break;
+					menu.ShowDisableModeInHorizontal();
+					maSach = listSach->PrintAll(locationListSach, Both);
+					//ClearLine(1);
+					if (maSach == "ESC")
+					{
+						break;
+					}
+					auto confirm = CONFIRMDIALOG({ locationListSach.x + 30, locationListSach.y + 13 });
+					confirm.Show("Ban chac chan muon thanh ly sach?", Yes_No);
+					confirm.Clear();
+					// dong y xoa
+					if (confirm.result == Yes)
+					{
+						// chua kiem tra dieu kien xoa sach
+						// ...
+						NODE_SACH* sachThanhLy = listSach->Search(maSach);
+						// khong duoc xoa
+						if (sachThanhLy->data.CanDelete() == false)
+						{
+							MakeFlickWarning({ locationListSach.x + (int)DMS_TOTAL_WIDTH / 2 - 20, locationListSach.y - 2 }, "SACH DA CO DOC GIA MUON. KHONG DUOC THANH LY");
+						}
+						else
+						{
+							sachThanhLy->data.trangThai = DaThanhLy;
+						}
+					}
+				}
+			}
 			// thoat
 			else if (selectionMenu == Key::ESC)
 			{
