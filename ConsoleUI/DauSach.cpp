@@ -288,6 +288,7 @@ void PrintLabelDauSach(MYPOINT location, int row)
 /// <returns>Phím người dùng ấn as string</returns>
 string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, string theLoai)
 {
+	// Create Empty Line
 	string emptyTemplate = "";
 	emptyTemplate = emptyTemplate + char(179) + string(ISBN_WIDTH, ' ');
 	emptyTemplate = emptyTemplate + char(179) + string(TENSACH_WIDTH, ' ');
@@ -298,27 +299,32 @@ string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, string theLoai)
 	emptyTemplate = emptyTemplate + char(179);
 
 	int totalLine = 0;
-	// tim ISBN theo the loai
-	auto listISBN = GetDauSachByTheLoai(theLoai, totalLine);
-	// sap xep theo ten sach
-	SortByTenSach(listISBN, totalLine);
-	MYPOINT backUpLocation = MYPOINT(0, 0);
 	int currentPage = 0;
 	int totalPage = 0;
+	MYPOINT backUpLocation = MYPOINT(0, 0);
+
+	// Lấy tất cả sách thuộc thể loại
+	DAUSACH* listISBN = GetDauSachByTheLoai(theLoai, totalLine);
+
+	// Sắp xếp theo tên sách
+	SortByTenSach(listISBN, totalLine);
+
+	// Tính tổng số page
 	totalPage = totalLine / MAX_ROW_PER_PAGE;
 	if (totalLine % MAX_ROW_PER_PAGE != 0)totalPage++;
 
 	location.y += 3;
 	backUpLocation = location;
-	// print data
+
+	// In Đầu sách lấy được
 	ShowPageNumber(currentPage, totalPage, location.x, location.y + MAX_ROW_PER_PAGE + 1);
 	for (int i = 0; i < MAX_ROW_PER_PAGE; i++)
 	{
-		//Sleep(10);
 		if (i < totalLine && i >= (int)MAX_ROW_PER_PAGE * currentPage && i < (currentPage + 1) * (int)MAX_ROW_PER_PAGE)
 		{
 			listISBN[i].Print({ location.x, location.y + (int)(i % MAX_ROW_PER_PAGE) }, BG_COLOR, TEXT_INPUT_COLOR);
 		}
+		// Xóa line dư của page trước
 		else
 		{
 			GoToXY(location.x, location.y + (int)(i % MAX_ROW_PER_PAGE));
@@ -326,7 +332,7 @@ string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, string theLoai)
 		}
 	}
 
-	// bat phim
+	// Bắt phím
 	char inputKey = NULL;
 	HidePointer();
 	do
@@ -338,37 +344,35 @@ string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, string theLoai)
 			inputKey = _getch();
 			if (inputKey == Key::RIGHT)
 			{
-				//ClearArea(location.x, backUpLocation.y - 3, DAUSACH_TOTAL_WIDTH, totalLine + 4);
 				delete[] listISBN;
 				return "RIGHT";
 			}
 			else if (inputKey == Key::LEFT)
 			{
-				//ClearArea(location.x, backUpLocation.y - 3, DAUSACH_TOTAL_WIDTH, totalLine + 4);
 				delete[] listISBN;
 				return "LEFT";
 			}
 			else if (inputKey == Key::PAGE_DOWN && currentPage < totalPage - 1)
 			{
-				// in next page
 				currentPage++;
 				ShowPageNumber(currentPage, totalPage, location.x, location.y + MAX_ROW_PER_PAGE + 1);
 				SetBGColor(BG_COLOR);
 				SetTextColor(TEXT_INPUT_COLOR);
 				for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
 				{
-					// in trang not cuoi cung
+					// In trang không phải cuối cùng
 					if (currentPage < totalPage - 1 || (currentPage == totalPage - 1 && totalLine % MAX_ROW_PER_PAGE == 0))
 					{
 						listISBN[i + MAX_ROW_PER_PAGE * currentPage].Print({ location.x, location.y + (int)i }, BG_COLOR, TEXT_INPUT_COLOR);
 						continue;
 					}
-					// in trang cuoi cung
+					// In trang cuối cùng
 					if (currentPage == totalPage - 1 && totalLine % MAX_ROW_PER_PAGE != 0
 						&& i < totalLine % MAX_ROW_PER_PAGE)
 					{
 						listISBN[i + MAX_ROW_PER_PAGE * currentPage].Print({ location.x, location.y + (int)i }, BG_COLOR, TEXT_INPUT_COLOR);
 					}
+					// Xóa line dư của page trước
 					else
 					{
 						GoToXY(backUpLocation.x, backUpLocation.y + i);
@@ -378,7 +382,6 @@ string LIST_DAUSACH::PrintByTheLoai(MYPOINT location, string theLoai)
 			}
 			else if (inputKey == Key::PAGE_UP && currentPage > 0)
 			{
-				// in prev page
 				currentPage--;
 				ShowPageNumber(currentPage, totalPage, location.x, location.y + MAX_ROW_PER_PAGE + 1);
 				SetBGColor(BG_COLOR);
@@ -408,17 +411,23 @@ string LIST_DAUSACH::PrintAllTheLoai(MYPOINT location)
 {
 	int currentPage = 0;
 	int totalPages = this->soTheLoai;
+
+	// In mũi tên qua phải
 	SetBGColor(Color::Gray);
 	SetTextColor(Color::Bright_White);
 	GoToXY(location.x + DAUSACH_TOTAL_WIDTH + 1, location.y + MAX_ROW_PER_PAGE / 2);
 	cout << char(62);
+
 	// print label
 	PrintLabelDauSach(location, MAX_ROW_PER_PAGE);
+
 	while (true)
 	{
-		string outPut = PrintByTheLoai(location, this->dsTheLoai[currentPage]);
-		// go to next page
-		if (outPut == "RIGHT")
+		// In Đầu sách theo từng thể loại và bắt phím qua trái phải
+		string inputKey = PrintByTheLoai(location, this->dsTheLoai[currentPage]);
+
+		// Qua page bên phải
+		if (inputKey == "RIGHT")
 		{
 			if (currentPage < totalPages - 1)
 			{
@@ -439,8 +448,8 @@ string LIST_DAUSACH::PrintAllTheLoai(MYPOINT location)
 				}
 			}
 		}
-		// go to previous page
-		else if (outPut == "LEFT")
+		// Qua page bên trái
+		else if (inputKey == "LEFT")
 		{
 			if (currentPage > 0)
 			{
@@ -461,15 +470,10 @@ string LIST_DAUSACH::PrintAllTheLoai(MYPOINT location)
 				}
 			}
 		}
-		// ESC hitted
-		else if (outPut == "ESC")
-		{
-			return outPut;
-		}
-		// enter hitted
+		// Trả về phím được nhấn
 		else
 		{
-			return outPut;
+			return inputKey;
 		}
 	}
 }
@@ -483,6 +487,7 @@ string LIST_DAUSACH::PrintAllTheLoai(MYPOINT location)
 /// <returns>Phím người dùng ấn as string</returns>
 string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 {
+	// Create Empty Line
 	string emptyTemplate = "";
 	emptyTemplate = emptyTemplate + char(179) + string(ISBN_WIDTH, ' ');
 	emptyTemplate = emptyTemplate + char(179) + string(TENSACH_WIDTH, ' ');
@@ -527,6 +532,7 @@ string LIST_DAUSACH::PrintAll(MYPOINT location, int& page, Menu_Mode mode)
 	{
 		count = 0;
 		PrintLabelDauSach(location, MAX_ROW_PER_PAGE);
+		if (totalLine == 0) return"";
 		location.y += 3;
 		backUpLocation = location;
 		// print data
@@ -1272,6 +1278,7 @@ DAUSACH ParseVectorStringDS(string* data, int mode)
 /// <returns>DAUSACH</returns>
 DAUSACH InputDauSach(LIST_DAUSACH listDS, RECTANGLE rect)
 {
+	// Setup Form Input
 	string labels[] = { "ISBN:","Ten sach:","So trang:","Tac gia:", "Nam xuat ban:","The loai:" };
 	string inputTitle = "NHAP THONG TIN DAU SACH";
 	CONDITION conditions[] = { {Number_Only, ISBN_MAXSIZE, ISBN_MAXSIZE}, {All, 1, TENSACH_MAXSIZE},{Number_Only, 1, SOTRANG_MAXKYTU},
@@ -1280,15 +1287,21 @@ DAUSACH InputDauSach(LIST_DAUSACH listDS, RECTANGLE rect)
 	string guilds[] = { "DAY SO CO 6 CHU SO", "TAT CA KY TU", "SO TRANG TU [1, 999999]", "CHI NHAP CHU CAI",
 													"PHAI NHO HON NAM HIEN TAI", "CHI NHAP CHU CAI" };
 	form.Guilds = guilds;
+
+	// Tạo DAUSACH mới
 	DAUSACH dauSach = DAUSACH();
 	string* tempData = form.OutputResults;
 
 	while (true)
 	{
 		form.OutputResults = tempData;
+		// SAVE DAUSACH
 		if (form.Show())
 		{
+			// Chuyển dữ liệu string người dùng nhập thành obj DAUSACH
 			dauSach = ParseVectorStringDS(form.OutputResults);
+
+			// Kiểm tra ISBN có trùng
 			if (listDS.IsContainISBN(dauSach.isbn))
 			{
 				GoToXY(form.cols[0] - 6, form.rows[0] + 1);
@@ -1297,12 +1310,14 @@ DAUSACH InputDauSach(LIST_DAUSACH listDS, RECTANGLE rect)
 				form.currentLine = 0;
 				tempData = form.OutputResults;
 			}
+			// ISBN không trùng
 			else
 			{
 				delete[] tempData;
 				return dauSach;
 			}
 		}
+		// CANCEL DAUSACH
 		else
 		{
 			form.ResetOutput();

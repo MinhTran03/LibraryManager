@@ -69,7 +69,7 @@ bool Working(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS)
 			}
 			else if (func[1] == 1)
 			{
-				InDanhSachDG(listDG, { locationDS.x + 50, locationDS.y });
+				InDanhSachDG(listDG);
 			}
 			else
 			{

@@ -185,8 +185,8 @@ string* GetAllStringNode(LIST_DOCGIA listDG, int& count);
 ///	<para>1: Sort theo mã độc giả</para>
 ///	<para>0: Sort theo tên độc giả</para>
 /// </param>
-/// <returns>Phím được nhấn As String</returns>
-string PrintAllDocGia(LIST_DOCGIA lstDG, MYPOINT location, int mode = 1, Menu_Mode m = Both);
+/// <returns>void</returns>
+void PrintAllDocGia(LIST_DOCGIA lstDG, MYPOINT location, int mode = 1, Menu_Mode m = Both);
 
 /// <summary>
 /// In string tại vị trí truyền vào
