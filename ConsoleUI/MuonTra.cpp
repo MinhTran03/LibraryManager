@@ -166,8 +166,10 @@ string MUONTRA::ToStringFile()
 bool MUONTRA::IsQuaHan()
 {
 	if (this->trangThai == SachDaTra) return false;
+
 	auto today = DATETIME();
 	today.SetDateTimeNow();
+
 	if (today.SubDate(this->ngayMuon) > 7)
 	{
 		return true;
@@ -183,6 +185,7 @@ int MUONTRA::GetSoNgayQuaHan()
 {
 	auto today = DATETIME();
 	today.SetDateTimeNow();
+
 	return today.SubDate(this->ngayMuon) - SONGAYMUON_TOIDA;
 }
 

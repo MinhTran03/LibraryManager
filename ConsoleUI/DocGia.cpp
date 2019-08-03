@@ -1143,12 +1143,13 @@ void InorderGetStringQuaHan(LIST_DAUSACH listDS, LIST_DOCGIA lstDG, string*& res
 	if (lstDG != NULL)
 	{
 		InorderGetStringQuaHan(listDS, lstDG->pLeft, result, count);
-		int c = 0;
-		string* temp = lstDG->data.ToStringQuaHan(listDS, c);
-		for (int i = 0; i < c; i++)
+		int countMTQuaHan = 0;
+		string* mtQuaHanAsString = lstDG->data.ToStringQuaHan(listDS, countMTQuaHan);
+		for (int i = 0; i < countMTQuaHan; i++)
 		{
-			PushBack(result, temp[i], count);
+			PushBack(result, mtQuaHanAsString[i], count);
 		}
+		delete[] mtQuaHanAsString;
 		InorderGetStringQuaHan(listDS, lstDG->pRight, result, count);
 	}
 }
@@ -1161,11 +1162,7 @@ void InorderGetStringQuaHan(LIST_DAUSACH listDS, LIST_DOCGIA lstDG, string*& res
 /// <returns>void</returns>
 void PrintListQuaHan(LIST_DAUSACH listDS, LIST_DOCGIA lstDG)
 {
-	MYPOINT location = { 20, 3 };
-	string* quaHanString = NULL;
-	int size = 0;
-	InorderGetStringQuaHan(listDS, lstDG, quaHanString, size);
-
+	// Create Empty Line
 	string emptyTemplate = "";
 	emptyTemplate = emptyTemplate + char(179) + string(MADOCGIA_WIDTH, ' ');
 	emptyTemplate = emptyTemplate + char(179) + string(HODOCGIA_WIDTH, ' ');
@@ -1175,27 +1172,38 @@ void PrintListQuaHan(LIST_DAUSACH listDS, LIST_DOCGIA lstDG)
 	emptyTemplate = emptyTemplate + char(179) + string(NGAY_WIDTH, ' ');
 	emptyTemplate = emptyTemplate + char(179) + string(17, ' ');
 	emptyTemplate = emptyTemplate + char(179);
+
+	MYPOINT location = { 20, 3 };
+	string* quaHanString = NULL;
 	int currentPage = 0;
+	int totalPage = 0;
+	int totalQuaHan = 0;
 
-	int totalPage = size / MAX_ROW_PER_PAGE;
-	if (size % MAX_ROW_PER_PAGE != 0) totalPage++;
+	// Lấy ra List độc giả dưới dạng String để in ra màn hình
+	InorderGetStringQuaHan(listDS, lstDG, quaHanString, totalQuaHan);
 
-	// sap xep
-	int* soNgayQH = new int[size];
+	// Tính tổng page dựa vào MAX_ROW_PER_PAGE
+	totalPage = totalQuaHan / MAX_ROW_PER_PAGE;
+	if (totalQuaHan % MAX_ROW_PER_PAGE != 0) totalPage++;
+
+	// Tách ToString lấy số ngày quá hạn
+	int* soNgayQH = new int[totalQuaHan];
 	string deli = ""; deli += char(179);
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < totalQuaHan; i++)
 	{
-		auto temp = Split(quaHanString[i], deli);
-		temp[7] = Trim(temp[7]);
-		soNgayQH[i] = stoi(temp[7]);
+		string* arr = Split(quaHanString[i], deli);
+		arr[7] = Trim(arr[7]);
+		soNgayQH[i] = stoi(arr[7]);
 	}
-	SortQuaHanString(soNgayQH, quaHanString, 0, size - 1);
+
+	// Quick Sort list ToString theo soNgayQuaHan
+	SortQuaHanString(soNgayQH, quaHanString, 0, totalQuaHan - 1);
 	delete[] soNgayQH;
 
+	// In ra màn hình
 	PrintLabelQuaHan(location, MAX_ROW_PER_PAGE);
 	ShowPageNumber(currentPage, totalPage, location.x, location.y + (int)MAX_ROW_PER_PAGE + 4);
-	// In ra mh
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < totalQuaHan; i++)
 	{
 		if (i >= (int)MAX_ROW_PER_PAGE * currentPage && i < (currentPage + 1) * (int)MAX_ROW_PER_PAGE)
 		{
@@ -1205,7 +1213,7 @@ void PrintListQuaHan(LIST_DAUSACH listDS, LIST_DOCGIA lstDG)
 		}
 	}
 
-	// bat phim
+	// Bắt phím
 	char inputKey = NULL;
 	do
 	{
@@ -1221,15 +1229,15 @@ void PrintListQuaHan(LIST_DAUSACH listDS, LIST_DOCGIA lstDG)
 			{
 				Sleep(3);
 				// in trang not cuoi cung
-				if (currentPage < totalPage - 1 || (currentPage == totalPage - 1 && size % MAX_ROW_PER_PAGE == 0))
+				if (currentPage < totalPage - 1 || (currentPage == totalPage - 1 && totalQuaHan % MAX_ROW_PER_PAGE == 0))
 				{
 					GoToXY(location.x, location.y + (int)i);
 					cout << quaHanString[i + MAX_ROW_PER_PAGE * currentPage];
 					continue;
 				}
 				// in trang cuoi cung
-				if (currentPage == totalPage - 1 && size % MAX_ROW_PER_PAGE != 0
-					&& i < size % MAX_ROW_PER_PAGE)
+				if (currentPage == totalPage - 1 && totalQuaHan % MAX_ROW_PER_PAGE != 0
+					&& i < totalQuaHan % MAX_ROW_PER_PAGE)
 				{
 					GoToXY(location.x, location.y + (int)i);
 					cout << quaHanString[i + MAX_ROW_PER_PAGE * currentPage];
@@ -1243,7 +1251,6 @@ void PrintListQuaHan(LIST_DAUSACH listDS, LIST_DOCGIA lstDG)
 		}
 		else if (inputKey == Key::PAGE_UP && currentPage > 0)
 		{
-			// in prev page
 			currentPage--;
 			ShowPageNumber(currentPage, totalPage, location.x, location.y + (int)MAX_ROW_PER_PAGE + 1);
 			SetBGColor(BG_COLOR);

@@ -4,7 +4,7 @@
 
 #define defaultDay 1
 #define defaultMonth 1
-#define defaultYear 1970
+#define defaultYear 2000
 
 struct DATETIME
 {
