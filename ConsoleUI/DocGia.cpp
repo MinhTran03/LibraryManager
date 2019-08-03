@@ -344,6 +344,7 @@ string* GetDGToListString(DOCGIA docGia)
 int GetRandomMaDG(LIST_DOCGIA listDG)
 {
 	srand((unsigned int)time((time_t)NULL));
+	// Lay kich thuoc cua ListDG
 	int t = Size(listDG);
 	newPos = rand() % (MAX_DOCGIA - Size(listDG));
 	return maDocGiaArr[newPos];
