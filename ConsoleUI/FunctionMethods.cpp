@@ -593,7 +593,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 	emptyTemplate += string(DMS_TOTAL_WIDTH, ' ');
 
 	int page = 0;
-	MYPOINT locationDS = { 38,2 };
+	MYPOINT locationDS = { 38,3 };
 	MYPOINT locationListSach = locationDS;
 	locationListSach.x = 40;
 
@@ -626,7 +626,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 			{
 				SetTextColor(Color::Blue);
 				string text = "DAU SACH CAN CHINH SUA: " + ToUpperString(dauSach->tenSach);
-				GoToXY(locationDS.x + DMS_TOTAL_WIDTH / 2 - text.size() / 2 + 1, 1);
+				GoToXY(locationDS.x + DMS_TOTAL_WIDTH / 2 - text.size() / 2 + 1, locationDS.y - 1);
 				cout << text;
 			}
 
@@ -684,7 +684,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 						// Nếu sách có độc giả mượn => không được xóa
 						if (listSach->Search(maSach)->data.CanDelete() == false)
 						{
-							MakeFlickWarning({ locationListSach.x + (int)DMS_TOTAL_WIDTH / 2 - 20, locationListSach.y - 2 }, WARNING_CANT_DELETE_SACH);
+							MakeFlickWarning({ locationListSach.x + (int)DMS_TOTAL_WIDTH / 2 - 20, locationListSach.y - 3 }, WARNING_CANT_DELETE_SACH);
 						}
 						// Sách được xóa (Đã thanh lý, Cho mượn được)
 						else
@@ -718,7 +718,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 					// Sách không được xóa => không được sửa (Có độc giả mượn)
 					if (nodeFix->data.CanDelete() == false)
 					{
-						MakeFlickWarning({ locationListSach.x + (int)DMS_TOTAL_WIDTH / 2 - 20, locationListSach.y - 2 }, WARNING_CANT_FIX_SACH);
+						MakeFlickWarning({ locationListSach.x + (int)DMS_TOTAL_WIDTH / 2 - 20, locationListSach.y - 3 }, WARNING_CANT_FIX_SACH);
 					}
 					// Được sửa
 					else
@@ -752,7 +752,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 						// Nếu sách có độc giả mượn => không được thanh lý
 						if (sachThanhLy->data.CanDelete() == false)
 						{
-							MakeFlickWarning({ locationListSach.x + (int)DMS_TOTAL_WIDTH / 2 - 20, locationListSach.y - 2 }, "SACH DA CO DOC GIA MUON. KHONG DUOC THANH LY");
+							MakeFlickWarning({ locationListSach.x + (int)DMS_TOTAL_WIDTH / 2 - 20, locationListSach.y - 3 }, "SACH DA CO DOC GIA MUON. KHONG DUOC THANH LY");
 						}
 						// Sửa trạng thái => Đã thanh lý
 						else
