@@ -835,11 +835,13 @@ void TimSach(LIST_DAUSACH& listDS, MYPOINT location)
 		isCancel = false;
 		isTrue = false;
 		ClearArea(0, point.y + 8, 170, SCREEN_HEIGHT - FOOTER_HEIGHT - point.y - 8);
+		// Tim sach voi Key duoc truyen vao tu MessageBox
 		DrawMessageBox(point, "NHAP TEN SACH CAN TIM", searchKey, isEnter, isCancel, char(219), GetKey_Only);
 		ClearLine(1);
 		if (isEnter)
 		{
 			string selectedDauSach = listDS.PrintAllSearch({ location.x + 10, location.y + 10 }, searchKey, Menu_Mode::Both);
+			// Tránh trường hợp chưa có searchKey
 			if (selectedDauSach == "Empty")
 			{
 				MakeFlickWarning({ point.x + 20 - (((int)searchKey.size() + 26) / 2), point.y - 2 }, "KHONG TIM THAY DAU SACH: " + searchKey);
@@ -1191,6 +1193,7 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 					{
 						while (true)
 						{
+							// In data MuonTra của Doc Gia da tim
 							maSachSelect = docGiaSearch->data.listMuonTra.Show(listDS, { 20, 23 }, Both);
 							if (maSachSelect == "ESC")
 							{
@@ -1198,20 +1201,22 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 							}
 							else if (maSachSelect != "")
 							{
-								// xac nhan truoc khi thay doi
+								// Xac nhan tra truoc khi thay doi
 								auto confirm = CONFIRMMODEVERSION("", { 72, 31 });
 								confirm.ShowEnterConfirm();
 								if (confirm.result == 1)
 								{
+									// Từ Ma SACH lay duoc Ma DAUSACH
 									string temp = GetMaDauSach(maSachSelect);
-									auto dauSach = StringToCharArray(temp);
-									DAUSACH* listDauSach = listDS.GetDauSach(dauSach);
 									DATETIME time = DATETIME();
 									time.SetDateTimeNow();
-									MUONTRA muonTra = MUONTRA();
+									// Truy cap data de Set ngay tra SACH
 									auto sachTra = docGiaSearch->data.listMuonTra.Search(maSachSelect);
 									sachTra->data.ngayTra = time;
 									sachTra->data.trangThai = SachDaTra;
+									// Set trang thai ve ChoMuonDuoc
+									auto dauSach = StringToCharArray(temp);
+									DAUSACH* listDauSach = listDS.GetDauSach(dauSach);
 									listDauSach->dsSach.Search(maSachSelect)->data.trangThai = ChoMuonDuoc;
 								}
 							}

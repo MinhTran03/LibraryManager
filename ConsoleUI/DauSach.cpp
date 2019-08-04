@@ -3,9 +3,12 @@
 #pragma region ----------------------------------------------------TOPSACH
 
 /// <summary>
+/// Lấy ToString của đầu sách và in ra màn hình
 /// 
 /// </summary>
-/// <param name=""></param>
+/// <param name="location">Vị trí in</param>
+/// <param name="backColor">Màu nền</param>
+/// <param name="textColor">Màu chữ</param>
 /// <returns>void</returns>
 void TOPSACH::Print(MYPOINT location, Color backColor, Color textColor)
 {
@@ -16,9 +19,11 @@ void TOPSACH::Print(MYPOINT location, Color backColor, Color textColor)
 }
 
 /// <summary>
-/// 
+/// Thuat toan QuickSort sap xep giam dan
 /// </summary>
-/// <param name=""></param>
+/// <param name="top10"></param>
+/// <param name="q"></param>
+/// <param name="r"></param>
 /// <returns>void</returns>
 void SortTop10(TOPSACH* top10, int q, int r)
 {
@@ -52,7 +57,7 @@ void SortTop10(TOPSACH* top10, int q, int r)
 }
 
 /// <summary>
-/// 
+/// Dem value neu = nhau thi size khong doi du 10 thi thoi
 /// </summary>
 /// <param name=""></param>
 /// <returns>void</returns>
@@ -712,7 +717,13 @@ string LIST_DAUSACH::PrintAll(MYPOINT location, int& showPage, Menu_Mode mode)
 	return "";
 }
 
-// ...
+/// <summary>
+/// In danh sách DAUSACH tim được
+/// </summary>
+/// <param name="location">Location</param>
+/// <param name="tenSach">Từ khóa tìm kiếm</param>
+/// <param name="mode">Show_Only: Chỉ hiện \n Both: Hiện và bắt phím</param>
+/// <returns>In ra kiểu string line là data DAUSACH</returns>
 string LIST_DAUSACH::PrintAllSearch(MYPOINT location, string tenSach, Menu_Mode mode)
 {
 	int pageSach = 0;
@@ -735,7 +746,7 @@ string LIST_DAUSACH::PrintAllSearch(MYPOINT location, string tenSach, Menu_Mode 
 	Color hlTextColor = Color::White;
 	int currentLine = 0;
 	int totalLine = 0;
-	// dua vao vector
+	// Dua ket qua tim vao mang con tro
 	auto listISBN = FindBooks(tenSach, totalLine);
 	string** datas = NULL;
 	int** rows = NULL;
@@ -1106,15 +1117,23 @@ bool LIST_DAUSACH::Insert(DAUSACH& node, int index)
 	return true;
 }
 
-// ...
+/// <summary>
+/// Tim kiem theo Key co ra ket qua sap xi
+/// </summary>
+/// <param name="tenSach">DAUSACH cần thêm</param>
+/// <param name="count"> Kich thuoc cua mang con tro DAUSACH </param>
+/// <returns>DAUSACH*</returns>
 DAUSACH* LIST_DAUSACH::FindBooks(string tenSach, int& count)
 {
 	DAUSACH* result = NULL;
 	if (tenSach != "")
 	{
+		// Chuyen ve Lower
 		string toLowerName = ToLowerString(tenSach);
+		// Chuyen ve mang con tro dua tren char Space
 		string* listKey = Split(toLowerName, " ");
 
+		// Duyet ket qua dung nghia nhat
 		for (int i = 0; i < this->size; i++)
 		{
 			string toLowerTenSach = ToLowerString(this->nodes[i]->tenSach);
@@ -1124,6 +1143,8 @@ DAUSACH* LIST_DAUSACH::FindBooks(string tenSach, int& count)
 				PushBack(result, *this->nodes[i], count);
 			}
 		}
+
+		// Tim kiem dua tren cac tu cua Key
 		auto tenSachAsChar = StringToCharArray(tenSach);
 		int wordCount = WordCount(tenSachAsChar);
 		delete[] tenSachAsChar;
@@ -1135,16 +1156,18 @@ DAUSACH* LIST_DAUSACH::FindBooks(string tenSach, int& count)
 				size_t found = toLowerTenSach.find(listKey[j]);
 				if (found != string::npos || toLowerTenSach == listKey[j])
 				{
-					int dem = 0;
+					bool isTrue = false;
 					for (int k = 0; k < count; k++)
 					{
 						string temp = this->nodes[i]->isbn;
+						// Kiem tra trung ISBN
 						if (result[k].isbn == temp)
 						{
-							dem++;
+							isTrue = true;
+							break;
 						}
 					}
-					if (dem == 0)
+					if (isTrue == false)
 					{
 						PushBack(result, *this->nodes[i], count);
 					}
@@ -1353,10 +1376,11 @@ DAUSACH InputFixDauSach(LIST_DAUSACH listDS, RECTANGLE rect, DAUSACH dauSach)
 }
 
 /// <summary>
-/// 
+/// In ra Top dua tren value soLuotMuon
 /// </summary>
-/// <param name=""></param>
-/// <returns>void</returns>
+/// <param name="listDS"> ListDS co san </param>
+/// <param name="location"> Location co san </param>
+/// <returns> Data DAUSACH la line string </returns>
 string PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
 {
 	string emptyTemplate = "";
@@ -1372,7 +1396,7 @@ string PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
 
 	TOPSACH* top10 = nullptr;
 
-	// nhap thong tin vao mang.
+	// Nhap thong tin vao mang TopSach lay soLuotMuon.
 	int count = 0;
 	for (int i = 0; i < soDauSach; i++)
 	{
@@ -1382,6 +1406,7 @@ string PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
 		PushBack(top10, top, count);
 	}
 
+	// Tien hanh sap xep va dem value voi 10 gia tri khac nhau
 	if (count != 0)
 		SortTop10(top10, 0, count - 1);
 	int minOfTop10 = RemoveDuplicatesInSortedTopSach(top10, count);
@@ -1403,6 +1428,7 @@ string PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
 	totalPage = totalLine / MAX_ROW_PER_PAGE;
 	if (totalLine % MAX_ROW_PER_PAGE != 0)totalPage++;
 	ShowPageNumber(currentPage, totalPage, location.x, location.y + MAX_ROW_PER_PAGE + 1);
+	// In top 10
 	for (int i = 0; i < MAX_ROW_PER_PAGE; i++)
 	{
 		//Sleep(10);

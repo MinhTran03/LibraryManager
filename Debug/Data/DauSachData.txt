@@ -1,5 +1,5 @@
 000001-Tren duong bang-265-Tony Buoi Sang-2017-Ky nang song-0
-000002-Starter toeic-320-Anne Taylor-2016-Sach hoc ngoai ngu-0
+000002-Starter toeic-320-Anne Taylor-2016-Sach hoc ngoai ngu-1
 000003-Dac nhan tam-352-Dale Carnegie-2019-Ky nang song-0
 000004-Cafe cung tony-576-Tony Buoi Sang-2017-Ky nang song-0
 000005-Bo gia-2150-Mario Puzzo-2012-Tieu thuyet-0
@@ -13,7 +13,7 @@
 000013-Tuoi tre-352-Tony Sang-2011-Nhat ky-0
 000014-Chuyen tau mot chieu khong tro lai-264-Kien Tran-2019-Ky nang song-0
 000015-Ban dat gia bao nhieu-320-Van Tinh-2018-Ky nang song-0
-000016-Cam nang tu hoc ielts-188-Kien Tran-2017-Sach hoc ngoai ngu-0
+000016-Cam nang tu hoc ielts-188-Kien Tran-2017-Sach hoc ngoai ngu-1
 000017-Tuoi tre dang bao nhieu-285-Rosie Nguyen-2016-Ky nang song-0
 000018-Hanh ly hu vo-164-Nguyen Ngoc Tu-2019-Van hoc-0
 000019-Loi song toi gian cua nguoi nhat-294-Sasaki Fumio-2018-Nghe thuat song dep-0
@@ -48,7 +48,7 @@
 000048-Giai thich ngu phap tieng anh-536-Ha Thanh Uyen-2018-Sach hoc ngoai ngu-0
 000049-Lam ra lam choi ra choi-356-Cal Newport-2019-Ky nang song-0
 000050-Khoi nghiep tinh gon-222-Eric Ries-2019-Sach khoi ghiep-0
-000051-Bi mat cua may man-144-Alex Rovira-2016-Ky nang song-0
+000051-Sua bang tieng cun-169-Minh Tran-2019-Ky nang song-0
 000052-Di tim le song-224-Vikor Emil Frankl-2019-Ky nang song-0
 000053-Neu chi con mot ngay de song-251-Nicola Yoon-2017-Tieu thuyet-0
 000054-Thien nga den-472-Nassim Nicholas Taleb-2018-Sach tam ly-0
@@ -58,3 +58,6 @@
 000058-Cuoc song rat giong cuoc doi-256-Hoang Hai Nguyen-2016-Sach van hoc-0
 000059-Suc manh tiem thuc-336-Joseph Murphyc-2019-Ky nang song-0
 000060-Nha tu nhien kinh te-308-Robert H Frank-2017-Sach kinh te-0
+000061-Bi mat cua may man-144-Alex Rovira-2016-Ky nang song-0
+000062-Thien than nho cua toi-132-Nguyen Nhat Anh-2018-Tieu thuyet-0
+000063-Hai so phan-768-Jeffey Arver-2018-Kinh dien-0
