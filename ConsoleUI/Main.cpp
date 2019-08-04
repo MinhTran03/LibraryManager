@@ -54,7 +54,7 @@ void LoadDataAll(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS)
 
 bool Working(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS)
 {
-	MYPOINT locationDS = { 2, 2 };
+	MYPOINT locationDS = { 2, 3 };
 	bool isSave = false;
 	int t1 = -1;
 	int t2 = -1;

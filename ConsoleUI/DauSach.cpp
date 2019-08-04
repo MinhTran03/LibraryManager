@@ -271,6 +271,7 @@ void SortByTenSach(DAUSACH*& listDauSach, int size)
 /// </summary>
 /// <param name="location">Location</param>
 /// <param name="row">Số đầu sách có trong danh sách</param>
+/// <param name="headerText">Tiêu để của LIST đầu sách</param>
 /// <returns>void</returns>
 void PrintLabelDauSach(MYPOINT location, int row)
 {
@@ -278,6 +279,9 @@ void PrintLabelDauSach(MYPOINT location, int row)
 	auto lstBorder = LISTBORDERTEXT(labels, 6);
 	lstBorder.Draw(location, { ISBN_WIDTH, TENSACH_WIDTH, SOTRANG_WIDTH, TENTACGIA_WIDTH, NAMXUATBAN_WIDTH, TENTHELOAI_WIDTH },
 		row, BORDER_COLOR);
+	/*SetTextColor(headerTextColor);
+	GoToXY(location.x + DAUSACH_TOTAL_WIDTH / 2 - headerText.size() / 2 + 1, location.y - 1);
+	cout << headerText;*/
 }
 
 /// <summary>
@@ -501,7 +505,7 @@ string LIST_DAUSACH::PrintAll(MYPOINT location, int& showPage, Menu_Mode mode)
 		emptyStringDauSach = emptyStringDauSach + char(179) + string(TENTHELOAI_WIDTH, ' ');
 		emptyStringDauSach = emptyStringDauSach + char(179);
 	}
-
+	
 	Color hlBGColor = Color::Cyan;
 	Color hlTextColor = Color::White;
 	MYPOINT backUpLocation = { 0,0 };
@@ -650,12 +654,12 @@ string LIST_DAUSACH::PrintAll(MYPOINT location, int& showPage, Menu_Mode mode)
 			else if (inputKey == Key::PAGE_DOWN && currentPage < totalPages - 1 && currentPage < MAX_PAGE_DAUSACH)
 			{
 				currentLine = 0;
-				ShowPageNumber(currentPage, totalPages, location.x, location.y + MAX_ROW_PER_PAGE + 1);
 				SetBGColor(BG_COLOR);
 				SetTextColor(TEXT_INPUT_COLOR);
 
 				// In next page
 				currentPage++;
+				ShowPageNumber(currentPage, totalPages, location.x, location.y + MAX_ROW_PER_PAGE + 1);
 				for (int i = 0; i < (int)MAX_ROW_PER_PAGE; i++)
 				{
 					if (rowsOfPage != NULL && i < (rowsOfPage[currentPage]))
@@ -676,12 +680,12 @@ string LIST_DAUSACH::PrintAll(MYPOINT location, int& showPage, Menu_Mode mode)
 			else if (inputKey == Key::PAGE_UP && currentPage > 0)
 			{
 				currentLine = 0;
-				ShowPageNumber(currentPage, totalPages, location.x, location.y + MAX_ROW_PER_PAGE + 1);
 				SetBGColor(BG_COLOR);
 				SetTextColor(TEXT_INPUT_COLOR);
 
 				// In previous page
 				currentPage--;
+				ShowPageNumber(currentPage, totalPages, location.x, location.y + MAX_ROW_PER_PAGE + 1);
 				for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
 				{
 					GoToXY(backUpLocation.x, backUpLocation.y + i);
@@ -740,6 +744,7 @@ void LIST_DAUSACH::PrintFindBooks(MYPOINT location, string tenSach)
 // ...
 string LIST_DAUSACH::PrintAllSearch(MYPOINT location, string tenSach, Menu_Mode mode)
 {
+	int pageSach = 0;
 	int page = 0;
 	int currentPage = 0;
 	int totalPages;
@@ -866,7 +871,7 @@ string LIST_DAUSACH::PrintAllSearch(MYPOINT location, string tenSach, Menu_Mode 
 						HightLight(datas[currentPage][currentLine], hlBGColor, hlTextColor);
 					}
 				}
-				else if (inputKey == Key::DOWN)
+				else if (inputKey == Key::DOWN && currentPage < MAX_PAGE_DAUSACH)
 				{
 					if (currentLine < (rowsOfPage[currentPage]) - 1)
 					{
@@ -890,9 +895,9 @@ string LIST_DAUSACH::PrintAllSearch(MYPOINT location, string tenSach, Menu_Mode 
 				RECTANGLE rect = { { location.x + (int)DAUSACH_TOTAL_WIDTH + 1, y } , {DMS_TOTAL_WIDTH, 20} };
 				ClearArea(rect.location.x, rect.location.y, rect.size.width, rect.size.height);
 
-				string temp = listISBN[currentLine].dsSach.PrintAll({ location.x + (int)DAUSACH_TOTAL_WIDTH + 1, y }, Menu_Mode::Show_Only);
+				string temp = listISBN[currentLine].dsSach.PrintAll({ location.x + (int)DAUSACH_TOTAL_WIDTH + 1, y }, pageSach, Menu_Mode::Show_Only);
 			}
-			else if (inputKey == Key::PAGE_DOWN && currentPage < totalPages - 1)
+			else if (inputKey == Key::PAGE_DOWN && currentPage < totalPages - 1 && currentPage < MAX_PAGE_DAUSACH)
 			{
 				// in next page
 				currentPage++;

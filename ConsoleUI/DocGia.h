@@ -202,13 +202,12 @@ void PrintStringDocGia(string data, MYPOINT location);
 /// <param name="listDG">LIST_DOCGIA cần in</param>
 /// <param name="location">Location</param>
 /// <param name="page">Lưu lại vị trí page đang đứng</param>
-/// <param name="line">Dòng cần highLight</param>
 /// <param name="mode">
 ///	<para>Show_Only: Chỉ hiện</para>
 ///	<para>Both: Hiện và bắt phím</para>
 /// </param>
 /// <returns>Phím được nhấn As String</returns>
-string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& page, Menu_Mode mode, int line = 0);
+string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& showPage, Menu_Mode mode);
 
 /// <summary>
 /// In LIST_DOCGIA quá hạn ra màn hình
@@ -301,3 +300,11 @@ DOCGIA InputDocGia(int maThe, RECTANGLE rect);
 /// <param name="rect">Khung nhập sách</param>
 /// <returns>DOCGIA</returns>
 DOCGIA InputFixDocGia(RECTANGLE rect, DOCGIA docGia);
+
+/// <summary>
+/// In labels cho danh sách Độc giả
+/// </summary>
+/// <param name="location">Location</param>
+/// <param name="row">Số độc giả có trong danh sách</param>
+/// <returns>void</returns>
+void PrintLabelDocGia(MYPOINT location, int row);

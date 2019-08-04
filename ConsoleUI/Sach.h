@@ -93,7 +93,7 @@ struct LIST_SACH
 	/// <param name="location">Location</param>
 	/// <param name="mode"> Lua chon giua cac che do hien thi</param>
 	/// <returns>Phím người dùng ấn as string</returns>
-	string PrintAll(MYPOINT location, Menu_Mode mode);
+	string PrintAll(MYPOINT location, int& showPage, Menu_Mode mode);
 
 	/// <summary>
 	/// In ra man hinh SACH cho muon duoc
@@ -186,3 +186,9 @@ struct LIST_SACH
 /// <param name="maSach"> Ma SACH can de lay MADAUSACH</param>
 /// <returns>string</returns>
 string GetMaDauSach(string maSach);
+
+/// <summary>
+/// Dung ham Draw ve khung va Menu
+/// </summary>
+/// <returns>void</returns>
+void PrintLabelSach(MYPOINT location, int row);

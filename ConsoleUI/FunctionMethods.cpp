@@ -156,12 +156,6 @@ void SetupConsole()
 	ShowFooter();
 }
 
-void NormalColor()
-{
-	SetTextColor(BG_COLOR);
-	SetBGColor(BG_COLOR);
-}
-
 void MakeFlickWarning(MYPOINT location, string text)
 {
 	int x = location.x;
@@ -199,43 +193,50 @@ int* SelectionFuntion(int rootLine, int childLine)
 // Func 0 0
 void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 {
-	string emptyTemplate = "";
-	emptyTemplate = emptyTemplate + char(179) + string(MADOCGIA_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + string(HODOCGIA_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + string(TENDOCGIA_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + string(GIOITINH_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + string(TRANGTHAIDG_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179);
-	string selectedMaDocGia;
-	int page = 0;
-	string tem = PrintAllDGWithHL(listDG, location, page, Show_Only);
+	// Create Empty Line Độc giả
+	string emptyStringDocGia = "";
+	{
+		emptyStringDocGia = emptyStringDocGia + char(179) + string(MADOCGIA_WIDTH, ' ');
+		emptyStringDocGia = emptyStringDocGia + char(179) + string(HODOCGIA_WIDTH, ' ');
+		emptyStringDocGia = emptyStringDocGia + char(179) + string(TENDOCGIA_WIDTH, ' ');
+		emptyStringDocGia = emptyStringDocGia + char(179) + string(GIOITINH_WIDTH, ' ');
+		emptyStringDocGia = emptyStringDocGia + char(179) + string(TRANGTHAIDG_WIDTH, ' ');
+		emptyStringDocGia = emptyStringDocGia + char(179);
+	}
 
-	//int maThe;
-	auto locationBtn = location;
-	locationBtn.x += 20;
-	locationBtn.y += 25;
-	// Menu button
+	int currentPage = 0;
+
+	// Tinh chỉnh vị trí button = mắt
+	MYPOINT locationBtn = { location.x + 20, location.y + 25 };
 	MENU menu = MENU({ "THEM", "XOA", "SUA" }, locationBtn);
 	menu.btnSize = { 10,3 };
-	// in Data Doc Gia voi Hightlight
-	tem = PrintAllDGWithHL(listDG, location, page, Show_Only);
+
+	// In tất cả Độc Giả, trả về mã DG người dùng chọn
+	PrintLabelDocGia(location, MAX_ROW_PER_PAGE);
+	string selectedMaDG = PrintAllDGWithHL(listDG, location, currentPage, Show_Only);
+
 	while (true)
 	{
-		int selected = menu.ShowInHorizontal(Menu_Mode::Both);
-		if (selected == Key::PAGE_UP && page > 0)
+		// Hiện menu button
+		int selectedButton = menu.ShowInHorizontal(Menu_Mode::Both);
+
+		// Go to Previous page
+		if (selectedButton == Key::PAGE_UP && currentPage > 0)
 		{
-			page--;
-			tem = PrintAllDGWithHL(listDG, location, page, Show_Only);
+			currentPage--;
+			selectedMaDG = PrintAllDGWithHL(listDG, location, currentPage, Show_Only);
 		}
-		else if (selected == Key::PAGE_DOWN)
+		// Go to Next page
+		else if (selectedButton == Key::PAGE_DOWN)
 		{
-			page++;
-			tem = PrintAllDGWithHL(listDG, location, page, Show_Only);
+			currentPage++;
+			selectedMaDG = PrintAllDGWithHL(listDG, location, currentPage, Show_Only);
 		}
-		// Them
-		if (selected == 0)
+
+		// Thêm
+		if (selectedButton == 0)
 		{
-			auto newDocGia = new DOCGIA();
+			DOCGIA* newDocGia = new DOCGIA();
 			//Random Ma Doc Gia
 			int newMaDG = GetRandomMaDG(listDG);
 			// Show Input tao moi Doc Gia
@@ -251,23 +252,23 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 				RemoveMaDG(listDG);
 				// Them Doc Gia vao ListDG
 				Insert(listDG, *newDocGia);
-				tem = PrintAllDGWithHL(listDG, location, page, Show_Only);
+				selectedMaDG = PrintAllDGWithHL(listDG, location, currentPage, Show_Only);
 			}
 		}
-		// Xoa
-		else if (selected == 1)
+		// Xóa
+		else if (selectedButton == 1)
 		{
 			while (true)
 			{
 				// Het doc gia
 				if (Size(listDG) == 0)
 				{
-					tem = PrintAllDGWithHL(listDG, location, page, Show_Only);
+					selectedMaDG = PrintAllDGWithHL(listDG, location, currentPage, Show_Only);
 					break;
 				}
-				selectedMaDocGia = PrintAllDGWithHL(listDG, location, page, Menu_Mode::Both);
+				selectedMaDG = PrintAllDGWithHL(listDG, location, currentPage, Menu_Mode::Both);
 				//ClearLine(1);
-				if (selectedMaDocGia == "ESC")
+				if (selectedMaDG == "ESC")
 				{
 					break;
 				}
@@ -282,13 +283,13 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 					if (confirm.result == Yes)
 					{
 
-						int MaDG = stoi(selectedMaDocGia);
+						int MaDG = stoi(selectedMaDG);
 						// Tim Doc Gia dua tren MaDG
 						auto docGiaDelete = Search(listDG, MaDG);
 						// DS khong duoc phep xoa neu dang muon Sach
 						if (IsDelete(docGiaDelete->data) == false)
 						{
-							selectedMaDocGia = PrintAllDGWithHL(listDG, location, page, Menu_Mode::Show_Only);
+							selectedMaDG = PrintAllDGWithHL(listDG, location, currentPage, Menu_Mode::Show_Only);
 							MakeFlickWarning({ locationBtn.x - 5, 0 }, "DOC GIA DANG MUON SACH. KHONG DUOC PHEP XOA");
 						}
 						else
@@ -298,26 +299,25 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 							int temp = 0;
 							int size = Size(listDG);
 							if (size % MAX_ROW_PER_PAGE != 0) temp = 1;
-							else if (size % MAX_ROW_PER_PAGE == 0 && page == size / MAX_ROW_PER_PAGE)
+							else if (size % MAX_ROW_PER_PAGE == 0 && currentPage == size / MAX_ROW_PER_PAGE)
 							{
-								page--;
+								currentPage--;
 							}
-							if (page == size / MAX_ROW_PER_PAGE + temp - 1)
+							if (currentPage == size / MAX_ROW_PER_PAGE + temp - 1)
 							{
 								SetBGColor(BG_COLOR);
 								SetTextColor(TEXT_INPUT_COLOR);
 								GoToXY(location.x, size % MAX_ROW_PER_PAGE + location.y + 3);
-								cout << emptyTemplate;
+								cout << emptyStringDocGia;
 							}
 						}
 					}
 				}
 			}
 		}
-		// Sua
-		else if (selected == 2)
+		// Sửa
+		else if (selectedButton == 2)
 		{
-			int line = 0;
 			while (true)
 			{
 				if (Size(listDG) == 0)
@@ -325,26 +325,26 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 					break;
 				}
 				// In Doc Gia co Hightlight
-				selectedMaDocGia = PrintAllDGWithHL(listDG, location, page, Menu_Mode::Both, line);
-				line = WhereY() - location.y - 3;
+				selectedMaDG = PrintAllDGWithHL(listDG, location, currentPage, Menu_Mode::Both);
 				//ClearLine(1);
-				if (selectedMaDocGia == "ESC")
+				if (selectedMaDG == "ESC")
 				{
 					break;
 				}
 				else
 				{
 					// cap nhat dsDocGia
-					int MaDG = stoi(selectedMaDocGia);
+					int MaDG = stoi(selectedMaDG);
 					// Tim kiem Doc Gia bang Ma Doc Gia
 					auto temp = Search(listDG, MaDG);
 					// ...
 					temp->data = InputFixDocGia({ {DAUSACH_TOTAL_WIDTH + 2, location.y}, {50, 18} }, temp->data);
-					tem = PrintAllDGWithHL(listDG, location, page, Show_Only);
+					selectedMaDG = PrintAllDGWithHL(listDG, location, currentPage, Show_Only);
 				}
 			}
 		}
-		else if (selected == Key::ESC)
+		// Thoát
+		else if (selectedButton == Key::ESC)
 		{
 			ClearScreen(BG_COLOR);
 			break;
@@ -615,45 +615,49 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 // Func 1 2
 void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 {
-	// Create Empty Line
-	string emptyTemplate = "";
-	emptyTemplate += string(DMS_TOTAL_WIDTH, ' ');
+	// Create Empty Line Danh mục sách
+	string emptyStringDMS = "";
+	{
+		emptyStringDMS = emptyStringDMS + char(179) + string(MASACH_WIDTH, ' ');
+		emptyStringDMS = emptyStringDMS + char(179) + string(TRANGTHAISACH_WIDTH, ' ');
+		emptyStringDMS = emptyStringDMS + char(179) + string(VITRI_WIDTH, ' ');
+		emptyStringDMS = emptyStringDMS + char(179);
+	}
 
-	int page = 0;
-	MYPOINT locationDS = { 38,3 };
-	MYPOINT locationListSach = locationDS;
-	locationListSach.x = 40;
+	int currentPage = 0;
+	MYPOINT locationListDS = { 38,3 };
+	MYPOINT locationListSach = { 40, locationListDS.y };
 
 	// Setup menu
-	MYPOINT locationBtn = locationDS;
-	locationBtn.x = 41;
+	MYPOINT locationBtn = { 41, locationListDS.y + (int)MAX_ROW_PER_PAGE + 5};
 	MENU menu = MENU({ "THEM", "XOA", "SUA", "THANH LY" }, locationBtn);
 	menu.btnSize = { 10,3 };
 
 	while (true)
 	{
 		// Print LIST_DAUSACH và bắt phím lấy ISBN ng dùng chọn
-		string isbn = listDS.PrintAll(locationDS, page, Both);
-		ClearScreen(BG_COLOR);
+		PrintLabelDauSach(locationListDS, MAX_ROW_PER_PAGE);
+		string selectedISBN = listDS.PrintAll(locationListDS, currentPage, Both);
+		ClearArea(locationListDS.x, locationListDS.y, DAUSACH_TOTAL_WIDTH, MAX_ROW_PER_PAGE + 5);
 
-		if (isbn == "ESC") return;
+		if (selectedISBN == "ESC") return;
 
 		// Lấy LIST_SACH của đầu sách ng dùng chọn
-		char* isbnAsChar = StringToCharArray(isbn);
+		char* isbnAsChar = StringToCharArray(selectedISBN);
 		DAUSACH* dauSach = listDS.GetDauSach(isbnAsChar);
 		LIST_SACH* listSach = &dauSach->dsSach;
 
-		menu.location.y = locationBtn.y + listSach->Size() + 4;
 		while (true)
 		{
 			// Print LIST_SACH
-			string maSach = listSach->PrintAll(locationListSach, Show_Only);
+			PrintLabelSach(locationListSach, MAX_ROW_PER_PAGE);
+			string maSach = listSach->PrintAll(locationListSach, currentPage, Show_Only);
 
 			// Print tên sách
 			{
+				string text = "DANH MUC SACH CUA DAU SACH: " + ToUpperString(dauSach->tenSach);
+				GoToXY(locationListDS.x + DMS_TOTAL_WIDTH / 2 - text.size() / 2 + 1, locationListDS.y - 1);
 				SetTextColor(Color::Blue);
-				string text = "DAU SACH CAN CHINH SUA: " + ToUpperString(dauSach->tenSach);
-				GoToXY(locationDS.x + DMS_TOTAL_WIDTH / 2 - text.size() / 2 + 1, locationDS.y - 1);
 				cout << text;
 			}
 
@@ -670,7 +674,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 				string maSachAuto = listSach->AutoGenerateMaSach(isbnAsChar);
 
 				// Hiện form Input sách mới
-				*newSach = newSach->Input({ {90, locationDS.y},{44,13} }, maSachAuto);
+				*newSach = newSach->Input({ {90, locationListDS.y},{44,13} }, maSachAuto);
 
 				// Hủy nhập sách mới
 				if (newSach->viTri[0] == '\0')
@@ -684,8 +688,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 					listSach->AddTail(*node);
 
 					// Load lại List sách
-					maSach = listSach->PrintAll(locationListSach, Show_Only);
-					menu.location.y++;
+					maSach = listSach->PrintAll(locationListSach, currentPage, Show_Only);
 				}
 			}
 			// Xóa sách
@@ -697,11 +700,11 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 					if (listSach->Size() == 0) break;
 
 					// Print LIST_SACH và bắt phím lấy mã sách ng dùng chọn
-					maSach = listSach->PrintAll(locationListSach, Both);
+					maSach = listSach->PrintAll(locationListSach, currentPage, Both);
 					if (maSach == "ESC") break;
 
 					// Xác nhận ng dùng trước khi xóa sách
-					auto confirm = CONFIRMDIALOG({ locationListSach.x + 30, locationListSach.y + 13 });
+					auto confirm = CONFIRMDIALOG({ locationListSach.x + 42, locationListSach.y + 7 });
 					confirm.Show("Ban chac chan muon xoa?", Yes_No);
 					confirm.Clear();
 
@@ -718,10 +721,20 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 						{
 							if (listSach->Delete(maSach))
 							{
-								// Xóa trên giao diện
-								menu.ClearInHorizontal();
-								menu.location.y--;
-								menu.ShowDisableModeInHorizontal();
+								int size = listSach->Size();
+								int temp = 0;
+								if (size % MAX_ROW_PER_PAGE != 0) temp = 1;
+								else if (size % MAX_ROW_PER_PAGE == 0 && currentPage == size / MAX_ROW_PER_PAGE)
+								{
+									currentPage--;
+								}
+								if (currentPage == size / MAX_ROW_PER_PAGE + temp - 1)
+								{
+									SetBGColor(BG_COLOR);
+									SetTextColor(TEXT_INPUT_COLOR);
+									GoToXY(locationListSach.x, size % MAX_ROW_PER_PAGE + locationListSach.y + 3);
+									cout << emptyStringDMS;
+								}
 							}
 						}
 					}
@@ -736,7 +749,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 					if (listSach->Size() == 0) break;
 
 					// Print LIST_SACH và bắt phím lấy mã sách ng dùng chọn
-					maSach = listSach->PrintAll(locationListSach, Both);
+					maSach = listSach->PrintAll(locationListSach, currentPage, Both);
 					if (maSach == "ESC") break;
 
 					// Lấy sách cần sửa
@@ -750,7 +763,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 					// Được sửa
 					else
 					{
-						nodeFix->data = nodeFix->data.InputFix({ {90, locationDS.y},{44,13} });
+						nodeFix->data = nodeFix->data.InputFix({ {90, locationListDS.y},{44,13} });
 					}
 				}
 			}
@@ -763,11 +776,11 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 					if (listSach->Size() == 0) break;
 
 					// Print LIST_SACH và bắt phím lấy mã sách ng dùng chọn
-					maSach = listSach->PrintAll(locationListSach, Both);
+					maSach = listSach->PrintAll(locationListSach, currentPage, Both);
 					if (maSach == "ESC") break;
 
 					// Xác nhận ng dùng trước khi thanh lý sách
-					auto confirm = CONFIRMDIALOG({ locationListSach.x + 30, locationListSach.y + 13 });
+					auto confirm = CONFIRMDIALOG({ locationListSach.x + 42, locationListSach.y + 7 });
 					confirm.Show("Ban chac chan muon thanh ly sach?", Yes_No);
 					confirm.Clear();
 
@@ -789,10 +802,11 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 					}
 				}
 			}
-			// thoat
+			// Thoát
 			else if (selectionMenu == Key::ESC)
 			{
-				ClearScreen(BG_COLOR);
+				ClearLine(locationListSach.y - 1);
+				ClearArea(locationListSach.x, locationListSach.y, DMS_TOTAL_WIDTH, MAX_ROW_PER_PAGE + 10);
 				delete[] isbnAsChar;
 				break;
 			}
@@ -883,10 +897,11 @@ void MuonSach(NODE_DOCGIA& nodeDocGia, LIST_DAUSACH& listDS)
 	while (true)
 	{
 		// Show list sách dự định mượn
-		auto cancelDS = tempMT.ShowFormMuonSach(listDS, { locationMuon.x, locationMuon.y + 5 + daMuon }, Show_Only, SOSACHMUON_TOIDA - daMuon);
+		string cancelDS = tempMT.ShowFormMuonSach(listDS, { locationMuon.x, locationMuon.y + 5 + daMuon }, Show_Only, SOSACHMUON_TOIDA - daMuon);
 
 		// Print tất cả đầu sách
-		auto selectDS = listDS.PrintAll(locationDS, page, Menu_Mode::Both);
+		PrintLabelDauSach(locationDS, MAX_ROW_PER_PAGE);
+		string selectDS = listDS.PrintAll(locationDS, page, Menu_Mode::Both);
 
 		// Thoát mượn sách
 		if (selectDS == "ESC")

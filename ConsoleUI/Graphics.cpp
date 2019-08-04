@@ -197,6 +197,11 @@ void HightLight(std::string text, Color bgColor, Color textColor)
 	SetBGColor(bgColor);
 	std::cout << text;
 }
+void NormalColor()
+{
+	SetTextColor(TEXT_INPUT_COLOR);
+	SetBGColor(BG_COLOR);
+}
 void MaximizeWindow()
 {
 	HWND hWnd = GetConsoleWindow();
