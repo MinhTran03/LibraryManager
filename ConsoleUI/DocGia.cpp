@@ -346,8 +346,8 @@ string* GetDGToListString(DOCGIA docGia)
 int GetRandomMaDG(LIST_DOCGIA listDG)
 {
 	srand((unsigned int)time((time_t)NULL));
-	int t = Size(listDG);
-	newPos = rand() % (MAX_DOCGIA - Size(listDG));
+	int soDG = Size(listDG);
+	newPos = rand() % (MAX_DOCGIA - soDG);
 	return maDocGiaArr[newPos];
 }
 
@@ -359,6 +359,18 @@ int GetRandomMaDG(LIST_DOCGIA listDG)
 void RemoveMaDG(LIST_DOCGIA listDG)
 {
 	Erase(maDocGiaArr, newPos, MAX_DOCGIA - Size(listDG));
+}
+
+/// <summary>
+/// <para>Khi xóa độc giả phải thêm lại mã của ng đó vô mảng</para>
+/// </summary>
+/// <param name="tongDocGia">Tổng số Độc giả trước khi xóa</param>
+/// <param name="ma">mã của độc giả đó</param>
+/// <returns>void</returns>
+void InsertMaDocGia(int tongDocGia, int ma)
+{
+	int pos = MAX_DOCGIA - tongDocGia;
+	PushBack(maDocGiaArr, ma, pos);
 }
 
 /// <summary>
@@ -891,7 +903,6 @@ string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& showPage, Men
 
 	Color hlBGColor = Color::Cyan;
 	Color hlTextColor = Color::White;
-	MYPOINT backUpLocation = MYPOINT(0, 0);
 	int currentLine = 0;
 	int currentPage = showPage;
 	int totalLines = 0;
@@ -913,20 +924,18 @@ string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& showPage, Men
 	if (totalLines == 0) return "";
 
 	string** docGia_AsString = new string * [totalPages];
-	int** rows = new int* [totalPages];
 	int* rowsOfPage = NULL;
 
-	// Tính số page cần cấp phát cho ds 2 chiều
+	// Tính số line của từng page cần cấp phát cho ds 2 chiều
+	if (mode == Both)
 	{
 		int countTemp = 0;
 		int soDongConDu = totalLines % MAX_ROW_PER_PAGE;
 		for (int i = 0; i < totalPages - 1; i++)
 		{
-			rows[i] = new int[MAX_ROW_PER_PAGE];
 			docGia_AsString[i] = new string[MAX_ROW_PER_PAGE];
 			PushBack(rowsOfPage, (int)MAX_ROW_PER_PAGE, countTemp);
 		}
-		rows[totalPages - 1] = new int[soDongConDu == 0 ? (int)MAX_ROW_PER_PAGE : soDongConDu];
 		docGia_AsString[totalPages - 1] = new string[soDongConDu == 0 ? (int)MAX_ROW_PER_PAGE : soDongConDu];
 		PushBack(rowsOfPage, (soDongConDu == 0 ? (int)MAX_ROW_PER_PAGE : soDongConDu), countTemp);
 	}
@@ -934,7 +943,6 @@ string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& showPage, Men
 	if (mode == Menu_Mode::Show_Only || mode == Menu_Mode::Both)
 	{
 		location.y += 3;
-		backUpLocation = location;
 
 		// In LIST_DAUSACH ra màn hình
 		ShowPageNumber(currentPage, totalPages, location.x, location.y + (int)MAX_ROW_PER_PAGE + 1);
@@ -945,7 +953,7 @@ string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& showPage, Men
 				PrintStringDocGia(dsDocGia[i], { location.x, location.y + (int)(i % MAX_ROW_PER_PAGE) });
 
 				// HL dòng đầu tiên nếu có ở chế độ Bắt phím
-				if (WhereY() == backUpLocation.y && mode == Menu_Mode::Both)
+				if (WhereY() == location.y && mode == Menu_Mode::Both)
 				{
 					GoToXY(location.x, location.y + (int)(i % MAX_ROW_PER_PAGE));
 					HightLight(dsDocGia[i], hlBGColor, hlTextColor);
@@ -954,10 +962,10 @@ string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& showPage, Men
 			}
 
 			// Lưu lại vị trí dòng và lấy toString
+			if(mode == Both)
 			{
 				int line = i % MAX_ROW_PER_PAGE;
 				currentPage = i / MAX_ROW_PER_PAGE;
-				rows[currentPage][line] = (line + location.y);
 				docGia_AsString[currentPage][line] = (dsDocGia[i]);
 			}
 		}
@@ -968,17 +976,16 @@ string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& showPage, Men
 			NormalColor();
 			for (int i = totalLines % MAX_ROW_PER_PAGE; i < MAX_ROW_PER_PAGE; i++)
 			{
-				GoToXY(location.x, rows[showPage - 1][i]);
+				GoToXY(location.x, location.y + i);
 				cout << emptyStringDG;
 			}
 		}
 
 		if (mode == Show_Only)
 		{
-			delete[] dsDocGia;
-			delete[] rows;
 			delete[] docGia_AsString;
 		}
+		delete[] dsDocGia;
 	}
 
 	if (mode == Menu_Mode::Both)
@@ -1000,17 +1007,17 @@ string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& showPage, Men
 				{
 					if (currentLine > 0)
 					{
-						GoToXY(location.x, rows[currentPage][currentLine]);
+						GoToXY(location.x, location.y + currentLine);
 						HightLight(docGia_AsString[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
-						GoToXY(location.x, rows[currentPage][--currentLine]);
+						GoToXY(location.x, location.y + --currentLine);
 						HightLight(docGia_AsString[currentPage][currentLine], hlBGColor, hlTextColor);
 					}
 					else
 					{
-						GoToXY(location.x, rows[currentPage][currentLine]);
+						GoToXY(location.x, location.y + currentLine);
 						HightLight(docGia_AsString[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
 						currentLine = (rowsOfPage[currentPage]) - 1;
-						GoToXY(location.x, rows[currentPage][currentLine]);
+						GoToXY(location.x, location.y + currentLine);
 						HightLight(docGia_AsString[currentPage][currentLine], hlBGColor, hlTextColor);
 					}
 				}
@@ -1018,17 +1025,17 @@ string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& showPage, Men
 				{
 					if (currentLine < (rowsOfPage[currentPage]) - 1)
 					{
-						GoToXY(location.x, rows[currentPage][currentLine]);
+						GoToXY(location.x, location.y + currentLine);
 						HightLight(docGia_AsString[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
-						GoToXY(location.x, rows[currentPage][++currentLine]);
+						GoToXY(location.x, location.y + ++currentLine);
 						HightLight(docGia_AsString[currentPage][currentLine], hlBGColor, hlTextColor);
 					}
 					else
 					{
-						GoToXY(location.x, rows[currentPage][currentLine]);
+						GoToXY(location.x, location.y + currentLine);
 						HightLight(docGia_AsString[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
 						currentLine = 0;
-						GoToXY(location.x, rows[currentPage][currentLine]);
+						GoToXY(location.x, location.y + currentLine);
 						HightLight(docGia_AsString[currentPage][currentLine], hlBGColor, hlTextColor);
 					}
 				}
@@ -1040,7 +1047,8 @@ string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& showPage, Men
 				auto temp = Split(docGia_AsString[currentPage][currentLine], deli);
 				temp[1] = Trim(temp[1]);
 				showPage = currentPage;
-				delete[] dsDocGia;
+				delete[] rowsOfPage;
+				delete[] docGia_AsString;
 				return temp[1];
 			}
 			else if (inputKey == Key::PAGE_DOWN && currentPage < totalPages - 1 && currentPage < MAX_PAGE_DAUSACH)
@@ -1054,12 +1062,12 @@ string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& showPage, Men
 				{
 					if (i < (rowsOfPage[currentPage]))
 					{
-						GoToXY(backUpLocation.x, backUpLocation.y + i);
+						GoToXY(location.x, location.y + i);
 						cout << docGia_AsString[currentPage][i];
 					}
 					else
 					{
-						GoToXY(backUpLocation.x, backUpLocation.y + i);
+						GoToXY(location.x, location.y + i);
 						cout << emptyStringDG;
 					}
 				}
@@ -1076,7 +1084,7 @@ string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& showPage, Men
 				NormalColor();
 				for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
 				{
-					GoToXY(backUpLocation.x, backUpLocation.y + i);
+					GoToXY(location.x, location.y + i);
 					cout << docGia_AsString[currentPage][i];
 				}
 				GoToXY(location.x, location.y);
@@ -1086,10 +1094,9 @@ string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& showPage, Men
 			else if (inputKey == Key::ESC && currentPage < MAX_PAGE_DAUSACH)
 			{
 				showPage = currentPage;
-				GoToXY(location.x, rows[currentPage][currentLine]);
+				GoToXY(location.x, location.y + currentLine);
 				HightLight(docGia_AsString[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
-				delete[] dsDocGia;
-				delete[] rows;
+				delete[] rowsOfPage;
 				delete[] docGia_AsString;
 				return "ESC";
 			}
@@ -1454,7 +1461,8 @@ bool WriteMaDGToFile(string path, LIST_DOCGIA listDG)
 	try
 	{
 		int c = 0;
-		int size = MAX_DOCGIA - Size(listDG);
+		int soDG = Size(listDG);
+		int size = MAX_DOCGIA - soDG;
 		string* data = NULL;
 		for (auto i = 0; i < size; i++)
 		{
@@ -1464,7 +1472,7 @@ bool WriteMaDGToFile(string path, LIST_DOCGIA listDG)
 				temp += '\n';
 			PushBack(data, temp, c);
 		}
-		fileHandler.WriteToFile(data, Replace, c);
+		fileHandler.WriteToFile(data, Replace, size);
 		delete[] data;
 	}
 	catch (const exception& ex)

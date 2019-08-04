@@ -4,7 +4,7 @@
 struct TOPSACH
 {
 	string info;
-	int soSachMuon;
+	int soSachMuon = 0;
 
 	/// <summary>
 	/// 
@@ -98,9 +98,6 @@ struct LIST_DAUSACH
 	/// </param>
 	/// <returns>Phím người dùng ấn as string</returns>
 	string PrintAll(MYPOINT location, int& showpage, Menu_Mode mode = Menu_Mode::Show_Only);
-
-	// ...
-	void PrintFindBooks(MYPOINT location, string tenSach);
 
 	// ...
 	string PrintAllSearch(MYPOINT location, string tenSach, Menu_Mode mode);

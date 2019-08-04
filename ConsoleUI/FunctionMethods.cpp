@@ -294,10 +294,14 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 						}
 						else
 						{
-							// Xoa Node
-							DeleteNode(listDG, docGiaDelete->data);
-							int temp = 0;
 							int size = Size(listDG);
+							// Xoa Node
+							InsertMaDocGia(size, docGiaDelete->data.maDocGia);
+							DeleteNode(listDG, docGiaDelete->data);
+
+							// Xóa trên giao diện
+							size--;
+							int temp = 0;
 							if (size % MAX_ROW_PER_PAGE != 0) temp = 1;
 							else if (size % MAX_ROW_PER_PAGE == 0 && currentPage == size / MAX_ROW_PER_PAGE)
 							{
@@ -534,6 +538,7 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 							if (currentPage == listDS.size / MAX_ROW_PER_PAGE + temp - 1)
 							{
 								SetBGColor(BG_COLOR);
+								SetTextColor(TEXT_INPUT_COLOR);
 								GoToXY(location.x, listDS.size % MAX_ROW_PER_PAGE + location.y + 3);
 								cout << emptyStringDauSach;
 							}
@@ -624,7 +629,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 		emptyStringDMS = emptyStringDMS + char(179);
 	}
 
-	int currentPage = 0;
+	int currentPageDS = 0;
 	MYPOINT locationListDS = { 38,3 };
 	MYPOINT locationListSach = { 40, locationListDS.y };
 
@@ -637,7 +642,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 	{
 		// Print LIST_DAUSACH và bắt phím lấy ISBN ng dùng chọn
 		PrintLabelDauSach(locationListDS, MAX_ROW_PER_PAGE);
-		string selectedISBN = listDS.PrintAll(locationListDS, currentPage, Both);
+		string selectedISBN = listDS.PrintAll(locationListDS, currentPageDS, Both);
 		ClearArea(locationListDS.x, locationListDS.y, DAUSACH_TOTAL_WIDTH, MAX_ROW_PER_PAGE + 5);
 
 		if (selectedISBN == "ESC") return;
@@ -650,8 +655,9 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 		while (true)
 		{
 			// Print LIST_SACH
+			int currentPageDMS = 0;
 			PrintLabelSach(locationListSach, MAX_ROW_PER_PAGE);
-			string maSach = listSach->PrintAll(locationListSach, currentPage, Show_Only);
+			string maSach = listSach->PrintAll(locationListSach, currentPageDMS, Show_Only);
 
 			// Print tên sách
 			{
@@ -688,7 +694,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 					listSach->AddTail(*node);
 
 					// Load lại List sách
-					maSach = listSach->PrintAll(locationListSach, currentPage, Show_Only);
+					maSach = listSach->PrintAll(locationListSach, currentPageDMS, Show_Only);
 				}
 			}
 			// Xóa sách
@@ -700,7 +706,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 					if (listSach->Size() == 0) break;
 
 					// Print LIST_SACH và bắt phím lấy mã sách ng dùng chọn
-					maSach = listSach->PrintAll(locationListSach, currentPage, Both);
+					maSach = listSach->PrintAll(locationListSach, currentPageDMS, Both);
 					if (maSach == "ESC") break;
 
 					// Xác nhận ng dùng trước khi xóa sách
@@ -724,11 +730,11 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 								int size = listSach->Size();
 								int temp = 0;
 								if (size % MAX_ROW_PER_PAGE != 0) temp = 1;
-								else if (size % MAX_ROW_PER_PAGE == 0 && currentPage == size / MAX_ROW_PER_PAGE)
+								else if (size % MAX_ROW_PER_PAGE == 0 && currentPageDMS == size / MAX_ROW_PER_PAGE)
 								{
-									currentPage--;
+									currentPageDMS--;
 								}
-								if (currentPage == size / MAX_ROW_PER_PAGE + temp - 1)
+								if (currentPageDMS == size / MAX_ROW_PER_PAGE + temp - 1)
 								{
 									SetBGColor(BG_COLOR);
 									SetTextColor(TEXT_INPUT_COLOR);
@@ -749,7 +755,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 					if (listSach->Size() == 0) break;
 
 					// Print LIST_SACH và bắt phím lấy mã sách ng dùng chọn
-					maSach = listSach->PrintAll(locationListSach, currentPage, Both);
+					maSach = listSach->PrintAll(locationListSach, currentPageDMS, Both);
 					if (maSach == "ESC") break;
 
 					// Lấy sách cần sửa
@@ -776,7 +782,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 					if (listSach->Size() == 0) break;
 
 					// Print LIST_SACH và bắt phím lấy mã sách ng dùng chọn
-					maSach = listSach->PrintAll(locationListSach, currentPage, Both);
+					maSach = listSach->PrintAll(locationListSach, currentPageDMS, Both);
 					if (maSach == "ESC") break;
 
 					// Xác nhận ng dùng trước khi thanh lý sách

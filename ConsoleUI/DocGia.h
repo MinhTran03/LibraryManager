@@ -26,7 +26,7 @@ enum ExeptionMuonSach
 struct DOCGIA
 {
 	// 0001 ... 9999
-	int maDocGia;
+	int maDocGia = 0;
 	string ho;
 	string ten;
 	GioiTinh gioiTinh = Nam;
@@ -123,6 +123,14 @@ int GetRandomMaDG(LIST_DOCGIA listDG);
 /// <param name="lstDG">LIST_DOCGIA để lấy Size</param>
 /// <returns>void</returns>
 void RemoveMaDG(LIST_DOCGIA listDG);
+
+/// <summary>
+/// <para>Khi xóa độc giả phải thêm lại mã của ng đó vô mảng</para>
+/// </summary>
+/// <param name="tongDocGia">Tổng số Độc giả trước khi xóa</param>
+/// <param name="ma">mã của độc giả đó</param>
+/// <returns>void</returns>
+void InsertMaDocGia(int tongDocGia, int ma);
 
 /// <summary>
 /// Hàm hủy toàn bộ DOCGIA khỏi RAM

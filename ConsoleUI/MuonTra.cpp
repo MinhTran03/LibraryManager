@@ -485,7 +485,7 @@ string LIST_MUONTRA::Show(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode)
 		PrintLabelMuonTra(location, 3);
 		location.y += 3;
 		backUpLocation = location;
-		
+
 		for (int i = 0; i < 3; i++)
 		{
 			GoToXY(location.x, location.y);
@@ -568,7 +568,7 @@ string LIST_MUONTRA::Show(LIST_DAUSACH listDS, MYPOINT location, Menu_Mode mode)
 			}
 			if (inputKey == Key::ENTER)
 			{
-				
+
 				std::string key = "";
 				key += char(179);
 				auto temp = Split(datas[currentLine], key);
@@ -685,14 +685,17 @@ void LIST_MUONTRA::DeleteAtHead()
 		return;
 	}
 	// ds chi co 1 ptu
+	auto deleteNode = this->pHead;
 	if (this->pHead->pNext == NULL)
 	{
 		this->pHead = NULL;
 		this->pTail = NULL;
+		delete deleteNode;
 		return;
 	}
 	pHead = pHead->pNext;
 	pHead->pPrev = NULL;
+	delete deleteNode;
 }
 
 /// <summary>
@@ -705,8 +708,10 @@ void LIST_MUONTRA::DeleteAtTail()
 	{
 		return;
 	}
+	auto deleteNode = this->pTail;
 	pTail = pTail->pPrev;
 	pTail->pNext = NULL;
+	delete deleteNode;
 }
 
 /// <summary>
@@ -859,7 +864,7 @@ bool LIST_MUONTRA::ReadFromFile(string path)
 int LIST_MUONTRA::DuyetDSSachChuaTra()
 {
 	int count = 0;
-	for (auto p = this->pHead;  p != NULL; p = p->pNext)
+	for (auto p = this->pHead; p != NULL; p = p->pNext)
 	{
 		p->data.trangThai = SachChuaTra;
 		count++;

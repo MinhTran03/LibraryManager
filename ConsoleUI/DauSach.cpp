@@ -508,7 +508,6 @@ string LIST_DAUSACH::PrintAll(MYPOINT location, int& showPage, Menu_Mode mode)
 	
 	Color hlBGColor = Color::Cyan;
 	Color hlTextColor = Color::White;
-	MYPOINT backUpLocation = { 0,0 };
 	int currentLine = 0;
 	int currentPage = showPage;
 	int totalPages = this->size / (int)MAX_ROW_PER_PAGE + (this->size % (int)MAX_ROW_PER_PAGE == 0 ? 0 : 1);
@@ -524,20 +523,18 @@ string LIST_DAUSACH::PrintAll(MYPOINT location, int& showPage, Menu_Mode mode)
 	if (this->size == 0) return "";
 
 	string** dauSach_AsString = new string * [totalPages];
-	int** rows = new int* [totalPages];
 	int* rowsOfPage = NULL;
 
-	// Tính số page cần cấp phát cho ds 2 chiều
+	// Tính số line của từng page cần cấp phát cho ds 2 chiều
+	if(mode == Both)
 	{
 		int countTemp = 0;
 		int soDongConDu = this->size % MAX_ROW_PER_PAGE;
 		for (int i = 0; i < totalPages - 1; i++)
 		{
-			rows[i] = new int[MAX_ROW_PER_PAGE];
 			dauSach_AsString[i] = new string[MAX_ROW_PER_PAGE];
 			PushBack(rowsOfPage, (int)(MAX_ROW_PER_PAGE), countTemp);
 		}
-		rows[totalPages - 1] = new int[soDongConDu == 0 ? (int)MAX_ROW_PER_PAGE : soDongConDu];
 		dauSach_AsString[totalPages - 1] = new string[soDongConDu == 0 ? (int)MAX_ROW_PER_PAGE : soDongConDu];
 		PushBack(rowsOfPage, (soDongConDu == 0 ? (int)MAX_ROW_PER_PAGE : soDongConDu), countTemp);
 	}
@@ -545,7 +542,6 @@ string LIST_DAUSACH::PrintAll(MYPOINT location, int& showPage, Menu_Mode mode)
 	if (mode == Menu_Mode::Show_Only || mode == Menu_Mode::Both)
 	{
 		location.y += 3;
-		backUpLocation = location;
 
 		// In LIST_DAUSACH ra màn hình
 		ShowPageNumber(showPage, totalPages, location.x, location.y + MAX_ROW_PER_PAGE + 1);
@@ -556,17 +552,17 @@ string LIST_DAUSACH::PrintAll(MYPOINT location, int& showPage, Menu_Mode mode)
 				this->nodes[i]->Print({ location.x, location.y + (int)(i % MAX_ROW_PER_PAGE) }, BG_COLOR, TEXT_INPUT_COLOR);
 
 				// HL dòng đầu tiên nếu có ở chế độ Bắt phím
-				if (WhereY() == backUpLocation.y && mode == Menu_Mode::Both)
+				if (WhereY() == location.y && mode == Menu_Mode::Both)
 				{
 					this->nodes[i]->Print(location, hlBGColor, hlTextColor);
 				}
 			}
 
 			// Lưu lại vị trí dòng và lấy toString
+			if (mode == Both)
 			{
 				int line = i % MAX_ROW_PER_PAGE;
 				currentPage = i / MAX_ROW_PER_PAGE;
-				rows[currentPage][line] = line + location.y;
 				dauSach_AsString[currentPage][line] = this->nodes[i]->ToString();
 			}
 		}
@@ -578,7 +574,7 @@ string LIST_DAUSACH::PrintAll(MYPOINT location, int& showPage, Menu_Mode mode)
 			SetTextColor(TEXT_INPUT_COLOR);
 			for (int i = this->size % MAX_ROW_PER_PAGE; i < MAX_ROW_PER_PAGE; i++)
 			{
-				GoToXY(location.x, rows[showPage - 1][i]);
+				GoToXY(location.x, location.y + i);
 				cout << emptyStringDauSach;
 			}
 		}
@@ -586,7 +582,6 @@ string LIST_DAUSACH::PrintAll(MYPOINT location, int& showPage, Menu_Mode mode)
 		if (mode == Show_Only)
 		{
 			delete[] dauSach_AsString;
-			delete[] rows;
 		}
 	}
 
@@ -609,18 +604,17 @@ string LIST_DAUSACH::PrintAll(MYPOINT location, int& showPage, Menu_Mode mode)
 				{
 					if (currentLine > 0)
 					{
-						GoToXY(location.x, rows[currentPage][currentLine]);
+						GoToXY(location.x, location.y + currentLine);
 						HightLight(dauSach_AsString[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
-						GoToXY(location.x, rows[currentPage][--currentLine]);
+						GoToXY(location.x, location.y + --currentLine);
 						HightLight(dauSach_AsString[currentPage][currentLine], hlBGColor, hlTextColor);
 					}
 					else
 					{
-						GoToXY(location.x, rows[currentPage][currentLine]);
+						GoToXY(location.x, location.y + currentLine);
 						HightLight(dauSach_AsString[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
-						//currentLine = rows[currentPage].size() - 1;
 						currentLine = (rowsOfPage[currentPage]) - 1;
-						GoToXY(location.x, rows[currentPage][currentLine]);
+						GoToXY(location.x, location.y + currentLine);
 						HightLight(dauSach_AsString[currentPage][currentLine], hlBGColor, hlTextColor);
 					}
 				}
@@ -628,17 +622,17 @@ string LIST_DAUSACH::PrintAll(MYPOINT location, int& showPage, Menu_Mode mode)
 				{
 					if (rowsOfPage != NULL && currentLine < (rowsOfPage[currentPage]) - 1)
 					{
-						GoToXY(location.x, rows[currentPage][currentLine]);
+						GoToXY(location.x, location.y + currentLine);
 						HightLight(dauSach_AsString[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
-						GoToXY(location.x, rows[currentPage][++currentLine]);
+						GoToXY(location.x, location.y + ++currentLine);
 						HightLight(dauSach_AsString[currentPage][currentLine], hlBGColor, hlTextColor);
 					}
 					else
 					{
-						GoToXY(location.x, rows[currentPage][currentLine]);
+						GoToXY(location.x, location.y + currentLine);
 						HightLight(dauSach_AsString[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
 						currentLine = 0;
-						GoToXY(location.x, rows[currentPage][currentLine]);
+						GoToXY(location.x, location.y + currentLine);
 						HightLight(dauSach_AsString[currentPage][currentLine], hlBGColor, hlTextColor);
 					}
 				}
@@ -649,6 +643,8 @@ string LIST_DAUSACH::PrintAll(MYPOINT location, int& showPage, Menu_Mode mode)
 				string temp = "";
 				if (this->size != 0)
 					temp = this->nodes[currentLine + MAX_ROW_PER_PAGE * currentPage]->isbn;
+				delete[] dauSach_AsString;
+				delete[] rowsOfPage;
 				return temp;
 			}
 			else if (inputKey == Key::PAGE_DOWN && currentPage < totalPages - 1 && currentPage < MAX_PAGE_DAUSACH)
@@ -664,20 +660,20 @@ string LIST_DAUSACH::PrintAll(MYPOINT location, int& showPage, Menu_Mode mode)
 				{
 					if (rowsOfPage != NULL && i < (rowsOfPage[currentPage]))
 					{
-						GoToXY(backUpLocation.x, backUpLocation.y + i);
+						GoToXY(location.x, location.y + i);
 						cout << dauSach_AsString[currentPage][i];
 					}
 					else
 					{
-						GoToXY(backUpLocation.x, backUpLocation.y + i);
+						GoToXY(location.x, location.y + i);
 						cout << emptyStringDauSach;
 					}
 				}
 
 				// HL dòng đầu tiên
-				this->nodes[MAX_ROW_PER_PAGE * currentPage]->Print(backUpLocation, hlBGColor, hlTextColor);
+				this->nodes[MAX_ROW_PER_PAGE * currentPage]->Print(location, hlBGColor, hlTextColor);
 			}
-			else if (inputKey == Key::PAGE_UP && currentPage > 0)
+			else if (inputKey == Key::PAGE_UP && currentPage > 0 && currentPage < MAX_PAGE_DAUSACH)
 			{
 				currentLine = 0;
 				SetBGColor(BG_COLOR);
@@ -688,57 +684,32 @@ string LIST_DAUSACH::PrintAll(MYPOINT location, int& showPage, Menu_Mode mode)
 				ShowPageNumber(currentPage, totalPages, location.x, location.y + MAX_ROW_PER_PAGE + 1);
 				for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
 				{
-					GoToXY(backUpLocation.x, backUpLocation.y + i);
+					GoToXY(location.x, location.y + i);
 					cout << dauSach_AsString[currentPage][i];
 				}
 
 				// HL dòng đầu tiên
-				this->nodes[MAX_ROW_PER_PAGE * currentPage]->Print(backUpLocation, hlBGColor, hlTextColor);
+				this->nodes[MAX_ROW_PER_PAGE * currentPage]->Print(location, hlBGColor, hlTextColor);
 			}
 			else if (inputKey == Key::TAB)
 			{
-				GoToXY(location.x, rows[currentPage][currentLine]);
+				GoToXY(location.x, location.y + currentLine);
 				HightLight(dauSach_AsString[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
 				showPage = currentPage;
 				delete[] dauSach_AsString;
-				delete[] rows;
+				delete[] rowsOfPage;
 				return "TAB";
 			}
 			else if (inputKey == Key::ESC)
 			{
 				showPage = currentPage;
 				delete[] dauSach_AsString;
-				delete[] rows;
+				delete[] rowsOfPage;
 				return "ESC";
 			}
 		} while (!_kbhit());
 	}
 	return "";
-}
-
-// ...
-void LIST_DAUSACH::PrintFindBooks(MYPOINT location, string tenSach)
-{
-	Color hlBGColor = Color::Cyan;
-	Color hlTextColor = Color::White;
-	int totalLine = 0;
-	// tim ISBN theo the loai
-	auto listISBN = FindBooks(tenSach, totalLine);
-
-	MYPOINT backUpLocation = MYPOINT(0, 0);
-
-	// print label
-	PrintLabelDauSach(location, totalLine);
-	location.y += 3;
-	backUpLocation = location;
-	int found = 0;
-	// print data
-	for (int i = 0; i < totalLine; i++)
-	{
-		listISBN[i].Print(location, BG_COLOR, TEXT_INPUT_COLOR);
-		location.y++;
-	}
-	delete[] listISBN;
 }
 
 // ...
@@ -1398,21 +1369,6 @@ string PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location)
 	emptyTemplate = emptyTemplate + char(179) + string(SOLUOTMUON_WIDTH, ' ');
 	emptyTemplate = emptyTemplate + char(179);
 	int soDauSach = listDS.size;
-
-	// Interchange Sort
-	//for (int i = 0; i < totalLine - 1; i++)
-	//{
-	//	for (int j = i + 1; j < totalLine; j++)
-	//	{
-	//		if (listDS.nodes[i]->soLuotMuon < listDS.nodes[j]->soLuotMuon)
-	//		{
-	//			// Hoan vi 2 so a[i] va a[j]
-	//			temp = listDS.nodes[i];
-	//			listDS.nodes[i] = listDS.nodes[j];
-	//			listDS.nodes[j] = temp;
-	//		}
-	//	}
-	//}
 
 	TOPSACH* top10 = nullptr;
 

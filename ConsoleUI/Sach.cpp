@@ -271,7 +271,6 @@ string LIST_SACH::PrintAll(MYPOINT location, int& showPage, Menu_Mode mode)
 
 	Color hlBGColor = Color::Cyan;
 	Color hlTextColor = Color::White;
-	MYPOINT backUpLocation = MYPOINT(0, 0);
 	int currentLine = 0;
 	int totalLines = 0;
 	int totalPages = 0;
@@ -293,20 +292,18 @@ string LIST_SACH::PrintAll(MYPOINT location, int& showPage, Menu_Mode mode)
 	if (totalLines == 0) return "";
 
 	string** dms_AsString = new string * [totalPages];;
-	int** rows = new int* [totalPages];
 	int* rowsOfPage = NULL;
 
-	// Tính số page cần cấp phát cho ds 2 chiều
+	// Tính số line của từng page cần cấp phát cho ds 2 chiều
+	if (mode == Both)
 	{
 		int countTemp = 0;
 		int soDongConDu = totalLines % MAX_ROW_PER_PAGE;
 		for (int i = 0; i < totalPages - 1; i++)
 		{
-			rows[i] = new int[MAX_ROW_PER_PAGE];
 			dms_AsString[i] = new string[MAX_ROW_PER_PAGE];
 			PushBack(rowsOfPage, (int)MAX_ROW_PER_PAGE, countTemp);
 		}
-		rows[totalPages - 1] = new int[soDongConDu == 0 ? (int)MAX_ROW_PER_PAGE : soDongConDu];
 		dms_AsString[totalPages - 1] = new string[soDongConDu == 0 ? (int)MAX_ROW_PER_PAGE : soDongConDu];
 		PushBack(rowsOfPage, (soDongConDu == 0 ? (int)MAX_ROW_PER_PAGE : soDongConDu), countTemp);
 	}
@@ -314,7 +311,6 @@ string LIST_SACH::PrintAll(MYPOINT location, int& showPage, Menu_Mode mode)
 	if (mode == Menu_Mode::Show_Only || mode == Menu_Mode::Both)
 	{
 		location.y += 3;
-		backUpLocation = location;
 
 		// In LIST_DAUSACH ra màn hình
 		ShowPageNumber(currentPage, totalPages, location.x, location.y + (int)MAX_ROW_PER_PAGE + 1);
@@ -325,19 +321,19 @@ string LIST_SACH::PrintAll(MYPOINT location, int& showPage, Menu_Mode mode)
 				PrintStringDMS(listSach[i], { location.x, location.y + (int)(i % MAX_ROW_PER_PAGE) });
 
 				// HL dòng đầu tiên nếu có ở chế độ Bắt phím
-				if (WhereY() == backUpLocation.y && mode == Menu_Mode::Both)
+				if (WhereY() == location.y && mode == Menu_Mode::Both)
 				{
 					GoToXY(location.x, location.y + (int)(i % MAX_ROW_PER_PAGE));
 					HightLight(listSach[i], hlBGColor, hlTextColor);
 					NormalColor();
 				}
 			}
-			
+
 			// Lưu lại vị trí dòng và lấy toString
+			if (mode == Both)
 			{
 				int line = i % MAX_ROW_PER_PAGE;
 				currentPage = i / MAX_ROW_PER_PAGE;
-				rows[currentPage][line] = (line + location.y);
 				dms_AsString[currentPage][line] = (listSach[i]);
 			}
 		}
@@ -348,19 +344,18 @@ string LIST_SACH::PrintAll(MYPOINT location, int& showPage, Menu_Mode mode)
 			NormalColor();
 			for (int i = totalLines % MAX_ROW_PER_PAGE; i < MAX_ROW_PER_PAGE; i++)
 			{
-				GoToXY(location.x, rows[showPage - 1][i]);
+				GoToXY(location.x, location.y + i);
 				cout << emptyStringDMS;
 			}
 		}
 
 		if (mode == Show_Only)
 		{
-			delete[] listSach;
-			delete[] rows;
 			delete[] dms_AsString;
 		}
+		delete[] listSach;
 	}
-	
+
 	if (mode == Menu_Mode::Both)
 	{
 		currentPage = showPage;
@@ -380,17 +375,17 @@ string LIST_SACH::PrintAll(MYPOINT location, int& showPage, Menu_Mode mode)
 				{
 					if (currentLine > 0)
 					{
-						GoToXY(location.x, rows[currentPage][currentLine]);
+						GoToXY(location.x, location.y + currentLine);
 						HightLight(dms_AsString[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
-						GoToXY(location.x, rows[currentPage][--currentLine]);
+						GoToXY(location.x, location.y + --currentLine);
 						HightLight(dms_AsString[currentPage][currentLine], hlBGColor, hlTextColor);
 					}
 					else
 					{
-						GoToXY(location.x, rows[currentPage][currentLine]);
+						GoToXY(location.x, location.y + currentLine);
 						HightLight(dms_AsString[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
 						currentLine = (rowsOfPage[currentPage]) - 1;
-						GoToXY(location.x, rows[currentPage][currentLine]);
+						GoToXY(location.x, location.y + currentLine);
 						HightLight(dms_AsString[currentPage][currentLine], hlBGColor, hlTextColor);
 					}
 				}
@@ -398,17 +393,17 @@ string LIST_SACH::PrintAll(MYPOINT location, int& showPage, Menu_Mode mode)
 				{
 					if (currentLine < (rowsOfPage[currentPage]) - 1)
 					{
-						GoToXY(location.x, rows[currentPage][currentLine]);
+						GoToXY(location.x, location.y + currentLine);
 						HightLight(dms_AsString[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
-						GoToXY(location.x, rows[currentPage][++currentLine]);
+						GoToXY(location.x, location.y + ++currentLine);
 						HightLight(dms_AsString[currentPage][currentLine], hlBGColor, hlTextColor);
 					}
 					else
 					{
-						GoToXY(location.x, rows[currentPage][currentLine]);
+						GoToXY(location.x, location.y + currentLine);
 						HightLight(dms_AsString[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
 						currentLine = 0;
-						GoToXY(location.x, rows[currentPage][currentLine]);
+						GoToXY(location.x, location.y + currentLine);
 						HightLight(dms_AsString[currentPage][currentLine], hlBGColor, hlTextColor);
 					}
 				}
@@ -420,11 +415,12 @@ string LIST_SACH::PrintAll(MYPOINT location, int& showPage, Menu_Mode mode)
 				tokens[1] = Trim(tokens[1]);
 				string result = tokens[1];
 				delete[] tokens;
-				delete[] listSach;
+				delete[] dms_AsString;
+				delete[] rowsOfPage;
 				showPage = currentPage;
 				return result;
 			}
-			else if (inputKey == Key::PAGE_DOWN && currentPage < totalPages - 1 && currentPage < MAX_PAGE_DAUSACH)
+			else if (inputKey == Key::PAGE_DOWN && currentPage < totalPages - 1)
 			{
 				// in next page
 				currentPage++;
@@ -436,12 +432,12 @@ string LIST_SACH::PrintAll(MYPOINT location, int& showPage, Menu_Mode mode)
 				{
 					if (i < (rowsOfPage[currentPage]))
 					{
-						GoToXY(backUpLocation.x, backUpLocation.y + i);
+						GoToXY(location.x, location.y + i);
 						cout << dms_AsString[currentPage][i];
 					}
 					else
 					{
-						GoToXY(backUpLocation.x, backUpLocation.y + i);
+						GoToXY(location.x, location.y + i);
 						cout << emptyStringDMS;
 					}
 				}
@@ -458,21 +454,20 @@ string LIST_SACH::PrintAll(MYPOINT location, int& showPage, Menu_Mode mode)
 				NormalColor();
 				for (size_t i = 0; i < MAX_ROW_PER_PAGE; i++)
 				{
-					GoToXY(backUpLocation.x, backUpLocation.y + i);
+					GoToXY(location.x, location.y + i);
 					cout << dms_AsString[currentPage][i];
 				}
 				GoToXY(location.x, location.y);
 				HightLight(listSach[MAX_ROW_PER_PAGE * currentPage], hlBGColor, hlTextColor);
 				NormalColor();
 			}
-			else if (inputKey == Key::ESC && currentPage < MAX_PAGE_DAUSACH)
+			else if (inputKey == Key::ESC)
 			{
 				showPage = currentPage;
-				GoToXY(location.x, rows[currentPage][currentLine]);
+				GoToXY(location.x, location.y + currentLine);
 				HightLight(dms_AsString[currentPage][currentLine], BG_COLOR, TEXT_INPUT_COLOR);
-				delete[] listSach;
-				delete[] rows;
 				delete[] dms_AsString;
+				delete[] rowsOfPage;
 				return "ESC";
 			}
 		} while (!_kbhit());
@@ -765,19 +760,27 @@ bool LIST_SACH::DeleteFirst()
 }
 
 /// <summary>
-/// Xoa Node sau 1 Node p
+/// Xoa Node ngay sau 1 Node
 /// </summary>
+/// <params name="beforeNode">Node phía trước node cần xóa</params>
 /// <returns>bool</returns>
 bool LIST_SACH::DeleteAfter(NODE_SACH* beforeNode)
 {
-	NODE_SACH* deleteNode;
 	if (beforeNode == NULL || beforeNode->pNext == NULL)
 	{
 		return false;
 	}
-
+	NODE_SACH* deleteNode;
 	deleteNode = beforeNode->pNext;
-	beforeNode->pNext = deleteNode->pNext;
+	if (deleteNode == this->pTail)
+	{
+		beforeNode->pNext = NULL;
+		this->pTail = beforeNode;
+	}
+	else
+	{
+		beforeNode->pNext = deleteNode->pNext;
+	}
 	delete deleteNode;
 
 	return true;
