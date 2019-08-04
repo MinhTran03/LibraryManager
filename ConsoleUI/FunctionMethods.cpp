@@ -11,19 +11,21 @@ void ShowLogoText()
 	ClearScreen(BG_COLOR, SCREEN_HEIGHT);
 	SetTextColor(Color::Light_Blue);
 
-	GoToXY(60, 0 + 1); cout << string(2, char(219)) << char(187) << "     " << string(2, char(219)) << char(187) << string(6, char(219)) << char(187) << " " << string(6, char(219)) << char(187) << "  " << string(5, char(219)) << char(187) << " " << string(6, char(219)) << char(187) << " " << string(2, char(219)) << char(187) << "   " << string(2, char(219)) << char(187) << '\n';
-	GoToXY(60, 1 + 1); cout << string(2, char(219)) << char(186) << "     " << string(2, char(219)) << char(186) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(187) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(187) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(187) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(187) << char(200) << string(2, char(219)) << char(187) << " " << string(2, char(219)) << char(201) << char(188) << '\n';
-	GoToXY(60, 2 + 1); cout << string(2, char(219)) << char(186) << "     " << string(2, char(219)) << char(186) << string(6, char(219)) << char(201) << char(188) << string(6, char(219)) << char(201) << char(188) << string(7, char(219)) << char(186) << string(6, char(219)) << char(201) << char(188) << " " << char(200) << string(4, char(219)) << char(201) << char(188) << '\n';
-	GoToXY(60, 3 + 1); cout << string(2, char(219)) << char(186) << "     " << string(2, char(219)) << char(186) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(187) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(187) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(186) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(187) << "  " << char(200) << string(2, char(219)) << char(201) << char(188) << '\n';
-	GoToXY(60, 4 + 1); cout << string(7, char(219)) << char(187) << string(2, char(219)) << char(186) << string(6, char(219)) << char(201) << char(188) << string(2, char(219)) << char(186) << "  " << string(2, char(219)) << char(186) << string(2, char(219)) << char(186) << "  " << string(2, char(219)) << char(186) << string(2, char(219)) << char(186) << "  " << string(2, char(219)) << char(186) << "   " << string(2, char(219)) << char(186) << '\n';
-	GoToXY(60, 5 + 1); cout << char(200) << string(6, char(205)) << char(188) << char(200) << char(205) << char(188) << char(200) << string(5, char(205)) << char(188) << " " << char(200) << char(205) << char(188) << "  " << char(200) << char(205) << char(188) << char(200) << char(205) << char(188) << "  " << char(200) << char(205) << char(188) << char(200) << char(205) << char(188) << "  " << char(200) << char(205) << char(188) << "   " << char(200) << char(205) << char(188) << '\n';
+	{
+		GoToXY(60, 0 + 1); cout << string(2, char(219)) << char(187) << "     " << string(2, char(219)) << char(187) << string(6, char(219)) << char(187) << " " << string(6, char(219)) << char(187) << "  " << string(5, char(219)) << char(187) << " " << string(6, char(219)) << char(187) << " " << string(2, char(219)) << char(187) << "   " << string(2, char(219)) << char(187) << '\n';
+		GoToXY(60, 1 + 1); cout << string(2, char(219)) << char(186) << "     " << string(2, char(219)) << char(186) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(187) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(187) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(187) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(187) << char(200) << string(2, char(219)) << char(187) << " " << string(2, char(219)) << char(201) << char(188) << '\n';
+		GoToXY(60, 2 + 1); cout << string(2, char(219)) << char(186) << "     " << string(2, char(219)) << char(186) << string(6, char(219)) << char(201) << char(188) << string(6, char(219)) << char(201) << char(188) << string(7, char(219)) << char(186) << string(6, char(219)) << char(201) << char(188) << " " << char(200) << string(4, char(219)) << char(201) << char(188) << '\n';
+		GoToXY(60, 3 + 1); cout << string(2, char(219)) << char(186) << "     " << string(2, char(219)) << char(186) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(187) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(187) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(186) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(187) << "  " << char(200) << string(2, char(219)) << char(201) << char(188) << '\n';
+		GoToXY(60, 4 + 1); cout << string(7, char(219)) << char(187) << string(2, char(219)) << char(186) << string(6, char(219)) << char(201) << char(188) << string(2, char(219)) << char(186) << "  " << string(2, char(219)) << char(186) << string(2, char(219)) << char(186) << "  " << string(2, char(219)) << char(186) << string(2, char(219)) << char(186) << "  " << string(2, char(219)) << char(186) << "   " << string(2, char(219)) << char(186) << '\n';
+		GoToXY(60, 5 + 1); cout << char(200) << string(6, char(205)) << char(188) << char(200) << char(205) << char(188) << char(200) << string(5, char(205)) << char(188) << " " << char(200) << char(205) << char(188) << "  " << char(200) << char(205) << char(188) << char(200) << char(205) << char(188) << "  " << char(200) << char(205) << char(188) << char(200) << char(205) << char(188) << "  " << char(200) << char(205) << char(188) << "   " << char(200) << char(205) << char(188) << '\n';
 
-	GoToXY(40, 7 + 1); cout << string(3, char(219)) << char(187) << "   " << string(3, char(219)) << char(187) << " " << string(5, char(219)) << char(187) << " " << string(3, char(219)) << char(187) << "   " << string(2, char(219)) << char(187) << " " << string(5, char(219)) << char(187) << "  " << string(6, char(219)) << char(187) << " " << string(7, char(219)) << char(187) << string(3, char(219)) << char(187) << "   " << string(3, char(219)) << char(187) << string(7, char(219)) << char(187) << string(3, char(219)) << char(187) << "   " << string(2, char(219)) << char(187) << string(8, char(219)) << char(187) << '\n';
-	GoToXY(40, 8 + 1); cout << string(4, char(219)) << char(187) << " " << string(4, char(219)) << char(186) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(187) << string(4, char(219)) << char(187) << "  " << string(2, char(219)) << char(186) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(187) << string(2, char(219)) << char(201) << string(4, char(205)) << char(188) << " " << string(2, char(219)) << char(201) << string(4, char(205)) << char(188) << string(4, char(219)) << char(187) << " " << string(4, char(219)) << char(186) << string(2, char(219)) << char(201) << string(4, char(205)) << char(188) << string(4, char(219)) << char(187) << "  " << string(2, char(219)) << char(186) << char(200) << string(2, char(205)) << string(2, char(219)) << char(201) << string(2, char(205)) << char(188) << '\n';
-	GoToXY(40, 9 + 1); cout << string(2, char(219)) << char(201) << string(4, char(219)) << char(201) << string(2, char(219)) << char(186) << string(7, char(219)) << char(186) << string(2, char(219)) << char(201) << string(2, char(219)) << char(187) << " " << string(2, char(219)) << char(186) << string(7, char(219)) << char(186) << string(2, char(219)) << char(186) << "  " << string(3, char(219)) << char(187) << string(5, char(219)) << char(187) << "  " << string(2, char(219)) << char(201) << string(4, char(219)) << char(201) << string(2, char(219)) << char(186) << string(5, char(219)) << char(187) << "  " << string(2, char(219)) << char(201) << string(2, char(219)) << char(187) << " " << string(2, char(219)) << char(186) << "   " << string(2, char(219)) << char(186) << '\n';
-	GoToXY(40, 10 + 1); cout << string(2, char(219)) << char(186) << char(200) << string(2, char(219)) << char(201) << char(188) << string(2, char(219)) << char(186) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(186) << string(2, char(219)) << char(186) << char(200) << string(2, char(219)) << char(187) << string(2, char(219)) << char(186) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(186) << string(2, char(219)) << char(186) << "   " << string(2, char(219)) << char(186) << string(2, char(219)) << char(201) << string(2, char(205)) << char(188) << "  " << string(2, char(219)) << char(186) << char(200) << string(2, char(219)) << char(201) << char(188) << string(2, char(219)) << char(186) << string(2, char(219)) << char(201) << string(2, char(205)) << char(188) << "  " << string(2, char(219)) << char(186) << char(200) << string(2, char(219)) << char(187) << string(2, char(219)) << char(186) << "   " << string(2, char(219)) << char(186) << '\n';
-	GoToXY(40, 11 + 1); cout << string(2, char(219)) << char(186) << " " << char(200) << char(205) << char(188) << " " << string(2, char(219)) << char(186) << string(2, char(219)) << char(186) << "  " << string(2, char(219)) << char(186) << string(2, char(219)) << char(186) << " " << char(200) << string(4, char(219)) << char(186) << string(2, char(219)) << char(186) << "  " << string(2, char(219)) << char(186) << char(200) << string(6, char(219)) << char(201) << char(188) << string(7, char(219)) << char(187) << string(2, char(219)) << char(186) << " " << char(200) << char(205) << char(188) << " " << string(2, char(219)) << char(186) << string(7, char(219)) << char(187) << string(2, char(219)) << char(186) << " " << char(200) << string(4, char(219)) << char(186) << "   " << string(2, char(219)) << char(186) << '\n';
-	GoToXY(40, 12 + 1); cout << char(200) << char(205) << char(188) << "     " << char(200) << char(205) << char(188) << char(200) << char(205) << char(188) << "  " << char(200) << char(205) << char(188) << char(200) << char(205) << char(188) << "  " << char(200) << string(3, char(205)) << char(188) << char(200) << char(205) << char(188) << "  " << char(200) << char(205) << char(188) << " " << char(200) << string(5, char(205)) << char(188) << " " << char(200) << string(6, char(205)) << char(188) << char(200) << char(205) << char(188) << "     " << char(200) << char(205) << char(188) << char(200) << string(6, char(205)) << char(188) << char(200) << char(205) << char(188) << "  " << char(200) << string(3, char(205)) << char(188) << "   " << char(200) << char(205) << char(188) << '\n';
+		GoToXY(40, 7 + 1); cout << string(3, char(219)) << char(187) << "   " << string(3, char(219)) << char(187) << " " << string(5, char(219)) << char(187) << " " << string(3, char(219)) << char(187) << "   " << string(2, char(219)) << char(187) << " " << string(5, char(219)) << char(187) << "  " << string(6, char(219)) << char(187) << " " << string(7, char(219)) << char(187) << string(3, char(219)) << char(187) << "   " << string(3, char(219)) << char(187) << string(7, char(219)) << char(187) << string(3, char(219)) << char(187) << "   " << string(2, char(219)) << char(187) << string(8, char(219)) << char(187) << '\n';
+		GoToXY(40, 8 + 1); cout << string(4, char(219)) << char(187) << " " << string(4, char(219)) << char(186) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(187) << string(4, char(219)) << char(187) << "  " << string(2, char(219)) << char(186) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(187) << string(2, char(219)) << char(201) << string(4, char(205)) << char(188) << " " << string(2, char(219)) << char(201) << string(4, char(205)) << char(188) << string(4, char(219)) << char(187) << " " << string(4, char(219)) << char(186) << string(2, char(219)) << char(201) << string(4, char(205)) << char(188) << string(4, char(219)) << char(187) << "  " << string(2, char(219)) << char(186) << char(200) << string(2, char(205)) << string(2, char(219)) << char(201) << string(2, char(205)) << char(188) << '\n';
+		GoToXY(40, 9 + 1); cout << string(2, char(219)) << char(201) << string(4, char(219)) << char(201) << string(2, char(219)) << char(186) << string(7, char(219)) << char(186) << string(2, char(219)) << char(201) << string(2, char(219)) << char(187) << " " << string(2, char(219)) << char(186) << string(7, char(219)) << char(186) << string(2, char(219)) << char(186) << "  " << string(3, char(219)) << char(187) << string(5, char(219)) << char(187) << "  " << string(2, char(219)) << char(201) << string(4, char(219)) << char(201) << string(2, char(219)) << char(186) << string(5, char(219)) << char(187) << "  " << string(2, char(219)) << char(201) << string(2, char(219)) << char(187) << " " << string(2, char(219)) << char(186) << "   " << string(2, char(219)) << char(186) << '\n';
+		GoToXY(40, 10 + 1); cout << string(2, char(219)) << char(186) << char(200) << string(2, char(219)) << char(201) << char(188) << string(2, char(219)) << char(186) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(186) << string(2, char(219)) << char(186) << char(200) << string(2, char(219)) << char(187) << string(2, char(219)) << char(186) << string(2, char(219)) << char(201) << string(2, char(205)) << string(2, char(219)) << char(186) << string(2, char(219)) << char(186) << "   " << string(2, char(219)) << char(186) << string(2, char(219)) << char(201) << string(2, char(205)) << char(188) << "  " << string(2, char(219)) << char(186) << char(200) << string(2, char(219)) << char(201) << char(188) << string(2, char(219)) << char(186) << string(2, char(219)) << char(201) << string(2, char(205)) << char(188) << "  " << string(2, char(219)) << char(186) << char(200) << string(2, char(219)) << char(187) << string(2, char(219)) << char(186) << "   " << string(2, char(219)) << char(186) << '\n';
+		GoToXY(40, 11 + 1); cout << string(2, char(219)) << char(186) << " " << char(200) << char(205) << char(188) << " " << string(2, char(219)) << char(186) << string(2, char(219)) << char(186) << "  " << string(2, char(219)) << char(186) << string(2, char(219)) << char(186) << " " << char(200) << string(4, char(219)) << char(186) << string(2, char(219)) << char(186) << "  " << string(2, char(219)) << char(186) << char(200) << string(6, char(219)) << char(201) << char(188) << string(7, char(219)) << char(187) << string(2, char(219)) << char(186) << " " << char(200) << char(205) << char(188) << " " << string(2, char(219)) << char(186) << string(7, char(219)) << char(187) << string(2, char(219)) << char(186) << " " << char(200) << string(4, char(219)) << char(186) << "   " << string(2, char(219)) << char(186) << '\n';
+		GoToXY(40, 12 + 1); cout << char(200) << char(205) << char(188) << "     " << char(200) << char(205) << char(188) << char(200) << char(205) << char(188) << "  " << char(200) << char(205) << char(188) << char(200) << char(205) << char(188) << "  " << char(200) << string(3, char(205)) << char(188) << char(200) << char(205) << char(188) << "  " << char(200) << char(205) << char(188) << " " << char(200) << string(5, char(205)) << char(188) << " " << char(200) << string(6, char(205)) << char(188) << char(200) << char(205) << char(188) << "     " << char(200) << char(205) << char(188) << char(200) << string(6, char(205)) << char(188) << char(200) << char(205) << char(188) << "  " << char(200) << string(3, char(205)) << char(188) << "   " << char(200) << char(205) << char(188) << '\n';
+	}
 }
 
 void ShowInfoStudent()
@@ -128,7 +130,7 @@ void ShowFooter()
 {
 	int y = SCREEN_HEIGHT - FOOTER_HEIGHT + FOOTER_HEIGHT / 2;
 
-	FOOTER_CHILD footer1 = FOOTER_CHILD({ 5, y }, "ENTER", "CHON");
+	FOOTER_CHILD footer1 = FOOTER_CHILD({ 35, y }, "ENTER", "CHON");
 	footer1.Draw(Color::Blue, Color::Light_Blue);
 
 	FOOTER_CHILD footer2 = FOOTER_CHILD({ footer1.location.x + footer1.size + 5, y }, "ESC", "QUAY LAI");
@@ -138,7 +140,7 @@ void ShowFooter()
 	footer3.Draw(Color::Magenta, Color::Light_Magenta);
 
 	FOOTER_CHILD footer4 = FOOTER_CHILD({ footer3.location.x + footer3.size + 5, y }, "PG_DOWN", "QUAY LAI TRANG CU");
-	footer4.Draw(Color::Cyan, Color::Light_Cyan);
+	footer4.Draw(Color::Magenta, Color::Light_Magenta);
 }
 
 void SetupConsole()
@@ -362,18 +364,19 @@ void InDanhSachDG(LIST_DOCGIA listDG)
 	// Tạo Menu Select
 	MENU menu = MENU({ "SAP XEP THEO HO TEN", "SAP XEP THEO MA" }, locationMenu);
 	menu.btnSize = { 25, 3 };
+
 	while (true)
 	{
-		int result = menu.ShowInHorizontal(Menu_Mode::Both);
+		int resultMenu = menu.ShowInHorizontal(Menu_Mode::Both);
 
-		// Độc giả sắp theo Họ Tên
-		if (result == 0)
+		// Độc giả sắp theo Họ Tên (Mode = 2)
+		if (resultMenu == 0)
 		{
 			PrintAllDocGia(listDG, locationList, 2);
 			ClearArea(locationList.x, locationList.y, DOCGIA_TOTAL_WIDTH, MAX_ROW_PER_PAGE + 5);
 		}
-		// Độc giả sắp theo Mã
-		else if (result == 1)
+		// Độc giả sắp theo Mã (Mode = 1)
+		else if (resultMenu == 1)
 		{
 			PrintAllDocGia(listDG, locationList, 1);
 			ClearArea(locationList.x, locationList.y, DOCGIA_TOTAL_WIDTH, MAX_ROW_PER_PAGE + 5);
@@ -401,26 +404,26 @@ void HienThiDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 // Func 1 1
 void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 {
-	// Create Empty Line
-	string emptyTemplate = "";
-	emptyTemplate = emptyTemplate + char(179) + string(ISBN_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + string(TENSACH_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + string(SOTRANG_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + string(TENTACGIA_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + string(NAMXUATBAN_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179) + string(TENTHELOAI_WIDTH, ' ');
-	emptyTemplate = emptyTemplate + char(179);
+	// Create Empty Line Đầu sách
+	string emptyStringDauSach = "";
+	{
+		emptyStringDauSach = emptyStringDauSach + char(179) + string(ISBN_WIDTH, ' ');
+		emptyStringDauSach = emptyStringDauSach + char(179) + string(TENSACH_WIDTH, ' ');
+		emptyStringDauSach = emptyStringDauSach + char(179) + string(SOTRANG_WIDTH, ' ');
+		emptyStringDauSach = emptyStringDauSach + char(179) + string(TENTACGIA_WIDTH, ' ');
+		emptyStringDauSach = emptyStringDauSach + char(179) + string(NAMXUATBAN_WIDTH, ' ');
+		emptyStringDauSach = emptyStringDauSach + char(179) + string(TENTHELOAI_WIDTH, ' ');
+		emptyStringDauSach = emptyStringDauSach + char(179);
+	}
 
-	int page = 0;
-	MYPOINT locationBtn = location;
+	int currentPage = 0;
 
 	// In tất cả đầu sách, trả về ISBN người dùng chọn
-	string selectedISBN = listDS.PrintAll(location, page, Show_Only);
+	string selectedISBN = listDS.PrintAll(location, currentPage, Show_Only);
 	char* isbnAsArr = StringToCharArray(selectedISBN);
 
 	// Tinh chỉnh vị trí button = mắt
-	locationBtn.x += 30;
-	locationBtn.y += 25;
+	MYPOINT locationBtn = { location.x + 30, location.y + 25 };
 	MENU menu = MENU({ "THEM", "XOA", "SUA" }, locationBtn);
 	menu.btnSize = { 10,3 };
 
@@ -429,21 +432,23 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 		// Hiện menu button
 		int selectedButton = menu.ShowInHorizontal(Menu_Mode::Both);
 
-		if (selectedButton == Key::PAGE_UP && page > 0)
+		// Go to Previous page
+		if (selectedButton == Key::PAGE_UP && currentPage > 0)
 		{
-			page--;
-			selectedISBN = listDS.PrintAll(location, page, Show_Only);
+			currentPage--;
+			selectedISBN = listDS.PrintAll(location, currentPage, Show_Only);
 		}
+		// Go to Next page
 		else if (selectedButton == Key::PAGE_DOWN)
 		{
-			page++;
-			selectedISBN = listDS.PrintAll(location, page, Show_Only);
+			currentPage++;
+			selectedISBN = listDS.PrintAll(location, currentPage, Show_Only);
 		}
 
 		// Thêm
 		else if (selectedButton == 0)
 		{
-			auto newDauSach = new DAUSACH();
+			DAUSACH* newDauSach = new DAUSACH();
 
 			// Hiện form tạo đầu sách mới
 			*newDauSach = InputDauSach(listDS, { {(int)DAUSACH_TOTAL_WIDTH + 2 + location.x, location.y}, {60, 18} });
@@ -458,7 +463,7 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 			{
 				if (listDS.Insert(*newDauSach, listDS.size))
 				{
-					selectedISBN = listDS.PrintAll(location, page);
+					selectedISBN = listDS.PrintAll(location, currentPage);
 				}
 			}
 		}
@@ -470,12 +475,12 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 				// Kiểm tra nếu LIST_DAUSACH rỗng => chỉ Show
 				if (listDS.IsEmpty())
 				{
-					selectedISBN = listDS.PrintAll(location, page, Show_Only);
+					selectedISBN = listDS.PrintAll(location, currentPage, Show_Only);
 					break;
 				}
 
 				// Hiện toàn bộ DAUSACH và bắt phím trả về ISBN người dùng chọn
-				selectedISBN = listDS.PrintAll(location, page, Menu_Mode::Both);
+				selectedISBN = listDS.PrintAll(location, currentPage, Menu_Mode::Both);
 				isbnAsArr = StringToCharArray(selectedISBN);
 
 				if (selectedISBN == "ESC")
@@ -485,7 +490,7 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 					tempLoc.y += 3;
 					for (int i = 0; i < listDS.size; i++)
 					{
-						if (i >= (int)MAX_ROW_PER_PAGE * page && i < (page + 1) * (int)MAX_ROW_PER_PAGE)
+						if (i >= (int)MAX_ROW_PER_PAGE * currentPage && i < (currentPage + 1) * (int)MAX_ROW_PER_PAGE)
 						{
 							listDS.nodes[i]->Print(tempLoc, BG_COLOR, TEXT_INPUT_COLOR);
 							tempLoc.y++;
@@ -506,7 +511,7 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 						// Đầu sách không được phép xóa
 						if (listDS.GetDauSach(isbnAsArr)->dsSach.CanDelete() == false)
 						{
-							selectedISBN = listDS.PrintAll(location, page, Menu_Mode::Show_Only);
+							selectedISBN = listDS.PrintAll(location, currentPage, Menu_Mode::Show_Only);
 							MakeFlickWarning({ locationBtn.x - 5, 0 }, WARNING_CANT_DELETE_DS);
 						}
 						// Đầu sách được phép xóa
@@ -516,15 +521,15 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 
 							int temp = 0;
 							if (listDS.size % MAX_ROW_PER_PAGE != 0) temp = 1;
-							else if (listDS.size % MAX_ROW_PER_PAGE == 0 && page == listDS.size / MAX_ROW_PER_PAGE)
+							else if (listDS.size % MAX_ROW_PER_PAGE == 0 && currentPage == listDS.size / MAX_ROW_PER_PAGE)
 							{
-								page--;
+								currentPage--;
 							}
-							if (page == listDS.size / MAX_ROW_PER_PAGE + temp - 1)
+							if (currentPage == listDS.size / MAX_ROW_PER_PAGE + temp - 1)
 							{
 								SetBGColor(BG_COLOR);
 								GoToXY(location.x, listDS.size % MAX_ROW_PER_PAGE + location.y + 3);
-								cout << emptyTemplate;
+								cout << emptyStringDauSach;
 							}
 						}
 					}
@@ -543,7 +548,7 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 				}
 
 				// Hiện toàn bộ DAUSACH và bắt phím trả về ISBN người dùng chọn
-				selectedISBN = listDS.PrintAll(location, page, Menu_Mode::Both);
+				selectedISBN = listDS.PrintAll(location, currentPage, Menu_Mode::Both);
 				isbnAsArr = StringToCharArray(selectedISBN);
 
 				if (selectedISBN == "ESC")
@@ -553,7 +558,7 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 					tempLoc.y += 3;
 					for (int i = 0; i < listDS.size; i++)
 					{
-						if (i >= (int)MAX_ROW_PER_PAGE * page && i < (page + 1) * (int)MAX_ROW_PER_PAGE)
+						if (i >= (int)MAX_ROW_PER_PAGE * currentPage && i < (currentPage + 1) * (int)MAX_ROW_PER_PAGE)
 						{
 							listDS.nodes[i]->Print(tempLoc, BG_COLOR, TEXT_INPUT_COLOR);
 							tempLoc.y++;
@@ -748,7 +753,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 					if (confirm.result == Yes)
 					{
 						NODE_SACH* sachThanhLy = listSach->Search(maSach);
-						
+
 						// Nếu sách có độc giả mượn => không được thanh lý
 						if (sachThanhLy->data.CanDelete() == false)
 						{
