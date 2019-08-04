@@ -16,7 +16,7 @@ struct TOPSACH
 
 struct DAUSACH
 {
-	char isbn[ISBN_MAXSIZE + 1];
+	char isbn[ISBN_MAXSIZE + 1] = { '\0' };
 	string tenSach;
 	int soTrang = NULL;
 	string tenTacGia;
@@ -88,13 +88,16 @@ struct LIST_DAUSACH
 	string PrintAllTheLoai(MYPOINT location);
 
 	/// <summary>
-	/// In danh sách DAUSACH của toàn bộ DAUSACH
+	/// In danh sách DAUSACH
 	/// </summary>
 	/// <param name="location">Location</param>
-	/// <param name="page">Trang</param>
-	/// <param name="mode">Show_Only: Chỉ hiện \n Both: Hiện và bắt phím</param>
+	/// <param name="page">Trang muốn hiển thị</param>
+	/// <param name="mode">
+	/// 	<para>Show_Only: Chỉ hiện</para>
+	/// 	<para>Both: Hiện và bắt phím</para>
+	/// </param>
 	/// <returns>Phím người dùng ấn as string</returns>
-	string PrintAll(MYPOINT location, int& page, Menu_Mode mode = Menu_Mode::Show_Only);
+	string PrintAll(MYPOINT location, int& showpage, Menu_Mode mode = Menu_Mode::Show_Only);
 
 	// ...
 	void PrintFindBooks(MYPOINT location, string tenSach);
@@ -232,3 +235,11 @@ DAUSACH InputFixDauSach(LIST_DAUSACH listDS, RECTANGLE rect, DAUSACH dauSach);
 /// <param name=""></param>
 /// <returns>void</returns>
 string PrintTopDauSach(LIST_DAUSACH listDS, MYPOINT location);
+
+/// <summary>
+/// In labels cho danh sách đầu sách
+/// </summary>
+/// <param name="location">Location</param>
+/// <param name="row">Số đầu sách có trong danh sách</param>
+/// <returns>void</returns>
+void PrintLabelDauSach(MYPOINT location, int row);

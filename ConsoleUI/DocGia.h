@@ -29,8 +29,8 @@ struct DOCGIA
 	int maDocGia;
 	string ho;
 	string ten;
-	GioiTinh gioiTinh;
-	TrangThaiTheDG trangThai;
+	GioiTinh gioiTinh = Nam;
+	TrangThaiTheDG trangThai = DangHoatDong;
 
 	LIST_MUONTRA listMuonTra = LIST_MUONTRA();
 

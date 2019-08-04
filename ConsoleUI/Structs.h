@@ -215,7 +215,7 @@ struct BUTTON
 	string text;
 	BUTTON(RECTANGLE rect, string text) : rect(rect), text(text), border(rect.location, rect.size)
 	{
-		if (rect.size.height > 3)
+		if (rect.size.height >= 3)
 		{
 			this->rect.location = { rect.location.x + 1, rect.location.y + 1 };
 			this->rect.size = { rect.size.width - 2, rect.size.height - 2 };
@@ -242,9 +242,12 @@ struct BUTTON
 			border.Draw1Line(borderColor);
 			break;
 		case TwoLine:
+		{
+			//RECTANGLE temp = { {rect.location.x + 1, rect.location.y + 1}, {rect.size.width - 1, rect.size.height - 1} };
 			rect.Fill(bgColor, bgColor);
 			border.Draw2Line(borderColor);
 			break;
+		}
 		default:
 			break;
 		}
@@ -257,7 +260,7 @@ struct BUTTON
 		int y = rect.location.y + rect.size.height / 2;
 		if (align == Center)
 		{
-			if((rect.size.width - lengthText) % 2 == 0)
+			if ((rect.size.width - lengthText) % 2 == 0)
 				x = rect.location.x + rect.size.width / 2 - lengthText / 2;
 			else
 				x = rect.location.x + rect.size.width / 2 - lengthText / 2 - 1;
@@ -391,8 +394,8 @@ struct FOOTER_CHILD
 	string text;
 	int size = 0;
 
-	FOOTER_CHILD(MYPOINT location, string icon, string text, 
-					Color colorIcon = Color::Green, Color colorText = Color::White)
+	FOOTER_CHILD(MYPOINT location, string icon, string text,
+		Color colorIcon = Color::Green, Color colorText = Color::White)
 		: icon(icon), text(text), location(location), colorText(colorText), colorIcon(colorIcon)
 	{
 		size = icon.size() + text.size() + 4;

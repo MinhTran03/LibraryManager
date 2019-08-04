@@ -174,7 +174,7 @@ void MakeFlickWarning(MYPOINT location, string text)
 	GoToXY(x + distance, y + 1);
 	cout << "An phim bat ky de tiep tuc...";
 	ShowPointer();
-	_getch();
+	char c = _getch();
 	HidePointer();
 	ClearLine(y);
 	ClearLine(y + 1);
@@ -418,14 +418,15 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 
 	int currentPage = 0;
 
-	// In tất cả đầu sách, trả về ISBN người dùng chọn
-	string selectedISBN = listDS.PrintAll(location, currentPage, Show_Only);
-	char* isbnAsArr = StringToCharArray(selectedISBN);
-
 	// Tinh chỉnh vị trí button = mắt
 	MYPOINT locationBtn = { location.x + 30, location.y + 25 };
 	MENU menu = MENU({ "THEM", "XOA", "SUA" }, locationBtn);
 	menu.btnSize = { 10,3 };
+
+	// In tất cả đầu sách, trả về ISBN người dùng chọn
+	PrintLabelDauSach(location, MAX_ROW_PER_PAGE);
+	string selectedISBN = listDS.PrintAll(location, currentPage, Show_Only);
+	char* isbnAsArr = StringToCharArray(selectedISBN);
 
 	while (true)
 	{
@@ -498,8 +499,13 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 					}
 					break;
 				}
+				// Ng dùng ấn tab
+				else if (selectedISBN == "TAB")
+				{
+					// do not thing
+				}
 				// Người dùng ấn Enter để xóa
-				else if (selectedISBN != "TAB")
+				else
 				{
 					auto confirm = CONFIRMDIALOG({ 30, 7 });
 					confirm.Show("Ban chac chan muon xoa?", Yes_No);
@@ -563,13 +569,27 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 							listDS.nodes[i]->Print(tempLoc, BG_COLOR, TEXT_INPUT_COLOR);
 							tempLoc.y++;
 						}
-
 					}
 					break;
 				}
-				// Người dùng ấn Enter để xóa
+				// Ng dùng ấn tab
+				else if (selectedISBN == "TAB")
+				{
+					// do not thing
+				}
+				// Người dùng ấn Enter để sửa
 				else
 				{
+					//// Đầu sách không được phép sửa
+					//if (listDS.GetDauSach(isbnAsArr)->dsSach.CanDelete() == false)
+					//{
+					//	selectedISBN = listDS.PrintAll(location, currentPage, Menu_Mode::Show_Only);
+					//	MakeFlickWarning({ locationBtn.x - 5, 0 }, WARNING_CANT_DELETE_DS);
+					//}
+					//// Đầu sách được phép sửa
+					//else
+					//{
+
 					// Lấy ra DAUSACH cần sửa
 					DAUSACH* fixDauSach = listDS.GetDauSach(isbnAsArr);
 
@@ -578,6 +598,8 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 
 					// cap nhat dsDauSach
 					listDS.INotifyDSTheLoai();
+
+					//}
 				}
 			}
 		}
