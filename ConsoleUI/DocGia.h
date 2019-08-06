@@ -70,6 +70,12 @@ struct DOCGIA
 	/// </summary>
 	/// <returns>DOCGIA quá hạn as string in List</returns>
 	string* ToStringQuaHan(LIST_DAUSACH listSach, int& count);
+
+	/// <summary>
+	/// Kiểm tra độc giả mượn sách quá 30 ngày
+	/// </summary>
+	/// <returns>true nếu mượn quá 30 ngày</returns>
+	bool IsQua30Ngay();
 };
 
 struct NODE_DOCGIA
@@ -224,6 +230,14 @@ string PrintAllDGWithHL(LIST_DOCGIA listDG, MYPOINT location, int& showPage, Men
 /// <param name="listDG">LIST_DOCGIA cần in</param>
 /// <returns>void</returns>
 void PrintListQuaHan(LIST_DAUSACH listDS, LIST_DOCGIA lstDG);
+
+/// <summary>
+/// <para>Kiểm tra Độc giả mượn sách quá 30 ngày => khóa thẻ</para>
+/// Duyệt LNR
+/// </summary>
+/// <param name="listDS">LIST_DAUSACH để tính số ngày quá hạn</param>
+/// <returns>void</returns>
+void InorderCheckKhoaThe(LIST_DOCGIA& listDG);
 
 #pragma region --------------------DOC GHI FILE
 

@@ -52,6 +52,11 @@ void LoadDataAll(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS)
 	ClearLine(1);
 }
 
+void KhoaTheDocGia(LIST_DOCGIA& listDG)
+{
+	InorderCheckKhoaThe(listDG);
+}
+
 bool Working(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS)
 {
 	MYPOINT locationDS = { 2, 3 };
@@ -140,6 +145,7 @@ int main()
 	SetupConsole();
 
 	LoadDataAll(listDG, listDS);
+	KhoaTheDocGia(listDG);
 
 	bool isSave = Working(listDG, listDS);
 

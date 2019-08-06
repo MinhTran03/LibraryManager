@@ -237,6 +237,22 @@ string *DOCGIA::ToStringQuaHan(LIST_DAUSACH listSach, int &count)
 	return output;
 }
 
+/// <summary>
+/// Kiểm tra độc giả mượn sách quá 30 ngày
+/// </summary>
+/// <returns>true nếu mượn quá 30 ngày</returns>
+bool DOCGIA::IsQua30Ngay()
+{
+	for (auto p = this->listMuonTra.pHead; p != NULL; p = p->pNext)
+	{
+		if (p->data.GetSoNgayQuaHan() > 23)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 #pragma endregion
 
 #pragma region-- -----------------------------------------NODE_DOCGIA
@@ -473,10 +489,10 @@ void TimpPhanTuTheMangPhaiNhatCayConTrai(LIST_DOCGIA& p, LIST_DOCGIA& q)
 }
 
 /// <summary>
-/// Xóa 1 DOCGIA khỏi cây LIST_DOCGIA co 3 truong hop:
-/// TH1: Nut can xoa la nut la. Delete luon.
-/// TH2: Nut can xoa co 1 cay con. Cho p tro toi lstDG roi tao lien ket nut cha lstDG vs nut p sau do tien hanh Delete
-/// TH3: Nut can xoa co 2 cay con. Dua tren nut trai nhat cua cay con ben phai (tim node lon nhat)
+/// <para>Xóa 1 DOCGIA khỏi cây LIST_DOCGIA co 3 truong hop:</para>
+/// <para>TH1: Nut can xoa la nut la. Delete luon.</para>
+/// <para>TH2: Nut can xoa co 1 cay con. Cho p tro toi lstDG roi tao lien ket nut cha lstDG vs nut p sau do tien hanh Delete</para>
+/// <para>TH3: Nut can xoa co 2 cay con. Dua tren nut trai nhat cua cay con ben phai (tim node lon nhat)</para>
 /// </summary>
 /// <param name="lstDG">LIST_DOCGIA chứa DOCGIA cần xóa</param>
 /// <param name="docGia">DOCGIA cần xóa</param>
@@ -1313,6 +1329,27 @@ void PrintListQuaHan(LIST_DAUSACH listDS, LIST_DOCGIA lstDG)
 		}
 	} while (!_kbhit());
 	return;
+}
+
+/// <summary>
+/// <para>Kiểm tra Độc giả mượn sách quá 30 ngày => khóa thẻ</para>
+/// Duyệt LNR
+/// </summary>
+/// <param name="listDS">LIST_DAUSACH để tính số ngày quá hạn</param>
+/// <returns>void</returns>
+void InorderCheckKhoaThe(LIST_DOCGIA& listDG)
+{
+	if (listDG != NULL)
+	{
+		InorderCheckKhoaThe(listDG->pLeft);
+
+		if (listDG->data.IsQua30Ngay())
+		{
+			listDG->data.trangThai = TheBiKhoa;
+		}
+
+		InorderCheckKhoaThe(listDG->pRight);
+	}
 }
 
 #pragma region-- ------------------DOC GHI FILE
