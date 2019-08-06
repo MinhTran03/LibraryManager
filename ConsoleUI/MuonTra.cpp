@@ -871,5 +871,19 @@ int LIST_MUONTRA::DuyetDSSachChuaTra()
 	}
 	return count;
 }
+/// <summary>
+/// Dem so Sach doc gia da muon va tra thanh cong
+/// </summary>
+/// <returns>int</returns>
+int LIST_MUONTRA::DuyetDSSachDaTra()
+{
+	int count = 0;
+	for (auto p = this->pHead; p != NULL; p = p->pNext)
+	{
+		p->data.trangThai = SachDaTra;
+		count++;
+	}
+	return count;
+}
 
 #pragma endregion

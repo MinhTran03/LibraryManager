@@ -12,10 +12,10 @@ void DocGiaInfo(RECTANGLE rect, DOCGIA docGia)
 	string title = "THONG TIN DOC GIA";
 	auto docGiaInfo = GetDGToListString(docGia);
 	//int size = SizeOfT(docGiaInfo);
-	string labels[] = { "Ma doc gia", "Ho", "Ten", "Gioi tinh", "Trang thai the" };
+	string labels[] = { "Ma doc gia", "Ho", "Ten", "Gioi tinh", "Trang thai the", "Tong so lan muon" };
 	DrawRectangleBoder(rect);
 
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 6; i++)
 	{
 		GoToXY(rect.location.x + 2, rect.location.y + 1);
 		cout << labels[i];

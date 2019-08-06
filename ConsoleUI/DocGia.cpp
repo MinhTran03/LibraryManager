@@ -334,6 +334,8 @@ string* GetDGToListString(DOCGIA docGia)
 		string temp = "The bi khoa";
 		PushBack(docGiaInfo, temp, c);
 	}
+	string soLuotMuon = to_string(docGia.listMuonTra.DuyetDSSachDaTra());
+	PushBack(docGiaInfo, soLuotMuon,c);
 
 	return docGiaInfo;
 }
@@ -440,7 +442,7 @@ NODE_DOCGIA* Search(LIST_DOCGIA lstDG, int maDocGia)
 	return (lstDG);
 }
 
-// ...
+// Tim thg nho nhat
 void TimPhanTuTheMangTraiNhatCayConPhai(LIST_DOCGIA& p, LIST_DOCGIA& q)
 {
 	if (q->pLeft != NULL)
@@ -455,7 +457,7 @@ void TimPhanTuTheMangTraiNhatCayConPhai(LIST_DOCGIA& p, LIST_DOCGIA& q)
 	}
 }
 
-// ...
+// Tim thg lon nhat
 void TimpPhanTuTheMangPhaiNhatCayConTrai(LIST_DOCGIA& p, LIST_DOCGIA& q)
 {
 	if (q->pRight != NULL)
@@ -472,9 +474,9 @@ void TimpPhanTuTheMangPhaiNhatCayConTrai(LIST_DOCGIA& p, LIST_DOCGIA& q)
 
 /// <summary>
 /// Xóa 1 DOCGIA khỏi cây LIST_DOCGIA co 3 truong hop:
-/// TH1: 
-/// TH2: 
-/// TH3: 
+/// TH1: Nut can xoa la nut la. Delete luon.
+/// TH2: Nut can xoa co 1 cay con. Cho p tro toi lstDG roi tao lien ket nut cha lstDG vs nut p sau do tien hanh Delete
+/// TH3: Nut can xoa co 2 cay con. Dua tren nut trai nhat cua cay con ben phai (tim node lon nhat)
 /// </summary>
 /// <param name="lstDG">LIST_DOCGIA chứa DOCGIA cần xóa</param>
 /// <param name="docGia">DOCGIA cần xóa</param>

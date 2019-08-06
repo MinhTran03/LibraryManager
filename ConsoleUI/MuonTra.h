@@ -196,4 +196,9 @@ struct LIST_MUONTRA
 	/// </summary>
 	/// <returns>int</returns>
 	int DuyetDSSachChuaTra();
+	/// <summary>
+	/// Dem so Sach doc gia da muon va tra thanh cong
+	/// </summary>
+	/// <returns>int</returns>
+	int DuyetDSSachDaTra();
 };
