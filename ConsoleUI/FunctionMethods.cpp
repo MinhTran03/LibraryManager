@@ -1207,16 +1207,16 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 							switch (result)
 							{
 							case BiKhoaThe:
-								MakeFlickWarning({ 65, 21 }, "THE DOC GIA BI KHOA, KHONG THE MUON SACH");
+								MakeFlickWarning({ 65, 31 }, "THE DOC GIA BI KHOA, KHONG THE MUON SACH");
 								break;
 							case SachBiMat:
-								MakeFlickWarning({ 48, 21 }, "DOC GIA LAM MAT SACH, VUI LONG BOI THUONG LAI SACH DE TIEP TUC MUON SACH");
+								MakeFlickWarning({ 48, 31 }, "DOC GIA LAM MAT SACH, VUI LONG BOI THUONG LAI SACH DE TIEP TUC MUON SACH");
 								break;
 							case GiuQua7Ngay:
-								MakeFlickWarning({ 40, 21 }, "DOC GIA GIU SACH QUA HAN QUY DINH, VUI LONG TRA LAI SACH DE TIEP DUC MUON SACH");
+								MakeFlickWarning({ 40, 31 }, "DOC GIA GIU SACH QUA HAN QUY DINH, VUI LONG TRA LAI SACH DE TIEP DUC MUON SACH");
 								break;
 							case MuonDuSach:
-								MakeFlickWarning({ 63, 21 }, "MOI DOC GIA CHI DUOC MUON TOI DA 3 CUON SACH");
+								MakeFlickWarning({ 63, 31 }, "MOI DOC GIA CHI DUOC MUON TOI DA 3 CUON SACH");
 								break;
 							default:
 								break;
