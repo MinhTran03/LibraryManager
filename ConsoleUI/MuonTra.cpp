@@ -746,6 +746,7 @@ bool LIST_MUONTRA::Delete(string maSach)
 	{
 		NODE_MUONTRA* p;
 		NODE_MUONTRA* q;
+		NODE_MUONTRA* r;
 		p = this->Search(maSach);
 		if (p == NULL)
 		{
@@ -759,15 +760,11 @@ bool LIST_MUONTRA::Delete(string maSach)
 			}
 			else
 			{
-				q = this->pHead;
-				while (q->pNext != p)
-				{
-					q = q->pNext;
-				}
-				if (q->pNext == this->pTail)
-					this->DeleteAtTail();
-				else
-					this->DeleteAfter(q);
+				q = p->pPrev;
+				r = p->pNext;
+				r->pPrev = q;
+				q->pNext = r;
+				delete p;
 			}
 		}
 	}
@@ -868,7 +865,7 @@ int LIST_MUONTRA::DuyetDSSachDaTra()
 	{
 		if (p->data.trangThai == SachDaTra)
 		{
-		count++;
+			count++;
 		}
 	}
 	return count;

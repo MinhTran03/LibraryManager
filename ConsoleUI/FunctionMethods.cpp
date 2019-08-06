@@ -1282,10 +1282,6 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 								// Đồng ý
 								if (confirm.result == 1)
 								{
-									// Lấy ngày hiện tại
-									DATETIME today = DATETIME();
-									today.SetDateTimeNow();
-
 									// Đổi trạng thái thành làm mất sách
 									NODE_MUONTRA* nodeMT = docGiaSearch->data.listMuonTra.Search(maSachSelect);
 									nodeMT->data.trangThai = LamMatSach;
