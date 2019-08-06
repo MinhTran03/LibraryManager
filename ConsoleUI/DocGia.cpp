@@ -667,6 +667,7 @@ void PrintContentSortMaDG(LIST_DOCGIA listDG, MYPOINT location, Menu_Mode mode)
 		}
 		else if (inputKey == Key::ESC)
 		{
+			delete[] listData;
 			return;
 		}
 	} while (!_kbhit());
@@ -851,6 +852,8 @@ void PrintAllDocGia(LIST_DOCGIA lstDG, MYPOINT location, int sortMode, Menu_Mode
 {
 	PrintLabelDocGia(location, MAX_ROW_PER_PAGE);
 	location.y += 3;
+
+	if (Size(lstDG) == 0) return;
 
 	// Độc giả sắp theo Mã
 	if (sortMode == 1)

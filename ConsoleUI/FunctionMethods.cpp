@@ -313,6 +313,12 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 								SetTextColor(TEXT_INPUT_COLOR);
 								GoToXY(location.x, size % MAX_ROW_PER_PAGE + location.y + 3);
 								cout << emptyStringDocGia;
+								// Tô lại line mà FORMCONFIRM che mất
+								for (int i = 1; i <= 8; i++)
+								{
+									GoToXY(location.x, 3 + location.y + i);
+									cout << emptyStringDocGia;
+								}
 							}
 						}
 					}
@@ -330,7 +336,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 				}
 				// In Doc Gia co Hightlight
 				selectedMaDG = PrintAllDGWithHL(listDG, location, currentPage, Menu_Mode::Both);
-				//ClearLine(1);
+
 				if (selectedMaDG == "ESC")
 				{
 					break;
@@ -340,9 +346,9 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 					// cap nhat dsDocGia
 					int MaDG = stoi(selectedMaDG);
 					// Tim kiem Doc Gia bang Ma Doc Gia
-					auto temp = Search(listDG, MaDG);
+					NODE_DOCGIA* docGia = Search(listDG, MaDG);
 					// ...
-					temp->data = InputFixDocGia({ {DAUSACH_TOTAL_WIDTH + 2, location.y}, {50, 18} }, temp->data);
+					docGia->data = InputFixDocGia({ {DAUSACH_TOTAL_WIDTH + 2, location.y}, {50, 18} }, docGia->data);
 					selectedMaDG = PrintAllDGWithHL(listDG, location, currentPage, Show_Only);
 				}
 			}
@@ -434,6 +440,8 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 
 	while (true)
 	{
+		if (currentPage < 0) currentPage = 0;
+
 		// Hiện menu button
 		int selectedButton = menu.ShowInHorizontal(Menu_Mode::Both);
 
@@ -541,6 +549,13 @@ void CapNhatDauSach(LIST_DAUSACH& listDS, MYPOINT location)
 								SetTextColor(TEXT_INPUT_COLOR);
 								GoToXY(location.x, listDS.size % MAX_ROW_PER_PAGE + location.y + 3);
 								cout << emptyStringDauSach;
+
+								// Tô lại line mà FORMCONFIRM che mất
+								for (int i = 1; i <= 8; i++)
+								{
+									GoToXY(location.x, 3 + location.y + i);
+									cout << emptyStringDauSach;
+								}
 							}
 						}
 					}
@@ -634,7 +649,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 	MYPOINT locationListSach = { 40, locationListDS.y };
 
 	// Setup menu
-	MYPOINT locationBtn = { 41, locationListDS.y + (int)MAX_ROW_PER_PAGE + 5};
+	MYPOINT locationBtn = { 41, locationListDS.y + (int)MAX_ROW_PER_PAGE + 5 };
 	MENU menu = MENU({ "THEM", "XOA", "SUA", "THANH LY" }, locationBtn);
 	menu.btnSize = { 10,3 };
 
@@ -642,6 +657,12 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 	{
 		// Print LIST_DAUSACH và bắt phím lấy ISBN ng dùng chọn
 		PrintLabelDauSach(locationListDS, MAX_ROW_PER_PAGE);
+		if (listDS.IsEmpty())
+		{
+			MakeFlickWarning({ locationListDS.x + 40, locationListDS.y - 2 }, "KHONG CO DAU SACH");
+			ClearArea(locationListDS.x, locationListDS.y, DAUSACH_TOTAL_WIDTH, MAX_ROW_PER_PAGE + 5);
+			break;
+		}
 		string selectedISBN = listDS.PrintAll(locationListDS, currentPageDS, Both);
 		ClearArea(locationListDS.x, locationListDS.y, DAUSACH_TOTAL_WIDTH, MAX_ROW_PER_PAGE + 5);
 
@@ -842,7 +863,7 @@ void TimSach(LIST_DAUSACH& listDS, MYPOINT location)
 		{
 			string selectedDauSach = listDS.PrintAllSearch({ location.x + 10, location.y + 10 }, searchKey, Menu_Mode::Both);
 			// Tránh trường hợp chưa có searchKey
-			if (selectedDauSach == "Empty")
+			if (selectedDauSach == "")
 			{
 				MakeFlickWarning({ point.x + 20 - (((int)searchKey.size() + 26) / 2), point.y - 2 }, "KHONG TIM THAY DAU SACH: " + searchKey);
 			}

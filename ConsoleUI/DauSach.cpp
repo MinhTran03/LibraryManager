@@ -421,14 +421,24 @@ string LIST_DAUSACH::PrintAllTheLoai(MYPOINT location)
 	int currentPage = 0;
 	int totalPages = this->soTheLoai;
 
-	// In mũi tên qua phải
-	SetBGColor(Color::Gray);
-	SetTextColor(Color::Bright_White);
-	GoToXY(location.x + DAUSACH_TOTAL_WIDTH + 1, location.y + MAX_ROW_PER_PAGE / 2);
-	cout << char(62);
-
 	// print label
 	PrintLabelDauSach(location, MAX_ROW_PER_PAGE);
+
+	if (this->IsEmpty())
+	{
+		char c = _getch();
+		ClearArea(location.x, location.y, DAUSACH_TOTAL_WIDTH, MAX_ROW_PER_PAGE + 5);
+		return "";
+	}
+
+	// In mũi tên qua phải
+	if (totalPages > 1)
+	{
+		SetBGColor(Color::Gray);
+		SetTextColor(Color::Bright_White);
+		GoToXY(location.x + DAUSACH_TOTAL_WIDTH + 1, location.y + MAX_ROW_PER_PAGE / 2);
+		cout << char(62);
+	}
 
 	while (true)
 	{
@@ -547,7 +557,7 @@ string LIST_DAUSACH::PrintAll(MYPOINT location, int& showPage, Menu_Mode mode)
 	if (mode == Menu_Mode::Show_Only || mode == Menu_Mode::Both)
 	{
 		location.y += 3;
-
+		
 		// In LIST_DAUSACH ra màn hình
 		ShowPageNumber(showPage, totalPages, location.x, location.y + MAX_ROW_PER_PAGE + 1);
 		for (int i = 0; i < this->size; i++)
