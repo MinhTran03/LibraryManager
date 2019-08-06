@@ -729,7 +729,7 @@ void LIST_SACH::AddTail(NODE_SACH& node)
 }
 
 /// <summary>
-/// Tim sach theo Ma SACH
+/// Tim sach theo Ma SACH tro tu Head ve Tail
 /// </summary>
 /// <param name="maSach"> Ma SACH can tim </param>
 /// <returns>NODE_SACH*</returns>

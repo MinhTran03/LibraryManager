@@ -715,7 +715,7 @@ void LIST_MUONTRA::DeleteAtTail()
 }
 
 /// <summary>
-/// Tim muon tra theo Ma SACH
+/// Tim muon tra theo Ma SACH trỏ tu Tail len Head
 /// </summary>
 /// <param name="maSach"> Ma SACH can tim </param>
 /// <returns>NODE_MUONTRA*</returns>
@@ -858,16 +858,18 @@ bool LIST_MUONTRA::ReadFromFile(string path)
 }
 
 /// <summary>
-/// Dem so Sach doc gia muon
+/// Dem so Sach doc gia da muon va tra thanh cong
 /// </summary>
 /// <returns>int</returns>
-int LIST_MUONTRA::DuyetDSSachChuaTra()
+int LIST_MUONTRA::DuyetDSSachDaTra()
 {
 	int count = 0;
 	for (auto p = this->pHead; p != NULL; p = p->pNext)
 	{
-		p->data.trangThai = SachChuaTra;
+		if (p->data.trangThai == SachDaTra)
+		{
 		count++;
+		}
 	}
 	return count;
 }

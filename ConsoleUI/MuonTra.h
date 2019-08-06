@@ -192,8 +192,8 @@ struct LIST_MUONTRA
 	bool ReadFromFile(string path);
 
 	/// <summary>
-	/// Dem so Sach doc gia muon
+	/// Dem so Sach doc gia da muon va tra thanh cong
 	/// </summary>
 	/// <returns>int</returns>
-	int DuyetDSSachChuaTra();
+	int DuyetDSSachDaTra();
 };
