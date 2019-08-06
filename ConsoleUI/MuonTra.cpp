@@ -817,7 +817,7 @@ bool LIST_MUONTRA::WriteToFile(string path)
 			//data.push_back(temp);
 			PushBack(data, temp, c);
 		}
-		fileHandler.WriteToFile(data, IosMode::WriteNext, c);
+		fileHandler.WriteToFile(data, IosMode::Replace, c);
 		delete[] data;
 	}
 	catch (const exception& ex)

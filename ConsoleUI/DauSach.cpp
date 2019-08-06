@@ -884,10 +884,12 @@ string LIST_DAUSACH::PrintAllSearch(MYPOINT location, string tenSach, Menu_Mode 
 			}
 			if (inputKey == Key::ENTER)
 			{
-				RECTANGLE rect = { { location.x + (int)DAUSACH_TOTAL_WIDTH + 1, y } , {DMS_TOTAL_WIDTH, 20} };
+				pageSach = 0;
+				RECTANGLE rect = { { location.x + (int)DAUSACH_TOTAL_WIDTH + 1, y } , {DMS_TOTAL_WIDTH, 25} };
+				PrintLabelSach({ location.x + (int)DAUSACH_TOTAL_WIDTH + 1, y }, 20);
+				string temp = listISBN[currentLine].dsSach.PrintAll({ location.x + (int)DAUSACH_TOTAL_WIDTH + 1, y }, pageSach, Menu_Mode::Both);
+				if (temp == "") cin.get();
 				ClearArea(rect.location.x, rect.location.y, rect.size.width, rect.size.height);
-
-				string temp = listISBN[currentLine].dsSach.PrintAll({ location.x + (int)DAUSACH_TOTAL_WIDTH + 1, y }, pageSach, Menu_Mode::Show_Only);
 			}
 			else if (inputKey == Key::PAGE_DOWN && currentPage < totalPages - 1 && currentPage < MAX_PAGE_DAUSACH)
 			{

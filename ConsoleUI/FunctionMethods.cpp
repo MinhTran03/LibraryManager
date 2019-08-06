@@ -673,10 +673,10 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 		DAUSACH* dauSach = listDS.GetDauSach(isbnAsChar);
 		LIST_SACH* listSach = &dauSach->dsSach;
 
+		int currentPageDMS = 0;
 		while (true)
 		{
 			// Print LIST_SACH
-			int currentPageDMS = 0;
 			PrintLabelSach(locationListSach, MAX_ROW_PER_PAGE);
 			string maSach = listSach->PrintAll(locationListSach, currentPageDMS, Show_Only);
 
@@ -691,8 +691,21 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 			// Show menu và bắt phím lấy button ng dùng ấn
 			int selectionMenu = menu.ShowInHorizontal(Both);
 
+			// Go to Previous page
+			if (selectionMenu == Key::PAGE_UP && currentPageDMS > 0)
+			{
+				currentPageDMS--;
+				maSach = listSach->PrintAll(locationListSach, currentPageDMS, Show_Only);
+			}
+			// Go to Next page
+			else if (selectionMenu == Key::PAGE_DOWN)
+			{
+				currentPageDMS++;
+				maSach = listSach->PrintAll(locationListSach, currentPageDMS, Show_Only);
+			}
+
 			// Thêm sách
-			if (selectionMenu == 0)
+			else if (selectionMenu == 0)
 			{
 				// Tạo sách mới
 				SACH* newSach = new SACH();
@@ -835,6 +848,7 @@ void CapNhatDanhMucSach(LIST_DAUSACH& listDS)
 				ClearLine(locationListSach.y - 1);
 				ClearArea(locationListSach.x, locationListSach.y, DMS_TOTAL_WIDTH, MAX_ROW_PER_PAGE + 10);
 				delete[] isbnAsChar;
+				currentPageDMS = 0;
 				break;
 			}
 		}

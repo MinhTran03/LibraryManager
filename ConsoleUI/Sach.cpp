@@ -442,7 +442,7 @@ string LIST_SACH::PrintAll(MYPOINT location, int& showPage, Menu_Mode mode)
 					}
 				}
 				GoToXY(location.x, location.y);
-				HightLight(listSach[MAX_ROW_PER_PAGE * currentPage], hlBGColor, hlTextColor);
+				HightLight(dms_AsString[currentPage][0], hlBGColor, hlTextColor);
 				NormalColor();
 			}
 			else if (inputKey == Key::PAGE_UP && currentPage > 0)
@@ -458,7 +458,7 @@ string LIST_SACH::PrintAll(MYPOINT location, int& showPage, Menu_Mode mode)
 					cout << dms_AsString[currentPage][i];
 				}
 				GoToXY(location.x, location.y);
-				HightLight(listSach[MAX_ROW_PER_PAGE * currentPage], hlBGColor, hlTextColor);
+				HightLight(dms_AsString[currentPage][0], hlBGColor, hlTextColor);
 				NormalColor();
 			}
 			else if (inputKey == Key::ESC)
