@@ -471,7 +471,10 @@ void TimpPhanTuTheMangPhaiNhatCayConTrai(LIST_DOCGIA& p, LIST_DOCGIA& q)
 }
 
 /// <summary>
-/// Xóa 1 DOCGIA khỏi cây LIST_DOCGIA
+/// Xóa 1 DOCGIA khỏi cây LIST_DOCGIA co 3 truong hop:
+/// TH1: 
+/// TH2: 
+/// TH3: 
 /// </summary>
 /// <param name="lstDG">LIST_DOCGIA chứa DOCGIA cần xóa</param>
 /// <param name="docGia">DOCGIA cần xóa</param>
@@ -484,21 +487,23 @@ bool DeleteNode(LIST_DOCGIA& lstDG, DOCGIA docGia)
 	}
 	else
 	{
-		if (lstDG->data.maDocGia > docGia.maDocGia)
+		if (docGia.maDocGia < lstDG->data.maDocGia)
 		{
 			DeleteNode(lstDG->pLeft, docGia);
 		}
-		else if (lstDG->data.maDocGia < docGia.maDocGia)
+		else if (docGia.maDocGia > lstDG->data.maDocGia)
 		{
 			DeleteNode(lstDG->pRight, docGia);
 		}
 		else
 		{
 			NODE_DOCGIA* p = lstDG;
+			// p la nut la hoac la nut co cay con ben trai
 			if (lstDG->pLeft == NULL)
 			{
 				lstDG = lstDG->pRight;
 			}
+			// p la nut la hoac la nut co cay con ben phai
 			else if (lstDG->pRight == NULL)
 			{
 				lstDG = lstDG->pLeft;
@@ -506,8 +511,8 @@ bool DeleteNode(LIST_DOCGIA& lstDG, DOCGIA docGia)
 			else
 			{
 				// cach 1 tim phan tu trai nhat cay con phai
-				//timphantuthemangtrainhatcayconphai(p, t->pright);
-				//cach 2 tìm phan tu tha mang phai nhat cay con trai
+				//TimPhanTuTheMangTraiNhatCayConPhai(p, t->pright);
+				// cach 2 tìm phan tu tha mang phai nhat cay con trai
 				TimpPhanTuTheMangPhaiNhatCayConTrai(p, lstDG->pLeft);
 			}
 			delete p;

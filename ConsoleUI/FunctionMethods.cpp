@@ -341,7 +341,7 @@ void QuanLiDocGia(LIST_DOCGIA& listDG, MYPOINT location)
 					int MaDG = stoi(selectedMaDG);
 					// Tim kiem Doc Gia bang Ma Doc Gia
 					auto temp = Search(listDG, MaDG);
-					// ...
+					// Su dung Inputfix clone DocGia moi
 					temp->data = InputFixDocGia({ {DAUSACH_TOTAL_WIDTH + 2, location.y}, {50, 18} }, temp->data);
 					selectedMaDG = PrintAllDGWithHL(listDG, location, currentPage, Show_Only);
 				}
