@@ -715,7 +715,7 @@ void LIST_MUONTRA::DeleteAtTail()
 }
 
 /// <summary>
-/// Tim muon tra theo Ma SACH
+/// Tim muon tra theo Ma SACH trỏ tu Tail len Head
 /// </summary>
 /// <param name="maSach"> Ma SACH can tim </param>
 /// <returns>NODE_MUONTRA*</returns>
