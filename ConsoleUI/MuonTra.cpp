@@ -858,20 +858,6 @@ bool LIST_MUONTRA::ReadFromFile(string path)
 }
 
 /// <summary>
-/// Dem so Sach doc gia muon
-/// </summary>
-/// <returns>int</returns>
-int LIST_MUONTRA::DuyetDSSachChuaTra()
-{
-	int count = 0;
-	for (auto p = this->pHead; p != NULL; p = p->pNext)
-	{
-		p->data.trangThai = SachChuaTra;
-		count++;
-	}
-	return count;
-}
-/// <summary>
 /// Dem so Sach doc gia da muon va tra thanh cong
 /// </summary>
 /// <returns>int</returns>
@@ -880,8 +866,10 @@ int LIST_MUONTRA::DuyetDSSachDaTra()
 	int count = 0;
 	for (auto p = this->pHead; p != NULL; p = p->pNext)
 	{
-		p->data.trangThai = SachDaTra;
+		if (p->data.trangThai == SachDaTra)
+		{
 		count++;
+		}
 	}
 	return count;
 }

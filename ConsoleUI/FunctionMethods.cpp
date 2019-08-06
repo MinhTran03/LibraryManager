@@ -1124,11 +1124,11 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 				DrawMessageBox(point, "NHAP MA DOC GIA", searchKey, isEnter, isCancel, char(219), Show_Only, 4);
 
 				// Hiển thị thông tin DOCGIA
-				RECTANGLE rect = { {location.x + 61, location.y + 8}, {45, 11} };
+				RECTANGLE rect = { {location.x + 61, location.y + 7}, {45, 13} };
 				DocGiaInfo(rect, docGiaSearch->data);
 
 				// Hiển thị các sách DOCGIA mượn
-				string maSachSelect = docGiaSearch->data.listMuonTra.Show(listDS, { 20, 23 }, Show_Only);
+				string maSachSelect = docGiaSearch->data.listMuonTra.Show(listDS, { 20, 24 }, Show_Only);
 
 				// Setup menu
 				MYPOINT locationBtn = location;
@@ -1146,7 +1146,7 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 						DocGiaInfo(rect, docGiaSearch->data);
 
 						// hien thi cac sach doc gia muon
-						maSachSelect = docGiaSearch->data.listMuonTra.Show(listDS, { 20, 23 }, Show_Only);
+						maSachSelect = docGiaSearch->data.listMuonTra.Show(listDS, { 20, 24 }, Show_Only);
 
 						isReload = false;
 					}
@@ -1194,7 +1194,7 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 						while (true)
 						{
 							// In data MuonTra của Doc Gia da tim
-							maSachSelect = docGiaSearch->data.listMuonTra.Show(listDS, { 20, 23 }, Both);
+							maSachSelect = docGiaSearch->data.listMuonTra.Show(listDS, { 20, 24 }, Both);
 							if (maSachSelect == "ESC")
 							{
 								break;
@@ -1218,6 +1218,10 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 									auto dauSach = StringToCharArray(temp);
 									DAUSACH* listDauSach = listDS.GetDauSach(dauSach);
 									listDauSach->dsSach.Search(maSachSelect)->data.trangThai = ChoMuonDuoc;
+									// Load lai soLuotMuon
+									int soLuotMuon = docGiaSearch->data.listMuonTra.DuyetDSSachDaTra();
+									GoToXY(83, 21);
+									cout << soLuotMuon;
 								}
 							}
 						}
@@ -1228,7 +1232,7 @@ void MuonTraSach(LIST_DOCGIA& listDG, LIST_DAUSACH& listDS, MYPOINT location)
 						while (true)
 						{
 							// Thực hiện bắt phím trên list mượn trả và chọn sách cần báo mất
-							maSachSelect = docGiaSearch->data.listMuonTra.Show(listDS, { 20, 23 }, Both);
+							maSachSelect = docGiaSearch->data.listMuonTra.Show(listDS, { 20, 24 }, Both);
 
 							if (maSachSelect == "ESC")
 							{
